@@ -15,13 +15,30 @@
          * Classes and their levels
          */
 
-        /* Proficiencies
-         * 
-         * Equipment proficiencies
-         * For saving throws and skills it may be easiest to make a separate class and keep a list here
-         * Each would have a name, a stat, and a proficiency multiplier
-         * 0 meaning not proficient, 1 meaning proficient, 2 meaning expertise, .5 meaning they're a bard
-         */
+        /// <summary>
+        /// A list of the weapon and armor types the character is proficient with
+        /// </summary>
+        public List<string> EquipmentProficiencies { get; set; }
+
+        /// <summary>
+        /// A list of the tool and instrument types the character is proficient with
+        /// </summary>
+        public List<string> ToolProficiencies { get; set; }
+
+        /// <summary>
+        /// A list of the languages the character is proficient in
+        /// </summary>
+        public List<string> LanguageProficiencies { get; set; }
+
+        /// <summary>
+        /// A list of saving throws and the character's proficiency in them
+        /// </summary>
+        public List<CharacerProficiency> SavingThrowProficiencies { get; set; }
+
+        /// <summary>
+        /// A list of skills and the character's proficiency in them
+        /// </summary>
+        public List<CharacerProficiency> SkillProficiencies { get; set; }
 
         /* Classes
          * 

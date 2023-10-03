@@ -1,6 +1,6 @@
 ﻿namespace DnDesigner.Models
 {
-	public class Classes
+	public class Class
 	{
 		/// <summary>
 		/// The name of the class

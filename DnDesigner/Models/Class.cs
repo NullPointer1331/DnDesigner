@@ -3,6 +3,11 @@
 	public class Class
 	{
 		/// <summary>
+		/// The class identifier
+		/// </summary>
+		public int Id { get; set; }
+
+		/// <summary>
 		/// The name of the class
 		/// </summary>
 		public string Name { get; set; }
@@ -10,13 +15,13 @@
 		/// <summary>
 		/// The features of the class
 		/// </summary>
-		public List<String> Features { get; set; }
+		public List<string> Features { get; set; }
 
 		/// <summary>
 		/// The proficiencies that can be learned 
 		/// through the class
 		/// </summary>
-		public List<String> Proficiencies { get; set; }
+		public List<string> Proficiencies { get; set; }
 
 		/// <summary>
 		/// The hit die type of the class

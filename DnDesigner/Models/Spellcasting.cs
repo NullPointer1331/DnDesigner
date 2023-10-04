@@ -38,16 +38,48 @@ namespace DnDesigner.Models
         public bool RitualCasting { get; set; }
 
         /// <summary>
+        /// Whether this spellcasting uses a spellbook
+        /// </summary>
+        public bool Spellbook { get; set; }
+
+        /// <summary>
         /// The spells that can be learned from this spellcasting
         /// </summary>
         public List<LearnableSpell> LearnableSpells { get; set; }
     }
     public class CharacterSpellcasting
     {
+        /// <summary>
+        /// The character this spellcasting belongs to
+        /// </summary>
         [ForeignKey("CharacterId")]
         public Character Character { get; set; }
 
+        /// <summary>
+        /// The spellcasting this is referencing
+        /// </summary>
         [ForeignKey("SpellcastingId")]
         public Spellcasting Spellcasting { get; set; }
+
+        /// <summary>
+        /// The spells this character currently has prepared
+        /// or if they aren't a prepared caster, the spells they know
+        /// </summary>
+        public List<KnownSpell> PreparedSpells { get; set; }
+
+        /// <summary>
+        /// Basic constructor
+        /// </summary>
+        /// <param name="character">The character this spellcasting belongs to</param>
+        /// <param name="spellcasting">The spellcasting this is referencing</param>
+        public CharacterSpellcasting(Character character, Spellcasting spellcasting)
+        {
+            Character = character;
+            Spellcasting = spellcasting;
+            PreparedSpells = new List<KnownSpell>();
+        }
+
+        //Spellcasting level, spell attack bonus, and spell save DC will need to be calculated but don't need to be stored
+        //So we will add methods to calculate them later
     }
 }

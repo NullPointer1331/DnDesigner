@@ -100,4 +100,29 @@ namespace DnDesigner.Models
             Spellcasting = spellcasting;
         }
     }
+    public class KnownSpell
+    {
+        /// <summary>
+        /// The character who knows this spell
+        /// </summary>
+        [ForeignKey("CharacterId")]
+        public CharacterSpellcasting Spellcasting { get; set; }
+
+        /// <summary>
+        /// The spell the character knows
+        /// </summary>
+        [ForeignKey("SpellId")]
+        public Spell Spell { get; set; }
+
+        /// <summary>
+        /// Basic constructor
+        /// </summary>
+        /// <param name="spellcasting">The character who knows this spell</param>
+        /// <param name="spell">The spell the character knows</param>
+        public KnownSpell(CharacterSpellcasting spellcasting, Spell spell)
+        {
+            Spellcasting = spellcasting;
+            Spell = spell;
+        }
+    }
 }

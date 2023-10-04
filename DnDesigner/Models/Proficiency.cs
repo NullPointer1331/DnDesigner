@@ -13,22 +13,22 @@ namespace DnDesigner.Models
         /// Primary key
         /// </summary>
         [Key]
-        public int ProficiencyId { get; set; }
+        public int ProficiencyId { get; private set; }
 
         /// <summary>
         /// The name of the skill or saving throw
         /// </summary>
-        public string ProficiencyName { get; set; }
+        public string ProficiencyName { get; private set; }
 
         /// <summary>
         /// The attribue associated with the skill or saving throw
         /// </summary>
-        public string MainAttribute { get; set; }
+        public string MainAttribute { get; private set; }
 
         /// <summary>
         /// Whether the proficiency is a saving throw or skill
         /// </summary>
-        public bool IsSavingThrow { get; set; }
+        public bool IsSavingThrow { get; private set; }
 
         /// <summary>
         /// Full constructor, sets all properties

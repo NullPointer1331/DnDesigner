@@ -26,21 +26,22 @@ namespace DnDesigner.Models
         public string MainAttribute { get; private set; }
 
         /// <summary>
-        /// Whether the proficiency is a saving throw or skill
+        /// The proficiency type
         /// </summary>
-        public bool IsSavingThrow { get; private set; }
+        public string ProficiencyType { get; private set; }
+
 
         /// <summary>
         /// Full constructor, sets all properties
         /// </summary>
         /// <param name="name">The name of the proficiency</param>
         /// <param name="attribute">The attribute associated with this proficiency</param>
-        /// <param name="isSavingThrow">If true, this is a saving throw, if false this is a skill</param>
-        public Proficiency (string name, string attribute, bool isSavingThrow)
+        /// <param name="proficiencyType">The type of proficiency i.e. Tool, Skill, Saving throw</param>
+        public Proficiency (string name, string attribute, string proficiencyType)
         {
             ProficiencyName = name;
             MainAttribute = attribute;
-            IsSavingThrow = isSavingThrow;
+            ProficiencyType = proficiencyType;
         }
     }
 

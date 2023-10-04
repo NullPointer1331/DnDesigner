@@ -16,7 +16,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The name of the background
         /// </summary>
-        public string Name { get; set; }
+        public string BackgroundName { get; set; }
 
         /// <summary>
         /// The skill proficiencies this background gives

@@ -1,10 +1,18 @@
-﻿namespace DnDesigner.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DnDesigner.Models
 {
     /// <summary>
     /// The information of the character
     /// </summary>
     public class Character
     {
+        /// <summary>
+        /// Primary key
+        /// </summary>
+        [Key]
+        public int CharacterId { get; set; }
+
         /// The Characters name
         /// </summary>
         public string Name { get; set; } = null!;

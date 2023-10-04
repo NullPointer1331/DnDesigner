@@ -14,15 +14,11 @@
         /// </summary>
         public int Level { get; set; }
 
-        /// <summary>
-        /// The characters class
-        /// </summary>
-        public string Class { get; set; } = null!;
-
-        /// <summary>
-        /// The characters subclass
-        /// </summary>
-        public string Subclass { get; set; } = null!;
+        /**
+         * Class and Subclass placeholder
+         * 
+         * 
+         */
 
         /// <summary>
         /// The characters current proficiency bonus
@@ -92,17 +88,17 @@
         /// <summary>
         /// The characters resistances
         /// </summary>
-        public string Resistant { get; set; } = null!;
+        public string Resistances { get; set; } = null!;
 
         /// <summary>
         /// The characters immunities
         /// </summary>
-        public string Immune { get; set; } = null!;
+        public string Immunities { get; set; } = null!;
 
         /// <summary>
         /// The characters vulnerabilities
         /// </summary>
-        public string Vulnerable { get; set; } = null!;
+        public string Vulnerabilities { get; set; } = null!;
 
         /// <summary>
         /// The weapon and armor types the character is proficient with

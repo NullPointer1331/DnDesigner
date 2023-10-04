@@ -16,19 +16,19 @@
          */
 
         /// <summary>
-        /// A list of the weapon and armor types the character is proficient with
+        /// The weapon and armor types the character is proficient with
         /// </summary>
-        public List<string> EquipmentProficiencies { get; set; }
+        public string EquipmentProficiencies { get; set; }
 
         /// <summary>
-        /// A list of the tool and instrument types the character is proficient with
+        /// The tool and instrument types the character is proficient with
         /// </summary>
-        public List<string> ToolProficiencies { get; set; }
+        public string ToolProficiencies { get; set; }
 
         /// <summary>
         /// A list of the languages the character is proficient in
         /// </summary>
-        public List<string> LanguageProficiencies { get; set; }
+        public string LanguageProficiencies { get; set; }
 
         /// <summary>
         /// A list of saving throws and the character's proficiency in them

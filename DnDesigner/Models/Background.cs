@@ -2,6 +2,9 @@
 
 namespace DnDesigner.Models
 {
+    /// <summary>
+    /// Represents a background
+    /// </summary>
     public class Background
     {
         /// <summary>
@@ -23,12 +26,12 @@ namespace DnDesigner.Models
         /// <summary>
         /// The tool proficiencies this background gives
         /// </summary>
-        public List<Proficiency>? ToolProficiencies { get; set; }
+        public List<Proficiency> ToolProficiencies { get; set; }
 
         /// <summary>
         /// The language proficiencies this background gives
         /// </summary>
-        public List<Proficiency>? LanguageProficiencies { get; set; }
+        public List<Proficiency> LanguageProficiencies { get; set; }
 
         /// <summary>
         /// The starting equipment this background gives
@@ -65,5 +68,16 @@ namespace DnDesigner.Models
         /// Other information about this background
         /// </summary>
         public string OtherInformation { get; set; }
+
+        /// <summary>
+        /// Minimal constructor, Initializes lists and leaves everything else blank
+        /// </summary>
+        public Background()
+        {
+            SkillProficiencies = new List<Proficiency>();
+            ToolProficiencies = new List<Proficiency>();
+            LanguageProficiencies = new List<Proficiency>();
+            Equipment = new List<string>();
+        }
     }
 }

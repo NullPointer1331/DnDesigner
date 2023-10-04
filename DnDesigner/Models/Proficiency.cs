@@ -74,7 +74,8 @@ namespace DnDesigner.Models
         public int CheckBonus { get; set; }
 
         /// <summary>
-        /// Minimal constructor, sets character and proficiency, sets proficiency level and check bonus to 0
+        /// Minimal constructor, sets character and proficiency, 
+        /// sets proficiency level and check bonus to 0
         /// </summary>
         /// <param name="character">The character who has this proficiency</param>
         /// <param name="proficiency">The saving throw or skill this is referencing</param>

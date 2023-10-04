@@ -16,6 +16,11 @@
          */
 
         /// <summary>
+        /// The background of the character
+        /// </summary>
+        public Background Background { get; set; }
+
+        /// <summary>
         /// The weapon and armor types the character is proficient with
         /// </summary>
         public string EquipmentProficiencies { get; set; }

@@ -21,7 +21,7 @@ namespace DnDesigner.Models
         public string ProficiencyName { get; private set; }
 
         /// <summary>
-        /// The attribue associated with the skill or saving throw
+        /// The attribute associated with the skill or saving throw
         /// </summary>
         public string MainAttribute { get; private set; }
 

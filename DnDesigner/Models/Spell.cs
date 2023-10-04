@@ -20,8 +20,10 @@ namespace DnDesigner.Models
         public string SpellName { get; set; }
 
         /// <summary>
-        /// The base level of the spell
+        /// The base level of the spell,
+        /// level 0 spells are cantrips
         /// </summary>
+        [Range(0, 9)]
         public int SpellLevel { get; set; }
 
         /// <summary>
@@ -60,6 +62,14 @@ namespace DnDesigner.Models
         /// Who can learn the spell
         /// </summary>
         public List<LearnableSpell> LearnedBy { get; set; }
+
+        /// <summary>
+        /// Minimal constructor, Initializes lists and leaves everything else blank
+        /// </summary>
+        public Spell()
+        {
+            LearnedBy = new List<LearnableSpell>();
+        }
     }
 
     /// <summary>

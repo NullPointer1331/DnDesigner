@@ -15,13 +15,30 @@
          * Classes and their levels
          */
 
-        /* Proficiencies
-         * 
-         * Equipment proficiencies
-         * For saving throws and skills it may be easiest to make a separate class and keep a list here
-         * Each would have a name, a stat, and a proficiency multiplier
-         * 0 meaning not proficient, 1 meaning proficient, 2 meaning expertise, .5 meaning they're a bard
-         */
+        /// <summary>
+        /// The weapon and armor types the character is proficient with
+        /// </summary>
+        public string EquipmentProficiencies { get; set; }
+
+        /// <summary>
+        /// The tool and instrument types the character is proficient with
+        /// </summary>
+        public string ToolProficiencies { get; set; }
+
+        /// <summary>
+        /// A list of the languages the character is proficient in
+        /// </summary>
+        public string LanguageProficiencies { get; set; }
+
+        /// <summary>
+        /// A list of saving throws and the character's proficiency in them
+        /// </summary>
+        public List<CharacterProficiency> SavingThrowProficiencies { get; set; }
+
+        /// <summary>
+        /// A list of skills and the character's proficiency in them
+        /// </summary>
+        public List<CharacterProficiency> SkillProficiencies { get; set; }
 
         /* Classes
          * 
@@ -52,11 +69,6 @@
          * Ideally spells could be imported with a 5etools style json file
          */
 
-        /* Actions
-         * 
-         * Yet another class
-         * contains a name, description, and an action type (action, bonus action, reaction)
-         */
 
         /* Inventory
          * 
@@ -71,11 +83,5 @@
          * Ideally items could be imported with a 5etools style json file
          */
 
-        /* Conditions
-         * 
-         * A list of conditions, which would be another class
-         * with a name, description, and a list of effects
-         * Ideally conditions could be imported with a 5etools style json file                      
-         */
     }
 }

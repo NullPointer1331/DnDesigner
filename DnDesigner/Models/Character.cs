@@ -33,12 +33,12 @@
         /// <summary>
         /// A list of saving throws and the character's proficiency in them
         /// </summary>
-        public List<CharacerProficiency> SavingThrowProficiencies { get; set; }
+        public List<CharacterProficiency> SavingThrowProficiencies { get; set; }
 
         /// <summary>
         /// A list of skills and the character's proficiency in them
         /// </summary>
-        public List<CharacerProficiency> SkillProficiencies { get; set; }
+        public List<CharacterProficiency> SkillProficiencies { get; set; }
 
         /* Classes
          * 
@@ -69,11 +69,6 @@
          * Ideally spells could be imported with a 5etools style json file
          */
 
-        /* Actions
-         * 
-         * Yet another class
-         * contains a name, description, and an action type (action, bonus action, reaction)
-         */
 
         /* Inventory
          * 
@@ -88,11 +83,5 @@
          * Ideally items could be imported with a 5etools style json file
          */
 
-        /* Conditions
-         * 
-         * A list of conditions, which would be another class
-         * with a name, description, and a list of effects
-         * Ideally conditions could be imported with a 5etools style json file                      
-         */
     }
 }

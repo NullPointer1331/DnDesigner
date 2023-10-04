@@ -21,17 +21,17 @@ namespace DnDesigner.Models
         /// <summary>
         /// The skill proficiencies this background gives
         /// </summary>
-        public List<Proficiency> SkillProficiencies { get; set; }
+        public List<BackgroundProficiency> SkillProficiencies { get; set; }
 
         /// <summary>
         /// The tool proficiencies this background gives
         /// </summary>
-        public List<Proficiency> ToolProficiencies { get; set; }
+        public List<BackgroundProficiency> ToolProficiencies { get; set; }
 
         /// <summary>
         /// The language proficiencies this background gives
         /// </summary>
-        public List<Proficiency> LanguageProficiencies { get; set; }
+        public List<BackgroundProficiency> LanguageProficiencies { get; set; }
 
         /// <summary>
         /// The starting equipment this background gives
@@ -74,9 +74,9 @@ namespace DnDesigner.Models
         /// </summary>
         public Background()
         {
-            SkillProficiencies = new List<Proficiency>();
-            ToolProficiencies = new List<Proficiency>();
-            LanguageProficiencies = new List<Proficiency>();
+            SkillProficiencies = new List<BackgroundProficiency>();
+            ToolProficiencies = new List<BackgroundProficiency>();
+            LanguageProficiencies = new List<BackgroundProficiency>();
             Equipment = new List<string>();
         }
     }

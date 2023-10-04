@@ -13,22 +13,23 @@ namespace DnDesigner.Models
         /// Primary key
         /// </summary>
         [Key]
-        public int ProficiencyId { get; set; }
+        public int ProficiencyId { get; private set; }
 
         /// <summary>
         /// The name of the skill or saving throw
         /// </summary>
-        public string ProficiencyName { get; set; }
+        public string ProficiencyName { get; private set; }
 
         /// <summary>
         /// The attribute associated with the skill or saving throw
         /// </summary>
-        public string MainAttribute { get; set; }
+        public string MainAttribute { get; private set; }
 
         /// <summary>
         /// The proficiency type
         /// </summary>
-        public string ProficiencyType { get; set; }
+        public string ProficiencyType { get; private set; }
+
 
         /// <summary>
         /// Full constructor, sets all properties
@@ -50,13 +51,13 @@ namespace DnDesigner.Models
     public class CharacterProficiency
     {
         /// <summary>
-        /// The id of the character this proficiency belongs to
+        /// The character this proficiency belongs to
         /// </summary>
         [ForeignKey("CharacterId")]
         public Character Character { get; set; }
 
         /// <summary>
-        /// The id of the proficiency this is referencing
+        /// The proficiency this is referencing
         /// </summary>
         [ForeignKey("ProficiencyId")]
         public Proficiency Proficiency { get; set; }
@@ -74,7 +75,8 @@ namespace DnDesigner.Models
         public int CheckBonus { get; set; }
 
         /// <summary>
-        /// Minimal constructor, sets character and proficiency, sets proficiency level and check bonus to 0
+        /// Minimal constructor, sets character and proficiency, 
+        /// sets proficiency level and check bonus to 0
         /// </summary>
         /// <param name="character">The character who has this proficiency</param>
         /// <param name="proficiency">The saving throw or skill this is referencing</param>
@@ -99,6 +101,45 @@ namespace DnDesigner.Models
             Proficiency = proficiency;
             ProficiencyLevel = proficiencyLevel;
             CheckBonus = checkBonus;
+        }
+
+        /// <summary>
+        /// Constructor that takes a background proficiency and sets the proficiency level to 1
+        /// </summary>
+        /// <param name="character">The character who has this proficiency</param>
+        /// <param name="backgroundProficiency">A proficiency from a background</param>
+        public CharacterProficiency(Character character, BackgroundProficiency backgroundProficiency)
+        {
+            Character = character;
+            Proficiency = backgroundProficiency.Proficiency;
+            ProficiencyLevel = 1;
+            CheckBonus = 0;
+        }
+    }
+
+    public class BackgroundProficiency
+    {
+        /// <summary>
+        /// The background this proficiency belongs to
+        /// </summary>
+        [ForeignKey("BackgroundId")]
+        public Background Background { get; set; }
+
+        /// <summary>
+        /// The proficiency this is referencing
+        /// </summary>
+        [ForeignKey("ProficiencyId")]
+        public Proficiency Proficiency { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="background">The background this proficiency belongs to</param>
+        /// <param name="proficiency">The proficiency this is referencing</param>
+        public BackgroundProficiency(Background background, Proficiency proficiency)
+        {
+            Background = background;
+            Proficiency = proficiency;
         }
     }
 }

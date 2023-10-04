@@ -14,12 +14,6 @@
         /// </summary>
         public int Level { get; set; }
 
-        /**
-         * Class and Subclass placeholder
-         * 
-         * 
-         */
-
         /// <summary>
         /// The characters current proficiency bonus
         /// </summary>
@@ -99,6 +93,11 @@
         /// The characters vulnerabilities
         /// </summary>
         public string Vulnerabilities { get; set; } = null!;
+      
+        /// <summary>
+        /// The background of the character
+        /// </summary>
+        public Background Background { get; set; }
 
         /// <summary>
         /// The weapon and armor types the character is proficient with

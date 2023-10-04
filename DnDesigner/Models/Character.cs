@@ -1,10 +1,18 @@
-﻿namespace DnDesigner.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DnDesigner.Models
 {
     /// <summary>
     /// The information of the character
     /// </summary>
     public class Character
     {
+        /// <summary>
+        /// Primary key
+        /// </summary>
+        [Key]
+        public int CharacterId { get; set; }
+
         /// The Characters name
         /// </summary>
         public string Name { get; set; } = null!;
@@ -141,17 +149,10 @@
          * Ideally classes and subclasses could be imported with a 5etools style json file
          */
 
-        /* Spellcasting
-         * 
-         * Spellcasting would be a separate class
-         * with a spellcasting ability score, spell save DC, spell attack bonus, spellcasting level, and a list of spells
-         * 
-         * Spells would be another class
-         * containing a name, level, school, casting time, range, components, duration, and description
-         * they should probably also have an associated action
-         * 
-         * Ideally spells could be imported with a 5etools style json file
-         */
+        /// <summary>
+        /// A list of the character's spellcasting abilities
+        /// </summary>
+        public List<CharacterSpellcasting> Spellcasting { get; set; }
 
 
         /* Inventory

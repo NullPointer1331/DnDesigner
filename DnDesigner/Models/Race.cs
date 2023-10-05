@@ -38,7 +38,7 @@ namespace DnDesigner.Models
 		/// <summary>
 		/// Any proficiencies provided by the race
 		/// </summary>
-		public List<Proficiency> Proficiencies { get; set; }
+		public List<RaceProficiency> Proficiencies { get; set; }
 
 		/// <summary>
 		/// Any features provided by the race
@@ -55,7 +55,7 @@ namespace DnDesigner.Models
         /// <param name="proficiencies">Any proficiencies provided by the race</param>
         /// <param name="features">Any features provided by the race</param>
         public Race(string name, string stats, string size, int speed, 
-			List<Proficiency> proficiencies, List<RaceFeature> features) {
+			List<RaceProficiency> proficiencies, List<RaceFeature> features) {
 			Name = name;
 			StatBonuses = stats;
 			Size = size;

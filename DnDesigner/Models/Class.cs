@@ -35,11 +35,12 @@ namespace DnDesigner.Models
 		/// The proficiencies that can be learned 
 		/// through the class
 		/// </summary>
-		public List<Proficiency> Proficiencies { get; set; }
+		public List<ClassProficiency> Proficiencies { get; set; }
 
 		/// <summary>
 		/// The spellcasting abilities of the class, null if none
 		/// </summary>
+		[ForeignKey("SpellcastingId")]
 		public Spellcasting? Spellcasting { get; set; }
 
 		/// <summary>
@@ -56,7 +57,7 @@ namespace DnDesigner.Models
         /// <param name="proficiencies">The proficiencies that can be learned through the class</param>
         /// <param name="spellcasting">The spellcasting abilities of the class, null if none</param>
         public Class(string name, int hitdie, List<ClassFeature> classFeatures, 
-			List<Proficiency> proficiencies, Spellcasting? spellcasting) {
+			List<ClassProficiency> proficiencies, Spellcasting? spellcasting) {
 			Name = name;
 			HitDie = hitdie;
 			Features = classFeatures;

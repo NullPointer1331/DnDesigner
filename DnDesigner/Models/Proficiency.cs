@@ -47,7 +47,7 @@ namespace DnDesigner.Models
     }
 
     /// <summary>
-    /// Represents a character's proficiency in a saving throw or skill
+    /// Represents a character's proficiency in a saving, throw skill, or other proficiency
     /// </summary>
     public class CharacterProficiency
     {
@@ -118,6 +118,9 @@ namespace DnDesigner.Models
         }
     }
 
+    /// <summary>
+    /// Represents a proficiency granted by a background
+    /// </summary>
     public class BackgroundProficiency
     {
         /// <summary>
@@ -140,6 +143,64 @@ namespace DnDesigner.Models
         public BackgroundProficiency(Background background, Proficiency proficiency)
         {
             Background = background;
+            Proficiency = proficiency;
+        }
+    }
+
+    /// <summary>
+    /// Represents a proficiency granted by a race
+    /// </summary>
+    public class RaceProficiency
+    {
+        /// <summary>
+        /// The Race associated with this proficiency.
+        /// </summary>
+        [ForeignKey("RaceId")]
+        public Race Race { get; set; }
+
+        /// <summary>
+        /// The proficiency this is referencing
+        /// </summary>
+        [ForeignKey("ProficiencyId")]
+        public Proficiency Proficiency { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="race">The race that has this proficiency</param>
+        /// <param name="proficiency">The proficiency that this race has</param>
+        public RaceProficiency(Race race, Proficiency proficiency)
+        {
+            Race = race;
+            Proficiency = proficiency;
+        }
+    }
+
+    /// <summary>
+    /// Represents a proficiency granted by a class.
+    /// </summary>
+    public class ClassProficiency
+    {
+        /// <summary>
+        /// The class associated with this proficiency.
+        /// </summary>
+        [ForeignKey("ClassId")]
+        public Class Class { get; set; }
+
+        /// <summary>
+        /// The proficiency this is referencing
+        /// </summary>
+        [ForeignKey("ProficiencyId")]
+        public Proficiency Proficiency { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="sourceclass">The class that has this proficiency</param>
+        /// <param name="proficiency">The proficiency that this class has</param>
+        public ClassProficiency(Class sourceclass, Proficiency proficiency)
+        {
+            Class = sourceclass;
             Proficiency = proficiency;
         }
     }

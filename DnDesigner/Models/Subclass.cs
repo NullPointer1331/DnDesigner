@@ -35,6 +35,7 @@ namespace DnDesigner.Models
 		/// <summary>
 		/// The spellcasting abilities of the subclass, null if none
 		/// </summary>
+		[ForeignKey("SpellcastingId")]
 		public Spellcasting? Spellcasting { get; set; }
 
 		/// <summary>

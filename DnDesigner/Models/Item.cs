@@ -25,19 +25,22 @@ namespace DnDesigner.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// The items cost
+        /// The items cost in gold
         /// </summary>
         public double Price { get; set; }
 
         /// <summary>
-        /// The items weight
+        /// The items weight in pounds
         /// </summary>
         public double Weight { get; set; }
 
         /// <summary>
-        /// Can the item be equipped
+        /// Can the item be equipped, if so, where
+        /// Range guide: 0 = not equipable, 1 = armor, 2 = main hand only
+        /// 3 = off hand only, 4 = either hand, 5 = other
         /// </summary>
-        public bool IsEquipable { get; set; }
+        [Range(0, 5)]
+        public int Equipable { get; set; }
 
         /// <summary>
         /// Does the item require attunement
@@ -47,7 +50,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The items traits
         /// </summary>
-        public List<string> Traits { get; set; }
+        public string Traits { get; set; }
 
 
         /// <summary>
@@ -55,19 +58,19 @@ namespace DnDesigner.Models
         /// </summary>
         /// <param name="name">The name of the item</param>
         /// <param name="description">The items description</param>
-        /// <param name="price">The items cost</param>
-        /// <param name="weight">The items weight</param>
-        /// <param name="equipable">Can the item be equipped</param>
+        /// <param name="price">The items cost in gold</param>
+        /// <param name="weight">The items weight in pounds</param>
+        /// <param name="equipable">Can the item be equipped, if so, where</param>
         /// <param name="attuneable">Can the item be attuned to</param>
         /// <param name="traits">The items traits</param>
         public Item(string name, string description, double price, double weight,
-                    bool equipable, bool attuneable, List<string> traits)
+                    int equipable, bool attuneable, string traits)
         {
             Name = name;
             Description = description;
             Price = price;
             Weight = weight;
-            IsEquipable = equipable;
+            Equipable = equipable;
             Attuneable = attuneable;
             Traits = traits;
         }

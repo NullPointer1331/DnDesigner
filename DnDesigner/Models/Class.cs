@@ -46,4 +46,25 @@
 		// TODO: Make the Subclass class
 		public List<Subclass> Subclasses { get; set; }
 	}
+	public class CharacterClass {
+		/// <summary>
+		/// A class the character has
+		/// </summary>
+		public Class Class { get; set; }
+
+		/// <summary>
+		/// The chosen subclass of the class
+		/// </summary>
+		public Subclass? Subclass { get; set; }
+
+		/// <summary>
+		/// The character the class belongs to
+		/// </summary>
+		public Character Character { get; set; }
+
+		/// <summary>
+		/// How many levels the character has in this class
+		/// </summary>
+		public int Level { get; set; }
+	}
 }

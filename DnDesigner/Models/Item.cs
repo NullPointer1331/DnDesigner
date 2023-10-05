@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;
 
 namespace DnDesigner.Models
@@ -73,6 +74,47 @@ namespace DnDesigner.Models
             Equipable = equipable;
             Attuneable = attuneable;
             Traits = traits;
+        }
+    }
+
+    /// <summary>
+    /// Represents a single item in an inventory
+    /// </summary>
+    public class InventoryItem
+    {
+        /// <summary>
+        /// The item in an inventory
+        /// </summary>
+        [ForeignKey("ItemId")]
+        public Item Item { get; set; }
+
+        /// <summary>
+        /// The inventory the item is in
+        /// </summary>
+        [ForeignKey("InventoryId")]
+        public Inventory Inventory { get; set; }
+
+        /// <summary>
+        /// How many of the item are in the inventory
+        /// </summary>
+        public int Quantity { get; set; }
+
+        /// <summary>
+        /// Is the item equipped
+        /// </summary>
+        bool Equipped { get; set; }
+
+        /// <summary>
+        /// Is the item attuned
+        /// </summary>
+        bool Attuned { get; set; }
+        public InventoryItem(Item item, Inventory inventory, int quantity)
+        {
+            Item = item;
+            Inventory = inventory;
+            Quantity = quantity;
+            Equipped = false;
+            Attuned = false;
         }
     }
 }

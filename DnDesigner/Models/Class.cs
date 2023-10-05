@@ -5,12 +5,17 @@
 		/// <summary>
 		/// The class identifier
 		/// </summary>
-		public int Id { get; set; }
+		public int ClassId { get; set; }
 
 		/// <summary>
 		/// The name of the class
 		/// </summary>
-		public string Name { get; set; }
+		public string ClassName { get; set; }
+
+		/// <summary>
+		/// The source book the class is from
+		/// </summary>
+		public string Sourcebook { get; set; }
 
 		/// <summary>
 		/// The features of the class

@@ -20,6 +20,11 @@ namespace DnDesigner.Models
         public string SpellName { get; set; }
 
         /// <summary>
+        /// The source book the spell is from
+        /// </summary>
+        public string Sourcebook { get; set; }
+
+        /// <summary>
         /// The base level of the spell,
         /// level 0 spells are cantrips
         /// </summary>

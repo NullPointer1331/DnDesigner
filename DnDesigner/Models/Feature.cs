@@ -18,10 +18,11 @@ namespace DnDesigner.Models
         /// <summary>
         /// The feature's name
         /// </summary>
-        public string Name { get; set; }
+        public string FeatureName { get; set; }
 
         /// <summary>
         /// The feature's source
+        /// formatted as Sourcebook, Class/Subclass/Background/Race, Source name
         /// </summary>
         public string Source { get; set; }
 
@@ -45,10 +46,11 @@ namespace DnDesigner.Models
         /// <param name="level">The level the feature is available at</param>
         public Feature(string name, string source, string description, int level)
         {
-            Name = name;
+            FeatureName = name;
             Source = source;
             Description = description;
             Level = level;
         }
     }
+
 }

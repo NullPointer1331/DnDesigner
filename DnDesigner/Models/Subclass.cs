@@ -5,15 +5,20 @@
 		/// <summary>
 		/// The subclass identifier
 		/// </summary>
-		public int Id { get; set; }
+		public int SubclassId { get; set; }
 
 		/// <summary>
 		/// The name of the subclass
 		/// </summary>
-		public string Name { get; set; }
+		public string SubclassName { get; set; }
 
 		/// <summary>
-		/// The fearures of the subclass
+		/// The source book the subclass is from
+		/// </summary>
+		public string Sourcebook { get; set; }
+
+		/// <summary>
+		/// The features of the subclass
 		/// </summary>
 		public List<string> Features { get; set; }
 

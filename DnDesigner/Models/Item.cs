@@ -18,7 +18,12 @@ namespace DnDesigner.Models
         /// <summary>
         /// The name of the item
         /// </summary>
-        public string Name { get; set; }
+        public string ItemName { get; set; }
+
+        /// <summary>
+        /// The source book the item is from
+        /// </summary>
+        public string Sourcebook { get; set; }
 
         /// <summary>
         /// The items description
@@ -67,7 +72,7 @@ namespace DnDesigner.Models
         public Item(string name, string description, double price, double weight,
                     int equipable, bool attuneable, string traits)
         {
-            Name = name;
+            ItemName = name;
             Description = description;
             Price = price;
             Weight = weight;

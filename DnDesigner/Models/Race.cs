@@ -5,12 +5,17 @@
 		/// <summary>
 		/// The race identifier
 		/// </summary>
-		public int Id { get; set; }
+		public int RaceId { get; set; }
 
 		/// <summary>
 		/// The race name
 		/// </summary>
-		public string Name { get; set; }
+		public string RaceName { get; set; }
+
+		/// <summary>
+		/// The source book the race is from
+		/// </summary>
+		public string Sourcebook { get; set; }
 
 		/// <summary>
 		/// The racial stat bonuses

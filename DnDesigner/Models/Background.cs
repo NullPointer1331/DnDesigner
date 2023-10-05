@@ -19,6 +19,11 @@ namespace DnDesigner.Models
         public string BackgroundName { get; set; }
 
         /// <summary>
+        /// The source book the background is from
+        /// </summary>
+        public string Sourcebook { get; set; }
+
+        /// <summary>
         /// The skill proficiencies this background gives
         /// </summary>
         public List<BackgroundProficiency> SkillProficiencies { get; set; }

@@ -40,14 +40,18 @@ namespace DnDesigner.Models
 
         /// <summary>
         /// The starting equipment this background gives
-        /// Will be a list of Items when those are added
         /// </summary>
-        public List<Item> Equipment { get; set; }
+        public List<Item> StarterEquipment { get; set; }
 
         /// <summary>
         /// The main feature of this background
         /// </summary>
         public BackgroundFeature BackgroundFeature { get; set; }
+
+        /// <summary>
+        /// The gold this background gives
+        /// </summary>
+        int StarterGold { get; set; }
 
         /// <summary>
         /// Suggested personality traits for this background
@@ -82,7 +86,7 @@ namespace DnDesigner.Models
             SkillProficiencies = new List<BackgroundProficiency>();
             ToolProficiencies = new List<BackgroundProficiency>();
             LanguageProficiencies = new List<BackgroundProficiency>();
-            Equipment = new List<Item>();
+            StarterEquipment = new List<Item>();
         }
     }
 }

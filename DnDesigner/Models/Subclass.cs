@@ -20,7 +20,7 @@
 		/// <summary>
 		/// The features of the subclass
 		/// </summary>
-		public List<string> Features { get; set; }
+		public List<SubclassFeature> Features { get; set; }
 
 		/// <summary>
 		/// The class the subclass is a subclass of

@@ -20,13 +20,13 @@
 		/// <summary>
 		/// The features of the class
 		/// </summary>
-		public List<string> Features { get; set; }
+		public List<ClassFeature> Features { get; set; }
 
 		/// <summary>
 		/// The proficiencies that can be learned 
 		/// through the class
 		/// </summary>
-		public List<string> Proficiencies { get; set; }
+		public List<Proficiency> Proficiencies { get; set; }
 
 		/// <summary>
 		/// The hit die type of the class
@@ -34,21 +34,13 @@
 		public int HitDie { get; set; }
 
 		/// <summary>
-		/// The spellcasting type of the class. 
-		/// Can be full, half or none
+		/// The spellcasting abilities of the class
 		/// </summary>
-		public string SpellcastingType { get; set; }
-
-		/// <summary>
-		/// The spellcasting ability of the class.
-		/// (i.e. Wisdom for Clerics)
-		/// </summary>
-		public string SpellcastingAbility { get; set; }
+		public Spellcasting? Spellcasting { get; set; }
 
 		/// <summary>
 		/// The list of subclasses for the class.
 		/// </summary>
-		// TODO: Make the Subclass class
 		public List<Subclass> Subclasses { get; set; }
 	}
 	public class CharacterClass {

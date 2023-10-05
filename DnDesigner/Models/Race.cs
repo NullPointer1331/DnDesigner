@@ -20,7 +20,7 @@
 		/// <summary>
 		/// The racial stat bonuses
 		/// </summary>
-		public List<string> StatBonuses { get; set; }
+		public string StatBonuses { get; set; }
 
 		/// <summary>
 		/// The size of the creature
@@ -35,11 +35,11 @@
 		/// <summary>
 		/// Any proficiencies provided by the race
 		/// </summary>
-		public List<string> Proficiencies { get; set; }
+		public List<Proficiency> Proficiencies { get; set; }
 
 		/// <summary>
 		/// Any features provided by the race
 		/// </summary>
-		public List<string> Features { get; set; }
+		public List<RaceFeature> Features { get; set; }
 	}
 }

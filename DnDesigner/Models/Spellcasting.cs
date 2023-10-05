@@ -12,9 +12,9 @@ namespace DnDesigner.Models
         public int SpellcastingId { get; set; }
 
         /// <summary>
-        /// The name of the spellcasting class
+        /// The name of the class or subclass that gives this spellcasting
         /// </summary>
-        public string SpellcastingName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Which attribute is used for spellcasting

@@ -1,16 +1,20 @@
-﻿namespace DnDesigner.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DnDesigner.Models
 {
 	public class Subclass
 	{
 		/// <summary>
 		/// The subclass identifier
 		/// </summary>
+		[Key]
 		public int SubclassId { get; set; }
 
 		/// <summary>
 		/// The name of the subclass
 		/// </summary>
-		public string SubclassName { get; set; }
+		public string Name { get; set; }
 
 		/// <summary>
 		/// The source book the subclass is from
@@ -25,11 +29,25 @@
 		/// <summary>
 		/// The class the subclass is a subclass of
 		/// </summary>
+		[ForeignKey("ClassId")]
 		public Class Class { get; set; }
 
 		/// <summary>
-		/// A boolean indicating whether the subclass is a spellcasting subclass
+		/// The spellcasting abilities of the subclass, null if none
 		/// </summary>
-		public bool MagicSubclass { get; set; }
+		public Spellcasting? Spellcasting { get; set; }
+
+		/// <summary>
+		/// Basic constructor, sets class and name
+		/// </summary>
+		/// <param name="sourceclass"></param>
+		/// <param name="name"></param>
+		public Subclass(Class sourceclass, string name)
+		{
+            Class = sourceclass;
+            Name = name;
+			Features = new List<SubclassFeature>();
+			Spellcasting = null;
+        }
 	}
 }

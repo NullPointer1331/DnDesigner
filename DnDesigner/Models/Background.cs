@@ -16,7 +16,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The name of the background
         /// </summary>
-        public string BackgroundName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The source book the background is from

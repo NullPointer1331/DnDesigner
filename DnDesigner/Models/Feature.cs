@@ -19,7 +19,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The feature's name
         /// </summary>
-        public string FeatureName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The feature's source
@@ -47,7 +47,7 @@ namespace DnDesigner.Models
         /// <param name="level">The level the feature is available at</param>
         public Feature(string name, string source, string description, int level)
         {
-            FeatureName = name;
+            Name = name;
             Source = source;
             Description = description;
             Level = level;
@@ -79,8 +79,8 @@ namespace DnDesigner.Models
         public ClassFeature(Class sourceclass, string name, string description, int level)
         {
             Class = sourceclass;
-            FeatureName = name;
-            Source = $"{Class.Sourcebook}, Subclass, {Class.ClassName}";
+            Name = name;
+            Source = $"{Class.Sourcebook}, Subclass, {Class.Name}";
             Description = description;
             Level = level;
         }
@@ -103,8 +103,8 @@ namespace DnDesigner.Models
         public SubclassFeature(Subclass subclass, string name, string description, int level)
         {
             Subclass = subclass;
-            FeatureName = name;
-            Source = $"{Subclass.Sourcebook}, Subclass, {Subclass.SubclassName}";
+            Name = name;
+            Source = $"{Subclass.Sourcebook}, Subclass, {Subclass.Name}";
             Description = description;
             Level = level;
         }
@@ -127,8 +127,8 @@ namespace DnDesigner.Models
         public RaceFeature(Race race, string name, string description, int level)
         {
             Race = race;
-            FeatureName = name;
-            Source = $"{Race.Sourcebook}, Race, {Race.RaceName}";
+            Name = name;
+            Source = $"{Race.Sourcebook}, Race, {Race.Name}";
             Description = description;
             Level = level;
         }
@@ -150,8 +150,8 @@ namespace DnDesigner.Models
         public BackgroundFeature(Background background, string name, string description)
         {
             Background = background;
-            FeatureName = name;
-            Source = $"{Background.Sourcebook}, Background, {Background.BackgroundName}";
+            Name = name;
+            Source = $"{Background.Sourcebook}, Background, {Background.Name}";
             Description = description;
             Level = 0;
         }

@@ -18,15 +18,16 @@ namespace DnDesigner.Models
         /// <summary>
         /// The name of the skill or saving throw
         /// </summary>
-        public string ProficiencyName { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// The attribute associated with the skill or saving throw
         /// </summary>
-        public string MainAttribute { get; private set; }
+        public string? MainAttribute { get; private set; }
 
         /// <summary>
         /// The proficiency type
+        /// Can be a skill, saving throw, language, tool, or type of equipment
         /// </summary>
         public string ProficiencyType { get; private set; }
 
@@ -37,9 +38,9 @@ namespace DnDesigner.Models
         /// <param name="name">The name of the proficiency</param>
         /// <param name="attribute">The attribute associated with this proficiency</param>
         /// <param name="proficiencyType">The type of proficiency i.e. Tool, Skill, Saving throw</param>
-        public Proficiency (string name, string attribute, string proficiencyType)
+        public Proficiency (string name, string? attribute, string proficiencyType)
         {
-            ProficiencyName = name;
+            Name = name;
             MainAttribute = attribute;
             ProficiencyType = proficiencyType;
         }

@@ -106,7 +106,6 @@ namespace DnDesigner.Models
         /// <summary>
         /// The background of the character
         /// </summary>
-        [ForeignKey("BackgroundId")]
         public Background Background { get; set; }
 
         /// <summary>
@@ -147,7 +146,6 @@ namespace DnDesigner.Models
         /// <summary>
         /// Contains the character's inventory information
         /// </summary>
-        [ForeignKey("InventoryId")]
         public Inventory Inventory { get; set; }
     }
 }

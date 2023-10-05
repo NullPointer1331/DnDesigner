@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DnDesigner.Models
 {
@@ -101,10 +102,11 @@ namespace DnDesigner.Models
         /// The characters vulnerabilities
         /// </summary>
         public string Vulnerabilities { get; set; } = null!;
-      
+
         /// <summary>
         /// The background of the character
         /// </summary>
+        [ForeignKey("BackgroundId")]
         public Background Background { get; set; }
 
         /// <summary>
@@ -154,19 +156,10 @@ namespace DnDesigner.Models
         /// </summary>
         public List<CharacterSpellcasting> Spellcasting { get; set; }
 
-
-        /* Inventory
-         * 
-         * A list of items, which would be another class
-         * probably a parent class with subclasses for different types of items
-         * 
-         * Keep track of coins and weight
-         * 
-         * Also keep track equipment slots, and what's in them
-         * main hand, offhand, armor, and (by base) 3 attunement slots
-         * 
-         * Ideally items could be imported with a 5etools style json file
-         */
-
+        /// <summary>
+        /// Contains the character's inventory information
+        /// </summary>
+        [ForeignKey("InventoryId")]
+        public Inventory Inventory { get; set; }
     }
 }

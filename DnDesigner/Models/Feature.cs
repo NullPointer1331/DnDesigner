@@ -7,7 +7,7 @@ namespace DnDesigner.Models
     /// Represents a character feature from various sources
     /// i.e. Class, Subclass, Background
     /// </summary>
-    public class Features
+    public class Feature
     {
         /// <summary>
         /// The feature's Unique identifier
@@ -43,7 +43,7 @@ namespace DnDesigner.Models
         /// <param name="source">The source of the feature</param>
         /// <param name="description">The feature's description</param>
         /// <param name="level">The level the feature is available at</param>
-        public Features(string name, string source, string description, int level)
+        public Feature(string name, string source, string description, int level)
         {
             Name = name;
             Source = source;

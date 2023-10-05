@@ -106,7 +106,6 @@ namespace DnDesigner.Models
         /// <summary>
         /// The background of the character
         /// </summary>
-        [ForeignKey("BackgroundId")]
         public Background Background { get; set; }
 
         /// <summary>
@@ -134,22 +133,10 @@ namespace DnDesigner.Models
         /// </summary>
         public List<CharacterProficiency> SkillProficiencies { get; set; } = null!;
 
-        /* Classes
-         * 
-         * Classes would need to be a separate class 
-         * with a name, list of features, something to indicate spellcasting type, and hit dice type
-         * also a spell list if they're a spellcaster, though maybe that should be done in the spell
-         * 
-         * Subclasses would be another class
-         * with a name, list of features, a reference to the class it's a subclass of, and something to indicate spellcasting type
-         * 
-         * I have no idea how we would make the features work
-         * 
-         * We would need to consolidate them potentially into yet another class
-         * keeping track of the class, subclass, and level, and keeping a list of those here
-         * 
-         * Ideally classes and subclasses could be imported with a 5etools style json file
-         */
+        /// <summary>
+        /// A list of the character's classes
+        /// </summary>
+        public List<CharacterClass> Classes { get; set; } = null!;
 
         /// <summary>
         /// A list of the character's spellcasting abilities
@@ -159,7 +146,6 @@ namespace DnDesigner.Models
         /// <summary>
         /// Contains the character's inventory information
         /// </summary>
-        [ForeignKey("InventoryId")]
         public Inventory Inventory { get; set; }
     }
 }

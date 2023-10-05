@@ -18,15 +18,16 @@ namespace DnDesigner.Models
         /// <summary>
         /// The name of the skill or saving throw
         /// </summary>
-        public string ProficiencyName { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// The attribute associated with the skill or saving throw
         /// </summary>
-        public string MainAttribute { get; private set; }
+        public string? MainAttribute { get; private set; }
 
         /// <summary>
         /// The proficiency type
+        /// Can be a skill, saving throw, language, tool, or type of equipment
         /// </summary>
         public string ProficiencyType { get; private set; }
 
@@ -37,16 +38,16 @@ namespace DnDesigner.Models
         /// <param name="name">The name of the proficiency</param>
         /// <param name="attribute">The attribute associated with this proficiency</param>
         /// <param name="proficiencyType">The type of proficiency i.e. Tool, Skill, Saving throw</param>
-        public Proficiency (string name, string attribute, string proficiencyType)
+        public Proficiency (string name, string? attribute, string proficiencyType)
         {
-            ProficiencyName = name;
+            Name = name;
             MainAttribute = attribute;
             ProficiencyType = proficiencyType;
         }
     }
 
     /// <summary>
-    /// Represents a character's proficiency in a saving throw or skill
+    /// Represents a character's proficiency in a saving, throw skill, or other proficiency
     /// </summary>
     public class CharacterProficiency
     {
@@ -117,6 +118,9 @@ namespace DnDesigner.Models
         }
     }
 
+    /// <summary>
+    /// Represents a proficiency granted by a background
+    /// </summary>
     public class BackgroundProficiency
     {
         /// <summary>
@@ -139,6 +143,64 @@ namespace DnDesigner.Models
         public BackgroundProficiency(Background background, Proficiency proficiency)
         {
             Background = background;
+            Proficiency = proficiency;
+        }
+    }
+
+    /// <summary>
+    /// Represents a proficiency granted by a race
+    /// </summary>
+    public class RaceProficiency
+    {
+        /// <summary>
+        /// The Race associated with this proficiency.
+        /// </summary>
+        [ForeignKey("RaceId")]
+        public Race Race { get; set; }
+
+        /// <summary>
+        /// The proficiency this is referencing
+        /// </summary>
+        [ForeignKey("ProficiencyId")]
+        public Proficiency Proficiency { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="race">The race that has this proficiency</param>
+        /// <param name="proficiency">The proficiency that this race has</param>
+        public RaceProficiency(Race race, Proficiency proficiency)
+        {
+            Race = race;
+            Proficiency = proficiency;
+        }
+    }
+
+    /// <summary>
+    /// Represents a proficiency granted by a class.
+    /// </summary>
+    public class ClassProficiency
+    {
+        /// <summary>
+        /// The class associated with this proficiency.
+        /// </summary>
+        [ForeignKey("ClassId")]
+        public Class Class { get; set; }
+
+        /// <summary>
+        /// The proficiency this is referencing
+        /// </summary>
+        [ForeignKey("ProficiencyId")]
+        public Proficiency Proficiency { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="sourceclass">The class that has this proficiency</param>
+        /// <param name="proficiency">The proficiency that this class has</param>
+        public ClassProficiency(Class sourceclass, Proficiency proficiency)
+        {
+            Class = sourceclass;
             Proficiency = proficiency;
         }
     }

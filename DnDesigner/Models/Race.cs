@@ -1,11 +1,14 @@
-﻿namespace DnDesigner.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DnDesigner.Models
 {
 	public class Race
 	{
 		/// <summary>
 		/// The race identifier
 		/// </summary>
-		public int Id { get; set; }
+		[Key]
+		public int RaceId { get; set; }
 
 		/// <summary>
 		/// The race name
@@ -13,9 +16,14 @@
 		public string Name { get; set; }
 
 		/// <summary>
+		/// The source book the race is from
+		/// </summary>
+		public string Sourcebook { get; set; }
+
+		/// <summary>
 		/// The racial stat bonuses
 		/// </summary>
-		public List<string> StatBonuses { get; set; }
+		public string StatBonuses { get; set; }
 
 		/// <summary>
 		/// The size of the creature
@@ -30,11 +38,30 @@
 		/// <summary>
 		/// Any proficiencies provided by the race
 		/// </summary>
-		public List<string> Proficiencies { get; set; }
+		public List<RaceProficiency> Proficiencies { get; set; }
 
 		/// <summary>
 		/// Any features provided by the race
 		/// </summary>
-		public List<string> Features { get; set; }
+		public List<RaceFeature> Features { get; set; }
+
+        /// <summary>
+        /// Full constructor, sets all properties
+        /// </summary>
+        /// <param name="name">The race name</param>
+        /// <param name="stats">The racial stat bonuses</param>
+        /// <param name="size">The size of the creature</param>
+        /// <param name="speed">The speed of the creature</param>
+        /// <param name="proficiencies">Any proficiencies provided by the race</param>
+        /// <param name="features">Any features provided by the race</param>
+        public Race(string name, string stats, string size, int speed, 
+			List<RaceProficiency> proficiencies, List<RaceFeature> features) {
+			Name = name;
+			StatBonuses = stats;
+			Size = size;
+			Speed = speed;
+			Proficiencies = proficiencies;
+			Features = features;
+		}
 	}
 }

@@ -1,11 +1,15 @@
-﻿namespace DnDesigner.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DnDesigner.Models
 {
 	public class Class
 	{
 		/// <summary>
 		/// The class identifier
 		/// </summary>
-		public int Id { get; set; }
+		[Key]
+		public int ClassId { get; set; }
 
 		/// <summary>
 		/// The name of the class
@@ -13,37 +17,106 @@
 		public string Name { get; set; }
 
 		/// <summary>
-		/// The features of the class
+		/// The source book the class is from
 		/// </summary>
-		public List<string> Features { get; set; }
+		public string Sourcebook { get; set; }
+
+        /// <summary>
+        /// The hit die type of the class
+        /// </summary>
+        public int HitDie { get; set; }
+
+        /// <summary>
+        /// The features of the class
+        /// </summary>
+        public List<ClassFeature> Features { get; set; }
 
 		/// <summary>
 		/// The proficiencies that can be learned 
 		/// through the class
 		/// </summary>
-		public List<string> Proficiencies { get; set; }
+		public List<ClassProficiency> Proficiencies { get; set; }
 
 		/// <summary>
-		/// The hit die type of the class
+		/// The spellcasting abilities of the class, null if none
 		/// </summary>
-		public int HitDie { get; set; }
-
-		/// <summary>
-		/// The spellcasting type of the class. 
-		/// Can be full, half or none
-		/// </summary>
-		public string SpellcastingType { get; set; }
-
-		/// <summary>
-		/// The spellcasting ability of the class.
-		/// (i.e. Wisdom for Clerics)
-		/// </summary>
-		public string SpellcastingAbility { get; set; }
+		[ForeignKey("SpellcastingId")]
+		public Spellcasting? Spellcasting { get; set; }
 
 		/// <summary>
 		/// The list of subclasses for the class.
 		/// </summary>
-		// TODO: Make the Subclass class
 		public List<Subclass> Subclasses { get; set; }
+
+        /// <summary>
+        /// Constructor, sets properties other than sourcebook and subclasses
+        /// </summary>
+        /// <param name="name">The name of the class</param>
+        /// <param name="hitdie">The hit die type of the class</param>
+        /// <param name="classFeatures">The features of the class</param>
+        /// <param name="proficiencies">The proficiencies that can be learned through the class</param>
+        /// <param name="spellcasting">The spellcasting abilities of the class, null if none</param>
+        public Class(string name, int hitdie, List<ClassFeature> classFeatures, 
+			List<ClassProficiency> proficiencies, Spellcasting? spellcasting) {
+			Name = name;
+			HitDie = hitdie;
+			Features = classFeatures;
+			Proficiencies = proficiencies;
+			Spellcasting = spellcasting;
+			List<Subclass> Subclasses = new List<Subclass>();
+		}
 	}
+	public class CharacterClass {
+		/// <summary>
+		/// A class the character has
+		/// </summary>
+		[ForeignKey("ClassId")]
+		public Class Class { get; set; }
+
+		/// <summary>
+		/// The chosen subclass of the class
+		/// </summary>
+		[ForeignKey("SubclassId")]
+		public Subclass? Subclass { get; set; }
+
+		/// <summary>
+		/// The character the class belongs to
+		/// </summary>
+		[ForeignKey("CharacterId")]
+		public Character Character { get; set; }
+
+		/// <summary>
+		/// How many levels the character has in this class
+		/// </summary>
+		public int Level { get; set; }
+
+        /// <summary>
+        /// Basic constructor, sets class, character, and level
+        /// For use when there is no subclass
+        /// </summary>
+        /// <param name="sourceclass">A class the character has</param>
+        /// <param name="character">The character the class belongs to</param>
+        /// <param name="level">How many levels the character has in this class</param>
+        public CharacterClass(Class sourceclass, Character character, int level)
+		{
+            Class = sourceclass;
+            Character = character;
+            Level = level;
+        }
+
+        /// <summary>
+        /// Full constructor, sets all properties
+        /// </summary>
+        /// <param name="sourceclass">A class the character has</param>
+        /// <param name="subclass">The chosen subclass of the class</param>
+        /// <param name="character">The character the class belongs to</param>
+        /// <param name="level">How many levels the character has in this class</param>
+        public CharacterClass(Class sourceclass, Subclass subclass, Character character, int level)
+        {
+            Class = sourceclass;
+			Subclass = subclass;
+            Character = character;
+            Level = level;
+        }
+    }
 }

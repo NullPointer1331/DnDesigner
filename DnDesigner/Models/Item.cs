@@ -21,6 +21,11 @@ namespace DnDesigner.Models
         public string Name { get; set; }
 
         /// <summary>
+        /// The source book the item is from
+        /// </summary>
+        public string Sourcebook { get; set; }
+
+        /// <summary>
         /// The items description
         /// </summary>
         public string Description { get; set; }

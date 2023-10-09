@@ -45,7 +45,7 @@ namespace DnDesigner.Models
         /// <param name="source">The source of the feature</param>
         /// <param name="description">The feature's description</param>
         /// <param name="level">The level the feature is available at</param>
-        public Feature(string name, string source, string description, int level)
+        public Feature(string name, string description, int level, string source)
         {
             Name = name;
             Source = source;
@@ -54,9 +54,17 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
-        /// Empty Constructor
+        /// Sourceless constructor, sets all properties except source
+        /// Mainly for use by child classes
         /// </summary>
-        public Feature() { } //Without this I get errors in the constructors of inheriting classes, no clue why
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="level"></param>
+        public Feature(string name, string description, int level) {
+            Name = name;
+            Description = description;
+            Level = level;
+        }
     }
     /// <summary>
     /// Represents a feature for a class
@@ -76,13 +84,10 @@ namespace DnDesigner.Models
         /// <param name="name">The name of the feature</param>
         /// <param name="description">The description of the feature</param>
         /// <param name="level">The level the feature is available at</param>
-        public ClassFeature(Class sourceclass, string name, string description, int level)
+        public ClassFeature(Class sourceclass, string name, string description, int level) : base(name, description, level)
         {
             Class = sourceclass;
-            Name = name;
             Source = $"{Class.Sourcebook}, Subclass, {Class.Name}";
-            Description = description;
-            Level = level;
         }
     }
     public class SubclassFeature : Feature
@@ -100,13 +105,10 @@ namespace DnDesigner.Models
         /// <param name="name">The name of the feature</param>
         /// <param name="description">The description of the feature</param>
         /// <param name="level">The level the feature is available at</param>
-        public SubclassFeature(Subclass subclass, string name, string description, int level)
+        public SubclassFeature(Subclass subclass, string name, string description, int level) : base(name, description, level)
         {
             Subclass = subclass;
-            Name = name;
             Source = $"{Subclass.Sourcebook}, Subclass, {Subclass.Name}";
-            Description = description;
-            Level = level;
         }
     }
     public class RaceFeature : Feature
@@ -124,13 +126,10 @@ namespace DnDesigner.Models
         /// <param name="name">The name of the feature</param>
         /// <param name="description">The description of the feature</param>
         /// <param name="level">The level the feature is available at</param>
-        public RaceFeature(Race race, string name, string description, int level)
+        public RaceFeature(Race race, string name, string description, int level) : base(name, description, level)
         {
             Race = race;
-            Name = name;
             Source = $"{Race.Sourcebook}, Race, {Race.Name}";
-            Description = description;
-            Level = level;
         }
     }
     public class BackgroundFeature : Feature
@@ -147,13 +146,10 @@ namespace DnDesigner.Models
         /// <param name="background">The background that has this feature</param>
         /// <param name="name">The name of the feature</param>
         /// <param name="description">The description of the feature</param>
-        public BackgroundFeature(Background background, string name, string description)
+        public BackgroundFeature(Background background, string name, string description) : base(name, description, 0)
         {
             Background = background;
-            Name = name;
             Source = $"{Background.Sourcebook}, Background, {Background.Name}";
-            Description = description;
-            Level = 0;
         }
     }
 

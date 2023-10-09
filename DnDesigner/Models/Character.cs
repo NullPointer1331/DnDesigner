@@ -109,29 +109,9 @@ namespace DnDesigner.Models
         public Background Background { get; set; }
 
         /// <summary>
-        /// The weapon and armor types the character is proficient with
+        /// A list of skills, saving throws, languages, and equipment, and the character's proficiency in them
         /// </summary>
-        public List<CharacterProficiency> EquipmentProficiencies { get; set; } = null!;
-
-        /// <summary>
-        /// The tool and instrument types the character is proficient with
-        /// </summary>
-        public List<CharacterProficiency> ToolProficiencies { get; set; } = null!;
-
-        /// <summary>
-        /// A list of the languages the character is proficient in
-        /// </summary>
-        public List<CharacterProficiency> LanguageProficiencies { get; set; } = null!;
-
-        /// <summary>
-        /// A list of saving throws and the character's proficiency in them
-        /// </summary>
-        public List<CharacterProficiency> SavingThrowProficiencies { get; set; } = null!;
-
-        /// <summary>
-        /// A list of skills and the character's proficiency in them
-        /// </summary>
-        public List<CharacterProficiency> SkillProficiencies { get; set; } = null!;
+        public List<CharacterProficiency> Proficiencies { get; set; } = null!;
 
         /// <summary>
         /// A list of the character's classes

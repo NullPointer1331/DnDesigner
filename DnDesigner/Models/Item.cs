@@ -121,5 +121,6 @@ namespace DnDesigner.Models
             Equipped = false;
             Attuned = false;
         }
+        private InventoryItem() { }
     }
 }

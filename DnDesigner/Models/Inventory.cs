@@ -20,12 +20,14 @@ namespace DnDesigner.Models
         /// <summary>
         /// All the items in the inventory
         /// </summary>
-        public List<InventoryItem> Items { get; set; }
+        public List<InventoryItem> Items { get; set; } 
+        //Also holds equipped and attuned items, as such those don't need to go in the database
 
         /// <summary>
         /// The items currently attuned to the character
         /// </summary>
-        public List<InventoryItem> AttunedItems { get; set; }
+        [NotMapped]
+        public List<Item> AttunedItems { get; set; }
 
         /// <summary>
         /// The maximum number of items that can be attuned to the character
@@ -36,24 +38,28 @@ namespace DnDesigner.Models
         /// The item currently equipped in the main hand,
         /// null if no item is equipped
         /// </summary>
-        public InventoryItem? MainHand { get; set; }
+        [NotMapped]
+        public Item? MainHand { get; set; }
 
         /// <summary>
         /// The item currently equipped in the off hand,
         /// null if no item is equipped
         /// </summary>
-        public InventoryItem? OffHand { get; set; }
+        [NotMapped]
+        public Item? OffHand { get; set; }
 
         /// <summary>
         /// The item currently equipped as armor,
         /// null if no item is equipped
         /// </summary>
-        public InventoryItem? Armor { get; set; }
+        [NotMapped]
+        public Item? Armor { get; set; }
 
         /// <summary>
         /// Items equipped in other slots
         /// </summary>
-        public List<InventoryItem> OtherEquippedItems { get; set; }
+        [NotMapped]
+        public List<Item> OtherEquippedItems { get; set; }
 
         /// <summary>
         /// The number of platinum coins in the inventory
@@ -89,9 +95,10 @@ namespace DnDesigner.Models
         {
             Character = character;
             Items = new List<InventoryItem>();
-            AttunedItems = new List<InventoryItem>();
+            AttunedItems = new List<Item>();
             MaxAttunedItems = 3;
-            OtherEquippedItems = new List<InventoryItem>();
+            OtherEquippedItems = new List<Item>();
         }
+        private Inventory() { }
     }
 }

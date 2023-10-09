@@ -80,15 +80,16 @@ namespace DnDesigner.Models
         /// <summary>
         /// Full constructor, sets all properties
         /// </summary>
-        /// <param name="sourceclass">The subclass that has this feature</param>
+        /// <param name="class">The subclass that has this feature</param>
         /// <param name="name">The name of the feature</param>
         /// <param name="description">The description of the feature</param>
         /// <param name="level">The level the feature is available at</param>
-        public ClassFeature(Class sourceclass, string name, string description, int level) : base(name, description, level)
+        public ClassFeature(Class @class, string name, string description, int level) : base(name, description, level)
         {
-            Class = sourceclass;
+            Class = @class;
             Source = $"{Class.Sourcebook}, Subclass, {Class.Name}";
         }
+        private ClassFeature() : base("", "", 0) { }
     }
     public class SubclassFeature : Feature
     {
@@ -110,6 +111,7 @@ namespace DnDesigner.Models
             Subclass = subclass;
             Source = $"{Subclass.Sourcebook}, Subclass, {Subclass.Name}";
         }
+        private SubclassFeature() : base("", "", 0) { }
     }
     public class RaceFeature : Feature
     {
@@ -131,6 +133,7 @@ namespace DnDesigner.Models
             Race = race;
             Source = $"{Race.Sourcebook}, Race, {Race.Name}";
         }
+        private RaceFeature() : base("", "", 0) { }
     }
     public class BackgroundFeature : Feature
     {
@@ -151,6 +154,7 @@ namespace DnDesigner.Models
             Background = background;
             Source = $"{Background.Sourcebook}, Background, {Background.Name}";
         }
+        private BackgroundFeature() : base("", "", 0) { }
     }
 
 }

@@ -65,6 +65,7 @@ namespace DnDesigner.Models
 			Spellcasting = spellcasting;
 			List<Subclass> Subclasses = new List<Subclass>();
 		}
+		private Class() { }
 	}
 	public class CharacterClass {
 		/// <summary>
@@ -118,5 +119,7 @@ namespace DnDesigner.Models
             Character = character;
             Level = level;
         }
+
+		private CharacterClass() { }
     }
 }

@@ -79,6 +79,8 @@ namespace DnDesigner.Models
             PreparedSpells = new List<KnownSpell>();
         }
 
+        private CharacterSpellcasting() { }
+
         //Spellcasting level, spell attack bonus, and spell save DC will need to be calculated but don't need to be stored
         //So we will add methods to calculate them later
     }

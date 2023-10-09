@@ -36,14 +36,15 @@ namespace DnDesigner.Models
         /// Full constructor, sets all properties
         /// </summary>
         /// <param name="name">The name of the proficiency</param>
-        /// <param name="attribute">The attribute associated with this proficiency</param>
+        /// <param name="mainAttribute">The attribute associated with this proficiency</param>
         /// <param name="proficiencyType">The type of proficiency i.e. Tool, Skill, Saving throw</param>
-        public Proficiency (string name, string? attribute, string proficiencyType)
+        public Proficiency (string name, string? mainAttribute, string proficiencyType)
         {
             Name = name;
-            MainAttribute = attribute;
+            MainAttribute = mainAttribute;
             ProficiencyType = proficiencyType;
         }
+        //private Proficiency() { }
     }
 
     /// <summary>
@@ -57,11 +58,19 @@ namespace DnDesigner.Models
         [ForeignKey("CharacterId")]
         public Character Character { get; set; }
 
+        [Key]
+        [Column(Order = 1)]
+        public int CharacterId { get; set; }
+
         /// <summary>
         /// The proficiency this is referencing
         /// </summary>
         [ForeignKey("ProficiencyId")]
         public Proficiency Proficiency { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        public int ProficiencyId { get; set; }
 
         /// <summary>
         /// A representation of how proficient the character is in this skill or saving throw.
@@ -104,17 +113,9 @@ namespace DnDesigner.Models
             CheckBonus = checkBonus;
         }
 
-        /// <summary>
-        /// Constructor that takes a background proficiency and sets the proficiency level to 1
-        /// </summary>
-        /// <param name="character">The character who has this proficiency</param>
-        /// <param name="backgroundProficiency">A proficiency from a background</param>
-        public CharacterProficiency(Character character, BackgroundProficiency backgroundProficiency)
-        {
-            Character = character;
-            Proficiency = backgroundProficiency.Proficiency;
-            ProficiencyLevel = 1;
-            CheckBonus = 0;
+        public CharacterProficiency(int characterId, int proficiencyId) {
+            CharacterId = characterId;
+            ProficiencyId = proficiencyId;
         }
     }
 
@@ -129,11 +130,19 @@ namespace DnDesigner.Models
         [ForeignKey("BackgroundId")]
         public Background Background { get; set; }
 
+        [Key]
+        [Column(Order = 1)]
+        public int BackgroundId { get; set; }
+
         /// <summary>
         /// The proficiency this is referencing
         /// </summary>
         [ForeignKey("ProficiencyId")]
         public Proficiency Proficiency { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        public int ProficiencyId { get; set; }
 
         /// <summary>
         /// Constructor
@@ -144,6 +153,12 @@ namespace DnDesigner.Models
         {
             Background = background;
             Proficiency = proficiency;
+            ProficiencyId = proficiency.ProficiencyId;
+            BackgroundId = background.BackgroundId;
+        }
+        public BackgroundProficiency(int backgroundId, int proficiencyId) {
+            BackgroundId = backgroundId;
+            ProficiencyId = proficiencyId;
         }
     }
 
@@ -158,11 +173,19 @@ namespace DnDesigner.Models
         [ForeignKey("RaceId")]
         public Race Race { get; set; }
 
+        [Key]
+        [Column(Order = 1)]
+        public int RaceId { get; set; }
+
         /// <summary>
         /// The proficiency this is referencing
         /// </summary>
         [ForeignKey("ProficiencyId")]
         public Proficiency Proficiency { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        public int ProficiencyId { get; set; }
 
         /// <summary>
         /// Constructor
@@ -173,6 +196,11 @@ namespace DnDesigner.Models
         {
             Race = race;
             Proficiency = proficiency;
+        }
+        public RaceProficiency(int raceId, int proficiencyId)
+        {
+            RaceId = raceId;
+            ProficiencyId = proficiencyId;
         }
     }
 
@@ -187,11 +215,19 @@ namespace DnDesigner.Models
         [ForeignKey("ClassId")]
         public Class Class { get; set; }
 
+        [Key]
+        [Column(Order = 1)]
+        public int ClassId { get; set; }
+
         /// <summary>
         /// The proficiency this is referencing
         /// </summary>
         [ForeignKey("ProficiencyId")]
         public Proficiency Proficiency { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        public int ProficiencyId { get; set; }
 
         /// <summary>
         /// Constructor
@@ -202,6 +238,11 @@ namespace DnDesigner.Models
         {
             Class = sourceclass;
             Proficiency = proficiency;
+        }
+        public ClassProficiency(int classId, int proficiencyId)
+        {
+            ClassId = classId;
+            ProficiencyId = proficiencyId;
         }
     }
 }

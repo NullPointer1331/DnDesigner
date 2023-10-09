@@ -63,5 +63,6 @@ namespace DnDesigner.Models
 			Proficiencies = proficiencies;
 			Features = features;
 		}
+		private Race() { }
 	}
 }

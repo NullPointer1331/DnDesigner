@@ -104,6 +104,7 @@ namespace DnDesigner.Models
             Spell = spell;
             Spellcasting = spellcasting;
         }
+        private LearnableSpell() { }
     }
     public class KnownSpell
     {
@@ -129,5 +130,6 @@ namespace DnDesigner.Models
             Spellcasting = spellcasting;
             Spell = spell;
         }
+        private KnownSpell() { }
     }
 }

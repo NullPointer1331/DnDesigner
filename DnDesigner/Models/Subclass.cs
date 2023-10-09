@@ -50,5 +50,6 @@ namespace DnDesigner.Models
 			Features = new List<SubclassFeature>();
 			Spellcasting = null;
         }
+		private Subclass() { }
 	}
 }

@@ -33,6 +33,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The starting equipment this background gives
         /// </summary>
+        [NotMapped]
         public List<Item> StarterEquipment { get; set; }
 
         /// <summary>

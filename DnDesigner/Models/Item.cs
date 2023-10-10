@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;
 
@@ -85,6 +86,7 @@ namespace DnDesigner.Models
     /// <summary>
     /// Represents a single item in an inventory
     /// </summary>
+    [PrimaryKey(nameof(ItemId), nameof(InventoryId))]
     public class InventoryItem
     {
         /// <summary>
@@ -93,11 +95,15 @@ namespace DnDesigner.Models
         [ForeignKey("ItemId")]
         public Item Item { get; set; }
 
+        int ItemId { get; set; }
+
         /// <summary>
         /// The inventory the item is in
         /// </summary>
         [ForeignKey("InventoryId")]
         public Inventory Inventory { get; set; }
+
+        int InventoryId { get; set; }
 
         /// <summary>
         /// How many of the item are in the inventory

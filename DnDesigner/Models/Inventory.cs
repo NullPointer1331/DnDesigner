@@ -9,7 +9,7 @@ namespace DnDesigner.Models
         /// Primary key
         /// </summary>
         [Key]
-        int InventoryId { get; set; }
+        public int InventoryId { get; set; }
 
         /// <summary>
         /// The character this inventory belongs to

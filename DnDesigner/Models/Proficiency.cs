@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DnDesigner.Models
@@ -44,12 +45,12 @@ namespace DnDesigner.Models
             MainAttribute = mainAttribute;
             ProficiencyType = proficiencyType;
         }
-        //private Proficiency() { }
     }
 
     /// <summary>
     /// Represents a character's proficiency in a saving, throw skill, or other proficiency
     /// </summary>
+    [PrimaryKey(nameof(CharacterId), nameof(ProficiencyId))]
     public class CharacterProficiency
     {
         /// <summary>
@@ -122,6 +123,7 @@ namespace DnDesigner.Models
     /// <summary>
     /// Represents a proficiency granted by a background
     /// </summary>
+    [PrimaryKey(nameof(BackgroundId), nameof(ProficiencyId))]
     public class BackgroundProficiency
     {
         /// <summary>
@@ -165,6 +167,7 @@ namespace DnDesigner.Models
     /// <summary>
     /// Represents a proficiency granted by a race
     /// </summary>
+    [PrimaryKey(nameof(RaceId), nameof(ProficiencyId))]
     public class RaceProficiency
     {
         /// <summary>
@@ -173,8 +176,6 @@ namespace DnDesigner.Models
         [ForeignKey("RaceId")]
         public Race Race { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
         public int RaceId { get; set; }
 
         /// <summary>
@@ -183,8 +184,6 @@ namespace DnDesigner.Models
         [ForeignKey("ProficiencyId")]
         public Proficiency Proficiency { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
         public int ProficiencyId { get; set; }
 
         /// <summary>
@@ -207,6 +206,7 @@ namespace DnDesigner.Models
     /// <summary>
     /// Represents a proficiency granted by a class.
     /// </summary>
+    [PrimaryKey(nameof(ClassId), nameof(ProficiencyId))]
     public class ClassProficiency
     {
         /// <summary>
@@ -215,8 +215,6 @@ namespace DnDesigner.Models
         [ForeignKey("ClassId")]
         public Class Class { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
         public int ClassId { get; set; }
 
         /// <summary>
@@ -225,8 +223,6 @@ namespace DnDesigner.Models
         [ForeignKey("ProficiencyId")]
         public Proficiency Proficiency { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
         public int ProficiencyId { get; set; }
 
         /// <summary>

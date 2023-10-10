@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DnDesigner.Models
@@ -47,6 +48,7 @@ namespace DnDesigner.Models
         /// </summary>
         public List<LearnableSpell> LearnableSpells { get; set; }
     }
+    [PrimaryKey(nameof(CharacterId), nameof(SpellcastingId))]
     public class CharacterSpellcasting
     {
         /// <summary>
@@ -55,11 +57,15 @@ namespace DnDesigner.Models
         [ForeignKey("CharacterId")]
         public Character Character { get; set; }
 
+        int CharacterId { get; set; }
+
         /// <summary>
         /// The spellcasting this is referencing
         /// </summary>
         [ForeignKey("SpellcastingId")]
         public Spellcasting Spellcasting { get; set; }
+
+        int SpellcastingId { get; set; }
 
         /// <summary>
         /// The spells this character currently has prepared

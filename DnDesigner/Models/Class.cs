@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DnDesigner.Models
@@ -65,7 +66,10 @@ namespace DnDesigner.Models
 			Spellcasting = spellcasting;
 			List<Subclass> Subclasses = new List<Subclass>();
 		}
+		private Class() { }
 	}
+
+	[PrimaryKey(nameof(CharacterId), nameof(ClassId))]
 	public class CharacterClass {
 		/// <summary>
 		/// A class the character has
@@ -73,17 +77,23 @@ namespace DnDesigner.Models
 		[ForeignKey("ClassId")]
 		public Class Class { get; set; }
 
+		int ClassId { get; set; }
+
 		/// <summary>
 		/// The chosen subclass of the class
 		/// </summary>
 		[ForeignKey("SubclassId")]
 		public Subclass? Subclass { get; set; }
 
+		int? SubclassId { get; set; }
+
 		/// <summary>
 		/// The character the class belongs to
 		/// </summary>
 		[ForeignKey("CharacterId")]
 		public Character Character { get; set; }
+
+		int CharacterId { get; set; }
 
 		/// <summary>
 		/// How many levels the character has in this class
@@ -118,5 +128,7 @@ namespace DnDesigner.Models
             Character = character;
             Level = level;
         }
+
+		private CharacterClass() { }
     }
 }

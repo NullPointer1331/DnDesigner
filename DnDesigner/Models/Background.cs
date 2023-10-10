@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DnDesigner.Models
 {
@@ -24,29 +25,21 @@ namespace DnDesigner.Models
         public string Sourcebook { get; set; }
 
         /// <summary>
-        /// The skill proficiencies this background gives
+        /// The proficiencies this background gives
         /// </summary>
-        public List<BackgroundProficiency> SkillProficiencies { get; set; }
+        public List<BackgroundProficiency> Proficiencies { get; set; }
 
-        /// <summary>
-        /// The tool proficiencies this background gives
-        /// </summary>
-        public List<BackgroundProficiency> ToolProficiencies { get; set; }
-
-        /// <summary>
-        /// The language proficiencies this background gives
-        /// </summary>
-        public List<BackgroundProficiency> LanguageProficiencies { get; set; }
 
         /// <summary>
         /// The starting equipment this background gives
         /// </summary>
+        [NotMapped]
         public List<Item> StarterEquipment { get; set; }
 
         /// <summary>
-        /// The main feature of this background
+        /// All features of this background
         /// </summary>
-        public BackgroundFeature BackgroundFeature { get; set; }
+        public List<BackgroundFeature> BackgroundFeature { get; set; }
 
         /// <summary>
         /// The gold this background gives
@@ -83,9 +76,7 @@ namespace DnDesigner.Models
         /// </summary>
         public Background()
         {
-            SkillProficiencies = new List<BackgroundProficiency>();
-            ToolProficiencies = new List<BackgroundProficiency>();
-            LanguageProficiencies = new List<BackgroundProficiency>();
+            Proficiencies = new List<BackgroundProficiency>();
             StarterEquipment = new List<Item>();
         }
     }

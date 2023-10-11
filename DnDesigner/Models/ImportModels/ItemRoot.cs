@@ -13,13 +13,13 @@ namespace DnDesigner.Models.ImportModels
         public string source { get; set; }
         public int page { get; set; }
         public string rarity { get; set; }
-        public object reqAttune { get; set; }
+        public bool reqAttune { get; set; }
         public List<ReqAttuneTag> reqAttuneTags { get; set; }
         public bool wondrous { get; set; }
         public string bonusSpellAttack { get; set; }
         public string bonusSpellSaveDc { get; set; }
         public List<string> focus { get; set; }
-        public List<object> entries { get; set; }
+        public List<string> entries { get; set; }
         public int? weight { get; set; }
         public string baseItem { get; set; }
         public string type { get; set; }

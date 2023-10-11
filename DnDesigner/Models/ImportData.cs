@@ -1,6 +1,7 @@
 ﻿using DnDesigner.Models.ImportModels;
 using System.Text.Json;
 using System.IO;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace DnDesigner.Models
 {
@@ -47,6 +48,56 @@ namespace DnDesigner.Models
                 spell.Description += entry;
             }
             return spell;
+        }
+
+        public static ItemRoot GetItemRoot()
+        {
+            string contents = File.ReadAllText("Data\\5EToolsData\\items.json");
+            return JsonSerializer.Deserialize<ItemRoot>(contents);
+        }
+        public static Item ConvertItem(Item5ETools item5E)
+        {
+            Item item = new Item();
+            item.Name = item5E.name;
+            item.Sourcebook = item5E.source;
+            item.Description = "";
+            foreach (string entry in item5E.entries)
+            {
+                item.Description += entry;
+            }
+            item.Price = item5E.value ?? 0; //Might be the wrong unit
+            item.Weight = item5E.weight ?? 0;
+            item.Attuneable = item5E.reqAttune;
+            item.Traits = item5E.type;
+            foreach (string trait in item5E.property)
+            {
+                item.Traits += $", {trait}";
+            }
+            string traits = item.Traits.ToLower();
+            if (traits.Contains("armor"))
+            {
+                item.Equipable = 1;
+            }
+            else if(traits.Contains("weapon"))
+            {
+                if(traits.Contains("light"))
+                {
+                    item.Equipable = 4;
+                }
+                else
+                {
+                    item.Equipable = 2;
+                }
+            }
+            else if(traits.Contains("shield"))
+            {
+                item.Equipable = 3;
+            }
+            else
+            {
+                item.Equipable = 0;
+            }
+            return item;
         }
     }
 }

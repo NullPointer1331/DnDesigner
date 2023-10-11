@@ -104,6 +104,11 @@ namespace DnDesigner.Models
         public string Vulnerabilities { get; set; } = null!;
 
         /// <summary>
+        /// The characters race
+        /// </summary>
+        public Race Race { get; set; }
+
+        /// <summary>
         /// The background of the character
         /// </summary>
         public Background Background { get; set; }

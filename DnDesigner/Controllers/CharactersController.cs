@@ -68,7 +68,7 @@ namespace DnDesigner.Controllers
         }
 
         // GET: Characters/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> CharacterSheet(int? id)
         {
             if (id == null || _context.Characters == null)
             {
@@ -88,7 +88,7 @@ namespace DnDesigner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CharacterId,Name,Level,ProficiencyBonus,MaxHealth,CurrentHealth,TempHealth,AvailableHitDice,HitDieType,WalkingSpeed,Strength,Dexterity,Constitution,Intelligence,Wisdom,Charisma,Resistances,Immunities,Vulnerabilities")] Character character)
+        public async Task<IActionResult> CharacterSheet(int id, [Bind("CharacterId,Name,Level,ProficiencyBonus,MaxHealth,CurrentHealth,TempHealth,AvailableHitDice,HitDieType,WalkingSpeed,Strength,Dexterity,Constitution,Intelligence,Wisdom,Charisma,Resistances,Immunities,Vulnerabilities")] Character character)
         {
             if (id != character.CharacterId)
             {

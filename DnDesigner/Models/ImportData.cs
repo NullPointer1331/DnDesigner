@@ -99,5 +99,73 @@ namespace DnDesigner.Models
             }
             return item;
         }
+        
+        public static RaceRoot GetRaceRoot()
+        {
+            string contents = File.ReadAllText("Data\\5EToolsData\\races.json");
+            return JsonSerializer.Deserialize<RaceRoot>(contents);
+        }
+        public static Race ConvertRace(Race5ETools race5E)
+        {
+            Race race = new Race();
+            race.Name = race5E.name;
+            race.Sourcebook = race5E.source;
+            race.Description = "";
+            foreach (string entry in race5E.entries)
+            {
+                race.Description += entry;
+            }
+            race.StatBonuses = "";
+            foreach (Ability ability in race5E.ability)
+            {
+                if(ability.choose != null)
+                {
+                    race.StatBonuses += $"+{ability.choose.amount} to {ability.choose.count} attribute. ";
+                }
+                if(ability.cha != null)
+                {
+                    race.StatBonuses += $"+{ability.cha} Charisma. ";
+                }
+                if(ability.con != null)
+                {
+                    race.StatBonuses += $"+{ability.con} Constitution. ";
+                }
+                if(ability.dex != null)
+                {
+                    race.StatBonuses += $"+{ability.dex} Dexterity. ";
+                }
+                if (ability.@int != null)
+                {
+                    race.StatBonuses += $"+{ability.@int} Intelligence. ";
+                }
+                if (ability.str != null)
+                {
+                    race.StatBonuses += $"+{ability.str} Strength. ";
+                }
+                if (ability.wis != null)
+                {
+                    race.StatBonuses += $"+{ability.wis} Wisdom. ";
+                }
+            }
+            race.Size = race5E.size[0];
+            int.TryParse(race5E.speed, out int speed);
+            race.Speed = speed;
+            //TODO: Proficiencies and Features
+            return race;
+        }
+
+        public static BackgroundRoot GetBackgroundRoot()
+        {
+            string contents = File.ReadAllText("Data\\5EToolsData\\backgrounds.json");
+            return JsonSerializer.Deserialize<BackgroundRoot>(contents);
+        }
+        public static Background ConvertBackground(Background5ETools background5E)
+        {
+            Background background = new Background();
+            background.Name = background5E.name;
+            background.Sourcebook = background5E.source;
+            //TODO: basically everything
+            return background;
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The gold this background gives
         /// </summary>
-        int StarterGold { get; set; }
+        public int StarterGold { get; set; }
 
         /// <summary>
         /// Suggested personality traits for this background

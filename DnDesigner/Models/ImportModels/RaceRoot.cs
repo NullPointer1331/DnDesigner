@@ -15,11 +15,11 @@ namespace DnDesigner.Models.ImportModels
         public string source { get; set; }
         public int page { get; set; }
         public List<string> size { get; set; }
-        public object speed { get; set; }
+        public string speed { get; set; }
         public List<Ability> ability { get; set; }
         public List<string> traitTags { get; set; }
         public List<LanguageProficiency> languageProficiencies { get; set; }
-        public List<object> entries { get; set; }
+        public List<string> entries { get; set; }
         public List<OtherSource> otherSources { get; set; }
         public List<string> reprintedAs { get; set; }
         public Age age { get; set; }
@@ -85,10 +85,10 @@ namespace DnDesigner.Models.ImportModels
     }
     public class Ability
     {
-        public int dex { get; set; }
-        public int wis { get; set; }
+        public int? dex { get; set; }
+        public int? wis { get; set; }
         public int? cha { get; set; }
-        public Choose choose { get; set; }
+        public Choose? choose { get; set; }
         public int? str { get; set; }
         public int? @int { get; set; }
         public int? con { get; set; }

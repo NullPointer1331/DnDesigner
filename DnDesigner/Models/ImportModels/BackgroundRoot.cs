@@ -7,7 +7,7 @@ namespace DnDesigner.Models.ImportModels
     public class BackgroundRoot
     {
         public Meta _meta { get; set; }
-        public List<Background> background { get; set; }
+        public List<Background5ETools> background { get; set; }
     }
 
     public class BackgroundAdditionalSpell
@@ -15,7 +15,7 @@ namespace DnDesigner.Models.ImportModels
         public Expanded expanded { get; set; }
     }
 
-    public class Background
+    public class Background5ETools
     {
         public string name { get; set; }
         public string source { get; set; }

@@ -40,12 +40,12 @@
                 @Html.DisplayFor(modelItem => item.Race.Name)
             </td>
             <td>
-                @foreach (CharacterClass Subclass in item.Classes)
+                @foreach (CharacterClass Class in item.Classes)
                 {
-                    @Html.DisplayFor(modelItem => Subclass.Class.Name)
-                    if (Subclass.Subclass != null)
+                    @Html.DisplayFor(modelItem => Class.Class.Name)
+                    if (Class.Subclass != null)
                     {
-                        @Html.DisplayFor(modelItem => Subclass.Subclass.Name)
+                        @Html.DisplayFor(modelItem => Class.Subclass.Name)
                     }
                 }
             </td>

@@ -128,4 +128,14 @@ namespace DnDesigner.Models
         /// </summary>
         public Inventory Inventory { get; set; }
     }
+
+    public class CreateCharacterViewModel
+    {
+        public string Name { get; set; }
+        public int Level { get; set; }
+        public List<CharacterClass> Classes { get; set; }
+        public Background Background { get; set; }
+        public List<CharacterProficiency> Proficiencies { get; set; }
+        public List<CharacterSpellcasting> Spellcasting { get; set; }
+    }
 }

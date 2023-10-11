@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 namespace DnDesigner.Models.ImportModels
-{ 
+{
 
     public class RaceRoot
     {
@@ -18,7 +18,7 @@ namespace DnDesigner.Models.ImportModels
         public object speed { get; set; }
         public List<Ability> ability { get; set; }
         public List<string> traitTags { get; set; }
-        public List<RaceLanguageProficiency> languageProficiencies { get; set; }
+        public List<LanguageProficiency> languageProficiencies { get; set; }
         public List<object> entries { get; set; }
         public List<OtherSource> otherSources { get; set; }
         public List<string> reprintedAs { get; set; }
@@ -32,7 +32,7 @@ namespace DnDesigner.Models.ImportModels
         public List<object> resist { get; set; }
         public List<Version> _versions { get; set; }
         public HeightAndWeight heightAndWeight { get; set; }
-        public List<RaceSkillProficiency> skillProficiencies { get; set; }
+        public List<SkillProficiency> skillProficiencies { get; set; }
         public List<string> creatureTypes { get; set; }
         public List<string> creatureTypeTags { get; set; }
         public List<RaceToolProficiency> toolProficiencies { get; set; }
@@ -55,7 +55,7 @@ namespace DnDesigner.Models.ImportModels
         public List<object> entries { get; set; }
         public bool hasFluff { get; set; }
         public bool hasFluffImages { get; set; }
-        public List<RaceSkillProficiency> skillProficiencies { get; set; }
+        public List<SkillProficiency> skillProficiencies { get; set; }
         public bool? srd { get; set; }
         public List<Version> _versions { get; set; }
         public int? darkvision { get; set; }
@@ -64,7 +64,7 @@ namespace DnDesigner.Models.ImportModels
         public List<OtherSource> otherSources { get; set; }
         public List<string> reprintedAs { get; set; }
         public List<string> traitTags { get; set; }
-        public List<RaceLanguageProficiency> languageProficiencies { get; set; }
+        public List<LanguageProficiency> languageProficiencies { get; set; }
         public List<RaceAdditionalSpell> additionalSpells { get; set; }
         public bool? basicRules { get; set; }
         public HeightAndWeight heightAndWeight { get; set; }
@@ -115,13 +115,6 @@ namespace DnDesigner.Models.ImportModels
         [JsonProperty("1")]
         public List<string> _1 { get; set; }
     }
-    public class Entries
-    {
-        public string mode { get; set; }
-        public string replace { get; set; }
-        public Items items { get; set; }
-        public string names { get; set; }
-    }
     public class Feat
     {
         public int any { get; set; }
@@ -160,39 +153,11 @@ namespace DnDesigner.Models.ImportModels
         public string type { get; set; }
         public List<string> entries { get; set; }
     }
-    public class RaceLanguageProficiency
-    {
-        public bool auran { get; set; }
-        public bool? common { get; set; }
-        public bool? other { get; set; }
-        public bool? celestial { get; set; }
-        public int? anyStandard { get; set; }
-        public bool? goblin { get; set; }
-        public bool? sylvan { get; set; }
-        public bool? draconic { get; set; }
-        public bool? dwarvish { get; set; }
-        public bool? elvish { get; set; }
-        public bool? giant { get; set; }
-        public bool? primordial { get; set; }
-        public bool undercommon { get; set; }
-        public bool? aquan { get; set; }
-        public bool? gnomish { get; set; }
-    }
     public class Overwrite
     {
         public bool ability { get; set; }
         public bool traitTags { get; set; }
         public bool? languageProficiencies { get; set; }
-    }
-    public class RaceSkillProficiency
-    {
-        public bool intimidation { get; set; }
-        public bool? perception { get; set; }
-        public bool? stealth { get; set; }
-        public Choose choose { get; set; }
-        public bool? survival { get; set; }
-        public bool? deception { get; set; }
-        public int? any { get; set; }
     }
     public class SkillToolLanguageProficiency
     {

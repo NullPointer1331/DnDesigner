@@ -17,13 +17,36 @@ namespace DnDesigner.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> ViewProficiencies()
+        {
+            return View(await _context.Proficiencies.ToListAsync());
+        }
+        public async Task<IActionResult> ViewItems()
+        {
+            return View(await _context.Items.ToListAsync());
+        }
+        public async Task<IActionResult> ViewSpells()
+        {
+            return View(await _context.Spells.ToListAsync());
+        }
+        public async Task<IActionResult> ViewBackgrounds()
+        {
+            return View(await _context.Backgrounds.ToListAsync());
+        }
+        public async Task<IActionResult> ViewRaces()
+        {
+            return View(await _context.Races.ToListAsync());
+        }
         public async Task<IActionResult> ViewClasses()
         {
             return View(await _context.Classes.ToListAsync());
         }
+        public async Task<IActionResult> ViewSubclasses()
+        {
+            return View(await _context.Subclasses.ToListAsync());
+        }
         public async Task<IActionResult> Import()
         {
-            await _context.SaveChangesAsync();
             List<Proficiency> proficiencies = ImportData.ExtractProficiencies();
             List<Item> items = ImportData.ExtractItems();
             List<Spell> spells = ImportData.ExtractSpells(); //Doesn't seem to work yet

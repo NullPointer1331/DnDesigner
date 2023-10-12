@@ -152,7 +152,7 @@ namespace DnDesigner.Data
             foreach (Language language in languageRoot.language)
             {
                 Proficiency proficiency = new Proficiency(language.name, null, "language");
-                if(proficiencies.Where(p => p.Name == proficiency.Name) == null)
+                if(proficiencies.Where(p => p.Name == proficiency.Name).Count() == 0)
                 {
                     proficiencies.Add(proficiency);
                 }

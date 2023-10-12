@@ -192,41 +192,54 @@ namespace DnDesigner.Models
             item.Name = item5E.name;
             item.Sourcebook = item5E.source;
             item.Description = "";
-            foreach (string entry in item5E.entries)
+            if (item5E.entries != null)
             {
-                item.Description += entry;
+                foreach (object entry in item5E.entries)
+                {
+                    item.Description += entry.ToString();
+                }
             }
             item.Price = item5E.value ?? 0; //Might be the wrong unit
             item.Weight = item5E.weight ?? 0;
-            item.Attuneable = item5E.reqAttune;
-            item.Traits = item5E.type;
-            foreach (string trait in item5E.property)
+            if (item5E.reqAttune != null && item5E.reqAttune.ToString().ToLower().Equals("true"))
             {
-                item.Traits += $", {trait}";
-            }
-            string traits = item.Traits.ToLower();
-            if (traits.Contains("armor"))
-            {
-                item.Equipable = 1;
-            }
-            else if(traits.Contains("weapon"))
-            {
-                if(traits.Contains("light"))
-                {
-                    item.Equipable = 4;
-                }
-                else
-                {
-                    item.Equipable = 2;
-                }
-            }
-            else if(traits.Contains("shield"))
-            {
-                item.Equipable = 3;
+                item.Attuneable = true;
             }
             else
             {
-                item.Equipable = 0;
+                item.Attuneable = false;
+            }
+
+            item.Traits = item5E.type;
+            if (item5E.property != null)
+            {
+                foreach (string trait in item5E.property)
+                {
+                    item.Traits += $", {trait}";
+                }
+            }
+            item.Equipable = 0;
+            if (item.Traits != null) {
+                string traits = item.Traits.ToLower();
+                if (traits.Contains("armor"))
+                {
+                    item.Equipable = 1;
+                }
+                else if (traits.Contains("weapon"))
+                {
+                    if (traits.Contains("light"))
+                    {
+                        item.Equipable = 4;
+                    }
+                    else
+                    {
+                        item.Equipable = 2;
+                    }
+                }
+                else if (traits.Contains("shield"))
+                {
+                    item.Equipable = 3;
+                }
             }
             return item;
         }
@@ -242,46 +255,51 @@ namespace DnDesigner.Models
             race.Name = race5E.name;
             race.Sourcebook = race5E.source;
             race.Description = "";
-            foreach (string entry in race5E.entries)
+            if (race5E.entries != null)
             {
-                race.Description += entry;
+                foreach (object entry in race5E.entries)
+                {
+                    race.Description += entry.ToString();
+                }
             }
             race.StatBonuses = "";
-            foreach (Ability ability in race5E.ability)
+            if (race5E.ability != null)
             {
-                if(ability.choose != null)
+                foreach (Ability ability in race5E.ability)
                 {
-                    race.StatBonuses += $"+{ability.choose.amount} to {ability.choose.count} attribute. ";
-                }
-                if(ability.cha != null)
-                {
-                    race.StatBonuses += $"+{ability.cha} Charisma. ";
-                }
-                if(ability.con != null)
-                {
-                    race.StatBonuses += $"+{ability.con} Constitution. ";
-                }
-                if(ability.dex != null)
-                {
-                    race.StatBonuses += $"+{ability.dex} Dexterity. ";
-                }
-                if (ability.@int != null)
-                {
-                    race.StatBonuses += $"+{ability.@int} Intelligence. ";
-                }
-                if (ability.str != null)
-                {
-                    race.StatBonuses += $"+{ability.str} Strength. ";
-                }
-                if (ability.wis != null)
-                {
-                    race.StatBonuses += $"+{ability.wis} Wisdom. ";
+                    if (ability.choose != null)
+                    {
+                        race.StatBonuses += $"+{ability.choose.amount} to {ability.choose.count} attribute. ";
+                    }
+                    if (ability.cha != null)
+                    {
+                        race.StatBonuses += $"+{ability.cha} Charisma. ";
+                    }
+                    if (ability.con != null)
+                    {
+                        race.StatBonuses += $"+{ability.con} Constitution. ";
+                    }
+                    if (ability.dex != null)
+                    {
+                        race.StatBonuses += $"+{ability.dex} Dexterity. ";
+                    }
+                    if (ability.@int != null)
+                    {
+                        race.StatBonuses += $"+{ability.@int} Intelligence. ";
+                    }
+                    if (ability.str != null)
+                    {
+                        race.StatBonuses += $"+{ability.str} Strength. ";
+                    }
+                    if (ability.wis != null)
+                    {
+                        race.StatBonuses += $"+{ability.wis} Wisdom. ";
+                    }
                 }
             }
-            race.Size = race5E.size[0];
-            int.TryParse(race5E.speed, out int speed);
-            race.Speed = speed;
-            //TODO: Proficiencies and Features
+            race.Size = "medium";
+            race.Speed = 30;
+            //TODO: Proficiencies, Features, Subraces, actually check size and speed
             return race;
         }
 

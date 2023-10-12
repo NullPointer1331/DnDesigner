@@ -19,17 +19,17 @@ namespace DnDesigner.Models
         /// <summary>
         /// The name of the item
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         /// <summary>
         /// The source book the item is from
         /// </summary>
-        public string Sourcebook { get; set; }
+        public string Sourcebook { get; set; } = null!;
 
         /// <summary>
         /// The items description
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
 
         /// <summary>
         /// The items cost in gold
@@ -57,7 +57,8 @@ namespace DnDesigner.Models
         /// <summary>
         /// The items traits
         /// </summary>
-        public string Traits { get; set; }
+        public string Traits { get; set; } = null!;
+
 
     }
 

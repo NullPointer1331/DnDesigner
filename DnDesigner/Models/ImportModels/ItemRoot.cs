@@ -13,14 +13,14 @@ namespace DnDesigner.Models.ImportModels
         public string source { get; set; }
         public int page { get; set; }
         public string rarity { get; set; }
-        public bool reqAttune { get; set; }
+        public object reqAttune { get; set; }
         public List<ReqAttuneTag> reqAttuneTags { get; set; }
         public bool wondrous { get; set; }
         public string bonusSpellAttack { get; set; }
         public string bonusSpellSaveDc { get; set; }
-        public List<string> focus { get; set; }
-        public List<string> entries { get; set; }
-        public int? weight { get; set; }
+        public object focus { get; set; }
+        public List<object> entries { get; set; }
+        public double? weight { get; set; }
         public string baseItem { get; set; }
         public string type { get; set; }
         public string weaponCategory { get; set; }
@@ -31,7 +31,7 @@ namespace DnDesigner.Models.ImportModels
         public bool? grantsProficiency { get; set; }
         public string tier { get; set; }
         public List<string> lootTables { get; set; }
-        public bool? srd { get; set; }
+        public object srd { get; set; }
         public Copy _copy { get; set; }
         public string bonusAc { get; set; }
         public string bonusSavingThrow { get; set; }
@@ -40,9 +40,9 @@ namespace DnDesigner.Models.ImportModels
         public List<string> resist { get; set; }
         public int? ac { get; set; }
         public bool? basicRules { get; set; }
-        public int? value { get; set; }
+        public double? value { get; set; }
         public string recharge { get; set; }
-        public string rechargeAmount { get; set; }
+        public object rechargeAmount { get; set; }
         public int? charges { get; set; }
         public List<string> miscTags { get; set; }
         public bool? tattoo { get; set; }
@@ -52,9 +52,9 @@ namespace DnDesigner.Models.ImportModels
         public int? crew { get; set; }
         public int? vehAc { get; set; }
         public int? vehHp { get; set; }
-        public int? vehSpeed { get; set; }
+        public double? vehSpeed { get; set; }
         public int? capPassenger { get; set; }
-        public int? capCargo { get; set; }
+        public double? capCargo { get; set; }
         public List<string> conditionImmune { get; set; }
         public string dmg2 { get; set; }
         public List<AdditionalSource> additionalSources { get; set; }

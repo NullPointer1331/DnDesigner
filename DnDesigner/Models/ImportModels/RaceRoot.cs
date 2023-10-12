@@ -15,11 +15,11 @@ namespace DnDesigner.Models.ImportModels
         public string source { get; set; }
         public int page { get; set; }
         public List<string> size { get; set; }
-        public string speed { get; set; }
+        public object speed { get; set; }
         public List<Ability> ability { get; set; }
         public List<string> traitTags { get; set; }
         public List<LanguageProficiency> languageProficiencies { get; set; }
-        public List<string> entries { get; set; }
+        public List<object> entries { get; set; }
         public List<OtherSource> otherSources { get; set; }
         public List<string> reprintedAs { get; set; }
         public Age age { get; set; }
@@ -33,7 +33,7 @@ namespace DnDesigner.Models.ImportModels
         public List<Version> _versions { get; set; }
         public HeightAndWeight heightAndWeight { get; set; }
         public List<SkillProficiency> skillProficiencies { get; set; }
-        public List<string> creatureTypes { get; set; }
+        public List<object> creatureTypes { get; set; }
         public List<string> creatureTypeTags { get; set; }
         public List<RaceToolProficiency> toolProficiencies { get; set; }
         public List<string> conditionImmune { get; set; }

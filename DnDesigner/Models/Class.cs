@@ -49,24 +49,11 @@ namespace DnDesigner.Models
 		/// </summary>
 		public List<Subclass> Subclasses { get; set; }
 
-        /// <summary>
-        /// Constructor, sets properties other than sourcebook and subclasses
-        /// </summary>
-        /// <param name="name">The name of the class</param>
-        /// <param name="hitdie">The hit die type of the class</param>
-        /// <param name="classFeatures">The features of the class</param>
-        /// <param name="proficiencies">The proficiencies that can be learned through the class</param>
-        /// <param name="spellcasting">The spellcasting abilities of the class, null if none</param>
-        public Class(string name, int hitdie, List<ClassFeature> classFeatures, 
-			List<ClassProficiency> proficiencies, Spellcasting? spellcasting) {
-			Name = name;
-			HitDie = hitdie;
-			Features = classFeatures;
-			Proficiencies = proficiencies;
-			Spellcasting = spellcasting;
-			List<Subclass> Subclasses = new List<Subclass>();
+		public Class() {
+			Features = new List<ClassFeature>();
+            Proficiencies = new List<ClassProficiency>();
+            Subclasses = new List<Subclass>();
 		}
-		private Class() { }
 	}
 
 	[PrimaryKey(nameof(CharacterId), nameof(ClassId))]

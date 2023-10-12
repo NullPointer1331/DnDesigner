@@ -62,7 +62,10 @@ namespace DnDesigner.Models
         /// <summary>
         /// The description of the spell
         /// </summary>
-        public string SpellDescription { get; set; }
+        public string Description { get; set; }
+
+        public bool IsRitual { get; set; }
+        public bool RequiresConcentration { get; set; }
 
         /// <summary>
         /// Who can learn the spell

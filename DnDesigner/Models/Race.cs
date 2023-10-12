@@ -20,6 +20,8 @@ namespace DnDesigner.Models
 		/// </summary>
 		public string Sourcebook { get; set; }
 
+		public string Description { get; set; }
+
 		/// <summary>
 		/// The racial stat bonuses
 		/// </summary>
@@ -45,24 +47,10 @@ namespace DnDesigner.Models
 		/// </summary>
 		public List<RaceFeature> Features { get; set; }
 
-        /// <summary>
-        /// Full constructor, sets all properties
-        /// </summary>
-        /// <param name="name">The race name</param>
-        /// <param name="stats">The racial stat bonuses</param>
-        /// <param name="size">The size of the creature</param>
-        /// <param name="speed">The speed of the creature</param>
-        /// <param name="proficiencies">Any proficiencies provided by the race</param>
-        /// <param name="features">Any features provided by the race</param>
-        public Race(string name, string stats, string size, int speed, 
-			List<RaceProficiency> proficiencies, List<RaceFeature> features) {
-			Name = name;
-			StatBonuses = stats;
-			Size = size;
-			Speed = speed;
-			Proficiencies = proficiencies;
-			Features = features;
+
+		public Race() {
+			Proficiencies = new List<RaceProficiency>();
+            Features = new List<RaceFeature>();
 		}
-		private Race() { }
 	}
 }

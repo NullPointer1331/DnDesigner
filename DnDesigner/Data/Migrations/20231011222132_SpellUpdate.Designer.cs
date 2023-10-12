@@ -4,6 +4,7 @@ using DnDesigner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Data.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231011222132_SpellUpdate")]
+    partial class SpellUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,9 +60,6 @@ namespace DnDesigner.Data.Migrations
                     b.Property<string>("Sourcebook")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StarterGold")
-                        .HasColumnType("int");
 
                     b.HasKey("BackgroundId");
 
@@ -166,9 +166,6 @@ namespace DnDesigner.Data.Migrations
                     b.Property<int>("ProficiencyBonus")
                         .HasColumnType("int");
 
-                    b.Property<int>("RaceId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Resistances")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -192,8 +189,6 @@ namespace DnDesigner.Data.Migrations
                     b.HasKey("CharacterId");
 
                     b.HasIndex("BackgroundId");
-
-                    b.HasIndex("RaceId");
 
                     b.ToTable("Characters");
                 });
@@ -498,10 +493,6 @@ namespace DnDesigner.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RaceId"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -967,15 +958,7 @@ namespace DnDesigner.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DnDesigner.Models.Race", "Race")
-                        .WithMany()
-                        .HasForeignKey("RaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Background");
-
-                    b.Navigation("Race");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.CharacterClass", b =>

@@ -8,6 +8,9 @@ namespace DnDesigner.Models
 {
     public static class ImportData
     {
+        /// <summary>
+        /// Extracts all data from the 5ETools JSON files and adds it to the database
+        /// </summary>
         public static void ImportDataFrom5ETools()
         {
             ImportProficiencies();
@@ -18,6 +21,9 @@ namespace DnDesigner.Models
             ImportClasses();
         }
 
+        /// <summary>
+        /// Extracts Class and Subclass Data from the 5ETools JSON files and adds it to the database
+        /// </summary>
         public static void ImportClasses()
         {
             List<ClassRoot> classRoots = GetClassRoot();
@@ -39,6 +45,9 @@ namespace DnDesigner.Models
             //TODO: Add to database
         }
 
+        /// <summary>
+        /// Extracts Background Data from the 5ETools JSON files and adds it to the database
+        /// </summary>
         public static void ImportBackgrounds()
         {
             BackgroundRoot backgroundRoot = GetBackgroundRoot();
@@ -50,6 +59,9 @@ namespace DnDesigner.Models
             //TODO: Add to database
         }
 
+        /// <summary>
+        /// Extracts Race Data from the 5ETools JSON files and adds it to the database
+        /// </summary>
         public static void ImportRaces()
         {
             RaceRoot raceRoot = GetRaceRoot();
@@ -61,6 +73,9 @@ namespace DnDesigner.Models
             //TODO: Add to database
         }
 
+        /// <summary>
+        /// Extracts Item Data from the 5ETools JSON files and adds it to the database
+        /// </summary>
         public static void ImportItems()
         {
             ItemRoot itemRoot = GetItemRoot();
@@ -72,6 +87,9 @@ namespace DnDesigner.Models
             //TODO: Add to database
         }
 
+        /// <summary>
+        /// Extracts Spell Data from the 5ETools JSON files and adds it to the database
+        /// </summary>
         public static void ImportSpells()
         {
             List<SpellRoot> spellRoots = GetSpellRoots();
@@ -86,6 +104,10 @@ namespace DnDesigner.Models
             //TODO: Add to database
         }
 
+        /// <summary>
+        /// Extracts Language Data from the 5ETools JSON files and adds it to the database
+        /// Adds hardcoded proficiencies to the database
+        /// </summary>
         public static void ImportProficiencies()
         {
             List<Proficiency> proficiencies = new List<Proficiency>();
@@ -136,6 +158,7 @@ namespace DnDesigner.Models
 
             //TODO: Add to database, add tool and instrument proficiencies
         }
+
         public static List<SpellRoot> GetSpellRoots()
         {
             List<SpellRoot> spellRoots = new List<SpellRoot>();

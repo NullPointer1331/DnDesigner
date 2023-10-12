@@ -52,7 +52,7 @@ namespace DnDesigner.Data
                         if (!subclass5E.source.Contains("UA"))
                         {
                             Class @class = classes.Where(c => c.Name == subclass5E.className).FirstOrDefault();
-                            List<SubclassFeature5ETools> subclassFeatures = classRoot.subclassFeature.Where(f => f.className == subclass5E.name).ToList();
+                            List<SubclassFeature5ETools> subclassFeatures = classRoot.subclassFeature.Where(f => f.subclassShortName == subclass5E.shortName).ToList();
                             if (@class != null)
                             {
                                 subclasses.Add(ConvertSubclass(subclass5E, @class, subclassFeatures));

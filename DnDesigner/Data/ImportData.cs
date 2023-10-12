@@ -3,55 +3,56 @@ using System.Text.Json;
 using System.IO;
 using Microsoft.AspNetCore.Components.Web;
 using System.Linq;
+using DnDesigner.Models;
 
-namespace DnDesigner.Models
+namespace DnDesigner.Data
 {
     public static class ImportData
     {
         /// <summary>
-        /// Extracts all data from the 5ETools JSON files and adds it to the database
+        /// Extracts Class Data from the 5ETools JSON files and returns it as a list of Classes
         /// </summary>
-        public static void ImportDataFrom5ETools()
-        {
-            ImportProficiencies();
-            ImportSpells();
-            ImportItems();
-            ImportRaces();
-            ImportBackgrounds();
-            ImportClasses();
-        }
-
-        /// <summary>
-        /// Extracts Class and Subclass Data from the 5ETools JSON files and adds it to the database
-        /// </summary>
-        public static void ImportClasses()
+        public static List<Class> ExtractClasses()
         {
             List<ClassRoot> classRoots = GetClassRoot();
             List<Class> classes = new List<Class>();
+            foreach (ClassRoot classRoot in classRoots)
+            {
+                foreach (Class5ETools class5E in classRoot.@class)
+                {
+                    classes.Add(ConvertClass(class5E));
+                }
+            }
+            return classes;
+        }
+
+        /// <summary>
+        /// Extracts Subclass Data from the 5ETools JSON files and returns it as a list of Subclasses
+        /// </summary>
+        /// <param name="classes">The list of Classes to tie the subclasses to</param>
+        public static List<Subclass> ExtractSubclasses(List<Class> classes)
+        {
+            List<ClassRoot> classRoots = GetClassRoot();
             List<Subclass> subclasses = new List<Subclass>();
-            List<Class5ETools> classes5E = new List<Class5ETools>();
             List<Subclass5ETools> subclasses5E = new List<Subclass5ETools>();
             foreach (ClassRoot classRoot in classRoots)
             {
-                classes5E.AddRange(classRoot.@class);
                 subclasses5E.AddRange(classRoot.subclass);
             }
-            foreach (Class5ETools class5E in classes5E)
+            foreach (Class @class in classes)
             {
-                Class @class = ConvertClass(class5E);
                 foreach (Subclass5ETools subclass5E in subclasses5E.Where(s => s.className == @class.Name).ToList())
                 {
                     subclasses.Add(ConvertSubclass(subclass5E, @class));
                 }
-                classes.Add(@class);
             }
-            //TODO: Add to database
+            return subclasses;
         }
 
         /// <summary>
-        /// Extracts Background Data from the 5ETools JSON files and adds it to the database
+        /// Extracts Background Data from the 5ETools JSON files and returns it as a list of Backgrounds
         /// </summary>
-        public static void ImportBackgrounds()
+        public static List<Background> ExtractBackgrounds()
         {
             BackgroundRoot backgroundRoot = GetBackgroundRoot();
             List<Background> backgrounds = new List<Background>();
@@ -59,13 +60,13 @@ namespace DnDesigner.Models
             {
                 backgrounds.Add(ConvertBackground(background5E));
             }
-            //TODO: Add to database
+            return backgrounds;
         }
 
         /// <summary>
-        /// Extracts Race Data from the 5ETools JSON files and adds it to the database
+        /// Extracts Race Data from the 5ETools JSON files and returns it as a list of Races
         /// </summary>
-        public static void ImportRaces()
+        public static List<Race> ExtractRaces()
         {
             RaceRoot raceRoot = GetRaceRoot();
             List<Race> races = new List<Race>();
@@ -73,13 +74,13 @@ namespace DnDesigner.Models
             {
                 races.Add(ConvertRace(race5E));
             }
-            //TODO: Add to database
+            return races;
         }
 
         /// <summary>
-        /// Extracts Item Data from the 5ETools JSON files and adds it to the database
+        /// Extracts Item Data from the 5ETools JSON files and returns it as a list of Items
         /// </summary>
-        public static void ImportItems()
+        public static List<Item> ExtractItems()
         {
             ItemRoot itemRoot = GetItemRoot();
             List<Item> items = new List<Item>();
@@ -87,13 +88,13 @@ namespace DnDesigner.Models
             {
                 items.Add(ConvertItem(item5E));
             }
-            //TODO: Add to database
+            return items;
         }
 
         /// <summary>
-        /// Extracts Spell Data from the 5ETools JSON files and adds it to the database
+        /// Extracts Spell Data from the 5ETools JSON files and returns it as a list of Spells
         /// </summary>
-        public static void ImportSpells()
+        public static List<Spell> ExtractSpells()
         {
             List<SpellRoot> spellRoots = GetSpellRoots();
             List<Spell> spells = new List<Spell>();
@@ -104,14 +105,14 @@ namespace DnDesigner.Models
                     spells.Add(ConvertSpell(spell5E));
                 }
             }
-            //TODO: Add to database
+            return spells;
         }
 
         /// <summary>
-        /// Extracts Language Data from the 5ETools JSON files and adds it to the database
-        /// Adds hardcoded proficiencies to the database
+        /// Extracts Language Data from the 5ETools JSON files and returns it as a list of Proficiencies
+        /// Also includes a list of hardcoded proficiencies
         /// </summary>
-        public static void ImportProficiencies()
+        public static List<Proficiency> ExtractProficiencies()
         {
             List<Proficiency> proficiencies = new List<Proficiency>();
 
@@ -159,7 +160,8 @@ namespace DnDesigner.Models
             proficiencies.Add(new Proficiency("Stealth", "Dexterity", "skill"));
             proficiencies.Add(new Proficiency("Survival", "Wisdom", "skill"));
 
-            //TODO: Add to database, add tool and instrument proficiencies
+            //TODO: add tool and instrument proficiencies
+            return proficiencies;
         }
 
         public static List<SpellRoot> GetSpellRoots()
@@ -245,7 +247,8 @@ namespace DnDesigner.Models
                 }
             }
             item.Equipable = 0;
-            if (item.Traits != null) {
+            if (item.Traits != null)
+            {
                 string traits = item.Traits.ToLower();
                 if (traits.Contains("armor"))
                 {
@@ -269,7 +272,7 @@ namespace DnDesigner.Models
             }
             return item;
         }
-        
+
         public static RaceRoot GetRaceRoot()
         {
             string contents = File.ReadAllText("Data\\5EToolsData\\races.json");
@@ -359,7 +362,7 @@ namespace DnDesigner.Models
             @class.Name = class5E.name;
             @class.Sourcebook = class5E.source;
             @class.HitDie = class5E.hd.faces;
-            if(class5E.spellcastingAbility != null)
+            if (class5E.spellcastingAbility != null)
             {
                 Spellcasting spellcasting = new Spellcasting();
                 spellcasting.Name = @class.Name;
@@ -384,7 +387,7 @@ namespace DnDesigner.Models
         {
             Subclass subclass = new Subclass(@class, subclass5E.name);
             subclass.Sourcebook = subclass5E.source;
-            if(subclass5E.spellcastingAbility != null)
+            if (subclass5E.spellcastingAbility != null)
             {
                 Spellcasting spellcasting = new Spellcasting();
                 spellcasting.Name = subclass.Name;

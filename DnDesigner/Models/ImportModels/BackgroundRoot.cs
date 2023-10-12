@@ -86,7 +86,7 @@ namespace DnDesigner.Models.ImportModels
         public bool feats { get; set; }
     }
 
-    public class Item
+    public class BackgroundItem
     {
         public string type { get; set; }
         public string name { get; set; }

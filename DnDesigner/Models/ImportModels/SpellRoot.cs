@@ -19,8 +19,8 @@ namespace DnDesigner.Models.ImportModels
         public Range range { get; set; }
         public Components components { get; set; }
         public List<Duration> duration { get; set; }
-        public List<string> entries { get; set; }
-        public ScalingLevelDice scalingLevelDice { get; set; }
+        public List<object> entries { get; set; }
+        //public ScalingLevelDice? scalingLevelDice { get; set; }
         public List<string> damageInflict { get; set; }
         public List<string> savingThrow { get; set; }
         public List<string> miscTags { get; set; }
@@ -62,7 +62,7 @@ namespace DnDesigner.Models.ImportModels
     }
     public class SpellMeta
     {
-        public bool ritual { get; set; }
+        public bool? ritual { get; set; }
     }
     public class Range
     {

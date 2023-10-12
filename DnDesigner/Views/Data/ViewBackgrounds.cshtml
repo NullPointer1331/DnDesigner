@@ -1,0 +1,77 @@
+﻿@model IEnumerable<DnDesigner.Models.Background>
+
+@{
+    ViewData["Title"] = "ViewBackgrounds";
+}
+
+<h1>ViewBackgrounds</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sourcebook)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StarterGold)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonalityTraits)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ideals)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bonds)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flaws)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OtherInformation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sourcebook)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StarterGold)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonalityTraits)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ideals)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bonds)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Flaws)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OtherInformation)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BackgroundId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BackgroundId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BackgroundId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -28,8 +28,8 @@ namespace DnDesigner.Models.ImportModels
         public bool isReprinted { get; set; }
         public Hd hd { get; set; }
         public List<string> proficiency { get; set; }
-        public string spellcastingAbility { get; set; }
-        public string casterProgression { get; set; }
+        public string? spellcastingAbility { get; set; }
+        public string? casterProgression { get; set; }
         public List<int> spellsKnownProgression { get; set; }
         public StartingProficiencies startingProficiencies { get; set; }
         public StartingEquipment startingEquipment { get; set; }
@@ -54,7 +54,7 @@ namespace DnDesigner.Models.ImportModels
         public string className { get; set; }
         public string classSource { get; set; }
         public int level { get; set; }
-        public List<object> entries { get; set; }
+        public List<string> entries { get; set; }
         public int? header { get; set; }
         public bool? isClassFeatureVariant { get; set; }
     }
@@ -156,11 +156,11 @@ namespace DnDesigner.Models.ImportModels
         public int wis { get; set; }
     }
 
-    
-
     public class Skill
     {
         public Choose choose { get; set; }
+        public List<string> weapons { get; set; }
+        public List<Skill> skills { get; set; }
     }
 
     public class StartingEquipment
@@ -189,11 +189,11 @@ namespace DnDesigner.Models.ImportModels
         public string classSource { get; set; }
         public int page { get; set; }
         public List<OptionalfeatureProgression> optionalfeatureProgression { get; set; }
-        public List<string> subclassFeatures { get; set; }
+        public List<SubclassFeature5ETools> subclassFeatures { get; set; }
         public List<AdditionalSpell> additionalSpells { get; set; }
         public bool? isReprinted { get; set; }
         public List<OtherSource> otherSources { get; set; }
-        public string spellcastingAbility { get; set; }
+        public string? spellcastingAbility { get; set; }
     }
 
     public class SubclassFeature5ETools

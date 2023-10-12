@@ -2,11 +2,89 @@
 using System.Text.Json;
 using System.IO;
 using Microsoft.AspNetCore.Components.Web;
+using System.Linq;
 
 namespace DnDesigner.Models
 {
     public static class ImportData
     {
+        public static void ImportDataFrom5ETools()
+        {
+            ImportSpells();
+            ImportItems();
+            ImportRaces();
+            ImportBackgrounds();
+            ImportClasses();
+        }
+
+        private static void ImportClasses()
+        {
+            List<ClassRoot> classRoots = GetClassRoot();
+            List<Class> classes = new List<Class>();
+            List<Subclass> subclasses = new List<Subclass>();
+            foreach (ClassRoot classRoot in classRoots)
+            {
+                foreach (Class5ETools class5E in classRoot.@class)
+                {
+                    Class @class = ConvertClass(class5E);
+                    classes.Add(@class);
+                    List<Subclass5ETools> subclasses5E = classRoot.subclass.Where(s => s.className == @class.Name).ToList();
+                    foreach (Subclass5ETools subclass5E in subclasses5E)
+                    {
+                        subclasses.Add(ConvertSubclass(subclass5E, @class));
+                    }
+                }
+            }
+            //TODO: Add to database
+        }
+
+        private static void ImportBackgrounds()
+        {
+            BackgroundRoot backgroundRoot = GetBackgroundRoot();
+            List<Background> backgrounds = new List<Background>();
+            foreach (Background5ETools background5E in backgroundRoot.background)
+            {
+                backgrounds.Add(ConvertBackground(background5E));
+            }
+            //TODO: Add to database
+        }
+
+        private static void ImportRaces()
+        {
+            RaceRoot raceRoot = GetRaceRoot();
+            List<Race> races = new List<Race>();
+            foreach (Race5ETools race5E in raceRoot.race)
+            {
+                races.Add(ConvertRace(race5E));
+            }
+            //TODO: Add to database
+        }
+
+        private static void ImportItems()
+        {
+            ItemRoot itemRoot = GetItemRoot();
+            List<Item> items = new List<Item>();
+            foreach (Item5ETools item5E in itemRoot.item)
+            {
+                items.Add(ConvertItem(item5E));
+            }
+            //TODO: Add to database
+        }
+
+        private static void ImportSpells()
+        {
+            List<SpellRoot> spellRoots = GetSpellRoots();
+            List<Spell> spells = new List<Spell>();
+            foreach (SpellRoot spellRoot in spellRoots)
+            {
+                foreach (Spell5ETools spell5E in spellRoot.spell)
+                {
+                    spells.Add(ConvertSpell(spell5E));
+                }
+            }
+            //TODO: Add to database
+        }
+
         public static List<SpellRoot> GetSpellRoots()
         {
             List<SpellRoot> spellRoots = new List<SpellRoot>();
@@ -16,6 +94,7 @@ namespace DnDesigner.Models
                 spellRoots.Add(JsonSerializer.Deserialize<SpellRoot>(contents));
             }
             return spellRoots;
+            //TODO: Add to database
         }
         public static Spell ConvertSpell(Spell5ETools spell5E)
         {
@@ -47,6 +126,7 @@ namespace DnDesigner.Models
             {
                 spell.Description += entry;
             }
+            //TODO: Spell Lists
             return spell;
         }
 
@@ -166,6 +246,68 @@ namespace DnDesigner.Models
             background.Sourcebook = background5E.source;
             //TODO: basically everything
             return background;
+        }
+
+        public static List<ClassRoot> GetClassRoot()
+        {
+            List<ClassRoot> classRoots = new List<ClassRoot>();
+            foreach (string file in Directory.EnumerateFiles("Data\\5EToolsData\\class", " *.json"))
+            {
+                string contents = File.ReadAllText(file);
+                classRoots.Add(JsonSerializer.Deserialize<ClassRoot>(contents));
+            }
+            return classRoots;
+        }
+        public static Class ConvertClass(Class5ETools class5E)
+        {
+            Class @class = new Class();
+            @class.Name = class5E.name;
+            @class.Sourcebook = class5E.source;
+            @class.HitDie = class5E.hd.faces;
+            if(class5E.spellcastingAbility != null)
+            {
+                Spellcasting spellcasting = new Spellcasting();
+                spellcasting.Name = @class.Name;
+                spellcasting.SpellcastingAttribute = class5E.spellcastingAbility;
+                spellcasting.SpellcastingType = class5E.casterProgression ?? "none";
+                @class.Spellcasting = spellcasting;
+            }
+            foreach (ClassFeature5ETools feature5E in class5E.classFeatures)
+            {
+                string description = "";
+                foreach (string entry in feature5E.entries)
+                {
+                    description += entry;
+                }
+                ClassFeature feature = new ClassFeature(@class, feature5E.name, description, feature5E.level);
+                @class.Features.Add(feature);
+            }
+            //TODO: Proficiencies
+            return @class;
+        }
+        public static Subclass ConvertSubclass(Subclass5ETools subclass5E, Class @class)
+        {
+            Subclass subclass = new Subclass(@class, subclass5E.name);
+            subclass.Sourcebook = subclass5E.source;
+            if(subclass5E.spellcastingAbility != null)
+            {
+                Spellcasting spellcasting = new Spellcasting();
+                spellcasting.Name = subclass.Name;
+                spellcasting.SpellcastingAttribute = subclass5E.spellcastingAbility;
+                spellcasting.SpellcastingType = "third";
+                subclass.Spellcasting = spellcasting;
+            }
+            foreach (SubclassFeature5ETools feature5E in subclass5E.subclassFeatures)
+            {
+                string description = "";
+                foreach (string entry in feature5E.entries)
+                {
+                    description += entry;
+                }
+                SubclassFeature feature = new SubclassFeature(subclass, feature5E.name, description, feature5E.level);
+                subclass.Features.Add(feature);
+            }
+            return subclass;
         }
     }
 }

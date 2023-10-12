@@ -10,6 +10,7 @@ namespace DnDesigner.Models
     {
         public static void ImportDataFrom5ETools()
         {
+            ImportProficiencies();
             ImportSpells();
             ImportItems();
             ImportRaces();
@@ -17,7 +18,7 @@ namespace DnDesigner.Models
             ImportClasses();
         }
 
-        private static void ImportClasses()
+        public static void ImportClasses()
         {
             List<ClassRoot> classRoots = GetClassRoot();
             List<Class> classes = new List<Class>();
@@ -38,7 +39,7 @@ namespace DnDesigner.Models
             //TODO: Add to database
         }
 
-        private static void ImportBackgrounds()
+        public static void ImportBackgrounds()
         {
             BackgroundRoot backgroundRoot = GetBackgroundRoot();
             List<Background> backgrounds = new List<Background>();
@@ -49,7 +50,7 @@ namespace DnDesigner.Models
             //TODO: Add to database
         }
 
-        private static void ImportRaces()
+        public static void ImportRaces()
         {
             RaceRoot raceRoot = GetRaceRoot();
             List<Race> races = new List<Race>();
@@ -60,7 +61,7 @@ namespace DnDesigner.Models
             //TODO: Add to database
         }
 
-        private static void ImportItems()
+        public static void ImportItems()
         {
             ItemRoot itemRoot = GetItemRoot();
             List<Item> items = new List<Item>();
@@ -71,7 +72,7 @@ namespace DnDesigner.Models
             //TODO: Add to database
         }
 
-        private static void ImportSpells()
+        public static void ImportSpells()
         {
             List<SpellRoot> spellRoots = GetSpellRoots();
             List<Spell> spells = new List<Spell>();
@@ -85,6 +86,56 @@ namespace DnDesigner.Models
             //TODO: Add to database
         }
 
+        public static void ImportProficiencies()
+        {
+            List<Proficiency> proficiencies = new List<Proficiency>();
+
+            //Languages
+            string contents = File.ReadAllText("Data\\5EToolsData\\languages.json");
+            LanguageRoot languageRoot = JsonSerializer.Deserialize<LanguageRoot>(contents);
+            foreach (Language language in languageRoot.language)
+            {
+                proficiencies.Add(new Proficiency(language.name, null, "language"));
+            }
+
+            //Weapons and armor
+            proficiencies.Add(new Proficiency("Light Armor", null, "armor"));
+            proficiencies.Add(new Proficiency("Medium Armor", null, "armor"));
+            proficiencies.Add(new Proficiency("Heavy Armor", null, "armor"));
+            proficiencies.Add(new Proficiency("Shield", null, "armor"));
+            proficiencies.Add(new Proficiency("Simple Weapons", null, "weapon"));
+            proficiencies.Add(new Proficiency("Martial Weapons", null, "weapon"));
+
+            //Saving Throws
+            proficiencies.Add(new Proficiency("Strength Saving Throw", "Strength", "saving throw"));
+            proficiencies.Add(new Proficiency("Dexterity Saving Throw", "Dexterity", "saving throw"));
+            proficiencies.Add(new Proficiency("Constitution Saving Throw", "Constitution", "saving throw"));
+            proficiencies.Add(new Proficiency("Intelligence Saving Throw", "Intelligence", "saving throw"));
+            proficiencies.Add(new Proficiency("Wisdom Saving Throw", "Wisdom", "saving throw"));
+            proficiencies.Add(new Proficiency("Charisma Saving Throw", "Charisma", "saving throw"));
+
+            //Skills
+            proficiencies.Add(new Proficiency("Acrobatics", "Dexterity", "skill"));
+            proficiencies.Add(new Proficiency("Animal Handling", "Wisdom", "skill"));
+            proficiencies.Add(new Proficiency("Arcana", "Intelligence", "skill"));
+            proficiencies.Add(new Proficiency("Athletics", "Strength", "skill"));
+            proficiencies.Add(new Proficiency("Deception", "Charisma", "skill"));
+            proficiencies.Add(new Proficiency("History", "Intelligence", "skill"));
+            proficiencies.Add(new Proficiency("Insight", "Wisdom", "skill"));
+            proficiencies.Add(new Proficiency("Intimidation", "Charisma", "skill"));
+            proficiencies.Add(new Proficiency("Investigation", "Intelligence", "skill"));
+            proficiencies.Add(new Proficiency("Medicine", "Wisdom", "skill"));
+            proficiencies.Add(new Proficiency("Nature", "Intelligence", "skill"));
+            proficiencies.Add(new Proficiency("Perception", "Wisdom", "skill"));
+            proficiencies.Add(new Proficiency("Performance", "Charisma", "skill"));
+            proficiencies.Add(new Proficiency("Persuasion", "Charisma", "skill"));
+            proficiencies.Add(new Proficiency("Religion", "Intelligence", "skill"));
+            proficiencies.Add(new Proficiency("Sleight of Hand", "Dexterity", "skill"));
+            proficiencies.Add(new Proficiency("Stealth", "Dexterity", "skill"));
+            proficiencies.Add(new Proficiency("Survival", "Wisdom", "skill"));
+
+            //TODO: Add to database, add tool and instrument proficiencies
+        }
         public static List<SpellRoot> GetSpellRoots()
         {
             List<SpellRoot> spellRoots = new List<SpellRoot>();

@@ -29,18 +29,21 @@ namespace DnDesigner.Models
             List<ClassRoot> classRoots = GetClassRoot();
             List<Class> classes = new List<Class>();
             List<Subclass> subclasses = new List<Subclass>();
+            List<Class5ETools> classes5E = new List<Class5ETools>();
+            List<Subclass5ETools> subclasses5E = new List<Subclass5ETools>();
             foreach (ClassRoot classRoot in classRoots)
             {
-                foreach (Class5ETools class5E in classRoot.@class)
+                classes5E.AddRange(classRoot.@class);
+                subclasses5E.AddRange(classRoot.subclass);
+            }
+            foreach (Class5ETools class5E in classes5E)
+            {
+                Class @class = ConvertClass(class5E);
+                foreach (Subclass5ETools subclass5E in subclasses5E.Where(s => s.className == @class.Name).ToList())
                 {
-                    Class @class = ConvertClass(class5E);
-                    classes.Add(@class);
-                    List<Subclass5ETools> subclasses5E = classRoot.subclass.Where(s => s.className == @class.Name).ToList();
-                    foreach (Subclass5ETools subclass5E in subclasses5E)
-                    {
-                        subclasses.Add(ConvertSubclass(subclass5E, @class));
-                    }
+                    subclasses.Add(ConvertSubclass(subclass5E, @class));
                 }
+                classes.Add(@class);
             }
             //TODO: Add to database
         }
@@ -399,6 +402,7 @@ namespace DnDesigner.Models
                 SubclassFeature feature = new SubclassFeature(subclass, feature5E.name, description, feature5E.level);
                 subclass.Features.Add(feature);
             }
+            @class.Subclasses.Add(subclass);
             return subclass;
         }
     }

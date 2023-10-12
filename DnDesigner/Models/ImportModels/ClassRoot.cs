@@ -34,11 +34,11 @@ namespace DnDesigner.Models.ImportModels
         public StartingProficiencies startingProficiencies { get; set; }
         public StartingEquipment startingEquipment { get; set; }
         public List<ClassTableGroup> classTableGroups { get; set; }
-        public List<ClassFeature5ETools> classFeatures { get; set; }
+        public List<object> classFeatures { get; set; }
         public string subclassTitle { get; set; }
         public string preparedSpells { get; set; }
         public List<int> cantripProgression { get; set; }
-        public List<OptionalfeatureProgression> optionalfeatureProgression { get; set; }
+        public List<object> optionalfeatureProgression { get; set; }
         public Multiclassing multiclassing { get; set; }
         public List<Fluff> fluff { get; set; }
         public List<OtherSource> otherSources { get; set; }
@@ -51,8 +51,8 @@ namespace DnDesigner.Models.ImportModels
         public int page { get; set; }
         public bool srd { get; set; }
         public List<OtherSource> otherSources { get; set; }
-        public string className { get; set; }
-        public string classSource { get; set; }
+        public string? className { get; set; }
+        public string? classSource { get; set; }
         public int level { get; set; }
         public List<object> entries { get; set; }
         public int? header { get; set; }
@@ -122,9 +122,9 @@ namespace DnDesigner.Models.ImportModels
 
     public class ProficienciesGained
     {
-        public List<string> armor { get; set; }
-        public List<string> tools { get; set; }
-        public List<string> weapons { get; set; }
+        public List<object> armor { get; set; }
+        public List<object> tools { get; set; }
+        public List<object> weapons { get; set; }
         public List<ToolProficiency> toolProficiencies { get; set; }
     }
 
@@ -173,9 +173,9 @@ namespace DnDesigner.Models.ImportModels
 
     public class StartingProficiencies
     {
-        public List<string> armor { get; set; }
-        public List<string> weapons { get; set; }
-        public List<string> tools { get; set; }
+        public List<object> armor { get; set; }
+        public List<object> weapons { get; set; }
+        public List<object> tools { get; set; }
         public List<ToolProficiency> toolProficiencies { get; set; }
         public List<Skill> skills { get; set; }
     }
@@ -188,8 +188,8 @@ namespace DnDesigner.Models.ImportModels
         public string className { get; set; }
         public string classSource { get; set; }
         public int page { get; set; }
-        public List<OptionalfeatureProgression> optionalfeatureProgression { get; set; }
-        public List<SubclassFeature5ETools> subclassFeatures { get; set; }
+        public List<object> optionalfeatureProgression { get; set; }
+        public List<object> subclassFeatures { get; set; }
         public List<AdditionalSpell> additionalSpells { get; set; }
         public bool? isReprinted { get; set; }
         public List<OtherSource> otherSources { get; set; }

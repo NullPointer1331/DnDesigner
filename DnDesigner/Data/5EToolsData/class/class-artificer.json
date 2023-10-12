@@ -1560,14 +1560,7 @@
 					"name": "Alchemical Formula",
 					"featureType": [
 						"AF"
-					],
-					"progression": {
-						"1": 3,
-						"3": 1,
-						"9": 1,
-						"14": 1,
-						"17": 1
-					}
+					]
 				}
 			],
 			"subclassFeatures": [

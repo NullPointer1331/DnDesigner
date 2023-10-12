@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.AspNetCore.Components.Web;
 using System.Linq;
 using DnDesigner.Models;
+using System.Security.Claims;
 
 namespace DnDesigner.Data
 {
@@ -18,11 +19,15 @@ namespace DnDesigner.Data
             List<Class> classes = new List<Class>();
             foreach (ClassRoot classRoot in classRoots)
             {
-                foreach (Class5ETools class5E in classRoot.@class)
+                if(classRoot.@class != null)
                 {
-                    if(!class5E.source.Contains("UA"))
+                    foreach (Class5ETools class5E in classRoot.@class)
                     {
-                        classes.Add(ConvertClass(class5E));
+                        if (!class5E.source.Contains("UA"))
+                        {
+                            List<ClassFeature5ETools> classFeatures = classRoot.classFeature.Where(f => f.className == class5E.name).ToList();
+                            classes.Add(ConvertClass(class5E, classFeatures));
+                        }
                     }
                 }
             }
@@ -40,15 +45,19 @@ namespace DnDesigner.Data
             List<Subclass5ETools> subclasses5E = new List<Subclass5ETools>();
             foreach (ClassRoot classRoot in classRoots)
             {
-                subclasses5E.AddRange(classRoot.subclass);
-            }
-            foreach (Class @class in classes)
-            {
-                foreach (Subclass5ETools subclass5E in subclasses5E.Where(s => s.className == @class.Name).ToList())
+                if (classRoot.subclass != null)
                 {
-                    if(!subclass5E.source.Contains("UA"))
+                    foreach (Subclass5ETools subclass5E in classRoot.subclass)
                     {
-                        subclasses.Add(ConvertSubclass(subclass5E, @class));
+                        if (!subclass5E.source.Contains("UA"))
+                        {
+                            Class @class = classes.Where(c => c.Name == subclass5E.className).FirstOrDefault();
+                            List<SubclassFeature5ETools> subclassFeatures = classRoot.subclassFeature.Where(f => f.className == subclass5E.name).ToList();
+                            if (@class != null)
+                            {
+                                subclasses.Add(ConvertSubclass(subclass5E, @class, subclassFeatures));
+                            }
+                        }
                     }
                 }
             }
@@ -210,11 +219,16 @@ namespace DnDesigner.Data
             spell.CastingTime = $"{spell5E.time[0].number} {spell5E.time[0].unit}";
             if(spell5E.range.distance != null)
             {
-                spell.Range = $"{spell5E.range.distance.amount} {spell5E.range.distance.type}";
+                spell.Range = "";
+                if (spell5E.range.distance.amount > 0)
+                {
+                    spell.Range = spell5E.range.distance.amount.ToString();
+                }
+                spell.Range += $" {spell5E.range.distance.type}";
             }
             else
             {
-                spell.Range = "Self";
+                spell.Range = "self";
             }
             spell.Components = "";
             if (spell5E.components.v)
@@ -399,7 +413,7 @@ namespace DnDesigner.Data
             }
             return classRoots;
         }
-        public static Class ConvertClass(Class5ETools class5E)
+        public static Class ConvertClass(Class5ETools class5E, List<ClassFeature5ETools> classFeatures)
         {
             Class @class = new Class();
             @class.Name = class5E.name;
@@ -413,7 +427,7 @@ namespace DnDesigner.Data
                 spellcasting.SpellcastingType = class5E.casterProgression ?? "none";
                 @class.Spellcasting = spellcasting;
             }
-            foreach (ClassFeature5ETools feature5E in class5E.classFeatures)
+            foreach (ClassFeature5ETools feature5E in classFeatures)
             {
                 string description = "";
                 foreach (object entry in feature5E.entries)
@@ -426,7 +440,7 @@ namespace DnDesigner.Data
             //TODO: Proficiencies
             return @class;
         }
-        public static Subclass ConvertSubclass(Subclass5ETools subclass5E, Class @class)
+        public static Subclass ConvertSubclass(Subclass5ETools subclass5E, Class @class, List<SubclassFeature5ETools> subclassFeatures)
         {
             Subclass subclass = new Subclass(@class, subclass5E.name);
             subclass.Sourcebook = subclass5E.source;
@@ -438,12 +452,12 @@ namespace DnDesigner.Data
                 spellcasting.SpellcastingType = "third";
                 subclass.Spellcasting = spellcasting;
             }
-            foreach (SubclassFeature5ETools feature5E in subclass5E.subclassFeatures)
+            foreach (SubclassFeature5ETools feature5E in subclassFeatures)
             {
                 string description = "";
-                foreach (string entry in feature5E.entries)
+                foreach (object entry in feature5E.entries)
                 {
-                    description += entry;
+                    description += entry.ToString();
                 }
                 SubclassFeature feature = new SubclassFeature(subclass, feature5E.name, description, feature5E.level);
                 subclass.Features.Add(feature);

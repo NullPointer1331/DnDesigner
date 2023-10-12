@@ -38,7 +38,19 @@
                                 </li>
                             </ul>
                         </li>
-                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Data
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Data" asp-action="Import">Import Data</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Data" asp-action="ViewClasses">Display Classes</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

@@ -54,7 +54,7 @@ namespace DnDesigner.Models.ImportModels
         public string className { get; set; }
         public string classSource { get; set; }
         public int level { get; set; }
-        public List<string> entries { get; set; }
+        public List<object> entries { get; set; }
         public int? header { get; set; }
         public bool? isClassFeatureVariant { get; set; }
     }
@@ -62,15 +62,15 @@ namespace DnDesigner.Models.ImportModels
     public class ClassTableGroup
     {
         public List<string> colLabels { get; set; }
-        public List<List<int>> rows { get; set; }
+        public List<List<object>> rows { get; set; }
         public string title { get; set; }
         public List<List<int>> rowsSpellProgression { get; set; }
     }
 
     public class DefaultDatum
     {
-        public List<string> a { get; set; }
-        public List<B> b { get; set; }
+        public List<object> a { get; set; }
+        public List<object> b { get; set; }
         public List<object> _ { get; set; }
     }
 

@@ -78,6 +78,12 @@ namespace DnDesigner.Models
         {
             Proficiencies = new List<BackgroundProficiency>();
             StarterEquipment = new List<Item>();
+            BackgroundFeature = new List<BackgroundFeature>();
+            PersonalityTraits = "";
+            Ideals = "";
+            Bonds = "";
+            Flaws = "";
+            OtherInformation = "";
         }
     }
 }

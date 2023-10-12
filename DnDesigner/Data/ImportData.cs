@@ -20,7 +20,10 @@ namespace DnDesigner.Data
             {
                 foreach (Class5ETools class5E in classRoot.@class)
                 {
-                    classes.Add(ConvertClass(class5E));
+                    if(!class5E.source.Contains("UA"))
+                    {
+                        classes.Add(ConvertClass(class5E));
+                    }
                 }
             }
             return classes;
@@ -43,7 +46,10 @@ namespace DnDesigner.Data
             {
                 foreach (Subclass5ETools subclass5E in subclasses5E.Where(s => s.className == @class.Name).ToList())
                 {
-                    subclasses.Add(ConvertSubclass(subclass5E, @class));
+                    if(!subclass5E.source.Contains("UA"))
+                    {
+                        subclasses.Add(ConvertSubclass(subclass5E, @class));
+                    }
                 }
             }
             return subclasses;
@@ -58,7 +64,10 @@ namespace DnDesigner.Data
             List<Background> backgrounds = new List<Background>();
             foreach (Background5ETools background5E in backgroundRoot.background)
             {
-                backgrounds.Add(ConvertBackground(background5E));
+                if(!background5E.source.Contains("UA"))
+                {
+                    backgrounds.Add(ConvertBackground(background5E));
+                }
             }
             return backgrounds;
         }
@@ -72,7 +81,10 @@ namespace DnDesigner.Data
             List<Race> races = new List<Race>();
             foreach (Race5ETools race5E in raceRoot.race)
             {
-                races.Add(ConvertRace(race5E));
+                if(!race5E.source.Contains("UA"))
+                {
+                    races.Add(ConvertRace(race5E));
+                }
             }
             return races;
         }
@@ -86,7 +98,10 @@ namespace DnDesigner.Data
             List<Item> items = new List<Item>();
             foreach (Item5ETools item5E in itemRoot.item)
             {
-                items.Add(ConvertItem(item5E));
+                if(!item5E.source.Contains("UA"))
+                {
+                    items.Add(ConvertItem(item5E));
+                }
             }
             return items;
         }
@@ -100,9 +115,15 @@ namespace DnDesigner.Data
             List<Spell> spells = new List<Spell>();
             foreach (SpellRoot spellRoot in spellRoots)
             {
-                foreach (Spell5ETools spell5E in spellRoot.spell)
+                if (spellRoot.spell != null)
                 {
-                    spells.Add(ConvertSpell(spell5E));
+                    foreach (Spell5ETools spell5E in spellRoot.spell)
+                    {
+                        if (!spell5E.source.Contains("UA"))
+                        {
+                            spells.Add(ConvertSpell(spell5E));
+                        }
+                    }
                 }
             }
             return spells;
@@ -121,7 +142,11 @@ namespace DnDesigner.Data
             LanguageRoot languageRoot = JsonSerializer.Deserialize<LanguageRoot>(contents);
             foreach (Language language in languageRoot.language)
             {
-                proficiencies.Add(new Proficiency(language.name, null, "language"));
+                Proficiency proficiency = new Proficiency(language.name, null, "language");
+                if(proficiencies.Where(p => p.Name == proficiency.Name) == null)
+                {
+                    proficiencies.Add(proficiency);
+                }
             }
 
             //Weapons and armor
@@ -167,7 +192,7 @@ namespace DnDesigner.Data
         public static List<SpellRoot> GetSpellRoots()
         {
             List<SpellRoot> spellRoots = new List<SpellRoot>();
-            foreach (string file in Directory.EnumerateFiles("Data\\5EToolsData\\spells", " *.json"))
+            foreach (string file in Directory.EnumerateFiles("Data\\5EToolsData\\spells", "*.json"))
             {
                 string contents = File.ReadAllText(file);
                 spellRoots.Add(JsonSerializer.Deserialize<SpellRoot>(contents));
@@ -183,7 +208,14 @@ namespace DnDesigner.Data
             spell.SpellLevel = spell5E.level;
             spell.SpellSchool = spell5E.school;
             spell.CastingTime = $"{spell5E.time[0].number} {spell5E.time[0].unit}";
-            spell.Range = $"{spell5E.range.distance.amount} {spell5E.range.distance.type}";
+            if(spell5E.range.distance != null)
+            {
+                spell.Range = $"{spell5E.range.distance.amount} {spell5E.range.distance.type}";
+            }
+            else
+            {
+                spell.Range = "Self";
+            }
             spell.Components = "";
             if (spell5E.components.v)
             {
@@ -199,11 +231,18 @@ namespace DnDesigner.Data
             }
             spell.Duration = $"{spell5E.duration[0].amount} {spell5E.duration[0].type}";
             spell.RequiresConcentration = spell5E.duration[0].concentration ?? false;
-            spell.IsRitual = spell5E.meta.ritual;
-            spell.Description = "";
-            foreach (string entry in spell5E.entries)
+            if(spell5E.meta != null)
             {
-                spell.Description += entry;
+                spell.IsRitual = spell5E.meta.ritual ?? false;
+            }
+            else
+            {
+                spell.IsRitual = false;
+            }
+            spell.Description = "";
+            foreach (object entry in spell5E.entries)
+            {
+                spell.Description += entry.ToString();
             }
             //TODO: Spell Lists
             return spell;
@@ -227,7 +266,7 @@ namespace DnDesigner.Data
                     item.Description += entry.ToString();
                 }
             }
-            item.Price = item5E.value ?? 0; //Might be the wrong unit
+            item.Price = item5E.value / 100 ?? 0; 
             item.Weight = item5E.weight ?? 0;
             if (item5E.reqAttune != null && item5E.reqAttune.ToString().ToLower().Equals("true"))
             {
@@ -269,6 +308,10 @@ namespace DnDesigner.Data
                 {
                     item.Equipable = 3;
                 }
+            }
+            else
+            {
+                item.Traits = "";
             }
             return item;
         }
@@ -349,7 +392,7 @@ namespace DnDesigner.Data
         public static List<ClassRoot> GetClassRoot()
         {
             List<ClassRoot> classRoots = new List<ClassRoot>();
-            foreach (string file in Directory.EnumerateFiles("Data\\5EToolsData\\class", " *.json"))
+            foreach (string file in Directory.EnumerateFiles("Data\\5EToolsData\\class", "*.json"))
             {
                 string contents = File.ReadAllText(file);
                 classRoots.Add(JsonSerializer.Deserialize<ClassRoot>(contents));
@@ -373,9 +416,9 @@ namespace DnDesigner.Data
             foreach (ClassFeature5ETools feature5E in class5E.classFeatures)
             {
                 string description = "";
-                foreach (string entry in feature5E.entries)
+                foreach (object entry in feature5E.entries)
                 {
-                    description += entry;
+                    description += entry.ToString();
                 }
                 ClassFeature feature = new ClassFeature(@class, feature5E.name, description, feature5E.level);
                 @class.Features.Add(feature);

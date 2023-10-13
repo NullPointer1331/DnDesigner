@@ -56,11 +56,20 @@ namespace DnDesigner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CharacterId,Name,Level,ProficiencyBonus,MaxHealth,CurrentHealth,TempHealth,AvailableHitDice,HitDieType,WalkingSpeed,Strength,Dexterity,Constitution,Intelligence,Wisdom,Charisma,Resistances,Immunities,Vulnerabilities")] Character character)
+        public async Task<IActionResult> Create(CreateCharacterViewModel character)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(character);
+                Character newCharacter = new()
+                {
+                    Name = character.Name,
+                    Level = character.Level,
+                    Classes = character.Classes,
+                    Background = character.Background,
+                    Proficiencies = character.Proficiencies,
+                };
+
+                _context.Add(newCharacter);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

@@ -47,29 +47,9 @@ namespace DnDesigner.Models
         public int StarterGold { get; set; }
 
         /// <summary>
-        /// Suggested personality traits for this background
+        /// The description of this background
         /// </summary>
-        public string PersonalityTraits { get; set; }
-
-        /// <summary>
-        /// Suggested ideals for this background
-        /// </summary>
-        public string Ideals { get; set; }
-
-        /// <summary>
-        /// Suggested bonds for this background
-        /// </summary>
-        public string Bonds { get; set; }
-
-        /// <summary>
-        /// Suggested flaws for this background
-        /// </summary>
-        public string Flaws { get; set; }
-
-        /// <summary>
-        /// Other information about this background
-        /// </summary>
-        public string OtherInformation { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Minimal constructor, Initializes lists and leaves everything else blank
@@ -79,11 +59,7 @@ namespace DnDesigner.Models
             Proficiencies = new List<BackgroundProficiency>();
             StarterEquipment = new List<Item>();
             BackgroundFeature = new List<BackgroundFeature>();
-            PersonalityTraits = "";
-            Ideals = "";
-            Bonds = "";
-            Flaws = "";
-            OtherInformation = "";
+            Description = "";
         }
     }
 }

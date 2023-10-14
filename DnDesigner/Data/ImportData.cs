@@ -399,7 +399,15 @@ namespace DnDesigner.Data
             Background background = new Background();
             background.Name = background5E.name;
             background.Sourcebook = background5E.source;
-            //TODO: basically everything
+            background.Description = "";
+            if (background5E.entries != null)
+            {
+                foreach (object entry in background5E.entries)
+                {
+                    background.Description += entry.ToString();
+                }
+            }
+            //TODO: proficiencies, equipment, features
             return background;
         }
 

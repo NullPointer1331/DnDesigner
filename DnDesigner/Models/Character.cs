@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DnDesigner.Models
@@ -131,11 +132,37 @@ namespace DnDesigner.Models
 
     public class CreateCharacterViewModel
     {
+        /// <summary>
+        /// The name of the character
+        /// </summary>
+        [DefaultValue("Unnamed Character")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// The level of the character.
+        /// Cannot be more than 20, or less than 1.
+        /// </summary>
+        [Range(1, 20)]
         public int Level { get; set; }
+
+        /// <summary>
+        /// The classes the character has.
+        /// </summary>
         public List<CharacterClass> Classes { get; set; }
+
+        /// <summary>
+        /// The background of the character.
+        /// </summary>
         public Background Background { get; set; }
+
+        /// <summary>
+        /// The proficiencies the character has.
+        /// </summary>
         public List<CharacterProficiency> Proficiencies { get; set; }
+
+        /// <summary>
+        /// The spellcasting ability of the character, if they have one.
+        /// </summary>
         public List<CharacterSpellcasting> Spellcasting { get; set; }
     }
 }

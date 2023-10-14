@@ -50,12 +50,17 @@ namespace DnDesigner.Models.ImportModels
     {
         public bool isFeature { get; set; }
     }
-
+    public class EntryItem
+    {
+        public string type { get; set; }
+        public string name { get; set; }
+        public object entry { get; set; }
+    }
     public class Entries
     {
         public string mode { get; set; }
         public int index { get; set; }
-        public object items { get; set; }
+        public List<EntryItem> items { get; set; }
         public string replace { get; set; }
         public string type { get; set; }
         public string style { get; set; }

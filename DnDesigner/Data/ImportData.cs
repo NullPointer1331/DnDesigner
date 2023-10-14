@@ -402,9 +402,26 @@ namespace DnDesigner.Data
             background.Description = "";
             if (background5E.entries != null)
             {
-                foreach (object entry in background5E.entries)
+                foreach (Entries entry in background5E.entries)
                 {
-                    background.Description += entry.ToString();
+                    if (entry.items != null)
+                    {
+                        foreach (EntryItem item in entry.items)
+                        {
+                            background.Description += $"{item.name} ";
+                            if (item.entry != null)
+                            {
+                                background.Description += item.entry.ToString();
+                            }
+                        }
+                    }
+                    if (entry.entries != null)
+                    {
+                        foreach (object subEntry in entry.entries)
+                        {
+                            background.Description += subEntry.ToString();
+                        }
+                    }
                 }
             }
             //TODO: proficiencies, equipment, features

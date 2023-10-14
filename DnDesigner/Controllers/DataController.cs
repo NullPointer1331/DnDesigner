@@ -45,6 +45,15 @@ namespace DnDesigner.Controllers
         {
             return View(await _context.Subclasses.ToListAsync());
         }
+        public async Task<IActionResult> ViewFeatures()
+        {
+            List<Feature> features = new List<Feature>();
+            features.AddRange(await _context.ClassFeatures.ToListAsync());
+            features.AddRange(await _context.SubclassFeatures.ToListAsync());
+            features.AddRange(await _context.BackgroundFeatures.ToListAsync());
+            features.AddRange(await _context.RaceFeatures.ToListAsync());
+            return View(features);
+        }
         public async Task<IActionResult> Import()
         {
             List<Proficiency> proficiencies = ImportData.ExtractProficiencies();

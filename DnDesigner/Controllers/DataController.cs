@@ -56,13 +56,13 @@ namespace DnDesigner.Controllers
         }
         public async Task<IActionResult> Import()
         {
-            List<Proficiency> proficiencies = ImportData.ExtractProficiencies();
             List<Item> items = ImportData.ExtractItems();
-            List<Spell> spells = ImportData.ExtractSpells(); //Doesn't seem to work yet
+            List<Proficiency> proficiencies = ImportData.ExtractProficiencies(items);
+            List<Spell> spells = ImportData.ExtractSpells(); 
             List<Background> backgrounds = ImportData.ExtractBackgrounds();
             List<Race> races = ImportData.ExtractRaces();
-            List<Class> classes = ImportData.ExtractClasses(); //Doesn't seem to work yet
-            List<Subclass> subclasses = ImportData.ExtractSubclasses(classes); //Doesn't seem to work yet
+            List<Class> classes = ImportData.ExtractClasses(); 
+            List<Subclass> subclasses = ImportData.ExtractSubclasses(classes); 
 
             _context.Proficiencies.AddRange(proficiencies);
             _context.Items.AddRange(items);

@@ -142,7 +142,7 @@ namespace DnDesigner.Data
         /// Extracts Language Data from the 5ETools JSON files and returns it as a list of Proficiencies
         /// Also includes a list of hardcoded proficiencies
         /// </summary>
-        public static List<Proficiency> ExtractProficiencies()
+        public static List<Proficiency> ExtractProficiencies(List<Item> items)
         {
             List<Proficiency> proficiencies = new List<Proficiency>();
 
@@ -155,6 +155,27 @@ namespace DnDesigner.Data
                 if(proficiencies.Where(p => p.Name == proficiency.Name).Count() == 0)
                 {
                     proficiencies.Add(proficiency);
+                }
+            }
+
+            //Tools and Instruments
+            foreach (Item item in items)
+            {
+                if(item.Traits.Contains("Tool"))
+                {
+                    Proficiency proficiency = new Proficiency(item.Name, null, "tool");
+                    if (proficiencies.Where(p => p.Name == proficiency.Name).Count() == 0)
+                    {
+                        proficiencies.Add(proficiency);
+                    }
+                }
+                else if (item.Traits.Contains("Instrument"))
+                {
+                    Proficiency proficiency = new Proficiency(item.Name, null, "instrument");
+                    if (proficiencies.Where(p => p.Name == proficiency.Name).Count() == 0)
+                    {
+                        proficiencies.Add(proficiency);
+                    }
                 }
             }
 
@@ -353,33 +374,25 @@ namespace DnDesigner.Data
             }
             item.Traits = DecodeTraits(item.Traits);
             item.Equipable = 0;
-            if (item.Traits != null)
+            if (item.Traits.Contains("Armor"))
             {
-                string traits = item.Traits.ToLower();
-                if (traits.Contains("Armor"))
-                {
-                    item.Equipable = 1;
-                }
-                else if (traits.Contains("Light"))
-                {
-                    item.Equipable = 4;
-                }
-                else if (traits.Contains("2 Handed"))
-                {
-                    item.Equipable = 5;
-                }
-                else if (traits.Contains("Weapon"))
-                {
-                    item.Equipable = 2;
-                }
-                else if (traits.Contains("Shield"))
-                {
-                    item.Equipable = 3;
-                }
+                item.Equipable = 1;
             }
-            else
+            else if (item.Traits.Contains("Light"))
             {
-                item.Traits = "";
+                item.Equipable = 4;
+            }
+            else if (item.Traits.Contains("2 Handed"))
+            {
+                item.Equipable = 5;
+            }
+            else if (item.Traits.Contains("Weapon"))
+            {
+                item.Equipable = 2;
+            }
+            else if (item.Traits.Contains("Shield"))
+            {
+                item.Equipable = 3;
             }
             return item;
         }

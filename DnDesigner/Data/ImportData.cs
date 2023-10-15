@@ -215,7 +215,38 @@ namespace DnDesigner.Data
             spell.Name = spell5E.name;
             spell.Sourcebook = spell5E.source;
             spell.SpellLevel = spell5E.level;
-            spell.SpellSchool = spell5E.school;
+            if(spell5E.school == "A")
+            {
+                spell.SpellSchool = "Abjuration";
+            }
+            else if (spell5E.school == "C")
+            {
+                spell.SpellSchool = "Conjuration";
+            }
+            else if(spell5E.school == "D")
+            {
+                spell.SpellSchool = "Divination";
+            }
+            else if(spell5E.school == "E")
+            {
+                spell.SpellSchool = "Enchantment";
+            }
+            else if(spell5E.school == "I")
+            {
+                spell.SpellSchool = "Illusion";
+            }
+            else if(spell5E.school == "N")
+            {
+                spell.SpellSchool = "Necromancy";
+            }
+            else if(spell5E.school == "T")
+            {
+                spell.SpellSchool = "Transmutation";
+            }
+            else if(spell5E.school == "V")
+            {
+                spell.SpellSchool = "Evocation";
+            }
             spell.CastingTime = $"{spell5E.time[0].number} {spell5E.time[0].unit}";
             if(spell5E.range.distance != null)
             {
@@ -243,7 +274,14 @@ namespace DnDesigner.Data
             {
                 spell.Components += $"M ({spell5E.components.m})";
             }
-            spell.Duration = $"{spell5E.duration[0].amount} {spell5E.duration[0].type}";
+            if(spell5E.duration[0].type == "instant")
+            {
+                spell.Duration = "instantaneous";
+            }
+            else
+            {
+                spell.Duration = $"{spell5E.duration[0].amount} {spell5E.duration[0].type}";
+            }
             spell.RequiresConcentration = spell5E.duration[0].concentration ?? false;
             if(spell5E.meta != null)
             {
@@ -291,34 +329,50 @@ namespace DnDesigner.Data
                 item.Attuneable = false;
             }
 
-            item.Traits = item5E.type;
+            if(item5E.wondrous)
+            {
+                item.Traits = "WI ";
+            }
+            else
+            {
+                item.Traits = $"{item5E.type} ";
+            }
             if (item5E.property != null)
             {
                 foreach (string trait in item5E.property)
                 {
-                    item.Traits += $", {trait}";
+                    if(trait == "T")
+                    {
+                        item.Traits = "TH ";
+                    }
+                    else
+                    {
+                        item.Traits += $"{trait} ";
+                    }
                 }
             }
+            item.Traits = DecodeTraits(item.Traits);
             item.Equipable = 0;
             if (item.Traits != null)
             {
                 string traits = item.Traits.ToLower();
-                if (traits.Contains("armor"))
+                if (traits.Contains("Armor"))
                 {
                     item.Equipable = 1;
                 }
-                else if (traits.Contains("weapon"))
+                else if (traits.Contains("Light"))
                 {
-                    if (traits.Contains("light"))
-                    {
-                        item.Equipable = 4;
-                    }
-                    else
-                    {
-                        item.Equipable = 2;
-                    }
+                    item.Equipable = 4;
                 }
-                else if (traits.Contains("shield"))
+                else if (traits.Contains("2 Handed"))
+                {
+                    item.Equipable = 5;
+                }
+                else if (traits.Contains("Weapon"))
+                {
+                    item.Equipable = 2;
+                }
+                else if (traits.Contains("Shield"))
                 {
                     item.Equipable = 3;
                 }
@@ -329,7 +383,74 @@ namespace DnDesigner.Data
             }
             return item;
         }
-
+        public static string DecodeTraits(string traits)
+        {
+            string allTraits = "";
+            if(traits != null)
+            {
+                string[] traitList = traits.Trim().Split(" ");
+                Dictionary<string, string> dict = new Dictionary<string, string>
+            {
+                {"A", "Ammunition" },
+                {"G", "Adventuring Gear" },
+                {"AT", "Artisan's Tools" },
+                {"ER", "Extended Reach" },
+                {"EXP", "Explosive" },
+                {"H", "Heavy" },
+                {"HA", "Heavy Armor" },
+                {"2H", "2 Handed" },
+                {"GS", "Gaming Set" },
+                {"IDG", "Illegal Drug" },
+                { "INS", "Instrument" },
+                { "L", "Light" },
+                { "LA", "Light Armor" },
+                { "LD", "Loading" },
+                {"MA", "Medium Armor" },
+                { "M", "Melee Weapon" },
+                {"R", "Ranged Weapon" },
+                {"S", "Shield" },
+                {"SC", "Sroll" },
+                {"SCF", "Spellcasting Focus" },
+                { "RD", "Rod" },
+                { "RG", "Ring" },
+                { "P", "Potion" },
+                { "$", "Treasure" },
+                { "FD", "Food and Drink" },
+                { "F", "Finesse" },
+                {"T", "Tool" },
+                {"TH", "Thrown" },
+                {"TAH", "Tack and Harness" },
+                {"OTH", "Other" },
+                {"TG", "Trade Good" },
+                {"V", "Versatile" },
+                {"Vst", "Vestige" },
+                {"SPC", "Vehicle (space)" },
+                {"SHC", "Vehicle (water)" },
+                {"AIR", "Vehicle (air)" },
+                {"VEH", "Vehicle (land)" },
+                {"MNT", "Mount" },
+                {"WD", "Wand" },
+                {"WI", "Wondrous Item" }
+            };
+                if (traitList.Length > 0)
+                {
+                    if (dict.ContainsKey(traitList[0]))
+                    {
+                        traitList[0] = dict[traitList[0]];
+                    }
+                }
+                for (int i = 1; i < traitList.Length; i++)
+                {
+                    if (dict.ContainsKey(traitList[i]))
+                    {
+                        traitList[i] = $", {dict[traitList[i]]}";
+                    }
+                }
+                foreach (string trait in traitList)
+                { allTraits += trait; }
+            }
+            return allTraits;
+        }
         public static RaceRoot GetRaceRoot()
         {
             string contents = File.ReadAllText("Data\\5EToolsData\\races.json");

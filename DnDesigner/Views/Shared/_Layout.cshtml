@@ -25,8 +25,54 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+<<<<<<< HEAD
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Characters" asp-action="Index">Characters</a>
+=======
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Characters
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Characters" asp-action="Index">Current Characters</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Characters" asp-action="Create">Create New Character</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Data
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Data" asp-action="Import">Import Data</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Data" asp-action="ViewProficiencies">Display Proficiencies</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Data" asp-action="ViewBackgrounds">Display Backgrounds</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Data" asp-action="ViewItems">Display Items</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Data" asp-action="ViewRaces">Display Races</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Data" asp-action="ViewSpells">Display Spells</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Data" asp-action="ViewClasses">Display Classes</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Data" asp-action="ViewSubclasses">Display Subclasses</a>
+                                </li>
+                            </ul>
+>>>>>>> main
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

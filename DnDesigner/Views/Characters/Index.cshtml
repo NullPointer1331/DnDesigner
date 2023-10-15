@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<DnDesigner.Models.Character>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Characters";
 }
 
-<h1>Index</h1>
+<h1>Current Characters</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New Character</a>
 </p>
 <table class="table">
     <thead>
@@ -19,52 +19,10 @@
                 @Html.DisplayNameFor(model => model.Level)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProficiencyBonus)
+                @Html.DisplayNameFor(model => model.Race)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaxHealth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CurrentHealth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TempHealth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AvailableHitDice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HitDieType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WalkingSpeed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Strength)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Dexterity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Constitution)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Intelligence)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Wisdom)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Charisma)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Resistances)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Immunities)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vulnerabilities)
+                @Html.DisplayNameFor(model => model.Classes)
             </th>
             <th></th>
         </tr>
@@ -79,52 +37,17 @@
                 @Html.DisplayFor(modelItem => item.Level)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProficiencyBonus)
+                @Html.DisplayFor(modelItem => item.Race.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaxHealth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentHealth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TempHealth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AvailableHitDice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HitDieType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WalkingSpeed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Strength)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dexterity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Constitution)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Intelligence)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Wisdom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Charisma)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Resistances)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Immunities)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vulnerabilities)
+                @foreach (CharacterClass Class in item.Classes)
+                {
+                    @Html.DisplayFor(modelItem => Class.Class.Name)
+                    if (Class.Subclass != null)
+                    {
+                        @Html.DisplayFor(modelItem => Class.Subclass.Name)
+                    }
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CharacterId">Edit</a> |

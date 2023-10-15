@@ -44,7 +44,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The gold this background gives
         /// </summary>
-        int StarterGold { get; set; }
+        public int StarterGold { get; set; }
 
         /// <summary>
         /// Suggested personality traits for this background
@@ -78,6 +78,12 @@ namespace DnDesigner.Models
         {
             Proficiencies = new List<BackgroundProficiency>();
             StarterEquipment = new List<Item>();
+            BackgroundFeature = new List<BackgroundFeature>();
+            PersonalityTraits = "";
+            Ideals = "";
+            Bonds = "";
+            Flaws = "";
+            OtherInformation = "";
         }
     }
 }

@@ -1,0 +1,6319 @@
+{
+	"_meta": {
+		"internalCopies": [
+			"itemFluff"
+		]
+	},
+	"itemFluff": [
+		{
+			"name": "+2 Ring of Protection",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Ring of Protection",
+				"source": "DMG"
+			}
+		},
+		{
+			"name": "Adze of Annam",
+			"source": "BGG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGG/Adze of Annam.webp"
+					},
+					"credit": "Isabel Gibney"
+				}
+			]
+		},
+		{
+			"name": "Agony",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/Agony.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "A spiked three-headed flail with four meat hooks attached by chains."
+				}
+			]
+		},
+		{
+			"name": "Agony (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Agony",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Agony (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Agony",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Agony (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Agony",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Akmon, Hammer of Purphoros",
+			"source": "MOT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/MOT/Akmon, Hammer of Purphoros.jpg"
+					},
+					"credit": "Yeong-Hao Han"
+				}
+			]
+		},
+		{
+			"name": "Alchemy Jug",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Alchemy Jug.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Amulet of Health",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Amulet of Health.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Amulet of Proof against Detection and Location",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Amulet of Proof against Detection and Location.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Amulet of the Drunkard",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Amulet of the Drunkard.png"
+					},
+					"credit": "Olga Drebas"
+				}
+			]
+		},
+		{
+			"name": "Amulet of the Planes",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Amulet of the Planes.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Animated Shield",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Animated Shield.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Apparatus of Kwalish",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Apparatus of Kwalish.jpg"
+					},
+					"credit": "Aaron Hübrich"
+				}
+			]
+		},
+		{
+			"name": "Armblade",
+			"source": "ERLW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/ERLW/Armblade.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Armor of Invulnerability",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Armor of Invulnerability.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Armor of Resistance",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Armor of Resistance.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Armor of the Valiant Soul",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/ArmoroftheValiantSoul.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "Black dragon-scale armor with a red sash, gold shoulder plates, and an emerald breastplate and collar with draconic markings."
+				}
+			]
+		},
+		{
+			"name": "Armor of the Valiant Soul (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Armor of the Valiant Soul",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Armor of the Valiant Soul (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Armor of the Valiant Soul",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Armor of the Valiant Soul (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Armor of the Valiant Soul",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Arrow of Slaying (*)",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Arrow of Slaying.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Atlas of Endless Horizons",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Atlas of Endless Horizons.png"
+					},
+					"credit": "Andrew Mar"
+				}
+			]
+		},
+		{
+			"name": "Axe of the Dwarvish Lords",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Axe of the Dwarvish Lords.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Azorius Guild Signet",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Azorius Guild Signet.jpg"
+					},
+					"credit": "Raoul Vitale"
+				}
+			]
+		},
+		{
+			"name": "Azorius Keyrune",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Azorius Keyrune.jpg"
+					},
+					"credit": "Daniel Ljunggren"
+				}
+			]
+		},
+		{
+			"name": "Baba Yaga's Mortar and Pestle",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Baba Yaga's Mortar and Pestle.png"
+					},
+					"credit": "Irina Nordsol"
+				}
+			]
+		},
+		{
+			"name": "Badge of the Watch",
+			"source": "WDH",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WDH/Badge of the Watch.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Bag of Beans",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Bag of Beans.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Bag of Devouring",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Bag of Devouring.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Bag of Holding",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Bag of Holding.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Bag of Tricks",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Bag of Tricks.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Battle Standard of Infernal Power",
+			"source": "BGDIA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGDIA/Battle Standard of Infernal Power.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Belt of Dwarvenkind",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Belt of Dwarvenkind.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Belt of Giant Strength",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Belt of Giant Strength.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Belt of Stone Giant Strength",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Belt of Stone Giant Strength.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Belt of Storm Giant Strength",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Belt of Storm Giant Strength.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Berserker Axe",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Berserker Axe.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Bigby's Beneficent Bracelet",
+			"source": "BGG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGG/Bigbys Beneficent Bracelet.webp"
+					},
+					"credit": "Isabel Gibney"
+				}
+			]
+		},
+		{
+			"name": "Blood Spear",
+			"source": "CoS",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CoS/Blood Spear.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Book of Exalted Deeds",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Book of Exalted Deeds.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Book of Vile Darkness",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Book of Vile Darkness.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Book of Vile Darkness (Variant)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Book of Vile Darkness",
+				"source": "DMG"
+			}
+		},
+		{
+			"name": "Boots of Elvenkind",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Boots of Elvenkind.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Boots of Speed",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Boots of Speed.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Boots of Striding and Springing",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Boots of Striding and Springing.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Boots of the Winterlands",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Boots of the Winterlands.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Boros Guild Signet",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Boros Guild Signet.jpg"
+					},
+					"credit": "Mike Sass"
+				}
+			]
+		},
+		{
+			"name": "Boros Keyrune",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Boros Keyrune.jpg"
+					},
+					"credit": "Daniel Ljunggren"
+				}
+			]
+		},
+		{
+			"name": "Bowl of Commanding Water Elementals",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Bowl of Commanding Water Elementals.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Bracers of Archery",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Bracers of Archery.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Bracers of Defense",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Bracers of Defense.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Brazier of Commanding Fire Elementals",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Brazier of Commanding Fire Elementals.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Brooch of Shielding",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Brooch of Shielding.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Broom of Flying",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Broom of Flying.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Butcher's Bib",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Butcher's Bib.png"
+					},
+					"credit": "Olga Drebas"
+				}
+			]
+		},
+		{
+			"name": "Cabal's Ruin",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/CabalsRuin.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "A mystical dark blue cloak with metallic, flowing embroidered designs."
+				}
+			]
+		},
+		{
+			"name": "Cabal's Ruin (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Cabal's Ruin",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Cabal's Ruin (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Cabal's Ruin",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Cabal's Ruin (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Cabal's Ruin",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Candle of Invocation",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Candle of Invocation.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Cape of the Mountebank",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Cape of the Mountebank.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Cartographer's Map Case",
+			"source": "AI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/cartographers-map-case.png"
+					},
+					"credit": "Chris Walton"
+				}
+			]
+		},
+		{
+			"name": "Cauldron of Rebirth",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Cauldron of Rebirth.png"
+					},
+					"credit": "Zuzanna Wuzyk"
+				}
+			]
+		},
+		{
+			"name": "Censer of Controlling Air Elementals",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Censer of Controlling Air Elementals.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Chime of Opening",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Chime of Opening.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Circlet of Barbed Vision",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/CircletofBarbedVision.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "A mystical dark blue cloak with metallic, flowing embroidered designs."
+				}
+			]
+		},
+		{
+			"name": "Circlet of Barbed Vision (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Circlet of Barbed Vision",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Circlet of Barbed Vision (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Circlet of Barbed Vision",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Circlet of Barbed Vision (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Circlet of Barbed Vision",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Circlet of Blasting",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Circlet of Blasting.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Cloak of Displacement",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Cloak of Displacement.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Cloak of Elvenkind",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Cloak of Elvenkind.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Cloak of Invisibility",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Cloak of Invisibility.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Cloak of Many Fashions",
+			"source": "XGE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/XGE/Cloak of Many Fashions.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Cloak of Protection",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Cloak of Protection.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Cloak of the Manta Ray",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Cloak of the Manta Ray.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Coin of Decisionry",
+			"source": "AI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/coin-of-decisionry.png"
+					},
+					"credit": "Chris Walton"
+				}
+			]
+		},
+		{
+			"name": "Conch of Teleportation",
+			"source": "SKT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/SKT/Conch of Teleportation.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Condemner",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/Condemner.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "A black, shadowed crossbow with intricate markings and an illuminated green drawstring and patterns."
+				}
+			]
+		},
+		{
+			"name": "Condemner (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Condemner",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Condemner (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Condemner",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Condemner (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Condemner",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Constantori's Portrait",
+			"source": "KftGV",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/KftGV/Constantoris Portrait.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Copper (cp)",
+			"source": "PHB",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PHB/Copper (cp).jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Crook of Rao",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Crook of Rao.png"
+					},
+					"credit": "Robson Michel"
+				}
+			]
+		},
+		{
+			"name": "Crystalline Chronicle",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Crystalline Chronicle.png"
+					},
+					"credit": "Irina Nordsol"
+				}
+			]
+		},
+		{
+			"name": "Cube of Force",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Cube of Force.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Cubic Gate",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Cubic Gate.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Daern's Instant Fortress",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Daern's Instant Fortress.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dagger of Denial",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/DaggerofDenial.webp"
+					},
+					"credit": "{@link Stanislav Dikolenko|https://artstation.com/stsdklnk}",
+					"altText": "The Dagger of Denial: a long, thin pointed silver dagger with an ivory coloured hilt crossing in front of an ivory sheath with a silver ends."
+				}
+			]
+		},
+		{
+			"name": "Dagger of Venom",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Dagger of Venom.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dancing Sword",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Dancing Sword.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Danoth's Visor",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Danoth's Visor.png"
+					},
+					"credit": "Irina Nordsol"
+				}
+			]
+		},
+		{
+			"name": "Danoth's Visor (Awakened)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Danoth's Visor",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Danoth's Visor (Dormant)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Danoth's Visor",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Danoth's Visor (Exalted)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Danoth's Visor",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Dawnbringer",
+			"source": "OotA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/OotA/Dawnbringer.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Deathwalker's Ward",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/DeathwalkersWard.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "Black leather armor with intricate emrboidery, the shoulders consisting of black raven feathers."
+				}
+			]
+		},
+		{
+			"name": "Deathwalker's Ward (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Deathwalker's Ward",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Deathwalker's Ward (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Deathwalker's Ward",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Deathwalker's Ward (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Deathwalker's Ward",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Decanter of Endless Water",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Decanter of Endless Water.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Deck of Many Things",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Deck of Many Things.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Defender",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Defender.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dekella, Bident of Thassa",
+			"source": "MOT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/MOT/Dekella, Bident of Thassa.jpg"
+					},
+					"credit": "Yeong-Hao Han"
+				}
+			]
+		},
+		{
+			"name": "Demon Armor",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Demon Armor.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Demonomicon of Iggwilv",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Demonomicon of Iggwilv.png"
+					},
+					"credit": "David Sladek"
+				}
+			]
+		},
+		{
+			"name": "Devotee's Censer",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Devotee's Censer.png"
+					},
+					"credit": "Irina Nordsol"
+				}
+			]
+		},
+		{
+			"name": "Dimensional Shackles",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Dimensional Shackles.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dimir Guild Signet",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Dimir Guild Signet.jpg"
+					},
+					"credit": "Raoul Vitale"
+				}
+			]
+		},
+		{
+			"name": "Dimir Keyrune",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Dimir Keyrune.jpg"
+					},
+					"credit": "Daniel Ljunggren"
+				}
+			]
+		},
+		{
+			"name": "Documancy Satchel",
+			"source": "AI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/documancy-satchel.png"
+					},
+					"credit": "Chris Walton"
+				}
+			]
+		},
+		{
+			"name": "Double-Bladed Scimitar",
+			"source": "ERLW",
+			"entries": [
+				{
+					"type": "entries",
+					"entries": [
+						{
+							"type": "entries",
+							"entries": [
+								"The double-bladed scimitar is the signature weapon of Valenar elves. A haft of fine wood supports a long, curving blade on either end. Forged with techniques honed over centuries, these blades are strong, sharp, and remarkably light. Each scimitar is a masterpiece, and as a result the double-bladed scimitar is an expensive weapon (100 gp)\u2014few though ever have the opportunity to purchase one. A Valenar blade in the hands of a non-elf is generally assumed to have been stolen or looted from a fallen foe, and a Valenar elf might feel entitled to demand its return or challenge the bearer to prove they're worthy to wield it."
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Draakhorn",
+			"source": "RoT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/RoT/Draakhorn.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dragon Scale Mail",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Dragon Scale Mail.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dragon Slayer",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Dragon Slayer.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dragonstaff of Ahghairon",
+			"source": "WDH",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WDH/Dragonstaff of Ahghairon.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dragontooth Dagger",
+			"source": "RoT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/RoT/Dragontooth Dagger.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dread Helm",
+			"source": "XGE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/XGE/Dread Helm.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Driftglobe",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Driftglobe.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Drown",
+			"source": "PotA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PotA/Drown.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Duskcrusher",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Duskcrusher.png"
+					},
+					"credit": "Olga Drebas"
+				}
+			]
+		},
+		{
+			"name": "Dust of Disappearance",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Dust of Disappearance.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dust of Sneezing and Choking",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Dust of Sneezing and Choking.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dwarven Plate",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Dwarven Plate.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dwarven Thrower",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Dwarven Thrower.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Earring of Message",
+			"source": "CRCotN",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CRCotN/Earring of Message.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Efreeti Bottle",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Efreeti Bottle.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Efreeti Chain",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Efreeti Chain.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Electrum (ep)",
+			"source": "PHB",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PHB/Electrum (ep).jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Elemental Gem",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Elemental Gem.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Elven Chain",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Elven Chain.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ephixis, Bow of Nylea",
+			"source": "MOT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/MOT/Ephixis, Bow of Nylea.jpg"
+					},
+					"credit": "Yeong-Hao Han"
+				}
+			]
+		},
+		{
+			"name": "Eversmoking Bottle",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Eversmoking Bottle.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Eye of Vecna",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Eye of Vecna.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Eyes of Charming",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Eyes of Charming.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Eyes of the Eagle",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Eyes of the Eagle.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Far Realm Shard",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Far Realm Shard.png"
+					},
+					"credit": "Christopher Burdett"
+				}
+			]
+		},
+		{
+			"name": "Fargab",
+			"source": "DSotDQ",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DSotDQ/Fargab.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Fenthras",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/Fenthras.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "A longbow made of wood and dark green vines wrapping around it, with intricate elvish designs."
+				}
+			]
+		},
+		{
+			"name": "Fenthras (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Fenthras",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Fenthras (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Fenthras",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Fenthras (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Fenthras",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Feywild Shard",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Feywild Shard.png"
+					},
+					"credit": "Christopher Burdett"
+				}
+			]
+		},
+		{
+			"name": "Feywild Trinket",
+			"source": "WBtW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WBtW/Feywild Trinket.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Figurine of Wondrous Power",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Figurine of Wondrous Power.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Fish Suit",
+			"source": "AAG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AAG/Fish Suit.webp"
+					},
+					"credit": "Olga Drebas"
+				}
+			]
+		},
+		{
+			"name": "Flame Tongue",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Flame Tongue.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Flamefriend Lantern",
+			"source": "TDCSR",
+			"entries": [
+				{
+					"type": "quote",
+					"entries": [
+						"He was given to me by your father, little one. He kept us warm while your father and I trekked through the Dreemoth Ravine and the ruins of Draconia twenty years ago. Such vicious blizzards, the likes of which are only topped by the Neverfields\u2014or Eiselcross, so I've heard. You should have seen us, marching through the snow, dozens of Ashari cloaked in flame, melting trenches in the rime as they advanced, and me, my furs pulled around my nose, blinking through the snow, holding tight to this little one.",
+						"When your father returned to Pyrah, I feared I'd never see our little flamefriend again, but.... Here, hold him, hear his little elemental heart fluttering. Think of your father when you feel that warmth, protecting you, watching over you. No matter where in the world you are, whether you're near Pyrah or far, he'll be a bit of family, and a bit of home."
+					],
+					"by": "Talus Naj",
+					"from": "to his goddaughter, Ev of Pyrah"
+				}
+			]
+		},
+		{
+			"name": "Flying Chariot",
+			"source": "MOT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/MOT/Flying Chariot.png"
+					},
+					"credit": "Ryan Alexander Lee"
+				}
+			]
+		},
+		{
+			"name": "Folding Boat",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Folding Boat.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Frost Brand",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Frost Brand.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Fulminating Treatise",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Fulminating Treatise.png"
+					},
+					"credit": "Kieran Yanner"
+				}
+			]
+		},
+		{
+			"name": "Gauntlets of Ogre Power",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Gauntlets of Ogre Power.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Gem of Brightness",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Gem of Brightness.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Gem of Seeing",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Gem of Seeing.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ghost Lantern",
+			"source": "ToA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/ToA/Ghost Lantern.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Giant Slayer",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Giant Slayer.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Gloves of Missile Snaring",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Gloves of Missile Snaring.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Goggles of Night",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Goggles of Night.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Gold (gp)",
+			"source": "PHB",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PHB/Gold (gp).jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Golgari Guild Signet",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Golgari Guild Signet.jpg"
+					},
+					"credit": "Greg Hildebrandt"
+				}
+			]
+		},
+		{
+			"name": "Golgari Keyrune",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Golgari Keyrune.png"
+					},
+					"credit": "Daniel Ljunggren"
+				}
+			]
+		},
+		{
+			"name": "Graz'tchar, the Decadent End",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/Graz'tchar.webp"
+					},
+					"credit": "{@link Clara Daly|https://tinyraptors.com/}",
+					"altText": "Graz'tchar, The Decadent End: A silver greatsword outlined in gold and embedded with rubies. It has a cross-shaped golden hilt with a silver and ruby pommel."
+				}
+			]
+		},
+		{
+			"name": "Greater Silver Sword",
+			"source": "MTF",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/MTF/Greater Silver Sword.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Grimoire Infinitus",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Grimoire Infinitus.png"
+					},
+					"credit": "Irina Nordsol"
+				}
+			]
+		},
+		{
+			"name": "Grimoire Infinitus (Awakened)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Grimoire Infinitus",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Grimoire Infinitus (Dormant)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Grimoire Infinitus",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Grimoire Infinitus (Exalted)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Grimoire Infinitus",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Grovelthrash",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Grovelthrash.png"
+					},
+					"credit": "Irina Nordsol"
+				}
+			]
+		},
+		{
+			"name": "Grovelthrash (Awakened)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Grovelthrash",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Grovelthrash (Dormant)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Grovelthrash",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Grovelthrash (Exalted)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Grovelthrash",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Gruul Guild Signet",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Gruul Guild Signet.jpg"
+					},
+					"credit": "Efrem Palacios"
+				}
+			]
+		},
+		{
+			"name": "Gruul Keyrune",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Gruul Keyrune.jpg"
+					},
+					"credit": "Daniel Ljunggren"
+				}
+			]
+		},
+		{
+			"name": "Gulthias Staff",
+			"source": "CoS",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CoS/Gulthias Staff.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Hammer of Thunderbolts",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Hammer of Thunderbolts.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Hammock of Worlds",
+			"source": "JttRC",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/JttRC/Hammock of Worlds.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Hand of Vecna",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Hand of Vecna.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Headband of Intellect",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Headband of Intellect.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Healer's Kit",
+			"source": "PHB",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PHB/Healer's Kit.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Hellfire Weapon",
+			"source": "BGDIA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGDIA/Hellfire Weapon.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Helm of Brilliance",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Helm of Brilliance.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Helm of Comprehending Languages",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Helm of Comprehending Languages.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Helm of Devil Command",
+			"source": "BGDIA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGDIA/Helm of Devil Command.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Helm of Disjunction",
+			"source": "HAT-LMI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/HAT-LMI/Helm of Disjunction.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Helm of Perfect Potential",
+			"source": "BGG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGG/Helm of Perfect Potential.webp"
+					},
+					"credit": "Isabel Gibney"
+				}
+			]
+		},
+		{
+			"name": "Helm of Telepathy",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Helm of Telepathy.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Helm of Teleportation",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Helm of Teleportation.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Heward's Handy Haversack",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Heward's Handy Haversack.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Hither-Thither Staff",
+			"source": "HAT-LMI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/HAT-LMI/Hither-Thither Staff.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Holy Avenger",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Holy Avenger.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Holy Symbol of Ravenkind",
+			"source": "CoS",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CoS/Holy Symbol of Ravenkind.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Honor's Last Stand",
+			"source": "TDCSR",
+			"entries": [
+				{
+					"type": "inset",
+					"name": "Rules Tip: Pushing and Shoving",
+					"page": 206,
+					"entries": [
+						"Certain character options, such as the Path of the Juggernaut barbarian in {@book chapter 4|TDCSR|3}, grant the ability to push other creatures around the battlefield with your attacks. But this is just one way to push a creature. If you want to move a creature without hurting it, there's a {@action shove|PHB|special shove attack} available to all characters. The {@book Vestige of Divergence|TDCSR|5|Vestiges of Divergence} Honor's Last Stand encourages you to shove your foes away while you valiantly stand your ground.",
+						{
+							"type": "entries",
+							"name": "Shoving a Creature",
+							"page": 206,
+							"entries": [
+								{
+									"type": "statblock",
+									"name": "Shove",
+									"source": "PHB",
+									"page": 206,
+									"tag": "action"
+								}
+							]
+						}
+					]
+				}
+			],
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/HonorsLastStand.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "A massive silver shield with the platinum dragon engraved on the front."
+				}
+			]
+		},
+		{
+			"name": "Honor's Last Stand (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Honor's Last Stand",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Honor's Last Stand (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Honor's Last Stand",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Honor's Last Stand (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Honor's Last Stand",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Horn of Beckoning Death",
+			"source": "HAT-LMI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/HAT-LMI/Horn of Beckoning Death.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Horn of Blasting",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Horn of Blasting.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Horn of Valhalla",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Horn of Valhalla.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Icewind Dale Trinket",
+			"source": "IDRotF",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/IDRotF/Icewind Dale Trinket.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Icon of Ravenloft",
+			"source": "CoS",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CoS/Icon of Ravenloft.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Iggwilv's Cauldron",
+			"source": "WBtW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WBtW/Iggwilvs Cauldron.png"
+					}
+				},
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WBtW/Iggwilvs Cauldron (Iron).png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Illusionist's Bracers",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Illusionist's Bracers.jpg"
+					},
+					"credit": "Svetlin Velinov"
+				}
+			]
+		},
+		{
+			"name": "Immovable Rod",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Immovable Rod.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Infiltrator's Key",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Infiltrator's Key.png"
+					},
+					"credit": "Irina Nordsol"
+				}
+			]
+		},
+		{
+			"name": "Infiltrator's Key (Awakened)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Infiltrator's Key",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Infiltrator's Key (Dormant)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Infiltrator's Key",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Infiltrator's Key (Exalted)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Infiltrator's Key",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Instrument of the Bards, Anstruth Harp",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Instrument of the Bards, Anstruth Harp.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Instrument of the Bards, Canaith Mandolin",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Instrument of the Bards, Canaith Mandolin.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Instrument of the Bards, Cli Lyre",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Instrument of the Bards, Cli Lyre.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Instrument of the Bards, Doss Lute",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Instrument of the Bards, Doss Lute.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Instrument of the Bards, Fochlucan Bandore",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Instrument of the Bards, Fochlucan Bandore.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Instrument of the Bards, Mac-Fuirmidh Cittern",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Instrument of the Bards, Mac-Fuirmidh Cittern.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Instrument of the Bards, Ollamh Harp",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Instrument of the Bards, Ollamh Harp.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Iron Bands of Bilarro",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Iron Bands of Bilarro.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Iron Flask",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Iron Flask.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ironfang",
+			"source": "PotA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PotA/Ironfang.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Izzet Guild Signet",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Izzet Guild Signet.jpg"
+					},
+					"credit": "Raoul Vitale"
+				}
+			]
+		},
+		{
+			"name": "Izzet Keyrune",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Izzet Keyrune.jpg"
+					},
+					"credit": "Daniel Ljunggren"
+				}
+			]
+		},
+		{
+			"name": "Javelin of Lightning",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Javelin of Lightning.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Jewel of Three Prayers",
+			"source": "CRCotN",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CRCotN/Jewel of Three Prayers.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Jewel of Three Prayers (Awakened)",
+			"source": "CRCotN",
+			"_copy": {
+				"name": "Jewel of Three Prayers",
+				"source": "CRCotN"
+			}
+		},
+		{
+			"name": "Jewel of Three Prayers (Dormant)",
+			"source": "CRCotN",
+			"_copy": {
+				"name": "Jewel of Three Prayers",
+				"source": "CRCotN"
+			}
+		},
+		{
+			"name": "Jewel of Three Prayers (Exalted)",
+			"source": "CRCotN",
+			"_copy": {
+				"name": "Jewel of Three Prayers",
+				"source": "CRCotN"
+			}
+		},
+		{
+			"name": "Kagonesti Forest Shroud",
+			"source": "DSotDQ",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DSotDQ/Kagonesti Forest Shroud.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Keoghtom's Ointment",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Keoghtom's Ointment.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Khrusor, Spear of Heliod",
+			"source": "MOT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/MOT/Khrusor, Spear of Heliod.jpg"
+					},
+					"credit": "Yeong-Hao Han"
+				}
+			]
+		},
+		{
+			"name": "Kiss of the Changebringer",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/KissoftheChangebringer.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "An intricate silver necklace with emerald gems."
+				}
+			]
+		},
+		{
+			"name": "Kiss of the Changebringer (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Kiss of the Changebringer",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Kiss of the Changebringer (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Kiss of the Changebringer",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Kiss of the Changebringer (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Kiss of the Changebringer",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Lantern of Revealing",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Lantern of Revealing.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Lash of Shadows",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Lash of Shadows.png"
+					},
+					"credit": "Irina Nordsol"
+				}
+			]
+		},
+		{
+			"name": "Lash of Shadows (Awakened)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Lash of Shadows",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Lash of Shadows (Dormant)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Lash of Shadows",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Lash of Shadows (Exalted)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Lash of Shadows",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Lesser Hammock of Worlds",
+			"source": "JttRC",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/JttRC/Hammock of Worlds.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Living Loot Satchel",
+			"source": "AI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/living-loot-satchel.png"
+					},
+					"credit": "Chris Walton"
+				}
+			]
+		},
+		{
+			"name": "Lord's Ensemble",
+			"source": "WDH",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WDH/Lord's Ensemble.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Luba's Tarokka of Souls",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Luba's Tarokka of Souls.png"
+					},
+					"credit": "Claudio Pozas"
+				}
+			]
+		},
+		{
+			"name": "Luck Blade",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Luck Blade.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Luminous War Pick",
+			"source": "PaBTSO",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PaBTSO/Luminous War Pick.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Luxon Beacon",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Luxon Beacon.png"
+					},
+					"credit": "Olga Drebas"
+				}
+			]
+		},
+		{
+			"name": "Mace of Disruption",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Mace of Disruption.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mace of Smiting",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Mace of Smiting.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mace of Terror",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Mace of Terror.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mace of the Black Crown",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Mace of the Black Crown.png"
+					},
+					"credit": "Irina Nordsol"
+				}
+			]
+		},
+		{
+			"name": "Mace of the Black Crown (Awakened)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Mace of the Black Crown",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Mace of the Black Crown (Dormant)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Mace of the Black Crown",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Mace of the Black Crown (Exalted)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Mace of the Black Crown",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Mantle of Spell Resistance",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Mantle of Spell Resistance.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Manual of Bodily Health",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Manual of Bodily Health.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Manual of Clay Golems",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Manual of Clay Golems.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Manual of Flesh Golems",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Manual of Flesh Golems.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Manual of Golems",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Manual of Golems.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Manual of Iron Golems",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Manual of Iron Golems.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Manual of Quickness of Action",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Manual of Quickness of Action.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Manual of Stone Golems",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Manual of Stone Golems.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mask of the Beast",
+			"source": "ToA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/ToA/Mask of the Beast.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mask of the Dragon Queen",
+			"source": "RoT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/RoT/Mask of the Dragon Queen.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mastix, Whip of Erebos",
+			"source": "MOT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/MOT/Mastix, Whip of Erebos.jpg"
+					},
+					"credit": "Yeong-Hao Han"
+				}
+			]
+		},
+		{
+			"name": "Matalotok",
+			"source": "BGDIA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGDIA/Matalotok.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Medal of the Maze",
+			"source": "CRCotN",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CRCotN/Medal of the Maze.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Medallion of Thoughts",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Medallion of Thoughts.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mighty Servant of Leuk-o",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Mighty Servant of Leuk-o.png"
+					},
+					"credit": "David Sladek"
+				}
+			]
+		},
+		{
+			"name": "Mind Crystal",
+			"source": "PaBTSO",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PaBTSO/Mind Crystal.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mind Crystal (Careful)",
+			"source": "PaBTSO",
+			"_copy": {
+				"name": "Mind Crystal",
+				"source": "PaBTSO"
+			}
+		},
+		{
+			"name": "Mind Crystal (Distant)",
+			"source": "PaBTSO",
+			"_copy": {
+				"name": "Mind Crystal",
+				"source": "PaBTSO"
+			}
+		},
+		{
+			"name": "Mind Crystal (Empowered)",
+			"source": "PaBTSO",
+			"_copy": {
+				"name": "Mind Crystal",
+				"source": "PaBTSO"
+			}
+		},
+		{
+			"name": "Mind Crystal (Extended)",
+			"source": "PaBTSO",
+			"_copy": {
+				"name": "Mind Crystal",
+				"source": "PaBTSO"
+			}
+		},
+		{
+			"name": "Mind Crystal (Heightened)",
+			"source": "PaBTSO",
+			"_copy": {
+				"name": "Mind Crystal",
+				"source": "PaBTSO"
+			}
+		},
+		{
+			"name": "Mind Crystal (Quickened)",
+			"source": "PaBTSO",
+			"_copy": {
+				"name": "Mind Crystal",
+				"source": "PaBTSO"
+			}
+		},
+		{
+			"name": "Mind Crystal (Subtle)",
+			"source": "PaBTSO",
+			"_copy": {
+				"name": "Mind Crystal",
+				"source": "PaBTSO"
+			}
+		},
+		{
+			"name": "Mindguard Crown",
+			"source": "PaBTSO",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PaBTSO/Mindguard Crown.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mirror of Infinite Transpondence",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/MirrorTranspondence.webp"
+					},
+					"credit": "{@link Clara Daly|https://tinyraptors.com/}",
+					"altText": "Mirror of Infinite Transpondence: a silver, handheld mirror with intricate designs all around. A face is carved at the top of the handle, and an eye at the top of the mirror. Inside the mirror is a picture of a stone tower with a wind-torn cloth peak."
+				}
+			]
+		},
+		{
+			"name": "Mirror of Life Trapping",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Mirror of Life Trapping.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mizzium Apparatus",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Mizzium Apparatus.png"
+					},
+					"credit": "Terese Nielsen"
+				}
+			]
+		},
+		{
+			"name": "Moodmark Paint",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Moodmark Paint.png"
+					},
+					"credit": "Scott Murphy"
+				}
+			]
+		},
+		{
+			"name": "Moonblade",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Moonblade.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mudslick Tower",
+			"source": "PaBTSO",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PaBTSO/Mudslick Tower.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Mythcarver",
+			"source": "TDCSR",
+			"entries": [
+				{
+					"type": "insetReadaloud",
+					"page": 207,
+					"entries": [
+						{
+							"type": "quote",
+							"entries": [
+								"Though the name of the champion who wielded Mythcarver has been lost, legend says that the songs she sung in her beautiful contralto made her friends rejoice and her enemies weep with fear. Mythcarver was forged in the flying city of Zemniaz by a master arcanist and blacksmith along with the wielder herself, who wove song and spell into the blade with each fold of the metal."
+							],
+							"by": "High Curator Jorum Irrelios",
+							"from": "circa 547 P.D."
+						}
+					]
+				}
+			],
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/Mythcarver.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "An elegant rapier with a swept hilt."
+				}
+			]
+		},
+		{
+			"name": "Mythcarver (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Mythcarver",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Mythcarver (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Mythcarver",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Mythcarver (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Mythcarver",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Narycrash",
+			"source": "DSotDQ",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DSotDQ/Narycrash.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Nature's Mantle",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Nature's Mantle.png"
+					},
+					"credit": "Brian Valeza"
+				}
+			]
+		},
+		{
+			"name": "Necklace of Adaptation",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Necklace of Adaptation.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Necklace of Fireballs",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Necklace of Fireballs.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Necklace of Prayer Beads",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Necklace of Prayer Beads.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Nepenthe",
+			"source": "VRGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/VRGR/Nepenthe.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Nine Lives Stealer",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Nine Lives Stealer.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Nolzur's Marvelous Pigments",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Nolzur's Marvelous Pigments.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Oathbow",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Oathbow.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Occultant Abacus",
+			"source": "AI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/occultant-abacus.png"
+					},
+					"credit": "Chris Walton"
+				}
+			]
+		},
+		{
+			"name": "Orb of Direction",
+			"source": "XGE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/XGE/Orb of Direction.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Orb of Dragonkind",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Orb of Dragonkind.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Orcus Figurine",
+			"source": "CM",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CM/Orcus Figurine.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ornithopter of Flying",
+			"source": "WBtW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WBtW/Ornithopter of Flying.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Orrery of the Wanderer",
+			"source": "AI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/Orrery of the Wanderer.png"
+					},
+					"credit": "Nicholas Kay"
+				}
+			]
+		},
+		{
+			"name": "Orzhov Guild Signet",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Orzhov Guild Signet.jpg"
+					},
+					"credit": "Martina Pilcerova"
+				}
+			]
+		},
+		{
+			"name": "Orzhov Keyrune",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Orzhov Keyrune.jpg"
+					},
+					"credit": "Daniel Ljunggren"
+				}
+			]
+		},
+		{
+			"name": "Paper Bird",
+			"source": "WDH",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WDH/Paper Bird.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Pariah's Shield",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Pariah's Shield.jpg"
+					},
+					"credit": "Doug Chaffee"
+				}
+			]
+		},
+		{
+			"name": "Peregrine Mask",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Peregrine Mask.png"
+					},
+					"credit": "Edward P. Beard, Jr."
+				}
+			]
+		},
+		{
+			"name": "Periapt of Health",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Periapt of Health.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Periapt of Wound Closure",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Periapt of Wound Closure.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Pipe of Smoke Monsters",
+			"source": "XGE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/XGE/Pipe of Smoke Monsters.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Pipes of Haunting",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Pipes of Haunting.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Pipes of the Sewers",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Pipes of the Sewers.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Piwafwi (Cloak of Elvenkind)",
+			"source": "OotA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/OotA/Piwafwi (Cloak of Elvenkind).png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Plate of the Dawnmartyr",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/PlateoftheDawnmartyr.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "Golden plate mail with black fabric wrapped around the waist. Throughout the armor are intricate designs. In center and upon the left shoulder pauldron is the symbol of the Dawnfather - a solitary sun with eight rays."
+				}
+			]
+		},
+		{
+			"name": "Plate of the Dawnmartyr (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Plate of the Dawnmartyr",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Plate of the Dawnmartyr (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Plate of the Dawnmartyr",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Plate of the Dawnmartyr (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Plate of the Dawnmartyr",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Platinum (pp)",
+			"source": "PHB",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PHB/Platinum (pp).jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Pole of Collapsing",
+			"source": "XGE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/XGE/Pole of Collapsing.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Potion of Water Breathing",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Potion of Water Breathing.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Prehistoric Figurine of Wondrous Power",
+			"source": "BGG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGG/Prehistoric Figurines of Wondrous Power.webp"
+					},
+					"credit": "Olga Drebas"
+				}
+			]
+		},
+		{
+			"name": "Prehistoric Figurine of Wondrous Power, Carnelian Triceratops",
+			"source": "BGG",
+			"_copy": {
+				"name": "Prehistoric Figurine of Wondrous Power",
+				"source": "BGG"
+			}
+		},
+		{
+			"name": "Prehistoric Figurine of Wondrous Power, Jasper Tyrannosaurus Rex",
+			"source": "BGG",
+			"_copy": {
+				"name": "Prehistoric Figurine of Wondrous Power",
+				"source": "BGG"
+			}
+		},
+		{
+			"name": "Prehistoric Figurine of Wondrous Power, Kyanite Pteranodon",
+			"source": "BGG",
+			"_copy": {
+				"name": "Prehistoric Figurine of Wondrous Power",
+				"source": "BGG"
+			}
+		},
+		{
+			"name": "Prehistoric Figurine of Wondrous Power, Pyrite Plesiosaurus",
+			"source": "BGG",
+			"_copy": {
+				"name": "Prehistoric Figurine of Wondrous Power",
+				"source": "BGG"
+			}
+		},
+		{
+			"name": "Prosthetic Limb",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Prosthetic Limb.png"
+					},
+					"credit": "Ben Wootten"
+				}
+			]
+		},
+		{
+			"name": "Psi Crystal",
+			"source": "IDRotF",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/IDRotF/Psi Crystal.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Pyremaul",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/Pyremaul.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "A maul embedded with an orange gemstone emitting flames from the head of the weapon."
+				}
+			]
+		},
+		{
+			"name": "Pyremaul (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Pyremaul",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Pyremaul (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Pyremaul",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Pyremaul (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Pyremaul",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Pyroconverger",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Pyroconverger.jpg"
+					},
+					"credit": "Jack Wang"
+				}
+			]
+		},
+		{
+			"name": "Pyxis of Pandemonium",
+			"source": "MOT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/MOT/Pyxis of Pandemonium.jpg"
+					},
+					"credit": "David Palumbo"
+				}
+			]
+		},
+		{
+			"name": "Quaal's Feather Token",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Quaal's Feather Token.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Quiver of Ehlonna",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Quiver of Ehlonna.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Rakdos Guild Signet",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Rakdos Guild Signet.jpg"
+					},
+					"credit": "Martina Pilcerova"
+				}
+			]
+		},
+		{
+			"name": "Rakdos Keyrune",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Rakdos Keyrune.jpg"
+					},
+					"credit": "Daniel Ljunggren"
+				}
+			]
+		},
+		{
+			"name": "Rakdos Riteknife",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Rakdos Riteknife.jpg"
+					},
+					"credit": "Jim Nelson"
+				}
+			]
+		},
+		{
+			"name": "Red Wizard Blade",
+			"source": "HAT-LMI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/HAT-LMI/Red Wizard Blade.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Air Elemental Command",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Air Elemental Command.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Animal Influence",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Animal Influence.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Djinni Summoning",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Djinni Summoning.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Evasion",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Evasion.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Feather Falling",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Feather Falling.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Free Action",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Free Action.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Invisibility",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Invisibility.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Mind Shielding",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Mind Shielding.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Obscuring",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Ring of Obscuring.png"
+					},
+					"credit": "Olga Drebas"
+				}
+			]
+		},
+		{
+			"name": "Ring of Protection",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Protection.png"
+					},
+					"credit": "Conceptopolis"
+				}
+			]
+		},
+		{
+			"name": "Ring of Red Fury",
+			"source": "CRCotN",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CRCotN/Ring of Red Fury.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Regeneration",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Regeneration.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Resistance",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Resistance.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Shooting Stars",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Shooting Stars.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Spell Storing",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Spell Storing.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Spell Turning",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Spell Turning.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Telekinesis",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Telekinesis.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of the Orator",
+			"source": "PaBTSO",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PaBTSO/Ring of the Orator.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of the Ram",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of the Ram.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Three Wishes",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Three Wishes.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Warmth",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Warmth.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Water Walking",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of Water Walking.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of Winter",
+			"source": "ToA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/ToA/Ring of Winter.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ring of X-ray Vision",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Ring of X-ray Vision.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Robe of Eyes",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Robe of Eyes.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Robe of Stars",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Robe of Stars.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Robe of the Archmagi",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Robe of the Archmagi.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Robe of Useful Items",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Robe of Useful Items.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Rod of Absorption",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Rod of Absorption.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Rod of Lordly Might",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Rod of Lordly Might.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Rod of Resurrection",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Rod of Resurrection.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Rod of Rulership",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Rod of Rulership.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Rope of Entanglement",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Rope of Entanglement.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ruidium Shield",
+			"source": "CRCotN",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CRCotN/Ruidium Shield.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ruidium Weapon",
+			"source": "CRCotN",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CRCotN/Ruidium Weapon.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Ruin's Wake",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Ruin's Wake.png"
+					},
+					"credit": "Irina Nordsol"
+				}
+			]
+		},
+		{
+			"name": "Ruin's Wake (Awakened)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Ruin's Wake",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Ruin's Wake (Dormant)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Ruin's Wake",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Ruin's Wake (Exalted)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Ruin's Wake",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Saint Markovia's Thighbone",
+			"source": "CoS",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CoS/Saint Markovia's Thighbone.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Scarab of Protection",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Scarab of Protection.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Selesnya Guild Signet",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Selesnya Guild Signet.jpg"
+					},
+					"credit": "Raoul Vitale"
+				}
+			]
+		},
+		{
+			"name": "Selesnya Keyrune",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Selesnya Keyrune.jpg"
+					},
+					"credit": "Daniel Ljunggren"
+				}
+			]
+		},
+		{
+			"name": "Sending Stone",
+			"source": "AI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/sending-stone.png"
+					},
+					"credit": "Chris Walton"
+				}
+			]
+		},
+		{
+			"name": "Sending Stones",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Sending Stones.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Shadowfell Shard",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Shadowfell Shard.png"
+					},
+					"credit": "Christopher Burdett"
+				}
+			]
+		},
+		{
+			"name": "Shard of Xeluan",
+			"source": "KftGV",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/KftGV/Shard of Xeluan.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Shard Solitaire",
+			"source": "KftGV",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/KftGV/Shard Solitaire.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Shard Solitaire (Black Sapphire)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Shard Solitaire",
+				"source": "KftGV"
+			}
+		},
+		{
+			"name": "Shard Solitaire (Diamond)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Shard Solitaire",
+				"source": "KftGV"
+			}
+		},
+		{
+			"name": "Shard Solitaire (Jacinth)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Shard Solitaire",
+				"source": "KftGV"
+			}
+		},
+		{
+			"name": "Shard Solitaire (Rainbow Pearl)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Shard Solitaire",
+				"source": "KftGV"
+			}
+		},
+		{
+			"name": "Shard Solitaire (Ruby)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Shard Solitaire",
+				"source": "KftGV"
+			}
+		},
+		{
+			"name": "Shield Guardian Amulet",
+			"source": "IDRotF",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/IDRotF/Shield Guardian Amulet.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Shield of Missile Attraction",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Shield of Missile Attraction.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Shield of the Hidden Lord",
+			"source": "BGDIA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGDIA/Shield of the Hidden Lord.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Silver (sp)",
+			"source": "PHB",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PHB/Silver (sp).jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Simic Guild Signet",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Simic Guild Signet.jpg"
+					},
+					"credit": "Mike Sass"
+				}
+			]
+		},
+		{
+			"name": "Simic Keyrune",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Simic Keyrune.jpg"
+					},
+					"credit": "Daniel Ljunggren"
+				}
+			]
+		},
+		{
+			"name": "Skyblinder Staff",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Skyblinder Staff.png"
+					},
+					"credit": "Mark Winters"
+				}
+			]
+		},
+		{
+			"name": "Skysail",
+			"source": "TDCSR",
+			"entries": [
+				{
+					"type": "quote",
+					"entries": [
+						"Oh! Oh gods, are you seriously asking me to explain it? Geez, sure, I'll try, but you really gotta feel it, you know? The sensation of the wind whipping past you as you shoot up into the sky, then\u2014whoa!\u2014your stomach just drops out from you, and it's like you left your heart behind as you start to fall. It's like nothing's holding onto you, then\u2014whoosh!\u2014the wind catches you, and swings you back into the sky."
+					],
+					"by": "Air Ashari druid initiate Kelthai",
+					"from": "on skysailing"
+				}
+			],
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/Skysail.webp"
+					},
+					"credit": "{@link Claudia Ianniciello|https://artstation.com/claudiasg}",
+					"altText": "An Ashari woman with long orange hair flies on her white-winged skysail through a rocky canyon. She wears green clothing."
+				}
+			]
+		},
+		{
+			"name": "Skyship",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "book/TDCSR/Chapter3-Skyship.webp"
+					},
+					"credit": "{@link Svetoslav Petrov|https://artstation.com/svetoslavpetrov}",
+					"altText": "A skyship, its white sails entirely unfurled, flies through a dusky, red sky. The ship emanates a glowing, blue arcane magic below it, keeping it aloft."
+				}
+			]
+		},
+		{
+			"name": "Slippers of Spider Climbing",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Slippers of Spider Climbing.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Snicker-Snack",
+			"source": "WBtW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WBtW/Snicker-Snack.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Soul Coin",
+			"source": "BGDIA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGDIA/Soul Coin.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Sovereign Glue",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Sovereign Glue.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Spell Bottle",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Spell Bottle.png"
+					},
+					"credit": "Olga Drebas"
+				}
+			]
+		},
+		{
+			"name": "Spellguard Shield",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Spellguard Shield.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Spelljamming Helm",
+			"source": "AAG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AAG/Spelljamming Helm.webp"
+					}
+				},
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AAG/Spelljamming Helms.webp"
+					},
+					"title": "Three Examples of a Spelljamming Helm",
+					"credit": "Robson Michel"
+				}
+			]
+		},
+		{
+			"name": "Spire of Conflux",
+			"source": "TDCSR",
+			"entries": [
+				{
+					"type": "insetReadaloud",
+					"page": 209,
+					"entries": [
+						{
+							"type": "quote",
+							"entries": [
+								"Records kept by the Birthheart temple in Vasselheim say that the Spire of Conflux was created when the Wildmother breathed on a young beech tree. The sapling transformed into a curving staff and the Wildmother's breath crystallized into the glowing jewel that hovers in its center. The bearer of this mythic staff can command the elements as if they were one with the enduring, yet ever-changing, landscape of Exandria itself..."
+							],
+							"by": "High Curator Jorum Irrelios",
+							"from": "circa 547 P.D."
+						}
+					]
+				}
+			],
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/SpireofConflux.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "A twisted staff made of wood and vines shaped like a sheperd's crook with a glowing blue crystal in the center of the crook."
+				}
+			]
+		},
+		{
+			"name": "Spire of Conflux (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Spire of Conflux",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Spire of Conflux (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Spire of Conflux",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Spire of Conflux (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Spire of Conflux",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Staff of Charming",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of Charming.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff of Fire",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of Fire.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff of Frost",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of Frost.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff of Healing",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of Healing.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff of Power",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of Power.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff of Swarming Insects",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of Swarming Insects.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff of the Adder",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of the Adder.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff of the Magi",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of the Magi.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff of the Python",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of the Python.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff of the Woodlands",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of the Woodlands.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff of Thunder and Lightning",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of Thunder and Lightning.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Staff of Withering",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Staff of Withering.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Star Razor",
+			"source": "TDCSR",
+			"entries": [
+				{
+					"type": "insetReadaloud",
+					"page": 210,
+					"entries": [
+						{
+							"type": "quote",
+							"entries": [
+								"Many weapons created by mortals during the Age of Arcanum were designed with hopes to surpass or even destroy the gods, but not so with Dwueth'var. That shining sword, bright with the light of the bold full moon and the enigmatic starlit night, was forged by acolytes of the Wildmother and the Moonweaver, united in their love of this fragile world and their determination to protect it."
+							],
+							"by": "High Curator Jorum Irrelios",
+							"from": "circa 547 P.D."
+						}
+					]
+				}
+			],
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/StarRazor.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "A silver greatsword with a red hilt. Inset in the hilt is a green gemstone. Runes run down the center of the blade, where also runs silver-white lines of magic."
+				}
+			]
+		},
+		{
+			"name": "Star Razor (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Star Razor",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Star Razor (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Star Razor",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Star Razor (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Star Razor",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Steel",
+			"source": "WBtW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WBtW/Steel.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Stone of Controlling Earth Elementals",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Stone of Controlling Earth Elementals.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Stone of Golorr",
+			"source": "WDH",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WDH/Stone of Golorr.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Stone of Good Luck",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Stone of Good Luck.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Stonespeaker Crystal",
+			"source": "OotA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/OotA/Stonespeaker Crystal.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Sun Blade",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Sun Blade.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Sunforger",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Sunforger.jpg"
+					},
+					"credit": "Darrell Riche"
+				}
+			]
+		},
+		{
+			"name": "Sunsword",
+			"source": "CoS",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CoS/Sunsword.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Sword of Kas",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Sword of Kas.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Sword of Life Stealing",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Sword of Life Stealing.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Sword of Sharpness",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Sword of Sharpness.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Sword of the Paruns",
+			"source": "GGR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/GGR/Sword of the Paruns.jpg"
+					},
+					"credit": "Greg Hildebrandt"
+				}
+			]
+		},
+		{
+			"name": "Sword of Zariel",
+			"source": "BGDIA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGDIA/Sword of Zariel.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Tablet of Reawakening",
+			"source": "HAT-LMI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/HAT-LMI/Tablet of Reawakening.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Talisman of the Sphere",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Talisman of the Sphere.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Talisman of Ultimate Evil",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Talisman of Ultimate Evil.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Talking Doll",
+			"source": "XGE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/XGE/Talking Doll.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Teeth of Dahlver-Nar",
+			"source": "TCE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TCE/Teeth of Dahlver-Nar.png"
+					},
+					"credit": "Crystal Sully"
+				}
+			]
+		},
+		{
+			"name": "Tentacle Rod",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Tentacle Rod.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "The Codicil of White",
+			"source": "IDRotF",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/IDRotF/The Codicil of White.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "The Incantations of Iriolarthas",
+			"source": "IDRotF",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/IDRotF/The Incantations of Iriolarthas.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Thieves' Tools",
+			"source": "PHB",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PHB/Thieves' Tools.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Thunderbuss",
+			"source": "BGG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/BGG/Thunderbuss.webp"
+					},
+					"credit": "Isabel Gibney"
+				}
+			]
+		},
+		{
+			"name": "Tinderstrike",
+			"source": "PotA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PotA/Tinderstrike.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Titanstone Knuckles",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/TitanstoneKnuckles.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "A pair of solid black stone gauntlets with brass fixings, encircled with three stone rings per gauntlet, and they are engraved with orange glowing runes."
+				}
+			]
+		},
+		{
+			"name": "Titanstone Knuckles (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Titanstone Knuckles",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Titanstone Knuckles (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Titanstone Knuckles",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Titanstone Knuckles (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Titanstone Knuckles",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Tome of Clear Thought",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Tome of Clear Thought.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Tome of Leadership and Influence",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Tome of Leadership and Influence.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Tome of Strahd",
+			"source": "CoS",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/CoS/Tome of Strahd.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Tome of Understanding",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Tome of Understanding.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Travel Alchemical Kit",
+			"source": "AI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/travel-alchemical-kit.png"
+					},
+					"credit": "Chris Walton"
+				}
+			]
+		},
+		{
+			"name": "Trident of Fish Command",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Trident of Fish Command.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Trinket",
+			"source": "AI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/Trinket.png"
+					},
+					"credit": "Kris Straub"
+				},
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/Trinket-2.png"
+					},
+					"credit": "Kris Straub"
+				},
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/Trinket-3.png"
+					},
+					"credit": "Kris Straub"
+				}
+			]
+		},
+		{
+			"name": "Trinket",
+			"source": "PHB",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PHB/Trinket (PHB).png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Unbreakable Arrow",
+			"source": "XGE",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/XGE/Unbreakable Arrow.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Universal Solvent",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Universal Solvent.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Vicious Weapon",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Vicious Weapon.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Vorpal Sword",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Vorpal Sword.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Binding",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Binding.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Enemy Detection",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Enemy Detection.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Fear",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Fear.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Fireballs",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Fireballs.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Lightning Bolts",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Lightning Bolts.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Magic Detection",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Magic Detection.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Magic Missiles",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Magic Missiles.png"
+					},
+					"credit": "Conceptopolis"
+				}
+			]
+		},
+		{
+			"name": "Wand of Orcus",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Orcus.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Paralysis",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Paralysis.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Polymorph",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Polymorph.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Secrets",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Secrets.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Web",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Web.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Winter",
+			"source": "HotDQ",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/HotDQ/Wand of Winter.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wand of Wonder",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wand of Wonder.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Weapon of Warning",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Weapon of Warning.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Weird Tank",
+			"source": "PotA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PotA/Weird Tank.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Whisper",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/Whisper.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "A sleek, silver dagger with a black, slender hilt and two raven feathers tied onto the pummel."
+				}
+			]
+		},
+		{
+			"name": "Whisper (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Whisper",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Whisper (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Whisper",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Whisper (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Whisper",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Whisper Jar",
+			"source": "AI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/AI/whisper-jar.png"
+					},
+					"credit": "Chris Walton"
+				}
+			]
+		},
+		{
+			"name": "Wind Fan",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wind Fan.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Windvane",
+			"source": "PotA",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/PotA/Windvane.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Winged Boots",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Winged Boots.png"
+					},
+					"credit": "Conceptopolis"
+				}
+			]
+		},
+		{
+			"name": "Wings of Flying",
+			"source": "DMG",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DMG/Wings of Flying.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Witchlight Vane",
+			"source": "WBtW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/WBtW/Witchlight Vane.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Wraps of Dyamak",
+			"source": "TDCSR",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/TDCSR/WrapsofDyamak.webp"
+					},
+					"credit": "{@link Jessica Nguyen|https://jessketchin.com/}",
+					"altText": "Thick blood-stained cloth bandages affixed to two forearms. The wraps emit a red glow."
+				}
+			]
+		},
+		{
+			"name": "Wraps of Dyamak (Awakened)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Wraps of Dyamak",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Wraps of Dyamak (Dormant)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Wraps of Dyamak",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Wraps of Dyamak (Exalted)",
+			"source": "TDCSR",
+			"_copy": {
+				"name": "Wraps of Dyamak",
+				"source": "TDCSR"
+			}
+		},
+		{
+			"name": "Wreath of the Prism",
+			"source": "EGW",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/EGW/Wreath of the Prism.png"
+					},
+					"credit": "Irina Nordsol"
+				}
+			]
+		},
+		{
+			"name": "Wreath of the Prism (Awakened)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Wreath of the Prism",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Wreath of the Prism (Dormant)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Wreath of the Prism",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Wreath of the Prism (Exalted)",
+			"source": "EGW",
+			"_copy": {
+				"name": "Wreath of the Prism",
+				"source": "EGW"
+			}
+		},
+		{
+			"name": "Wyrmskull Throne",
+			"source": "SKT",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/SKT/Wyrmskull Throne.png"
+					}
+				}
+			]
+		}
+	]
+}

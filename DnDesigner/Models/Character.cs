@@ -105,6 +105,11 @@ namespace DnDesigner.Models
         public string Vulnerabilities { get; set; } = null!;
 
         /// <summary>
+        /// The characters race
+        /// </summary>
+        public Race Race { get; set; }
+
+        /// <summary>
         /// The background of the character
         /// </summary>
         public Background Background { get; set; }
@@ -115,7 +120,7 @@ namespace DnDesigner.Models
         public List<CharacterProficiency> Proficiencies { get; set; } = null!;
 
         /// <summary>
-        /// A list of the character's classes
+        /// A list of the character's classes and subclasses
         /// </summary>
         public List<CharacterClass> Classes { get; set; } = null!;
 

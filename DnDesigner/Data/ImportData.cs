@@ -156,7 +156,7 @@ namespace DnDesigner.Data
             foreach (Language language in languageRoot.language)
             {
                 Proficiency proficiency = new Proficiency(language.name, null, "language");
-                if(proficiencies.Where(p => p.Name == proficiency.Name).Any())
+                if(!proficiencies.Where(p => p.Name == proficiency.Name).Any())
                 {
                     proficiencies.Add(proficiency);
                 }
@@ -168,7 +168,7 @@ namespace DnDesigner.Data
                 if(item.Traits.Contains("Tool"))
                 {
                     Proficiency proficiency = new Proficiency(item.Name, null, "tool");
-                    if (proficiencies.Where(p => p.Name == proficiency.Name).Any())
+                    if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
                     {
                         proficiencies.Add(proficiency);
                     }
@@ -176,7 +176,7 @@ namespace DnDesigner.Data
                 else if (item.Traits.Contains("Instrument"))
                 {
                     Proficiency proficiency = new Proficiency(item.Name, null, "instrument");
-                    if (proficiencies.Where(p => p.Name == proficiency.Name).Any())
+                    if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
                     {
                         proficiencies.Add(proficiency);
                     }
@@ -715,6 +715,14 @@ namespace DnDesigner.Data
                             classProficiencies.Add(new ClassProficiency(@class, proficiency));
                         }
                     }
+                }
+            }
+            foreach(string proficiencyname in class5E.proficiency)
+            {
+                Proficiency? proficiency = FindProficiency(proficiencyname, proficiencies);
+                if(proficiency != null)
+                {
+                    classProficiencies.Add(new ClassProficiency(@class, proficiency));
                 }
             }
             @class.Proficiencies = classProficiencies;

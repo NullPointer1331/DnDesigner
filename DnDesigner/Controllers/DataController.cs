@@ -41,6 +41,15 @@ namespace DnDesigner.Controllers
         {
             return View(await _context.Classes.ToListAsync());
         }
+        public async Task<IActionResult> DisplayClass(int id)
+        {
+            Class? @class = await _context.Classes.FindAsync(id);
+            if(@class == null)
+            {
+                return NotFound();
+            }
+            return View(@class);
+        }
         public async Task<IActionResult> ViewSubclasses()
         {
             return View(await _context.Subclasses.ToListAsync());
@@ -59,9 +68,9 @@ namespace DnDesigner.Controllers
             List<Item> items = ImportData.ExtractItems();
             List<Proficiency> proficiencies = ImportData.ExtractProficiencies(items);
             List<Spell> spells = ImportData.ExtractSpells(); 
-            List<Background> backgrounds = ImportData.ExtractBackgrounds();
-            List<Race> races = ImportData.ExtractRaces();
-            List<Class> classes = ImportData.ExtractClasses(); 
+            List<Background> backgrounds = ImportData.ExtractBackgrounds(proficiencies);
+            List<Race> races = ImportData.ExtractRaces(proficiencies);
+            List<Class> classes = ImportData.ExtractClasses(proficiencies); 
             List<Subclass> subclasses = ImportData.ExtractSubclasses(classes); 
 
             _context.Proficiencies.AddRange(proficiencies);

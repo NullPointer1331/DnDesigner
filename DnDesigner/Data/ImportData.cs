@@ -7,6 +7,8 @@ using DnDesigner.Models;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Humanizer;
+using System.Collections.Generic;
+using DnDesigner.Controllers;
 
 namespace DnDesigner.Data
 {
@@ -15,7 +17,7 @@ namespace DnDesigner.Data
         /// <summary>
         /// Extracts Class Data from the 5ETools JSON files and returns it as a list of Classes
         /// </summary>
-        public static List<Class> ExtractClasses()
+        public static List<Class> ExtractClasses(List<Proficiency> proficiencies)
         {
             List<ClassRoot> classRoots = GetClassRoot();
             List<Class> classes = new List<Class>();
@@ -28,7 +30,7 @@ namespace DnDesigner.Data
                         if (!class5E.source.Contains("UA"))
                         {
                             List<ClassFeature5ETools> classFeatures = classRoot.classFeature.Where(f => f.className == class5E.name).ToList();
-                            classes.Add(ConvertClass(class5E, classFeatures));
+                            classes.Add(ConvertClass(class5E, classFeatures, proficiencies));
                         }
                     }
                 }
@@ -69,7 +71,7 @@ namespace DnDesigner.Data
         /// <summary>
         /// Extracts Background Data from the 5ETools JSON files and returns it as a list of Backgrounds
         /// </summary>
-        public static List<Background> ExtractBackgrounds()
+        public static List<Background> ExtractBackgrounds(List<Proficiency> proficiencies)
         {
             BackgroundRoot backgroundRoot = GetBackgroundRoot();
             List<Background> backgrounds = new List<Background>();
@@ -77,7 +79,7 @@ namespace DnDesigner.Data
             {
                 if(!background5E.source.Contains("UA"))
                 {
-                    backgrounds.Add(ConvertBackground(background5E));
+                    backgrounds.Add(ConvertBackground(background5E, proficiencies));
                 }
             }
             return backgrounds;
@@ -86,7 +88,7 @@ namespace DnDesigner.Data
         /// <summary>
         /// Extracts Race Data from the 5ETools JSON files and returns it as a list of Races
         /// </summary>
-        public static List<Race> ExtractRaces()
+        public static List<Race> ExtractRaces(List<Proficiency> proficiencies)
         {
             RaceRoot raceRoot = GetRaceRoot();
             List<Race> races = new List<Race>();
@@ -94,7 +96,7 @@ namespace DnDesigner.Data
             {
                 if(!race5E.source.Contains("UA"))
                 {
-                    races.Add(ConvertRace(race5E));
+                    races.Add(ConvertRace(race5E, proficiencies));
                 }
             }
             return races;
@@ -154,7 +156,7 @@ namespace DnDesigner.Data
             foreach (Language language in languageRoot.language)
             {
                 Proficiency proficiency = new Proficiency(language.name, null, "language");
-                if(proficiencies.Where(p => p.Name == proficiency.Name).Count() == 0)
+                if(proficiencies.Where(p => p.Name == proficiency.Name).Any())
                 {
                     proficiencies.Add(proficiency);
                 }
@@ -166,7 +168,7 @@ namespace DnDesigner.Data
                 if(item.Traits.Contains("Tool"))
                 {
                     Proficiency proficiency = new Proficiency(item.Name, null, "tool");
-                    if (proficiencies.Where(p => p.Name == proficiency.Name).Count() == 0)
+                    if (proficiencies.Where(p => p.Name == proficiency.Name).Any())
                     {
                         proficiencies.Add(proficiency);
                     }
@@ -174,7 +176,7 @@ namespace DnDesigner.Data
                 else if (item.Traits.Contains("Instrument"))
                 {
                     Proficiency proficiency = new Proficiency(item.Name, null, "instrument");
-                    if (proficiencies.Where(p => p.Name == proficiency.Name).Count() == 0)
+                    if (proficiencies.Where(p => p.Name == proficiency.Name).Any())
                     {
                         proficiencies.Add(proficiency);
                     }
@@ -473,7 +475,7 @@ namespace DnDesigner.Data
             string contents = File.ReadAllText("Data\\5EToolsData\\races.json");
             return JsonSerializer.Deserialize<RaceRoot>(contents);
         }
-        public static Race ConvertRace(Race5ETools race5E)
+        public static Race ConvertRace(Race5ETools race5E, List<Proficiency> proficiencies)
         {
             Race race = new Race();
             race.Name = race5E.name;
@@ -524,7 +526,39 @@ namespace DnDesigner.Data
             }
             race.Size = "medium";
             race.Speed = 30;
-            //TODO: Proficiencies, Features, Subraces, actually check size and speed
+            List<RaceProficiency> raceProficiencies = new List<RaceProficiency>();
+            if (race5E.skillProficiencies != null)
+            {
+                foreach (SkillProficiency skill in race5E.skillProficiencies)
+                {
+                    List<Proficiency> skills = new List<Proficiency>();
+                    skills.AddRange(FindSkills(skill, proficiencies));
+                    foreach (Proficiency proficiency in skills)
+                    {
+                        if (!raceProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        {
+                            raceProficiencies.Add(new RaceProficiency(race, proficiency));
+                        }
+                    }
+                }
+            }
+            if (race5E.languageProficiencies != null)
+            {
+                foreach (LanguageProficiency language in race5E.languageProficiencies)
+                {
+                    List<Proficiency> languages = new List<Proficiency>();
+                    languages.AddRange(FindLanguages(language, proficiencies));
+                    foreach (Proficiency proficiency in languages)
+                    {
+                        if(!raceProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        {
+                            raceProficiencies.Add(new RaceProficiency(race, proficiency));
+                        }
+                    }
+                }
+            }
+            race.Proficiencies = raceProficiencies;
+            //TODO: Features, Subraces, actually check size and speed
             return race;
         }
 
@@ -533,7 +567,7 @@ namespace DnDesigner.Data
             string contents = File.ReadAllText("Data\\5EToolsData\\backgrounds.json");
             return JsonSerializer.Deserialize<BackgroundRoot>(contents);
         }
-        public static Background ConvertBackground(Background5ETools background5E)
+        public static Background ConvertBackground(Background5ETools background5E, List<Proficiency> proficiencies)
         {
             Background background = new Background();
             background.Name = background5E.name;
@@ -564,7 +598,55 @@ namespace DnDesigner.Data
                 }
             }
             background.Description = CleanText(background.Description);
-            //TODO: proficiencies, equipment, features
+            List<BackgroundProficiency> backgroundProficiencies = new List<BackgroundProficiency>();
+            if (background5E.skillProficiencies != null)
+            {
+
+                foreach (SkillProficiency skill in background5E.skillProficiencies)
+                {
+                    List<Proficiency> skills = new List<Proficiency>();
+                    skills.AddRange(FindSkills(skill, proficiencies));
+                    foreach (Proficiency proficiency in skills)
+                    {
+                        if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        {
+                            backgroundProficiencies.Add(new BackgroundProficiency(background, proficiency));
+                        }
+                    }
+                }
+            }
+            if (background5E.toolProficiencies != null)
+            {
+                foreach (ToolProficiency tool in background5E.toolProficiencies)
+                {
+                    List<Proficiency> tools = new List<Proficiency>();
+                    tools.AddRange(FindTools(tool, proficiencies));
+                    foreach (Proficiency proficiency in tools)
+                    {
+                        if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        {
+                            backgroundProficiencies.Add(new BackgroundProficiency(background, proficiency));
+                        }
+                    }
+                }
+            }
+            if (background5E.languageProficiencies != null)
+            {
+                foreach (LanguageProficiency language in background5E.languageProficiencies)
+                {
+                    List<Proficiency> languages = new List<Proficiency>();
+                    languages.AddRange(FindLanguages(language, proficiencies));
+                    foreach (Proficiency proficiency in languages)
+                    {
+                        if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        {
+                            backgroundProficiencies.Add(new BackgroundProficiency(background, proficiency));
+                        }
+                    }
+                }
+            }
+            background.Proficiencies = backgroundProficiencies;
+            //TODO:equipment, features
             return background;
         }
 
@@ -578,7 +660,7 @@ namespace DnDesigner.Data
             }
             return classRoots;
         }
-        public static Class ConvertClass(Class5ETools class5E, List<ClassFeature5ETools> classFeatures)
+        public static Class ConvertClass(Class5ETools class5E, List<ClassFeature5ETools> classFeatures, List<Proficiency> proficiencies)
         {
             Class @class = new Class();
             @class.Name = class5E.name;
@@ -603,7 +685,39 @@ namespace DnDesigner.Data
                 ClassFeature feature = new ClassFeature(@class, feature5E.name, description, feature5E.level);
                 @class.Features.Add(feature);
             }
-            //TODO: Proficiencies
+            List<ClassProficiency> classProficiencies = new List<ClassProficiency>();
+            if (class5E.startingProficiencies.skills != null)
+            {
+
+                foreach (SkillProficiency skill in class5E.startingProficiencies.skills)
+                {
+                    List<Proficiency> skills = new List<Proficiency>();
+                    skills.AddRange(FindSkills(skill, proficiencies));
+                    foreach (Proficiency proficiency in skills)
+                    {
+                        if (!classProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        {
+                            classProficiencies.Add(new ClassProficiency(@class, proficiency));
+                        }
+                    }
+                }
+            }
+            if (class5E.startingProficiencies.toolProficiencies != null)
+            {
+                foreach (ToolProficiency tool in class5E.startingProficiencies.toolProficiencies)
+                {
+                    List<Proficiency> tools = new List<Proficiency>();
+                    tools.AddRange(FindTools(tool, proficiencies));
+                    foreach (Proficiency proficiency in tools)
+                    {
+                        if (!classProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        {
+                            classProficiencies.Add(new ClassProficiency(@class, proficiency));
+                        }
+                    }
+                }
+            }
+            @class.Proficiencies = classProficiencies;
             return @class;
         }
         public static Subclass ConvertSubclass(Subclass5ETools subclass5E, Class @class, List<SubclassFeature5ETools> subclassFeatures)
@@ -654,6 +768,167 @@ namespace DnDesigner.Data
                 }
             }
             return cleanText;
+        }
+        public static List<Proficiency> FindLanguages(LanguageProficiency language, List<Proficiency> proficiencies)
+        {
+            List<Proficiency> languages = new List<Proficiency>();
+            if (language.auran)
+            {
+                languages.Add(FindProficiency("auran", proficiencies));
+            }
+            if(language.aquan != null && (bool)language.aquan)
+            {
+                languages.Add(FindProficiency("aquan", proficiencies));
+            }
+            if (language.common != null && (bool)language.common)
+            {
+                languages.Add(FindProficiency("common", proficiencies));
+            }
+            if (language.dwarvish != null && (bool)language.dwarvish)
+            {
+                languages.Add(FindProficiency("dwarvish", proficiencies));
+            }
+            if (language.elvish != null && (bool)language.elvish)
+            {
+                languages.Add(FindProficiency("elvish", proficiencies));
+            }
+            if (language.draconic != null && (bool)language.draconic)
+            {
+                languages.Add(FindProficiency("draconic", proficiencies));
+            }
+            if (language.celestial != null && (bool)language.celestial)
+            {
+                languages.Add(FindProficiency("celestial", proficiencies));
+            }
+            if (language.primordial != null && (bool)language.primordial)
+            {
+                languages.Add(FindProficiency("primordial", proficiencies));
+            }
+            if (language.thievescant != null && (bool)language.thievescant)
+            {
+                languages.Add(FindProficiency("thieves' cant", proficiencies));
+            }
+            if (language.undercommon != null && (bool)language.undercommon)
+            {
+                languages.Add(FindProficiency("undercommon", proficiencies));
+            }
+            if (language.giant != null && (bool)language.giant)
+            {
+                languages.Add(FindProficiency("giant", proficiencies));
+            }
+            if (language.goblin != null && (bool)language.goblin)
+            {
+                languages.Add(FindProficiency("goblin", proficiencies));
+            }
+            if (language.sylvan != null && (bool)language.sylvan)
+            {
+                languages.Add(FindProficiency("sylvan", proficiencies));
+            }
+            if (language.gnomish != null && (bool)language.gnomish)
+            {
+                languages.Add(FindProficiency("gnomish", proficiencies));
+            }
+            return proficiencies;
+        }
+        public static List<Proficiency> FindSkills(SkillProficiency skill, List<Proficiency> proficiencies)
+        {
+            List<Proficiency> skills = new List<Proficiency>();
+
+            if (skill.intimidation)
+            {
+                skills.Add(FindProficiency("Intimidation", proficiencies));
+            }
+            if (skill.insight)
+            {
+                skills.Add(FindProficiency("Insight", proficiencies));
+            }
+            if (skill.religion)
+            {
+                skills.Add(FindProficiency("Religion", proficiencies));
+            }
+            if (skill.perception.HasValue && skill.perception.Value)
+            {
+                skills.Add(FindProficiency("Perception", proficiencies));
+            }
+            if (skill.stealth.HasValue && skill.stealth.Value)
+            {
+                skills.Add(FindProficiency("Stealth", proficiencies));
+            }
+            if (skill.survival.HasValue && skill.survival.Value)
+            {
+                skills.Add(FindProficiency("Survival", proficiencies));
+            }
+            if (skill.deception.HasValue && skill.deception.Value)
+            {
+                skills.Add(FindProficiency("Deception", proficiencies));
+            }
+            if (skill.history.HasValue && skill.history.Value)
+            {
+                skills.Add(FindProficiency("History", proficiencies));
+            }
+            if (skill.nature.HasValue && skill.nature.Value)
+            {
+                skills.Add(FindProficiency("Nature", proficiencies));
+            }
+            if (skill.acrobatics.HasValue && skill.acrobatics.Value)
+            {
+                skills.Add(FindProficiency("Acrobatics", proficiencies));
+            }
+            if (skill.athletics.HasValue && skill.athletics.Value)
+            {
+                skills.Add(FindProficiency("Athletics", proficiencies));
+            }
+            if (skill.animalhandling.HasValue && skill.animalhandling.Value)
+            {
+                skills.Add(FindProficiency("Animal Handling", proficiencies));
+            }
+            if (skill.performance.HasValue && skill.performance.Value)
+            {
+                skills.Add(FindProficiency("Performance", proficiencies));
+            }
+            if (skill.sleightofhand.HasValue && skill.sleightofhand.Value)
+            {
+                skills.Add(FindProficiency("Sleight of Hand", proficiencies));
+            }
+            if (skill.persuasion.HasValue && skill.persuasion.Value)
+            {
+                skills.Add(FindProficiency("Persuasion", proficiencies));
+            }
+            if (skill.investigation.HasValue && skill.investigation.Value)
+            {
+                skills.Add(FindProficiency("Investigation", proficiencies));
+            }
+
+            return skills;
+        }
+        public static List<Proficiency> FindTools(ToolProficiency tool, List<Proficiency> proficiencies)
+        {
+            List<Proficiency> tools = new List<Proficiency>();
+            if(tool.herbalismkit.HasValue &&  tool.herbalismkit.Value)
+            {
+                tools.Add(FindProficiency("herbalism kit", proficiencies));
+            }
+            if (tool.disguisekit.HasValue && tool.disguisekit.Value)
+            {
+                tools.Add(FindProficiency("disguise kit", proficiencies));
+            }
+            if (tool.forgerykit.HasValue && tool.forgerykit.Value)
+            {
+                tools.Add(FindProficiency("forgery kit", proficiencies));
+            }
+            if (tool.tinkerstools)
+            {
+                tools.Add(FindProficiency("tinker's tools", proficiencies));
+            }
+            if (tool.thievestools.HasValue && tool.thievestools.Value)
+            {
+                tools.Add(FindProficiency("thieves' tools", proficiencies));
+            }
+            return tools;
+        }
+        public static Proficiency? FindProficiency(string proficiencyName, List<Proficiency> proficiencies)
+        {
+            return proficiencies.Where(p => p.Name.ToLower().Contains(proficiencyName.Trim().ToLower())).FirstOrDefault();
         }
     }
 }

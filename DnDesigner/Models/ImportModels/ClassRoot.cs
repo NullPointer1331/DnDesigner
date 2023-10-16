@@ -177,7 +177,7 @@ namespace DnDesigner.Models.ImportModels
         public List<object> weapons { get; set; }
         public List<object> tools { get; set; }
         public List<ToolProficiency> toolProficiencies { get; set; }
-        public List<Skill> skills { get; set; }
+        public List<SkillProficiency> skills { get; set; }
     }
 
     public class Subclass5ETools

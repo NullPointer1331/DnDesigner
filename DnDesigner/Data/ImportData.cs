@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Components.Web;
 using System.Linq;
 using DnDesigner.Models;
 using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Humanizer;
 
 namespace DnDesigner.Data
 {
@@ -315,8 +317,9 @@ namespace DnDesigner.Data
             spell.Description = "";
             foreach (object entry in spell5E.entries)
             {
-                spell.Description += entry.ToString();
+                spell.Description += $"{entry} ";
             }
+            spell.Description = CleanText(spell.Description);
             //TODO: Spell Lists
             return spell;
         }
@@ -336,9 +339,10 @@ namespace DnDesigner.Data
             {
                 foreach (object entry in item5E.entries)
                 {
-                    item.Description += entry.ToString();
+                    item.Description += $"{entry} ";
                 }
             }
+            item.Description = CleanText(item.Description);
             item.Price = item5E.value / 100 ?? 0; 
             item.Weight = item5E.weight ?? 0;
             if (item5E.reqAttune != null && item5E.reqAttune.ToString().ToLower().Equals("true"))
@@ -479,9 +483,10 @@ namespace DnDesigner.Data
             {
                 foreach (object entry in race5E.entries)
                 {
-                    race.Description += entry.ToString();
+                    race.Description += $"{entry} ";
                 }
             }
+            race.Description = CleanText(race.Description);
             race.StatBonuses = "";
             if (race5E.ability != null)
             {
@@ -545,7 +550,7 @@ namespace DnDesigner.Data
                             background.Description += $"{item.name} ";
                             if (item.entry != null)
                             {
-                                background.Description += item.entry.ToString();
+                                background.Description += $"{item.entry} ";
                             }
                         }
                     }
@@ -553,11 +558,12 @@ namespace DnDesigner.Data
                     {
                         foreach (object subEntry in entry.entries)
                         {
-                            background.Description += subEntry.ToString();
+                            background.Description += $"{subEntry} ";
                         }
                     }
                 }
             }
+            background.Description = CleanText(background.Description);
             //TODO: proficiencies, equipment, features
             return background;
         }
@@ -593,6 +599,7 @@ namespace DnDesigner.Data
                 {
                     description += entry.ToString();
                 }
+                description = CleanText(description);
                 ClassFeature feature = new ClassFeature(@class, feature5E.name, description, feature5E.level);
                 @class.Features.Add(feature);
             }
@@ -618,11 +625,35 @@ namespace DnDesigner.Data
                 {
                     description += entry.ToString();
                 }
+                description = CleanText(description);
                 SubclassFeature feature = new SubclassFeature(subclass, feature5E.name, description, feature5E.level);
                 subclass.Features.Add(feature);
             }
             @class.Subclasses.Add(subclass);
             return subclass;
+        }
+        public static string CleanText(string text)
+        {
+            if(text.IsNullOrEmpty())
+            {
+                return "";
+            }
+            text = text.Replace("}", "");
+            text = text.Replace("{", "");
+            string[] textList = text.Split(" ");
+            string cleanText = "";
+            foreach (string word in textList)
+            {
+                if(word.Contains("|"))
+                {
+                    cleanText += word.Substring(0, word.IndexOf("|") - 1);
+                }
+                else if (!word.Contains("@"))
+                {
+                    cleanText += $"{word} ";
+                }
+            }
+            return cleanText;
         }
     }
 }

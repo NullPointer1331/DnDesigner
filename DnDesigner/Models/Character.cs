@@ -60,33 +60,45 @@ namespace DnDesigner.Models
         public int WalkingSpeed { get; set; }
 
         /// <summary>
-        /// The characters Strength stat
+        /// The characters Strength stat.
+        /// Cannot be higher than 20, or lower than 1.
         /// </summary>
+        [Range(1, 20)]
         public int Strength { get; set; }
 
         /// <summary>
-        /// The characters Dexterity stat
+        /// The characters Dexterity stat.
+        /// Cannot be higher than 20, or lower than 1.
         /// </summary>
+        [Range(1, 20)]
         public int Dexterity { get; set; }
 
         /// <summary>
-        /// The characters Constitution stat
+        /// The characters Constitution stat.
+        /// Cannot be higher than 20, or lower than 1.
         /// </summary>
+        [Range(1, 20)]
         public int Constitution { get; set; }
 
         /// <summary>
-        /// The characters Intelligence stat
+        /// The characters Intelligence stat.
+        /// Cannot be higher than 20, or lower than 1.
         /// </summary>
+        [Range(1, 20)]
         public int Intelligence { get; set; }
 
         /// <summary>
-        /// The characters Wisdom stat
+        /// The characters Wisdom stat.
+        /// Cannot be higher than 20, or lower than 1.
         /// </summary>
+        [Range(1, 20)]
         public int Wisdom { get; set; }
 
         /// <summary>
-        /// The characters Charisma stat
+        /// The characters Charisma stat.
+        /// Cannot be higher than 20, or lower than 1.
         /// </summary>
+        [Range(1, 20)]
         public int Charisma { get; set; }
 
         /// <summary>
@@ -169,5 +181,50 @@ namespace DnDesigner.Models
         /// The spellcasting ability of the character, if they have one.
         /// </summary>
         public List<CharacterSpellcasting> Spellcasting { get; set; }
+
+        // race
+        public Race Race { get; set; }
+
+        /// <summary>
+        /// The character's strength stat. 
+        /// Cannot be higher than 20, or lower than 1.
+        /// </summary>
+        [Range(1, 20)]
+        public int Strength { get; set; }
+
+        /// <summary>
+        /// The character's dexterity stat.
+        /// Cannot be higher than 20, or lower than 1.
+        /// </summary>
+        [Range(1, 20)]
+        public int Dexterity { get; set; }
+
+        /// <summary>
+        /// The character's constitution stat.
+        /// Cannot be higher than 20, or lower than 1.
+        /// </summary>
+        [Range(1, 20)]
+        public int Constitution { get; set; }
+
+        /// <summary>
+        /// The character's intelligence stat.
+        /// Cannot be higher than 20, or lower than 1.
+        /// </summary>
+        [Range(1, 20)]
+        public int Intelligence { get; set; }
+
+        /// <summary>
+        /// The character's wisdom stat.
+        /// Cannot be higher than 20, or lower than 1.
+        /// </summary>
+        [Range(1, 20)]
+        public int Wisdom { get; set; }
+
+        /// <summary>
+        /// The character's charisma stat.
+        /// Cannot be higher than 20, or lower than 1.
+        /// </summary>
+        [Range(1, 20)]
+        public int Charisma { get; set;}
     }
 }

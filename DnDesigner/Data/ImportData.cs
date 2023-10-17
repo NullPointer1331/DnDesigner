@@ -693,6 +693,17 @@ namespace DnDesigner.Data
                 {
                     List<Proficiency> skills = new List<Proficiency>();
                     skills.AddRange(FindSkills(skill, proficiencies));
+                    if (skill.choose != null)
+                    {
+                        foreach (string str in skill.choose.from)
+                        {
+                            Proficiency? proficiency = FindProficiency(str, proficiencies);
+                            if (proficiency != null)
+                            {
+                                skills.Add(proficiency);
+                            }
+                        }
+                    }
                     foreach (Proficiency proficiency in skills)
                     {
                         if (!classProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
@@ -708,6 +719,17 @@ namespace DnDesigner.Data
                 {
                     List<Proficiency> tools = new List<Proficiency>();
                     tools.AddRange(FindTools(tool, proficiencies));
+                    if (tool.choose != null)
+                    {
+                        foreach (string str in tool.choose.from)
+                        {
+                            Proficiency? proficiency = FindProficiency(str, proficiencies);
+                            if (proficiency != null)
+                            {
+                                tools.Add(proficiency);
+                            }
+                        }
+                    }
                     foreach (Proficiency proficiency in tools)
                     {
                         if (!classProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())

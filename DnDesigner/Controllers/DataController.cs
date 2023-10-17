@@ -41,19 +41,37 @@ namespace DnDesigner.Controllers
         {
             return View(await _context.Classes.ToListAsync());
         }
+        public async Task<IActionResult> DisplayClass(int id)
+        {
+            Class? @class = await _context.Classes.FindAsync(id);
+            if(@class == null)
+            {
+                return NotFound();
+            }
+            return View(@class);
+        }
         public async Task<IActionResult> ViewSubclasses()
         {
             return View(await _context.Subclasses.ToListAsync());
         }
+        public async Task<IActionResult> ViewFeatures()
+        {
+            List<Feature> features = new List<Feature>();
+            features.AddRange(await _context.ClassFeatures.ToListAsync());
+            features.AddRange(await _context.SubclassFeatures.ToListAsync());
+            features.AddRange(await _context.BackgroundFeatures.ToListAsync());
+            features.AddRange(await _context.RaceFeatures.ToListAsync());
+            return View(features);
+        }
         public async Task<IActionResult> Import()
         {
-            List<Proficiency> proficiencies = ImportData.ExtractProficiencies();
             List<Item> items = ImportData.ExtractItems();
-            List<Spell> spells = ImportData.ExtractSpells(); //Doesn't seem to work yet
-            List<Background> backgrounds = ImportData.ExtractBackgrounds();
-            List<Race> races = ImportData.ExtractRaces();
-            List<Class> classes = ImportData.ExtractClasses(); //Doesn't seem to work yet
-            List<Subclass> subclasses = ImportData.ExtractSubclasses(classes); //Doesn't seem to work yet
+            List<Proficiency> proficiencies = ImportData.ExtractProficiencies(items);
+            List<Spell> spells = ImportData.ExtractSpells(); 
+            List<Background> backgrounds = ImportData.ExtractBackgrounds(proficiencies);
+            List<Race> races = ImportData.ExtractRaces(proficiencies);
+            List<Class> classes = ImportData.ExtractClasses(proficiencies); 
+            List<Subclass> subclasses = ImportData.ExtractSubclasses(classes); 
 
             _context.Proficiencies.AddRange(proficiencies);
             _context.Items.AddRange(items);

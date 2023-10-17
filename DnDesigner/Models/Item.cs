@@ -44,7 +44,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// Can the item be equipped, if so, where
         /// Range guide: 0 = not equipable, 1 = armor, 2 = main hand only
-        /// 3 = off hand only, 4 = either hand, 5 = other
+        /// 3 = off hand only, 4 = either hand, 5 = both hands, 6 = other
         /// </summary>
         [Range(0, 5)]
         public int Equipable { get; set; }

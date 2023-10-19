@@ -30,27 +30,11 @@ namespace DnDesigner.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BackgroundId"));
 
-                    b.Property<string>("Bonds")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Flaws")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ideals")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OtherInformation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PersonalityTraits")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -63,7 +47,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("BackgroundId");
 
-                    b.ToTable("Backgrounds", (string)null);
+                    b.ToTable("Backgrounds");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.BackgroundFeature", b =>
@@ -96,7 +80,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("BackgroundId");
 
-                    b.ToTable("BackgroundFeatures", (string)null);
+                    b.ToTable("BackgroundFeatures");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.BackgroundProficiency", b =>
@@ -113,7 +97,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("ProficiencyId");
 
-                    b.ToTable("BackgroundProficiencies", (string)null);
+                    b.ToTable("BackgroundProficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Character", b =>
@@ -166,6 +150,9 @@ namespace DnDesigner.Data.Migrations
                     b.Property<int>("ProficiencyBonus")
                         .HasColumnType("int");
 
+                    b.Property<int>("RaceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Resistances")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -190,7 +177,9 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("BackgroundId");
 
-                    b.ToTable("Characters", (string)null);
+                    b.HasIndex("RaceId");
+
+                    b.ToTable("Characters");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.CharacterClass", b =>
@@ -213,7 +202,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("SubclassId");
 
-                    b.ToTable("CharacterClasses", (string)null);
+                    b.ToTable("CharacterClasses");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.CharacterProficiency", b =>
@@ -236,7 +225,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("ProficiencyId");
 
-                    b.ToTable("CharacterProficiencies", (string)null);
+                    b.ToTable("CharacterProficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.CharacterSpellcasting", b =>
@@ -251,7 +240,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("SpellcastingId");
 
-                    b.ToTable("CharacterSpellcasting", (string)null);
+                    b.ToTable("CharacterSpellcasting");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Class", b =>
@@ -280,7 +269,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("SpellcastingId");
 
-                    b.ToTable("Classes", (string)null);
+                    b.ToTable("Classes");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.ClassFeature", b =>
@@ -313,7 +302,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("ClassId");
 
-                    b.ToTable("ClassFeatures", (string)null);
+                    b.ToTable("ClassFeatures");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.ClassProficiency", b =>
@@ -328,7 +317,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("ProficiencyId");
 
-                    b.ToTable("ClassProficiencies", (string)null);
+                    b.ToTable("ClassProficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Inventory", b =>
@@ -365,7 +354,7 @@ namespace DnDesigner.Data.Migrations
                     b.HasIndex("CharacterId")
                         .IsUnique();
 
-                    b.ToTable("Inventory", (string)null);
+                    b.ToTable("Inventory");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.InventoryItem", b =>
@@ -383,7 +372,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("InventoryId");
 
-                    b.ToTable("InventoryItems", (string)null);
+                    b.ToTable("InventoryItems");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Item", b =>
@@ -424,7 +413,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("ItemId");
 
-                    b.ToTable("Items", (string)null);
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.KnownSpell", b =>
@@ -444,7 +433,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("CharacterId", "SpellcastingId");
 
-                    b.ToTable("KnownSpells", (string)null);
+                    b.ToTable("KnownSpells");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.LearnableSpell", b =>
@@ -459,7 +448,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("SpellcastingId");
 
-                    b.ToTable("LearnableSpells", (string)null);
+                    b.ToTable("LearnableSpells");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Proficiency", b =>
@@ -483,7 +472,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("ProficiencyId");
 
-                    b.ToTable("Proficiencies", (string)null);
+                    b.ToTable("Proficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Race", b =>
@@ -519,7 +508,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("RaceId");
 
-                    b.ToTable("Races", (string)null);
+                    b.ToTable("Races");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.RaceFeature", b =>
@@ -552,7 +541,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("RaceId");
 
-                    b.ToTable("RaceFeatures", (string)null);
+                    b.ToTable("RaceFeatures");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.RaceProficiency", b =>
@@ -567,7 +556,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("ProficiencyId");
 
-                    b.ToTable("RaceProficiencies", (string)null);
+                    b.ToTable("RaceProficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Spell", b =>
@@ -621,7 +610,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("SpellId");
 
-                    b.ToTable("Spells", (string)null);
+                    b.ToTable("Spells");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Spellcasting", b =>
@@ -655,7 +644,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("SpellcastingId");
 
-                    b.ToTable("Spellcasting", (string)null);
+                    b.ToTable("Spellcasting");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Subclass", b =>
@@ -686,7 +675,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("SpellcastingId");
 
-                    b.ToTable("Subclasses", (string)null);
+                    b.ToTable("Subclasses");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.SubclassFeature", b =>
@@ -719,7 +708,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("SubclassId");
 
-                    b.ToTable("SubclassFeatures", (string)null);
+                    b.ToTable("SubclassFeatures");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -962,7 +951,15 @@ namespace DnDesigner.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DnDesigner.Models.Race", "Race")
+                        .WithMany()
+                        .HasForeignKey("RaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Background");
+
+                    b.Navigation("Race");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.CharacterClass", b =>

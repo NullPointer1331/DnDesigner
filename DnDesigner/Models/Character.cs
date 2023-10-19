@@ -21,12 +21,42 @@ namespace DnDesigner.Models
         /// <summary>
         /// The characters current level
         /// </summary>
-        public int Level { get; set; }
+        public int Level { get
+            {
+                int level = 0;
+                foreach (CharacterClass characterClass in Classes)
+                {
+                    level += characterClass.Level;
+                }
+                return level;
+            }}
 
         /// <summary>
         /// The characters current proficiency bonus
         /// </summary>
-        public int ProficiencyBonus { get; set; }
+        public int ProficiencyBonus { get
+            {
+                if(Level >= 17)
+                {
+                    return 6;
+                }
+                else if (Level >= 13)
+                {
+                    return 5;
+                }
+                else if (Level >= 9)
+                {
+                    return 4;
+                }
+                else if (Level >= 5)
+                {
+                    return 3;
+                }
+                else
+                {
+                    return 2;
+                }
+            }}
 
         /// <summary>
         /// The characters maximum health points
@@ -132,5 +162,55 @@ namespace DnDesigner.Models
         /// Contains the character's inventory information
         /// </summary>
         public Inventory Inventory { get; set; }
+
+        /// <summary>
+        /// Gets the score of the specified attribute
+        /// </summary>
+        /// <param name="name">The name of the attribute
+        /// (strength, dexterity, constitution, intelligence, wisdom, or charisma)</param>
+        /// <returns>Returns the score of the specified attribute, -1 if it can't be found</returns>
+        public int GetAttribute(string name)
+        {
+            if(name.ToLower().Contains("str"))
+            {
+                return Strength;
+            }
+            else if (name.ToLower().Contains("dex"))
+            {
+                return Dexterity;
+            }
+            else if (name.ToLower().Contains("con"))
+            {
+                return Constitution;
+            }
+            else if (name.ToLower().Contains("int"))
+            {
+                return Intelligence;
+            }
+            else if (name.ToLower().Contains("wis"))
+            {
+                return Wisdom;
+            }
+            else if (name.ToLower().Contains("cha"))
+            {
+                return Charisma;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// Gets the modifier of the specified attribute
+        /// </summary>
+        /// <param name="name">The name of the attribute
+        /// (strength, dexterity, constitution, intelligence, wisdom, or charisma)</param>
+        /// <returns>Returns the modifier of the specified attribute, 
+        /// which is calculated with (score - 10) / 2</returns>
+        public int GetModifier(string name)
+        {
+            return (GetAttribute(name) - 10) / 2;
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace DnDesigner.Models
         /// The proficiency type
         /// Can be a skill, saving throw, language, tool, or type of equipment
         /// </summary>
-        public string ProficiencyType { get; private set; }
+        public string Type { get; private set; }
 
 
         /// <summary>
@@ -38,12 +38,12 @@ namespace DnDesigner.Models
         /// </summary>
         /// <param name="name">The name of the proficiency</param>
         /// <param name="mainAttribute">The attribute associated with this proficiency</param>
-        /// <param name="proficiencyType">The type of proficiency i.e. Tool, Skill, Saving throw</param>
-        public Proficiency (string name, string? mainAttribute, string proficiencyType)
+        /// <param name="type">The type of proficiency i.e. Tool, Skill, Saving throw</param>
+        public Proficiency (string name, string? mainAttribute, string type)
         {
             Name = name;
             MainAttribute = mainAttribute;
-            ProficiencyType = proficiencyType;
+            Type = type;
         }
     }
 
@@ -117,6 +117,24 @@ namespace DnDesigner.Models
         public CharacterProficiency(int characterId, int proficiencyId) {
             CharacterId = characterId;
             ProficiencyId = proficiencyId;
+        }
+
+        /// <summary>
+        /// Calculates the character's bonus to rolls with this proficiency 
+        /// </summary>
+        /// <returns>The bonus to rolls with this proficiency, 
+        /// 0 if the proficiency doesn't have a main attribute</returns>
+        public int GetRollBonus()
+        {
+            if (Proficiency.MainAttribute != null)
+            {
+                return Character.GetAttribute(Proficiency.MainAttribute) +
+                    (Character.ProficiencyBonus * ProficiencyLevel) + CheckBonus;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 

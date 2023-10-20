@@ -39,7 +39,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// All features of this background
         /// </summary>
-        public List<BackgroundFeature> BackgroundFeature { get; set; }
+        public List<BackgroundFeature> Features { get; set; }
 
         /// <summary>
         /// The gold this background gives
@@ -58,7 +58,7 @@ namespace DnDesigner.Models
         {
             Proficiencies = new List<BackgroundProficiency>();
             StarterEquipment = new List<Item>();
-            BackgroundFeature = new List<BackgroundFeature>();
+            Features = new List<BackgroundFeature>();
             Description = "";
         }
     }

@@ -8,6 +8,7 @@ namespace DnDesigner.Models
     /// </summary>
     public class Character
     {
+        #region properties
         /// <summary>
         /// Primary key
         /// </summary>
@@ -162,7 +163,9 @@ namespace DnDesigner.Models
         /// Contains the character's inventory information
         /// </summary>
         public Inventory Inventory { get; set; }
+        #endregion
 
+        #region methods
         /// <summary>
         /// Gets the score of the specified attribute
         /// </summary>
@@ -212,5 +215,55 @@ namespace DnDesigner.Models
         {
             return (GetAttribute(name) - 10) / 2;
         }
+
+        /// <summary>
+        /// Gets a CharacterProficiency with a given name
+        /// </summary>
+        /// <param name="name">The name of the proficiency</param>
+        /// <returns>The specified CharacterProficiency, null if none</returns>
+        public CharacterProficiency? GetProficiency(string name)
+        {
+            return Proficiencies.Where(p => p.Proficiency.Name == name).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets all CharacterProficiencies tagged as skills
+        /// </summary>
+        /// <returns>A list of CharacterProficiencies</returns>
+        public List<CharacterProficiency> GetSkills()
+        {
+            return Proficiencies.Where(p => p.Proficiency.Type == "skill").ToList();
+        }
+
+        /// <summary>
+        /// Gets all CharacterProficiencies tagged as saving throws
+        /// </summary>
+        /// <returns>A list of CharacterProficiencies</returns>
+        public List<CharacterProficiency> GetSaves()
+        {
+            return Proficiencies.Where(p => p.Proficiency.Type == "saving throw").ToList();
+        }
+
+        /// <summary>
+        /// Gets all features from classes, subclasses, race and background 
+        /// where the character meets the required level
+        /// </summary>
+        /// <returns>All features the character meets the required level for</returns>
+        public List<Feature> GetActiveFeatures()
+        {
+            List<Feature> features = new List<Feature>();
+            foreach(CharacterClass @class in Classes)
+            {
+                features.AddRange(@class.Class.Features.Where(f => f.Level <= Level));
+                if(@class.Subclass != null)
+                {
+                    features.AddRange(@class.Subclass.Features.Where(f => f.Level <= Level));
+                }
+            }
+            features.AddRange(Background.Features.Where(f => f.Level <= Level));
+            features.AddRange(Race.Features.Where(f => f.Level <= Level));
+            return features;
+        }
+        #endregion
     }
 }

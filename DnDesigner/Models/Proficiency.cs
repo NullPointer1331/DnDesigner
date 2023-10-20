@@ -14,7 +14,7 @@ namespace DnDesigner.Models
         /// Primary key
         /// </summary>
         [Key]
-        public int ProficiencyId { get; private set; }
+        public int ProficiencyId { get; set; }
 
         /// <summary>
         /// The name of the skill or saving throw

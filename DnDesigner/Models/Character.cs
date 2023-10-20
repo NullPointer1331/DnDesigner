@@ -37,26 +37,7 @@ namespace DnDesigner.Models
         /// </summary>
         public int ProficiencyBonus { get
             {
-                if(Level >= 17)
-                {
-                    return 6;
-                }
-                else if (Level >= 13)
-                {
-                    return 5;
-                }
-                else if (Level >= 9)
-                {
-                    return 4;
-                }
-                else if (Level >= 5)
-                {
-                    return 3;
-                }
-                else
-                {
-                    return 2;
-                }
+                return (Level - 1) / 4 + 2;
             }}
 
         /// <summary>

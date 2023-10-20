@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Humanizer;
 using System.Collections.Generic;
 using DnDesigner.Controllers;
+using Elfie.Serialization;
 
 namespace DnDesigner.Data
 {
@@ -29,7 +30,8 @@ namespace DnDesigner.Data
                     {
                         if (!class5E.source.Contains("UA"))
                         {
-                            List<ClassFeature5ETools> classFeatures = classRoot.classFeature.Where(f => f.className == class5E.name).ToList();
+                            List<ClassFeature5ETools> classFeatures = classRoot.classFeature
+                                .Where(f => f.className == class5E.name && f.source.Contains("UA")).ToList();
                             classes.Add(ConvertClass(class5E, classFeatures, proficiencies));
                         }
                     }
@@ -672,6 +674,14 @@ namespace DnDesigner.Data
                 spellcasting.Name = @class.Name;
                 spellcasting.SpellcastingAttribute = class5E.spellcastingAbility;
                 spellcasting.SpellcastingType = class5E.casterProgression ?? "none";
+                if(spellcasting.SpellcastingType == "1/2" || spellcasting.SpellcastingType == "artificer")
+                {
+                    spellcasting.SpellcastingType = "half";
+                }
+                if(!class5E.preparedSpells.IsNullOrEmpty())
+                {
+                    spellcasting.PreparedCasting = true;
+                }
                 @class.Spellcasting = spellcasting;
             }
             foreach (ClassFeature5ETools feature5E in classFeatures)
@@ -683,6 +693,7 @@ namespace DnDesigner.Data
                 }
                 description = CleanText(description);
                 ClassFeature feature = new ClassFeature(@class, feature5E.name, description, feature5E.level);
+                feature.Source = $"{feature5E.source}, Class, {@class.Name}";
                 @class.Features.Add(feature);
             }
             List<ClassProficiency> classProficiencies = new List<ClassProficiency>();

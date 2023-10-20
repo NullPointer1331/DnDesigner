@@ -14,7 +14,7 @@ namespace DnDesigner.Models
         /// Primary Key
         /// </summary>
         [Key]
-        public int ItemId { get; private set; }
+        public int ItemId { get; set; }
 
         /// <summary>
         /// The name of the item

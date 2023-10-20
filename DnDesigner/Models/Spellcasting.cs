@@ -24,7 +24,7 @@ namespace DnDesigner.Models
 
         /// <summary>
         /// The type of spellcasting
-        /// Full, half, third, pact, or innate
+        /// full, half, third, pact, or innate
         /// </summary>
         public string SpellcastingType { get; set; }
 

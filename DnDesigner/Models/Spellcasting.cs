@@ -7,6 +7,33 @@ namespace DnDesigner.Models
     public class Spellcasting
     {
         /// <summary>
+        /// The standard spell progression for full spellcasters
+        /// </summary>
+        public static int[,] StandardSpellProgression = new int[20, 9]
+        {
+            {2, 0, 0, 0, 0, 0, 0, 0, 0},
+            {3, 0, 0, 0, 0, 0, 0, 0, 0},
+            {4, 2, 0, 0, 0, 0, 0, 0, 0},
+            {4, 3, 0, 0, 0, 0, 0, 0, 0},
+            {4, 3, 2, 0, 0, 0, 0, 0, 0},
+            {4, 3, 3, 0, 0, 0, 0, 0, 0},
+            {4, 3, 3, 1, 0, 0, 0, 0, 0},
+            {4, 3, 3, 2, 0, 0, 0, 0, 0},
+            {4, 3, 3, 3, 1, 0, 0, 0, 0},
+            {4, 3, 3, 3, 2, 0, 0, 0, 0},
+            {4, 3, 3, 3, 2, 1, 0, 0, 0},
+            {4, 3, 3, 3, 2, 1, 0, 0, 0},
+            {4, 3, 3, 3, 2, 1, 1, 0, 0},
+            {4, 3, 3, 3, 2, 1, 1, 0, 0},
+            {4, 3, 3, 3, 2, 1, 1, 1, 0},
+            {4, 3, 3, 3, 2, 1, 1, 1, 0},
+            {4, 3, 3, 3, 2, 1, 1, 1, 1},
+            {4, 3, 3, 3, 3, 1, 1, 1, 1},
+            {4, 3, 3, 3, 3, 2, 1, 1, 1},
+            {4, 3, 3, 3, 3, 2, 2, 1, 1}
+        };
+
+        /// <summary>
         /// Primary key
         /// </summary>
         [Key]
@@ -47,7 +74,9 @@ namespace DnDesigner.Models
         /// The spells that can be learned from this spellcasting
         /// </summary>
         public List<LearnableSpell> LearnableSpells { get; set; }
+
     }
+
     [PrimaryKey(nameof(CharacterId), nameof(SpellcastingId))]
     public class CharacterSpellcasting
     {
@@ -66,6 +95,59 @@ namespace DnDesigner.Models
         public Spellcasting Spellcasting { get; set; }
 
         int SpellcastingId { get; set; }
+
+        /// <summary>
+        /// The total spellcasting level of this character 
+        /// for the purposes of calculating spell slots
+        /// </summary>
+        public int TotalSpellcastingLevel { get
+            {
+                int level = 0;
+                foreach (CharacterClass characterClass in Character.Classes)
+                {
+                    Spellcasting? spellcasting = null;
+                    if(characterClass.Class.Spellcasting != null)
+                    {
+                        spellcasting = characterClass.Class.Spellcasting;
+                        
+                    }
+                    else if(characterClass.Subclass != null && characterClass.Subclass.Spellcasting != null)
+                    {
+                        spellcasting = characterClass.Subclass.Spellcasting;
+                    }
+                    if(spellcasting != null)
+                    {
+                        if (spellcasting.SpellcastingType == "full")
+                        {
+                            level += characterClass.Level;
+                        }
+                        else if (spellcasting.SpellcastingType == "half")
+                        {
+                            level += characterClass.Level / 2;
+                        }
+                        else if (spellcasting.SpellcastingType == "third")
+                        {
+                            level += characterClass.Level / 3;
+                        }
+                    }
+                }
+                return level;
+            }}
+
+        /// <summary>
+        /// The bonus to spell attack rolls
+        /// </summary>
+        public int SpellAttackBonus { get { 
+                return Character.GetModifier(Spellcasting.SpellcastingAttribute) + Character.ProficiencyBonus;
+            }}
+
+        /// <summary>
+        /// The difficulty class for spells
+        /// </summary>
+        public int SpellSaveDC { get
+            {
+                return 8 + SpellAttackBonus;
+            }}
 
         /// <summary>
         /// The spells this character currently has prepared
@@ -87,7 +169,5 @@ namespace DnDesigner.Models
 
         private CharacterSpellcasting() { }
 
-        //Spellcasting level, spell attack bonus, and spell save DC will need to be calculated but don't need to be stored
-        //So we will add methods to calculate them later
     }
 }

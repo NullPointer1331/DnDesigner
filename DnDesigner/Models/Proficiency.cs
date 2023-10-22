@@ -123,8 +123,8 @@ namespace DnDesigner.Models
         /// Calculates the character's bonus to rolls with this proficiency 
         /// </summary>
         /// <returns>The bonus to rolls with this proficiency, 
-        /// 0 if the proficiency doesn't have a main attribute</returns>
-        public int GetRollBonus()
+        /// null if the proficiency doesn't have a main attribute</returns>
+        public int? GetRollBonus()
         {
             if (Proficiency.MainAttribute != null)
             {
@@ -133,7 +133,7 @@ namespace DnDesigner.Models
             }
             else
             {
-                return 0;
+                return null;
             }
         }
     }

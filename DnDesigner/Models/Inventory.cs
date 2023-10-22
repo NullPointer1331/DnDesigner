@@ -86,6 +86,20 @@ namespace DnDesigner.Models
         /// </summary>
         public int Copper { get; set; }
 
+        public int TotalCoinValue
+        {
+            get
+            {
+                int total = 0;
+                total += Platinum * 1000;
+                total += Gold * 100;
+                total += Electrum * 50;
+                total += Silver * 10;
+                total += Copper;
+                return total;
+            }
+        }
+
         /// <summary>
         /// Minimal constructor, sets Character and initializes empty lists
         /// Sets MaxAttunedItems to 3 and leaves other properties null or 0
@@ -100,6 +114,24 @@ namespace DnDesigner.Models
             OtherEquippedItems = new List<Item>();
         }
         private Inventory() { }
+
+        /// <summary>
+        /// Populates the equipment slots with the items that are equipped or attuned
+        /// </summary>
+        public void PopulateEquipmentSlots()
+        {
+            foreach(InventoryItem item in Items)
+            {
+                if(item.Equipped)
+                {
+                    Equip(item);
+                }
+                else if(item.Attuned)
+                {
+                    Attune(item);
+                }
+            }
+        }
 
         /// <summary>
         /// Equips an item to the appropriate slot
@@ -244,6 +276,78 @@ namespace DnDesigner.Models
         public InventoryItem? FindItem(Item? item)
         {
             return Items.Where(i => i.Item.Equals(item)).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Simplifies coin values to the smallest number of coins possible 
+        /// ignoring electrum
+        /// </summary>
+        public void SimplifyCoins()
+        {
+            int total = TotalCoinValue;
+            Platinum = total / 1000;
+            total -= Platinum * 1000;
+            Gold = total / 100;
+            total -= Gold * 100;
+            Silver = total / 10;
+            total -= Silver * 10;
+            Copper = total;
+        }
+
+        /// <summary>
+        /// Adds a specified quantity of an item to the inventory
+        /// </summary>
+        /// <param name="item">The item to add</param>
+        /// <param name="quantity">How many of the item</param>
+        public void AddItem(Item item, int quantity)
+        {
+            InventoryItem? inventoryItem = FindItem(item);
+            if(inventoryItem != null)
+            {
+                inventoryItem.Quantity += quantity;
+            }
+            else
+            {
+                Items.Add(new InventoryItem(item, this, quantity));
+            }
+        }
+
+        /// <summary>
+        /// Adds one of an item to the inventory
+        /// </summary>
+        /// <param name="item">The item to add</param>
+        public void AddItem(Item item)
+        {
+            AddItem(item, 1);
+        }
+
+        /// <summary>
+        /// Removes a specified quantity of an item from the inventory
+        /// </summary>
+        /// <param name="item">The item to remove</param>
+        /// <param name="quantity">How many of that item to remove</param>
+        public void RemoveItem(Item item, int quantity)
+        {
+            InventoryItem? inventoryItem = FindItem(item);
+            if (inventoryItem != null)
+            {
+                inventoryItem.Quantity -= quantity;
+                if (inventoryItem.Quantity <= 0)
+                {
+                    Unequip(inventoryItem);
+                    Unattune(inventoryItem);
+                    Items.Remove(inventoryItem);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes one of an item from the inventory
+        /// </summary>
+        /// <param name="item">The item to remove</param>
+        public void RemoveItem(Item item)
+        {
+            RemoveItem(item, 1);
         }
     }
 }

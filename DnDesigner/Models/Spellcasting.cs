@@ -6,6 +6,7 @@ namespace DnDesigner.Models
 {
     public class Spellcasting
     {
+        #region properties
         /// <summary>
         /// The standard spell progression for full spellcasters
         /// </summary>
@@ -74,12 +75,14 @@ namespace DnDesigner.Models
         /// The spells that can be learned from this spellcasting
         /// </summary>
         public List<LearnableSpell> LearnableSpells { get; set; }
+        #endregion
 
     }
 
     [PrimaryKey(nameof(CharacterId), nameof(SpellcastingId))]
     public class CharacterSpellcasting
     {
+        #region properties
         /// <summary>
         /// The character this spellcasting belongs to
         /// </summary>
@@ -154,6 +157,7 @@ namespace DnDesigner.Models
         /// or if they aren't a prepared caster, the spells they know
         /// </summary>
         public List<KnownSpell> PreparedSpells { get; set; }
+        #endregion
 
         /// <summary>
         /// Basic constructor

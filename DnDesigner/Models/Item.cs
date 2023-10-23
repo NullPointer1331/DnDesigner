@@ -10,6 +10,7 @@ namespace DnDesigner.Models
     /// </summary>
     public class Item
     {
+        #region properties
         /// <summary>
         /// Primary Key
         /// </summary>
@@ -58,7 +59,7 @@ namespace DnDesigner.Models
         /// The items traits
         /// </summary>
         public string Traits { get; set; } = null!;
-
+        #endregion
 
     }
 

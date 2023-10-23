@@ -5,10 +5,11 @@ namespace DnDesigner.Models
 {
 	public class Subclass
 	{
-		/// <summary>
-		/// The subclass identifier
-		/// </summary>
-		[Key]
+        #region properties
+        /// <summary>
+        /// The subclass identifier
+        /// </summary>
+        [Key]
 		public int SubclassId { get; set; }
 
 		/// <summary>
@@ -37,13 +38,14 @@ namespace DnDesigner.Models
 		/// </summary>
 		[ForeignKey("SpellcastingId")]
 		public Spellcasting? Spellcasting { get; set; }
+        #endregion
 
-		/// <summary>
-		/// Basic constructor, sets class and name
-		/// </summary>
-		/// <param name="sourceclass"></param>
-		/// <param name="name"></param>
-		public Subclass(Class sourceclass, string name)
+        /// <summary>
+        /// Basic constructor, sets class and name
+        /// </summary>
+        /// <param name="sourceclass"></param>
+        /// <param name="name"></param>
+        public Subclass(Class sourceclass, string name)
 		{
             Class = sourceclass;
             Name = name;

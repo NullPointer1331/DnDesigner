@@ -5,6 +5,7 @@ namespace DnDesigner.Models
 {
     public class Inventory
     {
+        #region properties
         /// <summary>
         /// Primary key
         /// </summary>
@@ -99,6 +100,7 @@ namespace DnDesigner.Models
                 return total;
             }
         }
+        #endregion
 
         /// <summary>
         /// Minimal constructor, sets Character and initializes empty lists
@@ -115,6 +117,7 @@ namespace DnDesigner.Models
         }
         private Inventory() { }
 
+        #region methods
         /// <summary>
         /// Populates the equipment slots with the items that are equipped or attuned
         /// </summary>
@@ -347,5 +350,6 @@ namespace DnDesigner.Models
         {
             RemoveItem(item, 1);
         }
+        #endregion
     }
 }

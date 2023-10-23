@@ -9,6 +9,7 @@ namespace DnDesigner.Models
     /// </summary>
     public class Spell
     {
+        #region properties
         /// <summary>
         /// Primary key
         /// </summary>
@@ -78,6 +79,7 @@ namespace DnDesigner.Models
         /// Who can learn the spell
         /// </summary>
         public List<LearnableSpell> LearnedBy { get; set; }
+        #endregion
 
         /// <summary>
         /// Minimal constructor, Initializes lists and leaves everything else blank

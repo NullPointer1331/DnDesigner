@@ -8,6 +8,7 @@ namespace DnDesigner.Models
     /// </summary>
     public class Background
     {
+        #region properties
         /// <summary>
         /// Primary key
         /// </summary>
@@ -50,6 +51,7 @@ namespace DnDesigner.Models
         /// The description of this background
         /// </summary>
         public string Description { get; set; } = null!;
+        #endregion
 
         /// <summary>
         /// Minimal constructor, Initializes lists and leaves everything else blank

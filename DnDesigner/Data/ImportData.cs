@@ -16,6 +16,7 @@ namespace DnDesigner.Data
 {
     public static class ImportData
     {
+        #region Extraction methods
         /// <summary>
         /// Extracts Class Data from the 5ETools JSON files and returns it as a list of Classes
         /// </summary>
@@ -225,7 +226,9 @@ namespace DnDesigner.Data
             //TODO: add tool and instrument proficiencies
             return proficiencies;
         }
+        #endregion
 
+        #region Conversion methods
         public static List<SpellRoot> GetSpellRoots()
         {
             List<SpellRoot> spellRoots = new List<SpellRoot>();
@@ -405,74 +408,6 @@ namespace DnDesigner.Data
             }
             return item;
         }
-        public static string DecodeTraits(string traits)
-        {
-            string allTraits = "";
-            if(traits != null)
-            {
-                string[] traitList = traits.Trim().Split(" ");
-                Dictionary<string, string> dict = new Dictionary<string, string>
-            {
-                {"A", "Ammunition" },
-                {"G", "Adventuring Gear" },
-                {"AT", "Artisan's Tools" },
-                {"ER", "Extended Reach" },
-                {"EXP", "Explosive" },
-                {"H", "Heavy" },
-                {"HA", "Heavy Armor" },
-                {"2H", "2 Handed" },
-                {"GS", "Gaming Set" },
-                {"IDG", "Illegal Drug" },
-                { "INS", "Instrument" },
-                { "L", "Light" },
-                { "LA", "Light Armor" },
-                { "LD", "Loading" },
-                {"MA", "Medium Armor" },
-                { "M", "Melee Weapon" },
-                {"R", "Ranged Weapon" },
-                {"S", "Shield" },
-                {"SC", "Sroll" },
-                {"SCF", "Spellcasting Focus" },
-                { "RD", "Rod" },
-                { "RG", "Ring" },
-                { "P", "Potion" },
-                { "$", "Treasure" },
-                { "FD", "Food and Drink" },
-                { "F", "Finesse" },
-                {"T", "Tool" },
-                {"TH", "Thrown" },
-                {"TAH", "Tack and Harness" },
-                {"OTH", "Other" },
-                {"TG", "Trade Good" },
-                {"V", "Versatile" },
-                {"Vst", "Vestige" },
-                {"SPC", "Vehicle (space)" },
-                {"SHC", "Vehicle (water)" },
-                {"AIR", "Vehicle (air)" },
-                {"VEH", "Vehicle (land)" },
-                {"MNT", "Mount" },
-                {"WD", "Wand" },
-                {"WI", "Wondrous Item" }
-            };
-                if (traitList.Length > 0)
-                {
-                    if (dict.ContainsKey(traitList[0]))
-                    {
-                        traitList[0] = dict[traitList[0]];
-                    }
-                }
-                for (int i = 1; i < traitList.Length; i++)
-                {
-                    if (dict.ContainsKey(traitList[i]))
-                    {
-                        traitList[i] = $", {dict[traitList[i]]}";
-                    }
-                }
-                foreach (string trait in traitList)
-                { allTraits += trait; }
-            }
-            return allTraits;
-        }
 
         public static RaceRoot GetRaceRoot()
         {
@@ -621,6 +556,7 @@ namespace DnDesigner.Data
                             background.Description += $"{subEntry} ";
                         }
                     }
+                    background.Description += ".";
                 }
             }
             background.Description = CleanText(background.Description);
@@ -811,6 +747,9 @@ namespace DnDesigner.Data
             @class.Subclasses.Add(subclass);
             return subclass;
         }
+        #endregion
+
+        #region Helper methods
         public static string CleanText(string text)
         {
             if(text.IsNullOrEmpty())
@@ -819,6 +758,8 @@ namespace DnDesigner.Data
             }
             text = text.Replace("}", "");
             text = text.Replace("{", "");
+            text = text.Replace("[", "");
+            text = text.Replace("]", "");
             string[] textList = text.Split(" ");
             string cleanText = "";
             foreach (string word in textList)
@@ -995,5 +936,74 @@ namespace DnDesigner.Data
         {
             return proficiencies.Where(p => p.Name.ToLower().Contains(proficiencyName.Trim().ToLower())).FirstOrDefault();
         }
+        public static string DecodeTraits(string traits)
+        {
+            string allTraits = "";
+            if (traits != null)
+            {
+                string[] traitList = traits.Trim().Split(" ");
+                Dictionary<string, string> dict = new Dictionary<string, string>
+            {
+                {"A", "Ammunition" },
+                {"G", "Adventuring Gear" },
+                {"AT", "Artisan's Tools" },
+                {"ER", "Extended Reach" },
+                {"EXP", "Explosive" },
+                {"H", "Heavy" },
+                {"HA", "Heavy Armor" },
+                {"2H", "2 Handed" },
+                {"GS", "Gaming Set" },
+                {"IDG", "Illegal Drug" },
+                { "INS", "Instrument" },
+                { "L", "Light" },
+                { "LA", "Light Armor" },
+                { "LD", "Loading" },
+                {"MA", "Medium Armor" },
+                { "M", "Melee Weapon" },
+                {"R", "Ranged Weapon" },
+                {"S", "Shield" },
+                {"SC", "Sroll" },
+                {"SCF", "Spellcasting Focus" },
+                { "RD", "Rod" },
+                { "RG", "Ring" },
+                { "P", "Potion" },
+                { "$", "Treasure" },
+                { "FD", "Food and Drink" },
+                { "F", "Finesse" },
+                {"T", "Tool" },
+                {"TH", "Thrown" },
+                {"TAH", "Tack and Harness" },
+                {"OTH", "Other" },
+                {"TG", "Trade Good" },
+                {"V", "Versatile" },
+                {"Vst", "Vestige" },
+                {"SPC", "Vehicle (space)" },
+                {"SHC", "Vehicle (water)" },
+                {"AIR", "Vehicle (air)" },
+                {"VEH", "Vehicle (land)" },
+                {"MNT", "Mount" },
+                {"WD", "Wand" },
+                {"WI", "Wondrous Item" }
+            };
+                if (traitList.Length > 0)
+                {
+                    if (dict.ContainsKey(traitList[0]))
+                    {
+                        traitList[0] = dict[traitList[0]];
+                    }
+                }
+                for (int i = 1; i < traitList.Length; i++)
+                {
+                    if (dict.ContainsKey(traitList[i]))
+                    {
+                        traitList[i] = $", {dict[traitList[i]]}";
+                    }
+                }
+                foreach (string trait in traitList)
+                { allTraits += trait; }
+            }
+            return allTraits;
+        }
+        #endregion
     }
 }

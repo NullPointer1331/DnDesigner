@@ -6,10 +6,11 @@ namespace DnDesigner.Models
 {
 	public class Class
 	{
-		/// <summary>
-		/// The class identifier
-		/// </summary>
-		[Key]
+        #region properties
+        /// <summary>
+        /// The class identifier
+        /// </summary>
+        [Key]
 		public int ClassId { get; set; }
 
 		/// <summary>
@@ -48,8 +49,9 @@ namespace DnDesigner.Models
 		/// The list of subclasses for the class.
 		/// </summary>
 		public List<Subclass> Subclasses { get; set; }
+        #endregion
 
-		public Class() {
+        public Class() {
 			Features = new List<ClassFeature>();
             Proficiencies = new List<ClassProficiency>();
             Subclasses = new List<Subclass>();

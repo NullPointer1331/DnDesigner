@@ -49,7 +49,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The description of this background
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
 
         /// <summary>
         /// Minimal constructor, Initializes lists and leaves everything else blank
@@ -59,6 +59,8 @@ namespace DnDesigner.Models
             Proficiencies = new List<BackgroundProficiency>();
             StarterEquipment = new List<Item>();
             Features = new List<BackgroundFeature>();
+            Name = "";
+            Sourcebook = "";
             Description = "";
         }
     }

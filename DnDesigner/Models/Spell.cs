@@ -64,7 +64,14 @@ namespace DnDesigner.Models
         /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// Can the spell be cast as a ritual
+        /// </summary>
         public bool IsRitual { get; set; }
+
+        /// <summary>
+        /// Does the spell require concentration
+        /// </summary>
         public bool RequiresConcentration { get; set; }
 
         /// <summary>
@@ -78,6 +85,14 @@ namespace DnDesigner.Models
         public Spell()
         {
             LearnedBy = new List<LearnableSpell>();
+            Name = "";
+            Sourcebook = "";
+            SpellSchool = "";
+            CastingTime = "";
+            Range = "";
+            Components = "";
+            Duration = "";
+            Description = "";
         }
     }
 

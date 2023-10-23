@@ -51,6 +51,11 @@ namespace DnDesigner.Models
 		public Race() {
 			Proficiencies = new List<RaceProficiency>();
             Features = new List<RaceFeature>();
+			Name = "";
+			Sourcebook = "";
+			Description = "";
+			StatBonuses = "";
+			Size = "";
 		}
 	}
 }

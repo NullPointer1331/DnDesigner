@@ -53,6 +53,19 @@ namespace DnDesigner.Models
 			Features = new List<ClassFeature>();
             Proficiencies = new List<ClassProficiency>();
             Subclasses = new List<Subclass>();
+			Spellcasting = null;
+			Name = "";
+			Sourcebook = "";
+		}
+
+		/// <summary>
+		/// Gets the features available to the class at a given level
+		/// </summary>
+		/// <param name="level">The level </param>
+		/// <returns>a list of the features available at that level</returns>
+		public List<ClassFeature> GetAvailableFeatures(int level)
+		{
+			return Features.Where(Features => Features.Level <= level).ToList();
 		}
 	}
 

@@ -49,7 +49,18 @@ namespace DnDesigner.Models
             Name = name;
 			Features = new List<SubclassFeature>();
 			Spellcasting = null;
+			Sourcebook = "";
         }
 		private Subclass() { }
-	}
+
+        /// <summary>
+        /// Gets the features available to the subclass at a given level
+        /// </summary>
+        /// <param name="level">The level </param>
+        /// <returns>a list of the features available at that level</returns>
+        public List<SubclassFeature> GetAvailableFeatures(int level)
+        {
+            return Features.Where(Features => Features.Level <= level).ToList();
+        }
+    }
 }

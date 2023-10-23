@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Data.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20231020193000_renamedproperties")]
-    partial class renamedproperties
+    [Migration("20231023184324_ObjectFunctionalityChanges")]
+    partial class ObjectFunctionalityChanges
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,10 +128,6 @@ namespace DnDesigner.Data.Migrations
 
                     b.Property<int>("Dexterity")
                         .HasColumnType("int");
-
-                    b.Property<string>("HitDieType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Immunities")
                         .IsRequired()

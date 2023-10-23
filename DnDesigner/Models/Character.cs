@@ -61,9 +61,17 @@ namespace DnDesigner.Models
         public int AvailableHitDice { get; set; }
 
         /// <summary>
-        /// The characters hit die type
+        /// An array containing the character's max hit dice for each size, 
+        /// index 0 = d6, 1 = d8, 2 = d10, 3 = d12
         /// </summary>
-        public string HitDieType { get; set; }
+        public int[] HitDieType { get {
+                int[] hitDice = new int[4];
+                foreach (CharacterClass characterClass in Classes)
+                {
+                    hitDice[characterClass.Class.HitDie / 2 - 3] += characterClass.Level;
+                }
+                return hitDice;
+            }}
 
         /// <summary>
         /// The characters current walking speed
@@ -235,10 +243,10 @@ namespace DnDesigner.Models
             List<Feature> features = new List<Feature>();
             foreach(CharacterClass @class in Classes)
             {
-                features.AddRange(@class.Class.Features.Where(f => f.Level <= Level));
+                features.AddRange(@class.Class.GetAvailableFeatures(@class.Level));
                 if(@class.Subclass != null)
                 {
-                    features.AddRange(@class.Subclass.Features.Where(f => f.Level <= Level));
+                    features.AddRange(@class.Subclass.GetAvailableFeatures(@class.Level));
                 }
             }
             features.AddRange(Background.Features.Where(f => f.Level <= Level));

@@ -10,6 +10,7 @@ using Humanizer;
 using System.Collections.Generic;
 using DnDesigner.Controllers;
 using Elfie.Serialization;
+using System.Linq.Expressions;
 
 namespace DnDesigner.Data
 {
@@ -472,6 +473,7 @@ namespace DnDesigner.Data
             }
             return allTraits;
         }
+
         public static RaceRoot GetRaceRoot()
         {
             string contents = File.ReadAllText("Data\\5EToolsData\\races.json");
@@ -496,10 +498,6 @@ namespace DnDesigner.Data
             {
                 foreach (Ability ability in race5E.ability)
                 {
-                    if (ability.choose != null)
-                    {
-                        race.StatBonuses += $"+{ability.choose.amount} to {ability.choose.count} attribute. ";
-                    }
                     if (ability.cha != null)
                     {
                         race.StatBonuses += $"+{ability.cha} Charisma. ";
@@ -526,7 +524,33 @@ namespace DnDesigner.Data
                     }
                 }
             }
-            race.Size = "medium";
+            if(race.StatBonuses == "")
+            {
+                race.StatBonuses = "+2 +1, or 3 +1s to any stats of your choice.";
+            }
+            if (race5E.size != null)
+            {
+                race.Size = "";
+                for (int i = 0; i < race5E.size.Count(); i++)
+                {
+                    if (race.Size.Length > 0)
+                    {
+                        race.Size += "or ";
+                    }
+                    if (race5E.size[i] == "S")
+                    {
+                        race.Size += "Small ";
+                    }
+                    else if (race5E.size[i] == "M")
+                    {
+                        race.Size += "Medium ";
+                    }
+                }
+            }
+            else
+            {
+                race.Size = "Medium";
+            }
             race.Speed = 30;
             List<RaceProficiency> raceProficiencies = new List<RaceProficiency>();
             if (race5E.skillProficiencies != null)
@@ -560,7 +584,7 @@ namespace DnDesigner.Data
                 }
             }
             race.Proficiencies = raceProficiencies;
-            //TODO: Features, Subraces, actually check size and speed
+            //TODO: Features, Subraces, actually check speed
             return race;
         }
 

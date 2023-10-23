@@ -27,7 +27,7 @@ namespace DnDesigner.Models
         /// The items currently attuned to the character
         /// </summary>
         [NotMapped]
-        public List<Item> AttunedItems { get; set; }
+        public List<InventoryItem> AttunedItems { get; set; }
 
         /// <summary>
         /// The maximum number of items that can be attuned to the character
@@ -39,27 +39,27 @@ namespace DnDesigner.Models
         /// null if no item is equipped
         /// </summary>
         [NotMapped]
-        public Item? MainHand { get; set; }
+        public InventoryItem? MainHand { get; set; }
 
         /// <summary>
         /// The item currently equipped in the off hand,
         /// null if no item is equipped
         /// </summary>
         [NotMapped]
-        public Item? OffHand { get; set; }
+        public InventoryItem? OffHand { get; set; }
 
         /// <summary>
         /// The item currently equipped as armor,
         /// null if no item is equipped
         /// </summary>
         [NotMapped]
-        public Item? Armor { get; set; }
+        public InventoryItem? Armor { get; set; }
 
         /// <summary>
         /// Items equipped in other slots
         /// </summary>
         [NotMapped]
-        public List<Item> OtherEquippedItems { get; set; }
+        public List<InventoryItem> OtherEquippedItems { get; set; }
 
         /// <summary>
         /// The number of platinum coins in the inventory
@@ -109,9 +109,9 @@ namespace DnDesigner.Models
         {
             Character = character;
             Items = new List<InventoryItem>();
-            AttunedItems = new List<Item>();
+            AttunedItems = new List<InventoryItem>();
             MaxAttunedItems = 3;
-            OtherEquippedItems = new List<Item>();
+            OtherEquippedItems = new List<InventoryItem>();
         }
         private Inventory() { }
 
@@ -143,71 +143,70 @@ namespace DnDesigner.Models
             {
                 if(item.Item.Equipable == 1) // Armor
                 {
-                    Unequip(FindItem(Armor));
+                    Unequip(Armor);
                     item.EquippedIn = 1;
-                    Armor = item.Item;
+                    Armor = item;
                 }
                 else if (item.Item.Equipable == 2) // Main hand
                 {
-                    Unequip(FindItem(MainHand));
+                    Unequip(MainHand);
                     item.EquippedIn = 2;
-                    MainHand = item.Item;
+                    MainHand = item;
                 }
                 else if (item.Item.Equipable == 3) // Offhand
                 {
-                    Unequip(FindItem(OffHand));
-                    if(MainHand != null && MainHand.Equipable == 5) // If there's a 2 handed weapon equipped
+                    Unequip(OffHand);
+                    if(MainHand != null && MainHand.Item.Equipable == 5) // If there's a 2 handed weapon equipped
                     {
-                        Unequip(FindItem(MainHand));
+                        Unequip(MainHand);
                     }
                     item.EquippedIn = 3;
-                    OffHand = item.Item;
+                    OffHand = item;
                 }
                 else if(item.Item.Equipable == 4) // Either hand
                 {
                     if(MainHand == null)
                     {
                         item.EquippedIn = 2;
-                        MainHand = item.Item;
+                        MainHand = item;
                     }
                     else if (OffHand == null)
                     {
-                        if (MainHand != null && MainHand.Equipable == 5)
+                        if (MainHand != null && MainHand.Item.Equipable == 5)
                         {
-                            Unequip(FindItem(MainHand));
+                            Unequip(MainHand);
                         }
                         item.EquippedIn = 3;
-                        OffHand = item.Item;
+                        OffHand = item;
                     }
                     else //If neither hand is free
                     {
-                        if (MainHand.Equipable == 5)
+                        if (MainHand.Item.Equipable == 5)
                         {
-                            Unequip(FindItem(MainHand));
+                            Unequip(MainHand);
                             item.EquippedIn = 2;
-                            MainHand = item.Item;
+                            MainHand = item;
                         }
                         else
                         {
-                            Unequip(FindItem(OffHand));
+                            Unequip(OffHand);
                             item.EquippedIn = 3;
-                            OffHand = item.Item;
+                            OffHand = item;
                         }
                     }
                 }
                 else if (item.Item.Equipable == 5) // Both hands
                 {
-                    Unequip(FindItem(MainHand));
-                    Unequip(FindItem(OffHand));
+                    Unequip(MainHand);
+                    Unequip(OffHand);
                     item.EquippedIn = 2;
-                    MainHand = item.Item;
+                    MainHand = item;
                 }
                 else
                 {
-                    OtherEquippedItems.Add(item.Item);
+                    OtherEquippedItems.Add(item);
                     item.EquippedIn = 4;
                 }
-                item.Equipped = true;
                 Attune(item);
             }
         }
@@ -218,9 +217,8 @@ namespace DnDesigner.Models
         /// <param name="item">The InventoryItem to unequip</param>
         public void Unequip(InventoryItem? item)
         {
-            if(item.Equipped && item != null)
+            if(item != null && item.Equipped)
             {
-                item.Equipped = false;
                 Unattune(item);
                 if (item.EquippedIn == 1)
                 {
@@ -236,7 +234,7 @@ namespace DnDesigner.Models
                 }
                 else
                 {
-                    OtherEquippedItems.Remove(item.Item);
+                    OtherEquippedItems.Remove(item);
                 }
                 item.EquippedIn = 0;
             }
@@ -251,7 +249,7 @@ namespace DnDesigner.Models
             if(item.Item.Attuneable && AttunedItems.Count < MaxAttunedItems)
             {
                 item.Attuned = true;
-                AttunedItems.Add(item.Item);
+                AttunedItems.Add(item);
             }
         }
 
@@ -264,7 +262,7 @@ namespace DnDesigner.Models
             if(item.Attuned)
             {
                 item.Attuned = false;
-                AttunedItems.Remove(item.Item);
+                AttunedItems.Remove(item);
             }
         }
 

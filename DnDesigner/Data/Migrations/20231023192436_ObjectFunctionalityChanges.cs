@@ -34,13 +34,6 @@ namespace DnDesigner.Data.Migrations
                 nullable: false,
                 defaultValue: false);
 
-            migrationBuilder.AddColumn<bool>(
-                name: "Equipped",
-                table: "InventoryItems",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-
             migrationBuilder.AddColumn<int>(
                 name: "EquippedIn",
                 table: "InventoryItems",
@@ -54,10 +47,6 @@ namespace DnDesigner.Data.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "Attuned",
-                table: "InventoryItems");
-
-            migrationBuilder.DropColumn(
-                name: "Equipped",
                 table: "InventoryItems");
 
             migrationBuilder.DropColumn(

@@ -358,9 +358,6 @@ namespace DnDesigner.Data.Migrations
                     b.Property<bool>("Attuned")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Equipped")
-                        .HasColumnType("bit");
-
                     b.Property<int>("EquippedIn")
                         .HasColumnType("int");
 

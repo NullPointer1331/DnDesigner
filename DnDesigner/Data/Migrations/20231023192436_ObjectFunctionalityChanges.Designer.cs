@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Data.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20231023184324_ObjectFunctionalityChanges")]
+    [Migration("20231023192436_ObjectFunctionalityChanges")]
     partial class ObjectFunctionalityChanges
     {
         /// <inheritdoc />
@@ -359,9 +359,6 @@ namespace DnDesigner.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("Attuned")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Equipped")
                         .HasColumnType("bit");
 
                     b.Property<int>("EquippedIn")

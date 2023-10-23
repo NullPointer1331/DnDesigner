@@ -92,12 +92,14 @@ namespace DnDesigner.Models
         /// <summary>
         /// Is the item equipped
         /// </summary>
-        public bool Equipped { get; set; }
+        public bool Equipped { get { 
+                return EquippedIn != 0;
+            }}
 
         /// <summary>
         /// Which slot the item is equipped in,
         /// 0 = not equipped, 1 = armor, 2 = main hand
-        /// 3 = offhand, 5 = other
+        /// 3 = offhand, 4 = other
         /// </summary>
         [Range(0, 4)]
         public int EquippedIn {  get; set; }
@@ -111,7 +113,6 @@ namespace DnDesigner.Models
             Item = item;
             Inventory = inventory;
             Quantity = quantity;
-            Equipped = false;
             Attuned = false;
         }
         private InventoryItem() { }

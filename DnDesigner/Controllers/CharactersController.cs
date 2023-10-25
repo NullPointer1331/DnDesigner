@@ -67,26 +67,11 @@ namespace DnDesigner.Controllers
             if (ModelState.IsValid)
             {
                 Class @class = await _context.Classes.FindAsync(character.ClassId);
+                @class.Spellcasting = await _context.Spellcasting.FindAsync(character.ClassId);
                 Background background = await _context.Backgrounds.FindAsync(character.BackgroundId);
                 Race race = await _context.Races.FindAsync(character.RaceId);
-                Character newCharacter = new()
-                {
-                    Name = character.Name,
-                    Classes = new List<CharacterClass>(),
-                    Background = background,
-                    Proficiencies = new List<CharacterProficiency>(),
-                    Race = race,
-                    MaxHealth = character.MaxHealth,
-                    CurrentHealth = character.MaxHealth,
-                    TempHealth = 0,
-                    Strength = character.Strength,
-                    Dexterity = character.Dexterity,
-                    Constitution = character.Constitution,
-                    Intelligence = character.Intelligence,
-                    Wisdom = character.Wisdom,
-                    Charisma = character.Charisma
-                };
-                newCharacter.Classes.Add(new CharacterClass(@class, newCharacter, 1));
+                character.MaxHealth = @class.HitDie + (character.Constitution - 10) / 2;
+                Character newCharacter = new Character(character, @class, race, background);
 
                 _context.Add(newCharacter);
                 await _context.SaveChangesAsync();

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace DnDesigner.Models
 {
@@ -184,6 +185,36 @@ namespace DnDesigner.Models
             Immunities = "";
             Vulnerabilities = "";
         }
+        public Character(CreateCharacterViewModel character, Class @class, Race race, Background background)
+        {
+            Name = character.Name;
+            Classes = new List<CharacterClass>();
+            Proficiencies = new List<CharacterProficiency>();
+            Spellcasting = new List<CharacterSpellcasting>();
+            Inventory = new Inventory(this);
+            Background = background;
+            Race = race;
+            TempHealth = 0;
+            Strength = character.Strength;
+            Dexterity = character.Dexterity;
+            Constitution = character.Constitution;
+            Intelligence = character.Intelligence;
+            Wisdom = character.Wisdom;
+            Charisma = character.Charisma;
+            WalkingSpeed = race.Speed;
+            MaxHealth = character.MaxHealth;
+            CurrentHealth = character.MaxHealth;
+            Resistances = "";
+            Immunities = "";
+            Vulnerabilities = "";
+
+            Classes.Add(new CharacterClass(this, @class, 1));
+            if(@class.Spellcasting != null)
+            {
+                Spellcasting.Add(new CharacterSpellcasting(this, @class.Spellcasting));
+            }
+            SetProficiencies();
+        }
 
         #region methods
         /// <summary>
@@ -234,6 +265,25 @@ namespace DnDesigner.Models
         public int GetModifier(string name)
         {
             return (GetAttribute(name) - 10) / 2;
+        }
+
+        public void SetProficiencies()
+        {
+            foreach (CharacterClass characterClass in Classes)
+            {
+                foreach (ClassProficiency classProficiency in characterClass.Class.Proficiencies)
+                {
+                    Proficiencies.Add(new CharacterProficiency(this, classProficiency.Proficiency));
+                }
+            }
+            foreach (BackgroundProficiency backgroundProficiency in Background.Proficiencies)
+            {
+                Proficiencies.Add(new CharacterProficiency(this, backgroundProficiency.Proficiency));
+            }
+            foreach (RaceProficiency raceProficiency in Race.Proficiencies)
+            {
+                Proficiencies.Add(new CharacterProficiency(this, raceProficiency.Proficiency));
+            }
         }
 
         /// <summary>

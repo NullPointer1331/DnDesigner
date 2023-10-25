@@ -109,7 +109,7 @@ namespace DnDesigner.Models
         /// <param name="sourceclass">A class the character has</param>
         /// <param name="character">The character the class belongs to</param>
         /// <param name="level">How many levels the character has in this class</param>
-        public CharacterClass(Class sourceclass, Character character, int level)
+        public CharacterClass(Character character, Class sourceclass, int level)
 		{
             Class = sourceclass;
             Character = character;
@@ -123,7 +123,7 @@ namespace DnDesigner.Models
         /// <param name="subclass">The chosen subclass of the class</param>
         /// <param name="character">The character the class belongs to</param>
         /// <param name="level">How many levels the character has in this class</param>
-        public CharacterClass(Class sourceclass, Subclass subclass, Character character, int level)
+        public CharacterClass(Character character, Class sourceclass, Subclass subclass, int level)
         {
             Class = sourceclass;
 			Subclass = subclass;

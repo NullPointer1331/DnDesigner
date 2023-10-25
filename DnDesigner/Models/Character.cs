@@ -65,7 +65,7 @@ namespace DnDesigner.Models
         /// An array containing the character's max hit dice for each size, 
         /// index 0 = d6, 1 = d8, 2 = d10, 3 = d12
         /// </summary>
-        public int[] HitDieType { get {
+        public int[] MaxHitDice { get {
                 int[] hitDice = new int[4];
                 foreach (CharacterClass characterClass in Classes)
                 {
@@ -81,44 +81,50 @@ namespace DnDesigner.Models
 
         /// <summary>
         /// The characters Strength stat.
-        /// Cannot be higher than 20, or lower than 1.
+        /// Typically can't be higher than 20, or lower than 1.
+        /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(1, 20)]
+        [Range(0, 30)]
         public int Strength { get; set; }
 
         /// <summary>
         /// The characters Dexterity stat.
-        /// Cannot be higher than 20, or lower than 1.
+        /// Typically can't be higher than 20, or lower than 1.
+        /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(1, 20)]
+        [Range(0, 30)]
         public int Dexterity { get; set; }
 
         /// <summary>
         /// The characters Constitution stat.
-        /// Cannot be higher than 20, or lower than 1.
+        /// Typically can't be higher than 20, or lower than 1.
+        /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(1, 20)]
+        [Range(0, 30)]
         public int Constitution { get; set; }
 
         /// <summary>
         /// The characters Intelligence stat.
-        /// Cannot be higher than 20, or lower than 1.
+        /// Typically can't be higher than 20, or lower than 1.
+        /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(1, 20)]
+        [Range(0, 30)]
         public int Intelligence { get; set; }
 
         /// <summary>
         /// The characters Wisdom stat.
-        /// Cannot be higher than 20, or lower than 1.
+        /// Typically can't be higher than 20, or lower than 1.
+        /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(1, 20)]
+        [Range(0, 30)]
         public int Wisdom { get; set; }
 
         /// <summary>
         /// The characters Charisma stat.
-        /// Cannot be higher than 20, or lower than 1.
+        /// Typically can't be higher than 20, or lower than 1.
+        /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(1, 20)]
+        [Range(0, 30)]
         public int Charisma { get; set; }
 
         /// <summary>
@@ -166,6 +172,18 @@ namespace DnDesigner.Models
         /// </summary>
         public Inventory Inventory { get; set; }
         #endregion
+
+        public Character()
+        {
+            Proficiencies = new List<CharacterProficiency>();
+            Classes = new List<CharacterClass>();
+            Spellcasting = new List<CharacterSpellcasting>();
+            Inventory = new Inventory(this);
+            Name = "Unnamed Character";
+            Resistances = "";
+            Immunities = "";
+            Vulnerabilities = "";
+        }
 
         #region methods
         /// <summary>
@@ -277,35 +295,65 @@ namespace DnDesigner.Models
         [DefaultValue("Unnamed Character")]
         public string Name { get; set; }
 
+        /*
         /// <summary>
         /// The level of the character.
         /// Cannot be more than 20, or less than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Level { get; set; }
+        public int Level { get; set; }*/
 
         /// <summary>
         /// The classes the character has.
         /// </summary>
-        public List<CharacterClass> Classes { get; set; }
+        //public List<CharacterClass> Classes { get; set; }
 
         /// <summary>
-        /// The background of the character.
+        /// The id of selected class
         /// </summary>
-        public Background Background { get; set; }
+        public int ClassId { get; set; }
 
+        /// <summary>
+        /// The id of background of the character.
+        /// </summary>
+        public int BackgroundId { get; set; }
+
+        /*
         /// <summary>
         /// The proficiencies the character has.
         /// </summary>
-        public List<CharacterProficiency> Proficiencies { get; set; }
+        public List<CharacterProficiency> Proficiencies { get; set; }*/
 
+        /*
         /// <summary>
         /// The spellcasting ability of the character, if they have one.
         /// </summary>
-        public List<CharacterSpellcasting> Spellcasting { get; set; }
+        public List<CharacterSpellcasting> Spellcasting { get; set; }*/
 
-        // race
-        public Race Race { get; set; }
+        /// <summary>
+        /// The Id of characters race
+        /// </summary>
+        public int RaceId { get; set; }
+
+        /// <summary>
+        /// The list of available classes
+        /// </summary>
+        public List<Class> AvailableClasses { get; set; }
+
+		/// <summary>
+		/// The list of available races
+		/// </summary>
+		public List<Race> AvailableRaces { get; set; }
+
+		/// <summary>
+		/// The list of available backgrounds
+		/// </summary>
+		public List<Background> AvailableBackgrounds { get; set; }
+
+		/// <summary>
+		/// The character's maximum health points.
+		/// </summary>
+		public int MaxHealth { get; set; }
 
         /// <summary>
         /// The character's strength stat. 

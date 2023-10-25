@@ -1,12 +1,11 @@
 ﻿@model CreateCharacterViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create a Character";
 }
 
-<h1>Create</h1>
+<h1>Create a Character</h1>
 
-<h4>Character</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,7 +13,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
 				<label asp-for="Name" class="control-label"></label>
-				<input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control" value="Unnamed Character" />
 				<span asp-validation-for="Name" class="text-danger"></span>
             </div>
             @*
@@ -38,12 +37,12 @@
                     </h2>
                     <div id="collapseClasses" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <select>
-                                @* pseudocode *@
-                                @* @foreach(var characterClass in GetDBClasses())
+                            <input asp-for="AvailableClasses" type="hidden" value="@Model.AvailableClasses"/>
+                            <select asp-for="ClassId">
+                                @foreach(Class characterClass in Model.AvailableClasses)
 								{
 									<option value="@characterClass.ClassId">@characterClass.Name</option>
-								}) *@
+								}
                             </select>
                         </div>
                     </div>
@@ -60,12 +59,12 @@
                     </h2>
                     <div id="collapseBackground" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <select>
-                                @* pseudocode *@
-                                @* @foreach(var characterBackground in GetDBBackgrounds())
+                            <input asp-for="AvailableBackgrounds" type="hidden" value="@Model.AvailableBackgrounds"/>
+                            <select asp-for="BackgroundId">
+                                @foreach(Background characterBackground in Model.AvailableBackgrounds)
                                 {
-                                <option value="@characterBackground.BackgroundId">@characterBackground.Name</option>
-                                }) *@
+                                    <option value="@characterBackground.BackgroundId">@characterBackground.Name (@characterBackground.Sourcebook)</option>
+                                }
                             </select>
                         </div>
                     </div>
@@ -104,12 +103,12 @@
                     </h2>
                     <div id="collapseRaces" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <select>
-                                @* pseudocode *@
-                                @* @foreach(var characterRace in GetDBRaces())
+                            <input asp-for="AvailableRaces" type="hidden" value="@Model.AvailableRaces"/>
+                            <select asp-for="RaceId" >
+                                @foreach(Race race in Model.AvailableRaces)
                                 {
-                                    <option value="@characterRace.RaceId">@characterRace.Name</option>
-                                }) *@
+                                    <option value=@race.RaceId>@race.Name (@race.Sourcebook)</option>
+                                }
                             </select>
                         </div>
                     </div>
@@ -127,27 +126,27 @@
                     <div id="collapseStats" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <label asp-for="Strength" class="control-label"></label>
-                            <input asp-for="Strength" class="form-control" />
+                            <input asp-for="Strength" class="form-control" value="8"/>
                             <span asp-validation-for="Strength" class="text-danger"></span><br />
 
                             <label asp-for="Dexterity" class="control-label"></label>
-                            <input asp-for="Dexterity" class="form-control" />
+                            <input asp-for="Dexterity" class="form-control" value="8"/>
                             <span asp-validation-for="Dexterity" class="text-danger"></span><br />
 
                             <label asp-for="Constitution" class="control-label"></label>
-                            <input asp-for="Constitution" class="form-control" />
+                            <input asp-for="Constitution" class="form-control" value="8"/>
                             <span asp-validation-for="Constitution" class="text-danger"></span><br />
 
                             <label asp-for="Intelligence" class="control-label"></label>
-                            <input asp-for="Intelligence" class="form-control" />
+                            <input asp-for="Intelligence" class="form-control" value="8"/>
                             <span asp-validation-for="Intelligence" class="text-danger"></span><br />
 
                             <label asp-for="Wisdom" class="control-label"></label>
-                            <input asp-for="Wisdom" class="form-control" />
+                            <input asp-for="Wisdom" class="form-control" value="8"/>
                             <span asp-validation-for="Wisdom" class="text-danger"></span><br />
 
                             <label asp-for="Charisma" class="control-label"></label>
-                            <input asp-for="Charisma" class="form-control" />
+                            <input asp-for="Charisma" class="form-control" value="8"/>
                             <span asp-validation-for="Charisma" class="text-danger"></span>
                         </div>
                     </div>

@@ -48,7 +48,13 @@ namespace DnDesigner.Controllers
         // GET: Characters/Create
         public IActionResult Create()
         {
-            return View();
+            CreateCharacterViewModel characterViewModel = new()
+            {
+                AvailableClasses = _context.Classes.ToList(),
+                AvailableBackgrounds = _context.Backgrounds.ToList(),
+                AvailableRaces = _context.Races.ToList(),
+            };
+            return View(characterViewModel);
         }
 
         // POST: Characters/Create
@@ -60,14 +66,27 @@ namespace DnDesigner.Controllers
         {
             if (ModelState.IsValid)
             {
+                Class @class = await _context.Classes.FindAsync(character.ClassId);
+                Background background = await _context.Backgrounds.FindAsync(character.BackgroundId);
+                Race race = await _context.Races.FindAsync(character.RaceId);
                 Character newCharacter = new()
                 {
                     Name = character.Name,
-                    Level = character.Level,
-                    Classes = character.Classes,
-                    Background = character.Background,
-                    Proficiencies = character.Proficiencies,
+                    Classes = new List<CharacterClass>(),
+                    Background = background,
+                    Proficiencies = new List<CharacterProficiency>(),
+                    Race = race,
+                    MaxHealth = character.MaxHealth,
+                    CurrentHealth = character.MaxHealth,
+                    TempHealth = 0,
+                    Strength = character.Strength,
+                    Dexterity = character.Dexterity,
+                    Constitution = character.Constitution,
+                    Intelligence = character.Intelligence,
+                    Wisdom = character.Wisdom,
+                    Charisma = character.Charisma
                 };
+                newCharacter.Classes.Add(new CharacterClass(@class, newCharacter, 1));
 
                 _context.Add(newCharacter);
                 await _context.SaveChangesAsync();

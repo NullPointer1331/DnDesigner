@@ -9,11 +9,14 @@ using Microsoft.IdentityModel.Tokens;
 using Humanizer;
 using System.Collections.Generic;
 using DnDesigner.Controllers;
+using Elfie.Serialization;
+using System.Linq.Expressions;
 
 namespace DnDesigner.Data
 {
     public static class ImportData
     {
+        #region Extraction methods
         /// <summary>
         /// Extracts Class Data from the 5ETools JSON files and returns it as a list of Classes
         /// </summary>
@@ -29,7 +32,8 @@ namespace DnDesigner.Data
                     {
                         if (!class5E.source.Contains("UA"))
                         {
-                            List<ClassFeature5ETools> classFeatures = classRoot.classFeature.Where(f => f.className == class5E.name).ToList();
+                            List<ClassFeature5ETools> classFeatures = classRoot.classFeature
+                                .Where(f => f.className == class5E.name && f.source.Contains("UA")).ToList();
                             classes.Add(ConvertClass(class5E, classFeatures, proficiencies));
                         }
                     }
@@ -222,7 +226,9 @@ namespace DnDesigner.Data
             //TODO: add tool and instrument proficiencies
             return proficiencies;
         }
+        #endregion
 
+        #region Conversion methods
         public static List<SpellRoot> GetSpellRoots()
         {
             List<SpellRoot> spellRoots = new List<SpellRoot>();
@@ -402,74 +408,7 @@ namespace DnDesigner.Data
             }
             return item;
         }
-        public static string DecodeTraits(string traits)
-        {
-            string allTraits = "";
-            if(traits != null)
-            {
-                string[] traitList = traits.Trim().Split(" ");
-                Dictionary<string, string> dict = new Dictionary<string, string>
-            {
-                {"A", "Ammunition" },
-                {"G", "Adventuring Gear" },
-                {"AT", "Artisan's Tools" },
-                {"ER", "Extended Reach" },
-                {"EXP", "Explosive" },
-                {"H", "Heavy" },
-                {"HA", "Heavy Armor" },
-                {"2H", "2 Handed" },
-                {"GS", "Gaming Set" },
-                {"IDG", "Illegal Drug" },
-                { "INS", "Instrument" },
-                { "L", "Light" },
-                { "LA", "Light Armor" },
-                { "LD", "Loading" },
-                {"MA", "Medium Armor" },
-                { "M", "Melee Weapon" },
-                {"R", "Ranged Weapon" },
-                {"S", "Shield" },
-                {"SC", "Sroll" },
-                {"SCF", "Spellcasting Focus" },
-                { "RD", "Rod" },
-                { "RG", "Ring" },
-                { "P", "Potion" },
-                { "$", "Treasure" },
-                { "FD", "Food and Drink" },
-                { "F", "Finesse" },
-                {"T", "Tool" },
-                {"TH", "Thrown" },
-                {"TAH", "Tack and Harness" },
-                {"OTH", "Other" },
-                {"TG", "Trade Good" },
-                {"V", "Versatile" },
-                {"Vst", "Vestige" },
-                {"SPC", "Vehicle (space)" },
-                {"SHC", "Vehicle (water)" },
-                {"AIR", "Vehicle (air)" },
-                {"VEH", "Vehicle (land)" },
-                {"MNT", "Mount" },
-                {"WD", "Wand" },
-                {"WI", "Wondrous Item" }
-            };
-                if (traitList.Length > 0)
-                {
-                    if (dict.ContainsKey(traitList[0]))
-                    {
-                        traitList[0] = dict[traitList[0]];
-                    }
-                }
-                for (int i = 1; i < traitList.Length; i++)
-                {
-                    if (dict.ContainsKey(traitList[i]))
-                    {
-                        traitList[i] = $", {dict[traitList[i]]}";
-                    }
-                }
-                foreach (string trait in traitList)
-                { allTraits += trait; }
-            }
-            return allTraits;
-        }
+
         public static RaceRoot GetRaceRoot()
         {
             string contents = File.ReadAllText("Data\\5EToolsData\\races.json");
@@ -494,10 +433,6 @@ namespace DnDesigner.Data
             {
                 foreach (Ability ability in race5E.ability)
                 {
-                    if (ability.choose != null)
-                    {
-                        race.StatBonuses += $"+{ability.choose.amount} to {ability.choose.count} attribute. ";
-                    }
                     if (ability.cha != null)
                     {
                         race.StatBonuses += $"+{ability.cha} Charisma. ";
@@ -524,7 +459,33 @@ namespace DnDesigner.Data
                     }
                 }
             }
-            race.Size = "medium";
+            if(race.StatBonuses == "")
+            {
+                race.StatBonuses = "+2 +1, or 3 +1s to any stats of your choice.";
+            }
+            if (race5E.size != null)
+            {
+                race.Size = "";
+                for (int i = 0; i < race5E.size.Count(); i++)
+                {
+                    if (race.Size.Length > 0)
+                    {
+                        race.Size += "or ";
+                    }
+                    if (race5E.size[i] == "S")
+                    {
+                        race.Size += "Small ";
+                    }
+                    else if (race5E.size[i] == "M")
+                    {
+                        race.Size += "Medium ";
+                    }
+                }
+            }
+            else
+            {
+                race.Size = "Medium";
+            }
             race.Speed = 30;
             List<RaceProficiency> raceProficiencies = new List<RaceProficiency>();
             if (race5E.skillProficiencies != null)
@@ -558,7 +519,7 @@ namespace DnDesigner.Data
                 }
             }
             race.Proficiencies = raceProficiencies;
-            //TODO: Features, Subraces, actually check size and speed
+            //TODO: Features, Subraces, actually check speed
             return race;
         }
 
@@ -595,6 +556,7 @@ namespace DnDesigner.Data
                             background.Description += $"{subEntry} ";
                         }
                     }
+                    background.Description += ".";
                 }
             }
             background.Description = CleanText(background.Description);
@@ -672,6 +634,14 @@ namespace DnDesigner.Data
                 spellcasting.Name = @class.Name;
                 spellcasting.SpellcastingAttribute = class5E.spellcastingAbility;
                 spellcasting.SpellcastingType = class5E.casterProgression ?? "none";
+                if(spellcasting.SpellcastingType == "1/2" || spellcasting.SpellcastingType == "artificer")
+                {
+                    spellcasting.SpellcastingType = "half";
+                }
+                if(!class5E.preparedSpells.IsNullOrEmpty())
+                {
+                    spellcasting.PreparedCasting = true;
+                }
                 @class.Spellcasting = spellcasting;
             }
             foreach (ClassFeature5ETools feature5E in classFeatures)
@@ -683,6 +653,7 @@ namespace DnDesigner.Data
                 }
                 description = CleanText(description);
                 ClassFeature feature = new ClassFeature(@class, feature5E.name, description, feature5E.level);
+                feature.Source = $"{feature5E.source}, Class, {@class.Name}";
                 @class.Features.Add(feature);
             }
             List<ClassProficiency> classProficiencies = new List<ClassProficiency>();
@@ -776,6 +747,9 @@ namespace DnDesigner.Data
             @class.Subclasses.Add(subclass);
             return subclass;
         }
+        #endregion
+
+        #region Helper methods
         public static string CleanText(string text)
         {
             if(text.IsNullOrEmpty())
@@ -784,6 +758,8 @@ namespace DnDesigner.Data
             }
             text = text.Replace("}", "");
             text = text.Replace("{", "");
+            text = text.Replace("[", "");
+            text = text.Replace("]", "");
             string[] textList = text.Split(" ");
             string cleanText = "";
             foreach (string word in textList)
@@ -960,5 +936,74 @@ namespace DnDesigner.Data
         {
             return proficiencies.Where(p => p.Name.ToLower().Contains(proficiencyName.Trim().ToLower())).FirstOrDefault();
         }
+        public static string DecodeTraits(string traits)
+        {
+            string allTraits = "";
+            if (traits != null)
+            {
+                string[] traitList = traits.Trim().Split(" ");
+                Dictionary<string, string> dict = new Dictionary<string, string>
+            {
+                {"A", "Ammunition" },
+                {"G", "Adventuring Gear" },
+                {"AT", "Artisan's Tools" },
+                {"ER", "Extended Reach" },
+                {"EXP", "Explosive" },
+                {"H", "Heavy" },
+                {"HA", "Heavy Armor" },
+                {"2H", "2 Handed" },
+                {"GS", "Gaming Set" },
+                {"IDG", "Illegal Drug" },
+                { "INS", "Instrument" },
+                { "L", "Light" },
+                { "LA", "Light Armor" },
+                { "LD", "Loading" },
+                {"MA", "Medium Armor" },
+                { "M", "Melee Weapon" },
+                {"R", "Ranged Weapon" },
+                {"S", "Shield" },
+                {"SC", "Sroll" },
+                {"SCF", "Spellcasting Focus" },
+                { "RD", "Rod" },
+                { "RG", "Ring" },
+                { "P", "Potion" },
+                { "$", "Treasure" },
+                { "FD", "Food and Drink" },
+                { "F", "Finesse" },
+                {"T", "Tool" },
+                {"TH", "Thrown" },
+                {"TAH", "Tack and Harness" },
+                {"OTH", "Other" },
+                {"TG", "Trade Good" },
+                {"V", "Versatile" },
+                {"Vst", "Vestige" },
+                {"SPC", "Vehicle (space)" },
+                {"SHC", "Vehicle (water)" },
+                {"AIR", "Vehicle (air)" },
+                {"VEH", "Vehicle (land)" },
+                {"MNT", "Mount" },
+                {"WD", "Wand" },
+                {"WI", "Wondrous Item" }
+            };
+                if (traitList.Length > 0)
+                {
+                    if (dict.ContainsKey(traitList[0]))
+                    {
+                        traitList[0] = dict[traitList[0]];
+                    }
+                }
+                for (int i = 1; i < traitList.Length; i++)
+                {
+                    if (dict.ContainsKey(traitList[i]))
+                    {
+                        traitList[i] = $", {dict[traitList[i]]}";
+                    }
+                }
+                foreach (string trait in traitList)
+                { allTraits += trait; }
+            }
+            return allTraits;
+        }
+        #endregion
     }
 }

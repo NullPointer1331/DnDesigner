@@ -6,10 +6,11 @@ namespace DnDesigner.Models
 {
 	public class Class
 	{
-		/// <summary>
-		/// The class identifier
-		/// </summary>
-		[Key]
+        #region properties
+        /// <summary>
+        /// The class identifier
+        /// </summary>
+        [Key]
 		public int ClassId { get; set; }
 
 		/// <summary>
@@ -48,11 +49,25 @@ namespace DnDesigner.Models
 		/// The list of subclasses for the class.
 		/// </summary>
 		public List<Subclass> Subclasses { get; set; }
+        #endregion
 
-		public Class() {
+        public Class() {
 			Features = new List<ClassFeature>();
             Proficiencies = new List<ClassProficiency>();
             Subclasses = new List<Subclass>();
+			Spellcasting = null;
+			Name = "";
+			Sourcebook = "";
+		}
+
+		/// <summary>
+		/// Gets the features available to the class at a given level
+		/// </summary>
+		/// <param name="level">The level </param>
+		/// <returns>a list of the features available at that level</returns>
+		public List<ClassFeature> GetAvailableFeatures(int level)
+		{
+			return Features.Where(Features => Features.Level <= level).ToList();
 		}
 	}
 

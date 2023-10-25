@@ -4,10 +4,11 @@ namespace DnDesigner.Models
 {
 	public class Race
 	{
-		/// <summary>
-		/// The race identifier
-		/// </summary>
-		[Key]
+        #region properties
+        /// <summary>
+        /// The race identifier
+        /// </summary>
+        [Key]
 		public int RaceId { get; set; }
 
 		/// <summary>
@@ -46,11 +47,16 @@ namespace DnDesigner.Models
 		/// Any features provided by the race
 		/// </summary>
 		public List<RaceFeature> Features { get; set; }
+        #endregion
 
-
-		public Race() {
+        public Race() {
 			Proficiencies = new List<RaceProficiency>();
             Features = new List<RaceFeature>();
+			Name = "";
+			Sourcebook = "";
+			Description = "";
+			StatBonuses = "";
+			Size = "";
 		}
 	}
 }

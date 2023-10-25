@@ -8,6 +8,7 @@ namespace DnDesigner.Models
     /// </summary>
     public class Character
     {
+        #region properties
         /// <summary>
         /// Primary key
         /// </summary>
@@ -21,12 +22,23 @@ namespace DnDesigner.Models
         /// <summary>
         /// The characters current level
         /// </summary>
-        public int Level { get; set; }
+        public int Level { get
+            {
+                int level = 0;
+                foreach (CharacterClass characterClass in Classes)
+                {
+                    level += characterClass.Level;
+                }
+                return level;
+            }}
 
         /// <summary>
         /// The characters current proficiency bonus
         /// </summary>
-        public int ProficiencyBonus { get; set; }
+        public int ProficiencyBonus { get
+            {
+                return (Level - 1) / 4 + 2;
+            }}
 
         /// <summary>
         /// The characters maximum health points
@@ -49,9 +61,17 @@ namespace DnDesigner.Models
         public int AvailableHitDice { get; set; }
 
         /// <summary>
-        /// The characters hit die type
+        /// An array containing the character's max hit dice for each size, 
+        /// index 0 = d6, 1 = d8, 2 = d10, 3 = d12
         /// </summary>
-        public string HitDieType { get; set; }
+        public int[] HitDieType { get {
+                int[] hitDice = new int[4];
+                foreach (CharacterClass characterClass in Classes)
+                {
+                    hitDice[characterClass.Class.HitDie / 2 - 3] += characterClass.Level;
+                }
+                return hitDice;
+            }}
 
         /// <summary>
         /// The characters current walking speed
@@ -132,5 +152,107 @@ namespace DnDesigner.Models
         /// Contains the character's inventory information
         /// </summary>
         public Inventory Inventory { get; set; }
+        #endregion
+
+        #region methods
+        /// <summary>
+        /// Gets the score of the specified attribute
+        /// </summary>
+        /// <param name="name">The name of the attribute
+        /// (strength, dexterity, constitution, intelligence, wisdom, or charisma)</param>
+        /// <returns>Returns the score of the specified attribute, -1 if it can't be found</returns>
+        public int GetAttribute(string name)
+        {
+            if(name.ToLower().Contains("str"))
+            {
+                return Strength;
+            }
+            else if (name.ToLower().Contains("dex"))
+            {
+                return Dexterity;
+            }
+            else if (name.ToLower().Contains("con"))
+            {
+                return Constitution;
+            }
+            else if (name.ToLower().Contains("int"))
+            {
+                return Intelligence;
+            }
+            else if (name.ToLower().Contains("wis"))
+            {
+                return Wisdom;
+            }
+            else if (name.ToLower().Contains("cha"))
+            {
+                return Charisma;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// Gets the modifier of the specified attribute
+        /// </summary>
+        /// <param name="name">The name of the attribute
+        /// (strength, dexterity, constitution, intelligence, wisdom, or charisma)</param>
+        /// <returns>Returns the modifier of the specified attribute, 
+        /// which is calculated with (score - 10) / 2</returns>
+        public int GetModifier(string name)
+        {
+            return (GetAttribute(name) - 10) / 2;
+        }
+
+        /// <summary>
+        /// Gets a CharacterProficiency with a given name
+        /// </summary>
+        /// <param name="name">The name of the proficiency</param>
+        /// <returns>The specified CharacterProficiency, null if none</returns>
+        public CharacterProficiency? GetProficiency(string name)
+        {
+            return Proficiencies.Where(p => p.Proficiency.Name == name).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets all CharacterProficiencies tagged as skills
+        /// </summary>
+        /// <returns>A list of CharacterProficiencies</returns>
+        public List<CharacterProficiency> GetSkills()
+        {
+            return Proficiencies.Where(p => p.Proficiency.Type == "skill").ToList();
+        }
+
+        /// <summary>
+        /// Gets all CharacterProficiencies tagged as saving throws
+        /// </summary>
+        /// <returns>A list of CharacterProficiencies</returns>
+        public List<CharacterProficiency> GetSaves()
+        {
+            return Proficiencies.Where(p => p.Proficiency.Type == "saving throw").ToList();
+        }
+
+        /// <summary>
+        /// Gets all features from classes, subclasses, race and background 
+        /// where the character meets the required level
+        /// </summary>
+        /// <returns>All features the character meets the required level for</returns>
+        public List<Feature> GetActiveFeatures()
+        {
+            List<Feature> features = new List<Feature>();
+            foreach(CharacterClass @class in Classes)
+            {
+                features.AddRange(@class.Class.GetAvailableFeatures(@class.Level));
+                if(@class.Subclass != null)
+                {
+                    features.AddRange(@class.Subclass.GetAvailableFeatures(@class.Level));
+                }
+            }
+            features.AddRange(Background.Features.Where(f => f.Level <= Level));
+            features.AddRange(Race.Features.Where(f => f.Level <= Level));
+            return features;
+        }
+        #endregion
     }
 }

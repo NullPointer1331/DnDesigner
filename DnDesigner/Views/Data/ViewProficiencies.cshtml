@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.MainAttribute)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProficiencyType)
+                @Html.DisplayNameFor(model => model.Type)
             </th>
             <th></th>
         </tr>
@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.MainAttribute)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProficiencyType)
+                @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProficiencyId">Edit</a> |

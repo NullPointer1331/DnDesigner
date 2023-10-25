@@ -15,12 +15,12 @@ namespace DnDesigner.Models
 		/// <summary>
 		/// The name of the subclass
 		/// </summary>
-		public string Name { get; set; }
+		public string Name { get; set; } = null!;
 
 		/// <summary>
 		/// The source book the subclass is from
 		/// </summary>
-		public string Sourcebook { get; set; }
+		public string Sourcebook { get; set; } = null!;
 
 		/// <summary>
 		/// The features of the subclass
@@ -31,7 +31,7 @@ namespace DnDesigner.Models
 		/// The class the subclass is a subclass of
 		/// </summary>
 		[ForeignKey("ClassId")]
-		public Class Class { get; set; }
+		public Class Class { get; set; } = null!;
 
 		/// <summary>
 		/// The spellcasting abilities of the subclass, null if none
@@ -53,7 +53,10 @@ namespace DnDesigner.Models
 			Spellcasting = null;
 			Sourcebook = "";
         }
-		private Subclass() { }
+		private Subclass() // For EF
+        {
+			Features = new List<SubclassFeature>();
+		} 
 
         /// <summary>
         /// Gets the features available to the subclass at a given level

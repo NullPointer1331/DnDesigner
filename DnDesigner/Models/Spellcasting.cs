@@ -87,7 +87,7 @@ namespace DnDesigner.Models
         /// The character this spellcasting belongs to
         /// </summary>
         [ForeignKey("CharacterId")]
-        public Character Character { get; set; }
+        public Character Character { get; set; } = null!;
 
         int CharacterId { get; set; }
 
@@ -95,7 +95,7 @@ namespace DnDesigner.Models
         /// The spellcasting this is referencing
         /// </summary>
         [ForeignKey("SpellcastingId")]
-        public Spellcasting Spellcasting { get; set; }
+        public Spellcasting Spellcasting { get; set; } = null!;
 
         int SpellcastingId { get; set; }
 
@@ -171,7 +171,10 @@ namespace DnDesigner.Models
             PreparedSpells = new List<KnownSpell>();
         }
 
-        private CharacterSpellcasting() { }
+        private CharacterSpellcasting() // For EF
+        {
+            PreparedSpells = new List<KnownSpell>();
+        }
 
     }
 }

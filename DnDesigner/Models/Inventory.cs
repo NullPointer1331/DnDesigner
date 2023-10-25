@@ -5,6 +5,7 @@ namespace DnDesigner.Models
 {
     public class Inventory
     {
+        #region properties
         /// <summary>
         /// Primary key
         /// </summary>
@@ -27,7 +28,7 @@ namespace DnDesigner.Models
         /// The items currently attuned to the character
         /// </summary>
         [NotMapped]
-        public List<Item> AttunedItems { get; set; }
+        public List<InventoryItem> AttunedItems { get; set; }
 
         /// <summary>
         /// The maximum number of items that can be attuned to the character
@@ -39,27 +40,27 @@ namespace DnDesigner.Models
         /// null if no item is equipped
         /// </summary>
         [NotMapped]
-        public Item? MainHand { get; set; }
+        public InventoryItem? MainHand { get; set; }
 
         /// <summary>
         /// The item currently equipped in the off hand,
         /// null if no item is equipped
         /// </summary>
         [NotMapped]
-        public Item? OffHand { get; set; }
+        public InventoryItem? OffHand { get; set; }
 
         /// <summary>
         /// The item currently equipped as armor,
         /// null if no item is equipped
         /// </summary>
         [NotMapped]
-        public Item? Armor { get; set; }
+        public InventoryItem? Armor { get; set; }
 
         /// <summary>
         /// Items equipped in other slots
         /// </summary>
         [NotMapped]
-        public List<Item> OtherEquippedItems { get; set; }
+        public List<InventoryItem> OtherEquippedItems { get; set; }
 
         /// <summary>
         /// The number of platinum coins in the inventory
@@ -86,6 +87,21 @@ namespace DnDesigner.Models
         /// </summary>
         public int Copper { get; set; }
 
+        public int TotalCoinValue
+        {
+            get
+            {
+                int total = 0;
+                total += Platinum * 1000;
+                total += Gold * 100;
+                total += Electrum * 50;
+                total += Silver * 10;
+                total += Copper;
+                return total;
+            }
+        }
+        #endregion
+
         /// <summary>
         /// Minimal constructor, sets Character and initializes empty lists
         /// Sets MaxAttunedItems to 3 and leaves other properties null or 0
@@ -95,10 +111,245 @@ namespace DnDesigner.Models
         {
             Character = character;
             Items = new List<InventoryItem>();
-            AttunedItems = new List<Item>();
+            AttunedItems = new List<InventoryItem>();
             MaxAttunedItems = 3;
-            OtherEquippedItems = new List<Item>();
+            OtherEquippedItems = new List<InventoryItem>();
         }
         private Inventory() { }
+
+        #region methods
+        /// <summary>
+        /// Populates the equipment slots with the items that are equipped or attuned
+        /// </summary>
+        public void PopulateEquipmentSlots()
+        {
+            foreach(InventoryItem item in Items)
+            {
+                if(item.Equipped)
+                {
+                    Equip(item);
+                }
+                else if(item.Attuned)
+                {
+                    Attune(item);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Equips an item to the appropriate slot
+        /// </summary>
+        /// <param name="item">The InventoryItem to equip</param>
+        public void Equip(InventoryItem item)
+        {
+            if(item.Item.Equipable != 0)
+            {
+                if(item.Item.Equipable == 1) // Armor
+                {
+                    Unequip(Armor);
+                    item.EquippedIn = 1;
+                    Armor = item;
+                }
+                else if (item.Item.Equipable == 2) // Main hand
+                {
+                    Unequip(MainHand);
+                    item.EquippedIn = 2;
+                    MainHand = item;
+                }
+                else if (item.Item.Equipable == 3) // Offhand
+                {
+                    Unequip(OffHand);
+                    if(MainHand != null && MainHand.Item.Equipable == 5) // If there's a 2 handed weapon equipped
+                    {
+                        Unequip(MainHand);
+                    }
+                    item.EquippedIn = 3;
+                    OffHand = item;
+                }
+                else if(item.Item.Equipable == 4) // Either hand
+                {
+                    if(MainHand == null)
+                    {
+                        item.EquippedIn = 2;
+                        MainHand = item;
+                    }
+                    else if (OffHand == null)
+                    {
+                        if (MainHand != null && MainHand.Item.Equipable == 5)
+                        {
+                            Unequip(MainHand);
+                        }
+                        item.EquippedIn = 3;
+                        OffHand = item;
+                    }
+                    else //If neither hand is free
+                    {
+                        if (MainHand.Item.Equipable == 5)
+                        {
+                            Unequip(MainHand);
+                            item.EquippedIn = 2;
+                            MainHand = item;
+                        }
+                        else
+                        {
+                            Unequip(OffHand);
+                            item.EquippedIn = 3;
+                            OffHand = item;
+                        }
+                    }
+                }
+                else if (item.Item.Equipable == 5) // Both hands
+                {
+                    Unequip(MainHand);
+                    Unequip(OffHand);
+                    item.EquippedIn = 2;
+                    MainHand = item;
+                }
+                else
+                {
+                    OtherEquippedItems.Add(item);
+                    item.EquippedIn = 4;
+                }
+                Attune(item);
+            }
+        }
+
+        /// <summary>
+        /// Unequips an InventoryItem
+        /// </summary>
+        /// <param name="item">The InventoryItem to unequip</param>
+        public void Unequip(InventoryItem? item)
+        {
+            if(item != null && item.Equipped)
+            {
+                Unattune(item);
+                if (item.EquippedIn == 1)
+                {
+                    Armor = null;
+                }
+                else if (item.EquippedIn == 2)
+                {
+                    MainHand = null;
+                }
+                else if (item.EquippedIn == 3)
+                {
+                    OffHand = null;
+                }
+                else
+                {
+                    OtherEquippedItems.Remove(item);
+                }
+                item.EquippedIn = 0;
+            }
+        }
+
+        /// <summary>
+        /// Attunes an item to a character
+        /// </summary>
+        /// <param name="item">The InventoryItem to attune</param>
+        public void Attune(InventoryItem item) 
+        {
+            if(item.Item.Attuneable && AttunedItems.Count < MaxAttunedItems)
+            {
+                item.Attuned = true;
+                AttunedItems.Add(item);
+            }
+        }
+
+        /// <summary>
+        /// Unattunes an item to a character
+        /// </summary>
+        /// <param name="item">The InventoryItem to unattune</param>
+        public void Unattune(InventoryItem item)
+        {
+            if(item.Attuned)
+            {
+                item.Attuned = false;
+                AttunedItems.Remove(item);
+            }
+        }
+
+        /// <summary>
+        /// Finds an InventoryItem in this inventory with the specified Item
+        /// </summary>
+        /// <param name="item">The item to find in the inventory</param>
+        /// <returns>The InventoryItem containting the item, null if none</returns>
+        public InventoryItem? FindItem(Item? item)
+        {
+            return Items.Where(i => i.Item.Equals(item)).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Simplifies coin values to the smallest number of coins possible 
+        /// ignoring electrum
+        /// </summary>
+        public void SimplifyCoins()
+        {
+            int total = TotalCoinValue;
+            Platinum = total / 1000;
+            total -= Platinum * 1000;
+            Gold = total / 100;
+            total -= Gold * 100;
+            Silver = total / 10;
+            total -= Silver * 10;
+            Copper = total;
+        }
+
+        /// <summary>
+        /// Adds a specified quantity of an item to the inventory
+        /// </summary>
+        /// <param name="item">The item to add</param>
+        /// <param name="quantity">How many of the item</param>
+        public void AddItem(Item item, int quantity)
+        {
+            InventoryItem? inventoryItem = FindItem(item);
+            if(inventoryItem != null)
+            {
+                inventoryItem.Quantity += quantity;
+            }
+            else
+            {
+                Items.Add(new InventoryItem(item, this, quantity));
+            }
+        }
+
+        /// <summary>
+        /// Adds one of an item to the inventory
+        /// </summary>
+        /// <param name="item">The item to add</param>
+        public void AddItem(Item item)
+        {
+            AddItem(item, 1);
+        }
+
+        /// <summary>
+        /// Removes a specified quantity of an item from the inventory
+        /// </summary>
+        /// <param name="item">The item to remove</param>
+        /// <param name="quantity">How many of that item to remove</param>
+        public void RemoveItem(Item item, int quantity)
+        {
+            InventoryItem? inventoryItem = FindItem(item);
+            if (inventoryItem != null)
+            {
+                inventoryItem.Quantity -= quantity;
+                if (inventoryItem.Quantity <= 0)
+                {
+                    Unequip(inventoryItem);
+                    Unattune(inventoryItem);
+                    Items.Remove(inventoryItem);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes one of an item from the inventory
+        /// </summary>
+        /// <param name="item">The item to remove</param>
+        public void RemoveItem(Item item)
+        {
+            RemoveItem(item, 1);
+        }
+        #endregion
     }
 }

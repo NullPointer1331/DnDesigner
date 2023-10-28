@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
@@ -185,7 +186,8 @@ namespace DnDesigner.Models
             Immunities = "";
             Vulnerabilities = "";
         }
-        public Character(CreateCharacterViewModel character, Class @class, Race race, Background background)
+        public Character(CreateCharacterViewModel character, Class @class, 
+            Race race, Background background, List<Proficiency> defaultProficiencies)
         {
             Name = character.Name;
             Classes = new List<CharacterClass>();
@@ -213,7 +215,7 @@ namespace DnDesigner.Models
             {
                 Spellcasting.Add(new CharacterSpellcasting(this, @class.Spellcasting));
             }
-            SetProficiencies();
+            SetProficiencies(defaultProficiencies);
         }
 
         #region methods
@@ -267,22 +269,49 @@ namespace DnDesigner.Models
             return (GetAttribute(name) - 10) / 2;
         }
 
-        public void SetProficiencies()
+        /// <summary>
+        /// Sets the character's proficiencies
+        /// </summary>
+        /// <param name="defaultProficiencies">A list of all skills and saving throws</param>
+        public void SetProficiencies(List<Proficiency> defaultProficiencies)
         {
+            foreach(Proficiency proficiency in defaultProficiencies){
+                Proficiencies.Add(new CharacterProficiency(this, proficiency));
+            }
             foreach (CharacterClass characterClass in Classes)
             {
                 foreach (ClassProficiency classProficiency in characterClass.Class.Proficiencies)
                 {
-                    Proficiencies.Add(new CharacterProficiency(this, classProficiency.Proficiency));
+                    GrantProficiency(classProficiency.Proficiency);
                 }
             }
             foreach (BackgroundProficiency backgroundProficiency in Background.Proficiencies)
             {
-                Proficiencies.Add(new CharacterProficiency(this, backgroundProficiency.Proficiency));
+                GrantProficiency(backgroundProficiency.Proficiency);
             }
             foreach (RaceProficiency raceProficiency in Race.Proficiencies)
             {
-                Proficiencies.Add(new CharacterProficiency(this, raceProficiency.Proficiency));
+                GrantProficiency(raceProficiency.Proficiency);
+            }
+        }
+
+        /// <summary>
+        /// Grants a proficiency to the character
+        /// </summary>
+        /// <param name="proficiency">The proficiency to grant</param>
+        public void GrantProficiency(Proficiency proficiency)
+        {
+            CharacterProficiency? existingProficiency = GetProficiency(proficiency.Name);
+            if (existingProficiency == null)
+            {
+                Proficiencies.Add(new CharacterProficiency(this, proficiency, 1, 0));
+            }
+            else
+            {
+                if(existingProficiency.ProficiencyLevel < 2)
+                {
+                    existingProficiency.ProficiencyLevel = 1;
+                }
             }
         }
 

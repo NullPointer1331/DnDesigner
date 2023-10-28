@@ -154,47 +154,6 @@ namespace DnDesigner.Data
         {
             List<Proficiency> proficiencies = new List<Proficiency>();
 
-            //Languages
-            string contents = File.ReadAllText("Data\\5EToolsData\\languages.json");
-            LanguageRoot languageRoot = JsonSerializer.Deserialize<LanguageRoot>(contents);
-            foreach (Language language in languageRoot.language)
-            {
-                Proficiency proficiency = new Proficiency(language.name, null, "language");
-                if(!proficiencies.Where(p => p.Name == proficiency.Name).Any())
-                {
-                    proficiencies.Add(proficiency);
-                }
-            }
-
-            //Tools and Instruments
-            foreach (Item item in items)
-            {
-                if(item.Traits.Contains("Tool"))
-                {
-                    Proficiency proficiency = new Proficiency(item.Name, null, "tool");
-                    if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
-                    {
-                        proficiencies.Add(proficiency);
-                    }
-                }
-                else if (item.Traits.Contains("Instrument"))
-                {
-                    Proficiency proficiency = new Proficiency(item.Name, null, "instrument");
-                    if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
-                    {
-                        proficiencies.Add(proficiency);
-                    }
-                }
-            }
-
-            //Weapons and armor
-            proficiencies.Add(new Proficiency("Light Armor", null, "armor"));
-            proficiencies.Add(new Proficiency("Medium Armor", null, "armor"));
-            proficiencies.Add(new Proficiency("Heavy Armor", null, "armor"));
-            proficiencies.Add(new Proficiency("Shield", null, "armor"));
-            proficiencies.Add(new Proficiency("Simple Weapons", null, "weapon"));
-            proficiencies.Add(new Proficiency("Martial Weapons", null, "weapon"));
-
             //Saving Throws
             proficiencies.Add(new Proficiency("Strength Saving Throw", "Strength", "saving throw"));
             proficiencies.Add(new Proficiency("Dexterity Saving Throw", "Dexterity", "saving throw"));
@@ -223,7 +182,47 @@ namespace DnDesigner.Data
             proficiencies.Add(new Proficiency("Stealth", "Dexterity", "skill"));
             proficiencies.Add(new Proficiency("Survival", "Wisdom", "skill"));
 
-            //TODO: add tool and instrument proficiencies
+            //Weapons and armor
+            proficiencies.Add(new Proficiency("Light Armor", null, "armor"));
+            proficiencies.Add(new Proficiency("Medium Armor", null, "armor"));
+            proficiencies.Add(new Proficiency("Heavy Armor", null, "armor"));
+            proficiencies.Add(new Proficiency("Shield", null, "armor"));
+            proficiencies.Add(new Proficiency("Simple Weapons", null, "weapon"));
+            proficiencies.Add(new Proficiency("Martial Weapons", null, "weapon"));
+
+            //Tools and Instruments
+            foreach (Item item in items)
+            {
+                if (item.Traits.Contains("Tool"))
+                {
+                    Proficiency proficiency = new Proficiency(item.Name, null, "tool");
+                    if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
+                    {
+                        proficiencies.Add(proficiency);
+                    }
+                }
+                else if (item.Traits.Contains("Instrument"))
+                {
+                    Proficiency proficiency = new Proficiency(item.Name, null, "instrument");
+                    if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
+                    {
+                        proficiencies.Add(proficiency);
+                    }
+                }
+            }
+
+            //Languages
+            string contents = File.ReadAllText("Data\\5EToolsData\\languages.json");
+            LanguageRoot languageRoot = JsonSerializer.Deserialize<LanguageRoot>(contents);
+            foreach (Language language in languageRoot.language)
+            {
+                Proficiency proficiency = new Proficiency(language.name, null, "language");
+                if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
+                {
+                    proficiencies.Add(proficiency);
+                }
+            }
+
             return proficiencies;
         }
         #endregion

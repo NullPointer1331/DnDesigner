@@ -491,8 +491,7 @@ namespace DnDesigner.Data
             {
                 foreach (SkillProficiency skill in race5E.skillProficiencies)
                 {
-                    List<Proficiency> skills = new List<Proficiency>();
-                    skills.AddRange(FindSkills(skill, proficiencies));
+                    List<Proficiency> skills = FindSkills(skill, proficiencies);
                     foreach (Proficiency proficiency in skills)
                     {
                         if (!raceProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
@@ -506,11 +505,10 @@ namespace DnDesigner.Data
             {
                 foreach (LanguageProficiency language in race5E.languageProficiencies)
                 {
-                    List<Proficiency> languages = new List<Proficiency>();
-                    languages.AddRange(FindLanguages(language, proficiencies));
+                    List<Proficiency> languages = FindLanguages(language, proficiencies);
                     foreach (Proficiency proficiency in languages)
                     {
-                        if(!raceProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        if (!raceProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
                         {
                             raceProficiencies.Add(new RaceProficiency(race, proficiency));
                         }
@@ -565,8 +563,7 @@ namespace DnDesigner.Data
 
                 foreach (SkillProficiency skill in background5E.skillProficiencies)
                 {
-                    List<Proficiency> skills = new List<Proficiency>();
-                    skills.AddRange(FindSkills(skill, proficiencies));
+                    List<Proficiency> skills = FindSkills(skill, proficiencies);
                     foreach (Proficiency proficiency in skills)
                     {
                         if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
@@ -580,8 +577,7 @@ namespace DnDesigner.Data
             {
                 foreach (ToolProficiency tool in background5E.toolProficiencies)
                 {
-                    List<Proficiency> tools = new List<Proficiency>();
-                    tools.AddRange(FindTools(tool, proficiencies));
+                    List<Proficiency> tools = FindTools(tool, proficiencies);
                     foreach (Proficiency proficiency in tools)
                     {
                         if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
@@ -595,8 +591,7 @@ namespace DnDesigner.Data
             {
                 foreach (LanguageProficiency language in background5E.languageProficiencies)
                 {
-                    List<Proficiency> languages = new List<Proficiency>();
-                    languages.AddRange(FindLanguages(language, proficiencies));
+                    List<Proficiency> languages = FindLanguages(language, proficiencies);
                     foreach (Proficiency proficiency in languages)
                     {
                         if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
@@ -661,8 +656,7 @@ namespace DnDesigner.Data
 
                 foreach (SkillProficiency skill in class5E.startingProficiencies.skills)
                 {
-                    List<Proficiency> skills = new List<Proficiency>();
-                    skills.AddRange(FindSkills(skill, proficiencies));
+                    List<Proficiency> skills = FindSkills(skill, proficiencies);
                     if (skill.choose != null)
                     {
                         foreach (string str in skill.choose.from)
@@ -687,8 +681,7 @@ namespace DnDesigner.Data
             {
                 foreach (ToolProficiency tool in class5E.startingProficiencies.toolProficiencies)
                 {
-                    List<Proficiency> tools = new List<Proficiency>();
-                    tools.AddRange(FindTools(tool, proficiencies));
+                    List<Proficiency> tools = FindTools(tool, proficiencies);
                     if (tool.choose != null)
                     {
                         foreach (string str in tool.choose.from)
@@ -777,77 +770,77 @@ namespace DnDesigner.Data
         public static List<Proficiency> FindLanguages(LanguageProficiency language, List<Proficiency> proficiencies)
         {
             List<Proficiency> languages = new List<Proficiency>();
-            if (language.auran)
-            {
-                languages.Add(FindProficiency("auran", proficiencies));
-            }
-            if(language.aquan != null && (bool)language.aquan)
-            {
-                languages.Add(FindProficiency("aquan", proficiencies));
-            }
-            if (language.common != null && (bool)language.common)
-            {
-                languages.Add(FindProficiency("common", proficiencies));
-            }
-            if (language.dwarvish != null && (bool)language.dwarvish)
-            {
-                languages.Add(FindProficiency("dwarvish", proficiencies));
-            }
-            if (language.elvish != null && (bool)language.elvish)
-            {
-                languages.Add(FindProficiency("elvish", proficiencies));
-            }
-            if (language.draconic != null && (bool)language.draconic)
-            {
-                languages.Add(FindProficiency("draconic", proficiencies));
-            }
-            if (language.celestial != null && (bool)language.celestial)
-            {
-                languages.Add(FindProficiency("celestial", proficiencies));
-            }
-            if (language.primordial != null && (bool)language.primordial)
+            if (language.auran.HasValue && language.auran.Value)
             {
                 languages.Add(FindProficiency("primordial", proficiencies));
             }
-            if (language.thievescant != null && (bool)language.thievescant)
+            if(language.aquan.HasValue && language.aquan.Value)
+            {
+                languages.Add(FindProficiency("primordial", proficiencies));
+            }
+            if (language.common.HasValue && language.common.Value)
+            {
+                languages.Add(FindProficiency("common", proficiencies));
+            }
+            if (language.dwarvish.HasValue && language.dwarvish.Value)
+            {
+                languages.Add(FindProficiency("dwarvish", proficiencies));
+            }
+            if (language.elvish.HasValue && language.elvish.Value)
+            {
+                languages.Add(FindProficiency("elvish", proficiencies));
+            }
+            if (language.draconic.HasValue && language.draconic.Value)
+            {
+                languages.Add(FindProficiency("draconic", proficiencies));
+            }
+            if (language.celestial.HasValue && language.celestial.Value)
+            {
+                languages.Add(FindProficiency("celestial", proficiencies));
+            }
+            if (language.primordial.HasValue && language.primordial.Value)
+            {
+                languages.Add(FindProficiency("primordial", proficiencies));
+            }
+            if (language.thievescant.HasValue && language.thievescant.Value)
             {
                 languages.Add(FindProficiency("thieves' cant", proficiencies));
             }
-            if (language.undercommon != null && (bool)language.undercommon)
+            if (language.undercommon.HasValue && language.undercommon.Value)
             {
                 languages.Add(FindProficiency("undercommon", proficiencies));
             }
-            if (language.giant != null && (bool)language.giant)
+            if (language.giant.HasValue && language.giant.Value)
             {
                 languages.Add(FindProficiency("giant", proficiencies));
             }
-            if (language.goblin != null && (bool)language.goblin)
+            if (language.goblin.HasValue && language.goblin.Value)
             {
                 languages.Add(FindProficiency("goblin", proficiencies));
             }
-            if (language.sylvan != null && (bool)language.sylvan)
+            if (language.sylvan.HasValue && language.sylvan.Value)
             {
                 languages.Add(FindProficiency("sylvan", proficiencies));
             }
-            if (language.gnomish != null && (bool)language.gnomish)
+            if (language.gnomish.HasValue && language.gnomish.Value)
             {
                 languages.Add(FindProficiency("gnomish", proficiencies));
             }
-            return proficiencies;
+            return languages;
         }
         public static List<Proficiency> FindSkills(SkillProficiency skill, List<Proficiency> proficiencies)
         {
             List<Proficiency> skills = new List<Proficiency>();
 
-            if (skill.intimidation)
+            if (skill.intimidation.HasValue && skill.intimidation.Value)
             {
                 skills.Add(FindProficiency("Intimidation", proficiencies));
             }
-            if (skill.insight)
+            if (skill.insight.HasValue && skill.insight.Value)
             {
                 skills.Add(FindProficiency("Insight", proficiencies));
             }
-            if (skill.religion)
+            if (skill.religion.HasValue && skill.religion.Value)
             {
                 skills.Add(FindProficiency("Religion", proficiencies));
             }

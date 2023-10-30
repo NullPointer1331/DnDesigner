@@ -545,6 +545,7 @@ namespace DnDesigner.Data
                                 background.Description += $"{item.entry} ";
                             }
                         }
+                        background.Description += ". ";
                     }
                     if (entry.entries != null)
                     {
@@ -553,7 +554,7 @@ namespace DnDesigner.Data
                             background.Description += $"{subEntry} ";
                         }
                     }
-                    background.Description += ".";
+                    background.Description += ". ";
                 }
             }
             background.Description = CleanText(background.Description);

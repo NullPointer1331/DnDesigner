@@ -67,7 +67,7 @@
                                     <option value="@characterBackground.BackgroundId">@characterBackground.Name (@characterBackground.Sourcebook)</option>
                                 }
                             </select>
-                            <p id="descriptionBackground">lorem ipsum</p>
+                            <p id="descriptionBackground">@Model.AvailableBackgrounds[Model.BackgroundId].Description</p>
                         </div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                                     <option value=@race.RaceId>@race.Name (@race.Sourcebook)</option>
                                 }
                             </select>
-                            <p id="descriptionRace">lorem ipsum</p>
+                            <p id="descriptionRace">@Model.AvailableRaces[Model.RaceId].Description</p>
                         </div>
                     </div>
                 </div>

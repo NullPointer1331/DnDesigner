@@ -4,15 +4,15 @@ namespace DnDesigner.Models.ImportModels
 {
     public class SkillProficiency
     {
-        public bool intimidation { get; set; }
+        public bool? intimidation { get; set; }
         public bool? perception { get; set; }
         public bool? stealth { get; set; }
         public Choose choose { get; set; }
         public bool? survival { get; set; }
         public bool? deception { get; set; }
         public int? any { get; set; }
-        public bool insight { get; set; }
-        public bool religion { get; set; }
+        public bool? insight { get; set; }
+        public bool? religion { get; set; }
         public bool? history { get; set; }
         public bool? nature { get; set; }
         public bool? acrobatics { get; set; }

@@ -13,7 +13,7 @@ namespace DnDesigner.Models.ImportModels
         public bool? draconic { get; set; }
         public bool? undercommon { get; set; }
         public bool? giant { get; set; }
-        public bool auran { get; set; }
+        public bool? auran { get; set; }
         public bool? common { get; set; }
         public bool? other { get; set; }
         public bool? celestial { get; set; }

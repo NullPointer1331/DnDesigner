@@ -2,6 +2,13 @@
 
 @{
     ViewData["Title"] = Model.Name + " Character Sheet";
+    int strMod = (Model.Strength - 10) / 2;
+    int dexMod = (Model.Dexterity - 10) / 2;
+    int conMod = (Model.Constitution - 10) / 2;
+    int intMod = (Model.Intelligence - 10) / 2;
+    int wisMod = (Model.Wisdom - 10) / 2;
+    int chaMod = (Model.Charisma - 10) / 2;
+    int armorClass = 10 + dexMod;
 }
 
 <h1>@Model.Name</h1>
@@ -193,9 +200,6 @@
                             <div class="card-body">
                                 <h5 class="card-title">Strength</h5>
                                 <h3>@Model.Strength</h3>
-                                @{
-                                    int strMod = (@Model.Strength - 10) / 2;
-                                }
                                 <h5>@strMod</h5>
                             </div>
                         </div>
@@ -205,9 +209,6 @@
                             <div class="card-body">
                                 <h5 class="card-title">Dexterity</h5>
                                 <h3>@Model.Dexterity</h3>
-                                @{
-                                    int dexMod = (@Model.Dexterity - 10) / 2;
-                                }
                                 <h5>@dexMod</h5>
                             </div>
                         </div>
@@ -217,9 +218,6 @@
                             <div class="card-body">
                                 <h5 class="card-title">Constitution</h5>
                                 <h3>@Model.Constitution</h3>
-                                @{
-                                    int conMod = (@Model.Constitution - 10) / 2;
-                                }
                                 <h5>@conMod</h5>
                             </div>
                         </div>
@@ -229,9 +227,6 @@
                             <div class="card-body">
                                 <h5 class="card-title">Intelligence</h5>
                                 <h3>@Model.Intelligence</h3>
-                                @{
-                                    int intMod = (@Model.Intelligence - 10) / 2;
-                                }
                                 <h5>@intMod</h5>
                             </div>
                         </div>
@@ -241,9 +236,6 @@
                             <div class="card-body">
                                 <h5 class="card-title">Wisdom</h5>
                                 <h3>@Model.Wisdom</h3>
-                                @{
-                                    int wisMod = (@Model.Wisdom - 10) / 2;
-                                }
                                 <h5>@wisMod</h5>
                             </div>
                         </div>
@@ -253,9 +245,6 @@
                             <div class="card-body">
                                 <h5 class="card-title">Charisma</h5>
                                 <h3>@Model.Charisma</h3>
-                                @{
-                                    int chaMod = (@Model.Charisma - 10) / 2;
-                                }
                                 <h5>@chaMod</h5>
                             </div>
                         </div>
@@ -286,9 +275,6 @@
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">Armor Class</h5>
-                                    @{
-                                        int armorClass = 10 + dexMod;
-                                    }
                                     <h3>@armorClass</h3>
                                 </div>
                             </div>

@@ -5,8 +5,8 @@
     int armorClass = 10;
 }
 
-<h1>@Model.Name</h1>
-<h2>@Model.Level 
+<h2>@Model.Name</h2>
+<h3>@Model.Level 
     @foreach(CharacterClass Class in Model.Classes)
     {
         @Html.DisplayFor(Model => Class.Class.Name)
@@ -15,7 +15,8 @@
             @Html.DisplayFor(Model => Class.Subclass.Name)
         }
     }
-</h2> 
+</h3> 
+<h4>@Model.Race.Name @Model.Background.Name</h4>
 
 <hr />
 <form asp-action="CharacterSheet">
@@ -478,7 +479,10 @@
     <!--Hidden Storage Start-->
     <input type="hidden" asp-for="CharacterId" />
     <input type="hidden" asp-for="Name" />
+    <input type="hidden" asp-for="Race" />
+    <input type="hidden" asp-for="Background" />
     <input type="hidden" asp-for="Level" />
+    <input type="hidden" asp-for="Classes" />
     <input type="hidden" asp-for="AvailableHitDice" />
     <input type="hidden" asp-for="Strength" />
     <input type="hidden" asp-for="Dexterity" />
@@ -487,7 +491,7 @@
     <input type="hidden" asp-for="Wisdom" />
     <input type="hidden" asp-for="Charisma" />
     <!--Hidden Storage End-->
-    
+    <!--
     <div class="form-group">
         <label asp-for="Resistances" class="control-label"></label>
         <input asp-for="Resistances" class="form-control" />
@@ -503,6 +507,7 @@
         <input asp-for="Vulnerabilities" class="form-control" />
         <span asp-validation-for="Vulnerabilities" class="text-danger"></span>
     </div>
+    -->
     <div class="form-group">
         <input type="submit" value="Save and exit" class="btn btn-primary" />
     </div>

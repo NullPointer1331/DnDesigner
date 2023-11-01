@@ -10,11 +10,12 @@ namespace DnDesigner.Models
     /// </summary>
     public class Item
     {
+        #region properties
         /// <summary>
         /// Primary Key
         /// </summary>
         [Key]
-        public int ItemId { get; private set; }
+        public int ItemId { get; set; }
 
         /// <summary>
         /// The name of the item
@@ -46,7 +47,7 @@ namespace DnDesigner.Models
         /// Range guide: 0 = not equipable, 1 = armor, 2 = main hand only
         /// 3 = off hand only, 4 = either hand, 5 = both hands, 6 = other
         /// </summary>
-        [Range(0, 5)]
+        [Range(0, 6)]
         public int Equipable { get; set; }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace DnDesigner.Models
         /// The items traits
         /// </summary>
         public string Traits { get; set; } = null!;
-
+        #endregion
 
     }
 
@@ -74,7 +75,7 @@ namespace DnDesigner.Models
         [ForeignKey("ItemId")]
         public Item Item { get; set; }
 
-        int ItemId { get; set; }
+        public int ItemId { get; set; }
 
         /// <summary>
         /// The inventory the item is in
@@ -82,7 +83,7 @@ namespace DnDesigner.Models
         [ForeignKey("InventoryId")]
         public Inventory Inventory { get; set; }
 
-        int InventoryId { get; set; }
+        public int InventoryId { get; set; }
 
         /// <summary>
         /// How many of the item are in the inventory
@@ -92,18 +93,27 @@ namespace DnDesigner.Models
         /// <summary>
         /// Is the item equipped
         /// </summary>
-        bool Equipped { get; set; }
+        public bool Equipped { get { 
+                return EquippedIn != 0;
+            }}
+
+        /// <summary>
+        /// Which slot the item is equipped in,
+        /// 0 = not equipped, 1 = armor, 2 = main hand
+        /// 3 = offhand, 4 = other
+        /// </summary>
+        [Range(0, 4)]
+        public int EquippedIn {  get; set; }
 
         /// <summary>
         /// Is the item attuned
         /// </summary>
-        bool Attuned { get; set; }
+        public bool Attuned { get; set; }
         public InventoryItem(Item item, Inventory inventory, int quantity)
         {
             Item = item;
             Inventory = inventory;
             Quantity = quantity;
-            Equipped = false;
             Attuned = false;
         }
         private InventoryItem() { }

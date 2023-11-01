@@ -9,6 +9,7 @@ namespace DnDesigner.Models
     /// </summary>
     public class Spell
     {
+        #region properties
         /// <summary>
         /// Primary key
         /// </summary>
@@ -64,13 +65,21 @@ namespace DnDesigner.Models
         /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// Can the spell be cast as a ritual
+        /// </summary>
         public bool IsRitual { get; set; }
+
+        /// <summary>
+        /// Does the spell require concentration
+        /// </summary>
         public bool RequiresConcentration { get; set; }
 
         /// <summary>
         /// Who can learn the spell
         /// </summary>
         public List<LearnableSpell> LearnedBy { get; set; }
+        #endregion
 
         /// <summary>
         /// Minimal constructor, Initializes lists and leaves everything else blank
@@ -78,6 +87,14 @@ namespace DnDesigner.Models
         public Spell()
         {
             LearnedBy = new List<LearnableSpell>();
+            Name = "";
+            Sourcebook = "";
+            SpellSchool = "";
+            CastingTime = "";
+            Range = "";
+            Components = "";
+            Duration = "";
+            Description = "";
         }
     }
 
@@ -91,7 +108,7 @@ namespace DnDesigner.Models
         /// A spell that can be learned by a class
         /// </summary>
         [ForeignKey("SpellId")]
-        public Spell Spell { get; set; }
+        public Spell Spell { get; set; } = null!;
 
         int SpellId { get; set; }
 
@@ -99,7 +116,7 @@ namespace DnDesigner.Models
         /// A class that can learn a spell
         /// </summary>
         [ForeignKey("SpellcastingId")]
-        public Spellcasting Spellcasting { get; set; }
+        public Spellcasting Spellcasting { get; set; } = null!;
 
         int SpellcastingId { get; set; }
 
@@ -122,7 +139,7 @@ namespace DnDesigner.Models
         /// The character who knows this spell
         /// </summary>
         [ForeignKey("CharacterId, SpellcastingId")]
-        public CharacterSpellcasting Character { get; set; }
+        public CharacterSpellcasting Character { get; set; } = null!;
 
         int CharacterId { get; set; }
 
@@ -132,18 +149,18 @@ namespace DnDesigner.Models
         /// The spell the character knows
         /// </summary>
         [ForeignKey("SpellId")]
-        public Spell Spell { get; set; }
+        public Spell Spell { get; set; } = null!;
 
         int SpellId { get; set; }
 
         /// <summary>
         /// Basic constructor
         /// </summary>
-        /// <param name="Character">The character who knows this spell</param>
+        /// <param name="character">The character who knows this spell</param>
         /// <param name="spell">The spell the character knows</param>
-        public KnownSpell(CharacterSpellcasting Character, Spell spell)
+        public KnownSpell(CharacterSpellcasting character, Spell spell)
         {
-            this.Character = Character;
+            Character = character;
             Spell = spell;
         }
         private KnownSpell() { }

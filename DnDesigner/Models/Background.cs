@@ -8,6 +8,7 @@ namespace DnDesigner.Models
     /// </summary>
     public class Background
     {
+        #region properties
         /// <summary>
         /// Primary key
         /// </summary>
@@ -39,7 +40,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// All features of this background
         /// </summary>
-        public List<BackgroundFeature> BackgroundFeature { get; set; }
+        public List<BackgroundFeature> Features { get; set; }
 
         /// <summary>
         /// The gold this background gives
@@ -49,7 +50,8 @@ namespace DnDesigner.Models
         /// <summary>
         /// The description of this background
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
+        #endregion
 
         /// <summary>
         /// Minimal constructor, Initializes lists and leaves everything else blank
@@ -58,7 +60,9 @@ namespace DnDesigner.Models
         {
             Proficiencies = new List<BackgroundProficiency>();
             StarterEquipment = new List<Item>();
-            BackgroundFeature = new List<BackgroundFeature>();
+            Features = new List<BackgroundFeature>();
+            Name = "";
+            Sourcebook = "";
             Description = "";
         }
     }

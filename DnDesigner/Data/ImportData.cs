@@ -9,11 +9,14 @@ using Microsoft.IdentityModel.Tokens;
 using Humanizer;
 using System.Collections.Generic;
 using DnDesigner.Controllers;
+using Elfie.Serialization;
+using System.Linq.Expressions;
 
 namespace DnDesigner.Data
 {
     public static class ImportData
     {
+        #region Extraction methods
         /// <summary>
         /// Extracts Class Data from the 5ETools JSON files and returns it as a list of Classes
         /// </summary>
@@ -29,7 +32,8 @@ namespace DnDesigner.Data
                     {
                         if (!class5E.source.Contains("UA"))
                         {
-                            List<ClassFeature5ETools> classFeatures = classRoot.classFeature.Where(f => f.className == class5E.name).ToList();
+                            List<ClassFeature5ETools> classFeatures = classRoot.classFeature
+                                .Where(f => f.className == class5E.name && f.source.Contains("UA")).ToList();
                             classes.Add(ConvertClass(class5E, classFeatures, proficiencies));
                         }
                     }
@@ -150,47 +154,6 @@ namespace DnDesigner.Data
         {
             List<Proficiency> proficiencies = new List<Proficiency>();
 
-            //Languages
-            string contents = File.ReadAllText("Data\\5EToolsData\\languages.json");
-            LanguageRoot languageRoot = JsonSerializer.Deserialize<LanguageRoot>(contents);
-            foreach (Language language in languageRoot.language)
-            {
-                Proficiency proficiency = new Proficiency(language.name, null, "language");
-                if(!proficiencies.Where(p => p.Name == proficiency.Name).Any())
-                {
-                    proficiencies.Add(proficiency);
-                }
-            }
-
-            //Tools and Instruments
-            foreach (Item item in items)
-            {
-                if(item.Traits.Contains("Tool"))
-                {
-                    Proficiency proficiency = new Proficiency(item.Name, null, "tool");
-                    if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
-                    {
-                        proficiencies.Add(proficiency);
-                    }
-                }
-                else if (item.Traits.Contains("Instrument"))
-                {
-                    Proficiency proficiency = new Proficiency(item.Name, null, "instrument");
-                    if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
-                    {
-                        proficiencies.Add(proficiency);
-                    }
-                }
-            }
-
-            //Weapons and armor
-            proficiencies.Add(new Proficiency("Light Armor", null, "armor"));
-            proficiencies.Add(new Proficiency("Medium Armor", null, "armor"));
-            proficiencies.Add(new Proficiency("Heavy Armor", null, "armor"));
-            proficiencies.Add(new Proficiency("Shield", null, "armor"));
-            proficiencies.Add(new Proficiency("Simple Weapons", null, "weapon"));
-            proficiencies.Add(new Proficiency("Martial Weapons", null, "weapon"));
-
             //Saving Throws
             proficiencies.Add(new Proficiency("Strength Saving Throw", "Strength", "saving throw"));
             proficiencies.Add(new Proficiency("Dexterity Saving Throw", "Dexterity", "saving throw"));
@@ -219,10 +182,52 @@ namespace DnDesigner.Data
             proficiencies.Add(new Proficiency("Stealth", "Dexterity", "skill"));
             proficiencies.Add(new Proficiency("Survival", "Wisdom", "skill"));
 
-            //TODO: add tool and instrument proficiencies
+            //Weapons and armor
+            proficiencies.Add(new Proficiency("Light Armor", null, "armor"));
+            proficiencies.Add(new Proficiency("Medium Armor", null, "armor"));
+            proficiencies.Add(new Proficiency("Heavy Armor", null, "armor"));
+            proficiencies.Add(new Proficiency("Shield", null, "armor"));
+            proficiencies.Add(new Proficiency("Simple Weapons", null, "weapon"));
+            proficiencies.Add(new Proficiency("Martial Weapons", null, "weapon"));
+
+            //Tools and Instruments
+            foreach (Item item in items)
+            {
+                if (item.Traits.Contains("Tool"))
+                {
+                    Proficiency proficiency = new Proficiency(item.Name, null, "tool");
+                    if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
+                    {
+                        proficiencies.Add(proficiency);
+                    }
+                }
+                else if (item.Traits.Contains("Instrument"))
+                {
+                    Proficiency proficiency = new Proficiency(item.Name, null, "instrument");
+                    if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
+                    {
+                        proficiencies.Add(proficiency);
+                    }
+                }
+            }
+
+            //Languages
+            string contents = File.ReadAllText("Data\\5EToolsData\\languages.json");
+            LanguageRoot languageRoot = JsonSerializer.Deserialize<LanguageRoot>(contents);
+            foreach (Language language in languageRoot.language)
+            {
+                Proficiency proficiency = new Proficiency(language.name, null, "language");
+                if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
+                {
+                    proficiencies.Add(proficiency);
+                }
+            }
+
             return proficiencies;
         }
+        #endregion
 
+        #region Conversion methods
         public static List<SpellRoot> GetSpellRoots()
         {
             List<SpellRoot> spellRoots = new List<SpellRoot>();
@@ -402,74 +407,7 @@ namespace DnDesigner.Data
             }
             return item;
         }
-        public static string DecodeTraits(string traits)
-        {
-            string allTraits = "";
-            if(traits != null)
-            {
-                string[] traitList = traits.Trim().Split(" ");
-                Dictionary<string, string> dict = new Dictionary<string, string>
-            {
-                {"A", "Ammunition" },
-                {"G", "Adventuring Gear" },
-                {"AT", "Artisan's Tools" },
-                {"ER", "Extended Reach" },
-                {"EXP", "Explosive" },
-                {"H", "Heavy" },
-                {"HA", "Heavy Armor" },
-                {"2H", "2 Handed" },
-                {"GS", "Gaming Set" },
-                {"IDG", "Illegal Drug" },
-                { "INS", "Instrument" },
-                { "L", "Light" },
-                { "LA", "Light Armor" },
-                { "LD", "Loading" },
-                {"MA", "Medium Armor" },
-                { "M", "Melee Weapon" },
-                {"R", "Ranged Weapon" },
-                {"S", "Shield" },
-                {"SC", "Sroll" },
-                {"SCF", "Spellcasting Focus" },
-                { "RD", "Rod" },
-                { "RG", "Ring" },
-                { "P", "Potion" },
-                { "$", "Treasure" },
-                { "FD", "Food and Drink" },
-                { "F", "Finesse" },
-                {"T", "Tool" },
-                {"TH", "Thrown" },
-                {"TAH", "Tack and Harness" },
-                {"OTH", "Other" },
-                {"TG", "Trade Good" },
-                {"V", "Versatile" },
-                {"Vst", "Vestige" },
-                {"SPC", "Vehicle (space)" },
-                {"SHC", "Vehicle (water)" },
-                {"AIR", "Vehicle (air)" },
-                {"VEH", "Vehicle (land)" },
-                {"MNT", "Mount" },
-                {"WD", "Wand" },
-                {"WI", "Wondrous Item" }
-            };
-                if (traitList.Length > 0)
-                {
-                    if (dict.ContainsKey(traitList[0]))
-                    {
-                        traitList[0] = dict[traitList[0]];
-                    }
-                }
-                for (int i = 1; i < traitList.Length; i++)
-                {
-                    if (dict.ContainsKey(traitList[i]))
-                    {
-                        traitList[i] = $", {dict[traitList[i]]}";
-                    }
-                }
-                foreach (string trait in traitList)
-                { allTraits += trait; }
-            }
-            return allTraits;
-        }
+
         public static RaceRoot GetRaceRoot()
         {
             string contents = File.ReadAllText("Data\\5EToolsData\\races.json");
@@ -494,10 +432,6 @@ namespace DnDesigner.Data
             {
                 foreach (Ability ability in race5E.ability)
                 {
-                    if (ability.choose != null)
-                    {
-                        race.StatBonuses += $"+{ability.choose.amount} to {ability.choose.count} attribute. ";
-                    }
                     if (ability.cha != null)
                     {
                         race.StatBonuses += $"+{ability.cha} Charisma. ";
@@ -524,15 +458,40 @@ namespace DnDesigner.Data
                     }
                 }
             }
-            race.Size = "medium";
+            if(race.StatBonuses == "")
+            {
+                race.StatBonuses = "+2 +1, or 3 +1s to any stats of your choice.";
+            }
+            if (race5E.size != null)
+            {
+                race.Size = "";
+                for (int i = 0; i < race5E.size.Count(); i++)
+                {
+                    if (race.Size.Length > 0)
+                    {
+                        race.Size += "or ";
+                    }
+                    if (race5E.size[i] == "S")
+                    {
+                        race.Size += "Small ";
+                    }
+                    else if (race5E.size[i] == "M")
+                    {
+                        race.Size += "Medium ";
+                    }
+                }
+            }
+            else
+            {
+                race.Size = "Medium";
+            }
             race.Speed = 30;
             List<RaceProficiency> raceProficiencies = new List<RaceProficiency>();
             if (race5E.skillProficiencies != null)
             {
                 foreach (SkillProficiency skill in race5E.skillProficiencies)
                 {
-                    List<Proficiency> skills = new List<Proficiency>();
-                    skills.AddRange(FindSkills(skill, proficiencies));
+                    List<Proficiency> skills = FindSkills(skill, proficiencies);
                     foreach (Proficiency proficiency in skills)
                     {
                         if (!raceProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
@@ -546,11 +505,10 @@ namespace DnDesigner.Data
             {
                 foreach (LanguageProficiency language in race5E.languageProficiencies)
                 {
-                    List<Proficiency> languages = new List<Proficiency>();
-                    languages.AddRange(FindLanguages(language, proficiencies));
+                    List<Proficiency> languages = FindLanguages(language, proficiencies);
                     foreach (Proficiency proficiency in languages)
                     {
-                        if(!raceProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        if (!raceProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
                         {
                             raceProficiencies.Add(new RaceProficiency(race, proficiency));
                         }
@@ -558,7 +516,7 @@ namespace DnDesigner.Data
                 }
             }
             race.Proficiencies = raceProficiencies;
-            //TODO: Features, Subraces, actually check size and speed
+            //TODO: Features, Subraces, actually check speed
             return race;
         }
 
@@ -587,6 +545,7 @@ namespace DnDesigner.Data
                                 background.Description += $"{item.entry} ";
                             }
                         }
+                        background.Description += ". ";
                     }
                     if (entry.entries != null)
                     {
@@ -595,6 +554,7 @@ namespace DnDesigner.Data
                             background.Description += $"{subEntry} ";
                         }
                     }
+                    background.Description += ". ";
                 }
             }
             background.Description = CleanText(background.Description);
@@ -604,8 +564,7 @@ namespace DnDesigner.Data
 
                 foreach (SkillProficiency skill in background5E.skillProficiencies)
                 {
-                    List<Proficiency> skills = new List<Proficiency>();
-                    skills.AddRange(FindSkills(skill, proficiencies));
+                    List<Proficiency> skills = FindSkills(skill, proficiencies);
                     foreach (Proficiency proficiency in skills)
                     {
                         if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
@@ -619,8 +578,7 @@ namespace DnDesigner.Data
             {
                 foreach (ToolProficiency tool in background5E.toolProficiencies)
                 {
-                    List<Proficiency> tools = new List<Proficiency>();
-                    tools.AddRange(FindTools(tool, proficiencies));
+                    List<Proficiency> tools = FindTools(tool, proficiencies);
                     foreach (Proficiency proficiency in tools)
                     {
                         if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
@@ -634,8 +592,7 @@ namespace DnDesigner.Data
             {
                 foreach (LanguageProficiency language in background5E.languageProficiencies)
                 {
-                    List<Proficiency> languages = new List<Proficiency>();
-                    languages.AddRange(FindLanguages(language, proficiencies));
+                    List<Proficiency> languages = FindLanguages(language, proficiencies);
                     foreach (Proficiency proficiency in languages)
                     {
                         if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
@@ -672,6 +629,14 @@ namespace DnDesigner.Data
                 spellcasting.Name = @class.Name;
                 spellcasting.SpellcastingAttribute = class5E.spellcastingAbility;
                 spellcasting.SpellcastingType = class5E.casterProgression ?? "none";
+                if(spellcasting.SpellcastingType == "1/2" || spellcasting.SpellcastingType == "artificer")
+                {
+                    spellcasting.SpellcastingType = "half";
+                }
+                if(!class5E.preparedSpells.IsNullOrEmpty())
+                {
+                    spellcasting.PreparedCasting = true;
+                }
                 @class.Spellcasting = spellcasting;
             }
             foreach (ClassFeature5ETools feature5E in classFeatures)
@@ -683,6 +648,7 @@ namespace DnDesigner.Data
                 }
                 description = CleanText(description);
                 ClassFeature feature = new ClassFeature(@class, feature5E.name, description, feature5E.level);
+                feature.Source = $"{feature5E.source}, Class, {@class.Name}";
                 @class.Features.Add(feature);
             }
             List<ClassProficiency> classProficiencies = new List<ClassProficiency>();
@@ -691,8 +657,7 @@ namespace DnDesigner.Data
 
                 foreach (SkillProficiency skill in class5E.startingProficiencies.skills)
                 {
-                    List<Proficiency> skills = new List<Proficiency>();
-                    skills.AddRange(FindSkills(skill, proficiencies));
+                    List<Proficiency> skills = FindSkills(skill, proficiencies);
                     if (skill.choose != null)
                     {
                         foreach (string str in skill.choose.from)
@@ -717,8 +682,7 @@ namespace DnDesigner.Data
             {
                 foreach (ToolProficiency tool in class5E.startingProficiencies.toolProficiencies)
                 {
-                    List<Proficiency> tools = new List<Proficiency>();
-                    tools.AddRange(FindTools(tool, proficiencies));
+                    List<Proficiency> tools = FindTools(tool, proficiencies);
                     if (tool.choose != null)
                     {
                         foreach (string str in tool.choose.from)
@@ -776,6 +740,9 @@ namespace DnDesigner.Data
             @class.Subclasses.Add(subclass);
             return subclass;
         }
+        #endregion
+
+        #region Helper methods
         public static string CleanText(string text)
         {
             if(text.IsNullOrEmpty())
@@ -784,6 +751,8 @@ namespace DnDesigner.Data
             }
             text = text.Replace("}", "");
             text = text.Replace("{", "");
+            text = text.Replace("[", "");
+            text = text.Replace("]", "");
             string[] textList = text.Split(" ");
             string cleanText = "";
             foreach (string word in textList)
@@ -802,77 +771,77 @@ namespace DnDesigner.Data
         public static List<Proficiency> FindLanguages(LanguageProficiency language, List<Proficiency> proficiencies)
         {
             List<Proficiency> languages = new List<Proficiency>();
-            if (language.auran)
-            {
-                languages.Add(FindProficiency("auran", proficiencies));
-            }
-            if(language.aquan != null && (bool)language.aquan)
-            {
-                languages.Add(FindProficiency("aquan", proficiencies));
-            }
-            if (language.common != null && (bool)language.common)
-            {
-                languages.Add(FindProficiency("common", proficiencies));
-            }
-            if (language.dwarvish != null && (bool)language.dwarvish)
-            {
-                languages.Add(FindProficiency("dwarvish", proficiencies));
-            }
-            if (language.elvish != null && (bool)language.elvish)
-            {
-                languages.Add(FindProficiency("elvish", proficiencies));
-            }
-            if (language.draconic != null && (bool)language.draconic)
-            {
-                languages.Add(FindProficiency("draconic", proficiencies));
-            }
-            if (language.celestial != null && (bool)language.celestial)
-            {
-                languages.Add(FindProficiency("celestial", proficiencies));
-            }
-            if (language.primordial != null && (bool)language.primordial)
+            if (language.auran.HasValue && language.auran.Value)
             {
                 languages.Add(FindProficiency("primordial", proficiencies));
             }
-            if (language.thievescant != null && (bool)language.thievescant)
+            if(language.aquan.HasValue && language.aquan.Value)
+            {
+                languages.Add(FindProficiency("primordial", proficiencies));
+            }
+            if (language.common.HasValue && language.common.Value)
+            {
+                languages.Add(FindProficiency("common", proficiencies));
+            }
+            if (language.dwarvish.HasValue && language.dwarvish.Value)
+            {
+                languages.Add(FindProficiency("dwarvish", proficiencies));
+            }
+            if (language.elvish.HasValue && language.elvish.Value)
+            {
+                languages.Add(FindProficiency("elvish", proficiencies));
+            }
+            if (language.draconic.HasValue && language.draconic.Value)
+            {
+                languages.Add(FindProficiency("draconic", proficiencies));
+            }
+            if (language.celestial.HasValue && language.celestial.Value)
+            {
+                languages.Add(FindProficiency("celestial", proficiencies));
+            }
+            if (language.primordial.HasValue && language.primordial.Value)
+            {
+                languages.Add(FindProficiency("primordial", proficiencies));
+            }
+            if (language.thievescant.HasValue && language.thievescant.Value)
             {
                 languages.Add(FindProficiency("thieves' cant", proficiencies));
             }
-            if (language.undercommon != null && (bool)language.undercommon)
+            if (language.undercommon.HasValue && language.undercommon.Value)
             {
                 languages.Add(FindProficiency("undercommon", proficiencies));
             }
-            if (language.giant != null && (bool)language.giant)
+            if (language.giant.HasValue && language.giant.Value)
             {
                 languages.Add(FindProficiency("giant", proficiencies));
             }
-            if (language.goblin != null && (bool)language.goblin)
+            if (language.goblin.HasValue && language.goblin.Value)
             {
                 languages.Add(FindProficiency("goblin", proficiencies));
             }
-            if (language.sylvan != null && (bool)language.sylvan)
+            if (language.sylvan.HasValue && language.sylvan.Value)
             {
                 languages.Add(FindProficiency("sylvan", proficiencies));
             }
-            if (language.gnomish != null && (bool)language.gnomish)
+            if (language.gnomish.HasValue && language.gnomish.Value)
             {
                 languages.Add(FindProficiency("gnomish", proficiencies));
             }
-            return proficiencies;
+            return languages;
         }
         public static List<Proficiency> FindSkills(SkillProficiency skill, List<Proficiency> proficiencies)
         {
             List<Proficiency> skills = new List<Proficiency>();
 
-            if (skill.intimidation)
+            if (skill.intimidation.HasValue && skill.intimidation.Value)
             {
                 skills.Add(FindProficiency("Intimidation", proficiencies));
             }
-            if (skill.insight)
+            if (skill.insight.HasValue && skill.insight.Value)
             {
                 skills.Add(FindProficiency("Insight", proficiencies));
             }
-            if (skill.religion)
+            if (skill.religion.HasValue && skill.religion.Value)
             {
                 skills.Add(FindProficiency("Religion", proficiencies));
             }
@@ -960,5 +929,74 @@ namespace DnDesigner.Data
         {
             return proficiencies.Where(p => p.Name.ToLower().Contains(proficiencyName.Trim().ToLower())).FirstOrDefault();
         }
+        public static string DecodeTraits(string traits)
+        {
+            string allTraits = "";
+            if (traits != null)
+            {
+                string[] traitList = traits.Trim().Split(" ");
+                Dictionary<string, string> dict = new Dictionary<string, string>
+            {
+                {"A", "Ammunition" },
+                {"G", "Adventuring Gear" },
+                {"AT", "Artisan's Tools" },
+                {"ER", "Extended Reach" },
+                {"EXP", "Explosive" },
+                {"H", "Heavy" },
+                {"HA", "Heavy Armor" },
+                {"2H", "2 Handed" },
+                {"GS", "Gaming Set" },
+                {"IDG", "Illegal Drug" },
+                { "INS", "Instrument" },
+                { "L", "Light" },
+                { "LA", "Light Armor" },
+                { "LD", "Loading" },
+                {"MA", "Medium Armor" },
+                { "M", "Melee Weapon" },
+                {"R", "Ranged Weapon" },
+                {"S", "Shield" },
+                {"SC", "Sroll" },
+                {"SCF", "Spellcasting Focus" },
+                { "RD", "Rod" },
+                { "RG", "Ring" },
+                { "P", "Potion" },
+                { "$", "Treasure" },
+                { "FD", "Food and Drink" },
+                { "F", "Finesse" },
+                {"T", "Tool" },
+                {"TH", "Thrown" },
+                {"TAH", "Tack and Harness" },
+                {"OTH", "Other" },
+                {"TG", "Trade Good" },
+                {"V", "Versatile" },
+                {"Vst", "Vestige" },
+                {"SPC", "Vehicle (space)" },
+                {"SHC", "Vehicle (water)" },
+                {"AIR", "Vehicle (air)" },
+                {"VEH", "Vehicle (land)" },
+                {"MNT", "Mount" },
+                {"WD", "Wand" },
+                {"WI", "Wondrous Item" }
+            };
+                if (traitList.Length > 0)
+                {
+                    if (dict.ContainsKey(traitList[0]))
+                    {
+                        traitList[0] = dict[traitList[0]];
+                    }
+                }
+                for (int i = 1; i < traitList.Length; i++)
+                {
+                    if (dict.ContainsKey(traitList[i]))
+                    {
+                        traitList[i] = $", {dict[traitList[i]]}";
+                    }
+                }
+                foreach (string trait in traitList)
+                { allTraits += trait; }
+            }
+            return allTraits;
+        }
+        #endregion
     }
 }

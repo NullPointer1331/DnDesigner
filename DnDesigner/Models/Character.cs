@@ -270,6 +270,49 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
+        /// Sets the score of the specified attribute
+        /// </summary>
+        /// <param name="name">The attribute to set</param>
+        /// <param name="value">The number to set it to</param>
+        public void SetAttribute(string name, int value)
+        {
+            if (name.ToLower().Contains("str"))
+            {
+                Strength = value;
+            }
+            else if (name.ToLower().Contains("dex"))
+            {
+                Dexterity = value;
+            }
+            else if (name.ToLower().Contains("con"))
+            {
+                Constitution = value;
+            }
+            else if (name.ToLower().Contains("int"))
+            {
+                Intelligence = value;
+            }
+            else if (name.ToLower().Contains("wis"))
+            {
+                Wisdom = value;
+            }
+            else if (name.ToLower().Contains("cha"))
+            {
+                Charisma = value;
+            }
+        }
+
+        /// <summary>
+        /// Changes the score of the specified attribute by the specified amount
+        /// </summary>
+        /// <param name="name">The attribute to change</param>
+        /// <param name="value">The amount to change it by</param>
+        public void ModifyAttribute(string name, int value)
+        {
+            SetAttribute(name, value + GetAttribute(name));
+        }
+
+        /// <summary>
         /// Sets the character's proficiencies
         /// </summary>
         /// <param name="defaultProficiencies">A list of all skills and saving throws</param>

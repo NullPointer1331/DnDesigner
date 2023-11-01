@@ -17,572 +17,555 @@
 </h2> 
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CharacterSheet">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CharacterId" />
-            <input type="hidden" asp-for="Name" />
-            <input type="hidden" asp-for="Level" />
-            <div class="card text-center mb-3" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Strength</h5>
-                    <h3>@Model.Strength</h3>
-                    <h5>@((Model.Strength - 10) / 2)</h5>
+<form asp-action="CharacterSheet">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="CharacterId" />
+    <input type="hidden" asp-for="Name" />
+    <input type="hidden" asp-for="Level" />
+    <!--Start of Character Sheet Layout-->
+    <div class="container">
+        <!--Rest / Hit Die / Equipment Button bar-->
+        <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group me-2" role="group">
+                    <input type="checkbox" class="btn-check" role="button" id="saveToggle" data-bs-toggle="collapse"
+                            data-bs-target="#saves" aria-expanded="false" aria-controls="saves" aria-pressed="true">
+                    <label class="btn btn-outline-primary" for="saveToggle">Saves</label>
+                </div>
+                <div class="btn-group me-2" role="group">
+                    <input type="checkbox" class="btn-check" role="button" id="skillToggle" data-bs-toggle="collapse"
+                            data-bs-target="#skills" aria-expanded="false" aria-controls="skills" aria-pressed="true">
+                    <label class="btn btn-outline-primary" for="skillToggle">Skills</label>
+                </div>
+                <div class="btn-group me-2" role="group">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#longRestModal">
+                        Long Rest
+                    </button>
+                </div>
+                <div class="btn-group me-2" role="group">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#shortRestModal">
+                        Short Rest
+                    </button>
+                </div>
+                <div class="btn-group me-2" role="group">
+                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#hitDieModal">
+                        Hit Dice
+                    </button>
                 </div>
             </div>
-            <!--Start of Character Sheet Layout-->
-            <div class="container">
-                <!--Character Header-->
-                <br>
-                <h1>Character Name</h1>
-                <h2>Level, Race, Classes & Subclasses</h2>
-                <br>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group me-2" role="group">
+                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#equipmentModal">
+                        Equipment
+                    </button>
+                </div>
+            </div>
+        </div>
+        <br>
 
-                <!--Rest / Hit Die / Equipment Button bar-->
-                <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-toolbar" role="toolbar">
-                        <div class="btn-group me-2" role="group">
-                            <input type="checkbox" class="btn-check" role="button" id="saveToggle" data-bs-toggle="collapse"
-                                   data-bs-target="#saves" aria-expanded="false" aria-controls="saves" aria-pressed="true">
-                            <label class="btn btn-outline-primary" for="saveToggle">Saves</label>
-                        </div>
-                        <div class="btn-group me-2" role="group">
-                            <input type="checkbox" class="btn-check" role="button" id="skillToggle" data-bs-toggle="collapse"
-                                   data-bs-target="#skills" aria-expanded="false" aria-controls="skills" aria-pressed="true">
-                            <label class="btn btn-outline-primary" for="skillToggle">Skills</label>
-                        </div>
-                        <div class="btn-group me-2" role="group">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#longRestModal">
-                                Long Rest
-                            </button>
-                        </div>
-                        <div class="btn-group me-2" role="group">
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#shortRestModal">
-                                Short Rest
-                            </button>
-                        </div>
-                        <div class="btn-group me-2" role="group">
-                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#hitDieModal">
-                                Hit Dice
-                            </button>
-                        </div>
+        <!--Long Rest Modal-->
+        <div class="modal fade" id="longRestModal" tabindex="-1" aria-labelledby="longRestLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="longRestLabel">Long Rest</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="btn-toolbar" role="toolbar">
-                        <div class="btn-group me-2" role="group">
-                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#equipmentModal">
-                                Equipment
-                            </button>
-                        </div>
+                    <div class="modal-body text-center">
+                        <h5>Place holder for what player gets back</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success">Complete Long Rest</button>
                     </div>
                 </div>
-                <br>
+            </div>
+        </div>
 
-                <!--Long Rest Modal-->
-                <div class="modal fade" id="longRestModal" tabindex="-1" aria-labelledby="longRestLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="longRestLabel">Long Rest</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <h5>Place holder for what player gets back</h5>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-success">Complete Long Rest</button>
-                            </div>
-                        </div>
+        <!--Short Rest Modal-->
+        <div class="modal fade" id="shortRestModal" tabindex="-1" aria-labelledby="shortRestLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="shortRestLabel">Short Rest</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <h5>Place holder for what player gets back</h5>
+                        <h5>Hit Dice Available</h5>
+                        <h5>Spend hit dice</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success">Complete Short Rest</button>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!--Short Rest Modal-->
-                <div class="modal fade" id="shortRestModal" tabindex="-1" aria-labelledby="shortRestLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="shortRestLabel">Short Rest</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <h5>Place holder for what player gets back</h5>
-                                <h5>Hit Dice Available</h5>
-                                <h5>Spend hit dice</h5>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-success">Complete Short Rest</button>
-                            </div>
-                        </div>
+        <!--Hit Die Modal-->
+        <div class="modal fade" id="hitDieModal" tabindex="-1" aria-labelledby="hitDieLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="hitDieLabel">Hit Dice</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-
-                <!--Hit Die Modal-->
-                <div class="modal fade" id="hitDieModal" tabindex="-1" aria-labelledby="hitDieLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="hitDieLabel">Hit Dice</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <h5>Total Hit Die</h5>
-                                <h3>3</h3>
-                                <br>
-                                <h5>Hit Die Available</h5>
-                                <h3>3</h3>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Equipment Modal-->
-                <div class="modal fade" id="equipmentModal" tabindex="-1" aria-labelledby="equipmentLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="equipmentLabel">Equipment</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <h5>Place holder for equipment</h5>
-                                <h5>Hands</h5>
-                                <h5>Armor</h5>
-                                <h5>Attunement</h5>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-success">Save Equipment</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Flex div open-->
-                <div class="row flex-nowrap">
-
-                    <!--Saves & Skills-->
-                    <div class="col-auto">
-                        <div class="collapse collapse-horizontal" id="saves">
-                            <ul class="list-group" style="width: 12rem;">
-                                <li class="list-group-item">Strength</li>
-                                <li class="list-group-item">Dexterity</li>
-                                <li class="list-group-item">Constitution</li>
-                                <li class="list-group-item">Intelligence</li>
-                                <li class="list-group-item">Wisdom</li>
-                                <li class="list-group-item">Charisma</li>
-                            </ul>
-                        </div>
+                    <div class="modal-body text-center">
+                        <h5>Total Hit Die</h5>
+                        <h3>3</h3>
                         <br>
-                        <div class="collapse collapse-horizontal" id="skills">
-                            <ul class="list-group" style="width: 12rem;">
-                                <li class="list-group-item">Acrobatics (Dex)</li>
-                                <li class="list-group-item">Animal Handling (Wis)</li>
-                                <li class="list-group-item">Arcana (Int)</li>
-                                <li class="list-group-item">Athletics (Str)</li>
-                                <li class="list-group-item">Deception (Cha)</li>
-                                <li class="list-group-item">History (Int)</li>
-                                <li class="list-group-item">Insight (Wis)</li>
-                                <li class="list-group-item">Intimidation (Cha)</li>
-                                <li class="list-group-item">Investigation (Int)</li>
-                                <li class="list-group-item">Medicine (Wis)</li>
-                                <li class="list-group-item">Nature (Int)</li>
-                                <li class="list-group-item">Perception (Wis)</li>
-                                <li class="list-group-item">Performance (Cha)</li>
-                                <li class="list-group-item">Persuasion (Cha)</li>
-                                <li class="list-group-item">Religion (Int)</li>
-                                <li class="list-group-item">Sleight of Hand (Dex)</li>
-                                <li class="list-group-item">Stealth (Dex)</li>
-                                <li class="list-group-item">Survival (Wis)</li>
-                            </ul>
-                        </div>
+                        <h5>Hit Die Available</h5>
+                        <h3>3</h3>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!--Equipment Modal-->
+        <div class="modal fade" id="equipmentModal" tabindex="-1" aria-labelledby="equipmentLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="equipmentLabel">Equipment</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <h5>Place holder for equipment</h5>
+                        <h5>Hands</h5>
+                        <h5>Armor</h5>
+                        <h5>Attunement</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success">Save Equipment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Flex div open-->
+        <div class="row flex-nowrap">
+
+            <!--Saves & Skills-->
+            <div class="col-auto">
+                <div class="collapse collapse-horizontal" id="saves">
+                    <ul class="list-group" style="width: 12rem;">
+                        <li class="list-group-item">Strength</li>
+                        <li class="list-group-item">Dexterity</li>
+                        <li class="list-group-item">Constitution</li>
+                        <li class="list-group-item">Intelligence</li>
+                        <li class="list-group-item">Wisdom</li>
+                        <li class="list-group-item">Charisma</li>
+                    </ul>
+                </div>
+                <br>
+                <div class="collapse collapse-horizontal" id="skills">
+                    <ul class="list-group" style="width: 12rem;">
+                        <li class="list-group-item">Acrobatics (Dex)</li>
+                        <li class="list-group-item">Animal Handling (Wis)</li>
+                        <li class="list-group-item">Arcana (Int)</li>
+                        <li class="list-group-item">Athletics (Str)</li>
+                        <li class="list-group-item">Deception (Cha)</li>
+                        <li class="list-group-item">History (Int)</li>
+                        <li class="list-group-item">Insight (Wis)</li>
+                        <li class="list-group-item">Intimidation (Cha)</li>
+                        <li class="list-group-item">Investigation (Int)</li>
+                        <li class="list-group-item">Medicine (Wis)</li>
+                        <li class="list-group-item">Nature (Int)</li>
+                        <li class="list-group-item">Perception (Wis)</li>
+                        <li class="list-group-item">Performance (Cha)</li>
+                        <li class="list-group-item">Persuasion (Cha)</li>
+                        <li class="list-group-item">Religion (Int)</li>
+                        <li class="list-group-item">Sleight of Hand (Dex)</li>
+                        <li class="list-group-item">Stealth (Dex)</li>
+                        <li class="list-group-item">Survival (Wis)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col">
+                <!--Stat Cards-->
+                <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6">
                     <div class="col">
-                        <!--Stat Cards-->
-                        <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6">
-                            <div class="col">
-                                <div class="card text-center mb-3" style="width: 10rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Strength</h5>
-                                        <h3>Score</h3>
-                                        <h5>Mod</h5>
-                                    </div>
+                        <div class="card text-center mb-3" style="width: 10rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Strength</h5>
+                                <h3>Score</h3>
+                                <h5>Mod</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card text-center mb-3" style="width: 10rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Dexterity</h5>
+                                <h3>Score</h3>
+                                <h5>Mod</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card text-center mb-3" style="width: 10rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Constitution</h5>
+                                <h3>Score</h3>
+                                <h5>Mod</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card text-center mb-3" style="width: 10rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Intelligence</h5>
+                                <h3>Score</h3>
+                                <h5>Mod</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card text-center mb-3" style="width: 10rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Wisdom</h5>
+                                <h3>Score</h3>
+                                <h5>Mod</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card text-center mb-3" style="width: 10rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Charisma</h5>
+                                <h3>Score</h3>
+                                <h5>Mod</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Info Cards-->
+                <div class="container">
+                    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
+                        <div class="col">
+                            <div class="card text-center mb-3 h-100" style="width: 14rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Proficiency</h5>
+                                    <h3>3</h3>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Initiative</h5>
+                                    <h3>3</h3>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="card text-center mb-3" style="width: 10rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Dexterity</h5>
-                                        <h3>Score</h3>
-                                        <h5>Mod</h5>
-                                    </div>
+                        </div>
+                        <div class="col">
+                            <div class="card text-center mb-3 h-100" style="width: 14rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Max Health</h5>
+                                    <h3>10</h3>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Armor Class</h5>
+                                    <h3>12</h3>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="card text-center mb-3" style="width: 10rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Constitution</h5>
-                                        <h3>Score</h3>
-                                        <h5>Mod</h5>
+                        </div>
+                        <div class="col">
+                            <div class="card text-center mb-3 h-100" style="width: 14rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Current Health</h5>
+                                    <div class="input-group input-group-lg">
+                                        <input type="number" class="form-control">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col">
-                                <div class="card text-center mb-3" style="width: 10rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Intelligence</h5>
-                                        <h3>Score</h3>
-                                        <h5>Mod</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card text-center mb-3" style="width: 10rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Wisdom</h5>
-                                        <h3>Score</h3>
-                                        <h5>Mod</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card text-center mb-3" style="width: 10rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Charisma</h5>
-                                        <h3>Score</h3>
-                                        <h5>Mod</h5>
+                                <div class="card-body">
+                                    <h5 class="card-title">Temp Health</h5>
+                                    <div class="input-group input-group-lg">
+                                        <input type="number" class="form-control">
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!--Info Cards-->
-                        <div class="container">
-                            <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
-                                <div class="col">
-                                    <div class="card text-center mb-3 h-100" style="width: 14rem;">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Proficiency</h5>
-                                            <h3>3</h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <h5 class="card-title">Initiative</h5>
-                                            <h3>3</h3>
-                                        </div>
+                        <div class="col">
+                            <div class="card text-center mb-3 h-100" style="width: 14rem;">
+                                <div class="card-body">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Walking Speed</h5>
+                                        <h3>30</h3>
                                     </div>
-                                </div>
-                                <div class="col">
-                                    <div class="card text-center mb-3 h-100" style="width: 14rem;">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Max Health</h5>
-                                            <h3>10</h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <h5 class="card-title">Armor Class</h5>
-                                            <h3>12</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="card text-center mb-3 h-100" style="width: 14rem;">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Current Health</h5>
-                                            <div class="input-group input-group-lg">
-                                                <input type="number" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <h5 class="card-title">Temp Health</h5>
-                                            <div class="input-group input-group-lg">
-                                                <input type="number" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="card text-center mb-3 h-100" style="width: 14rem;">
-                                        <div class="card-body">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Walking Speed</h5>
-                                                <h3>30</h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h5 class="card-title">Death Saves</h5>
-                                                <label for="successes">Successes</label>
-                                                <br>
-                                                <input id="successes" type="checkbox">
-                                                <input id="successes" type="checkbox">
-                                                <input id="successes" type="checkbox">
-                                                <br>
-                                                <label for="failures">Failures</label>
-                                                <br>
-                                                <input id="failures" type="checkbox">
-                                                <input id="failures" type="checkbox">
-                                                <input id="failures" type="checkbox">
-                                            </div>
-                                        </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Death Saves</h5>
+                                        <label for="successes">Successes</label>
+                                        <br>
+                                        <input id="successes" type="checkbox">
+                                        <input id="successes" type="checkbox">
+                                        <input id="successes" type="checkbox">
+                                        <br>
+                                        <label for="failures">Failures</label>
+                                        <br>
+                                        <input id="failures" type="checkbox">
+                                        <input id="failures" type="checkbox">
+                                        <input id="failures" type="checkbox">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <br>
+                    </div>
+                </div>
+                <br>
 
-                        <!--Character Accordion-->
-                        <div class="accordion" id="CharacterSheet">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#panelsStayOpen-BasicActions" aria-expanded="true"
-                                            aria-controls="panelsStayOpen-BasicActions">
-                                        Actions
-                                    </button>
-                                </h2>
-                                <div id="panelsStayOpen-BasicActions" class="accordion-collapse collapse show">
-                                    <div class="accordion-body">
-                                        <strong>Placeholder for weapon attacks?</strong>
-                                    </div>
-                                </div>
+                <!--Character Accordion-->
+                <div class="accordion" id="CharacterSheet">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-BasicActions" aria-expanded="true"
+                                    aria-controls="panelsStayOpen-BasicActions">
+                                Actions
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-BasicActions" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                <strong>Placeholder for weapon attacks?</strong>
                             </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#panelsStayOpen-Spells" aria-expanded="false" aria-controls="panelsStayOpen-Spells">
-                                        Spells? If the character has none don't make this one?
-                                    </button>
-                                </h2>
-                                <div id="panelsStayOpen-Spells" class="accordion-collapse collapse">
-                                    <div class="accordion-body">
-                                        <strong>Maybe another accordion here for all spell levels?</strong>
-                                        <div class="accordion" id="accordionExample">
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header">
-                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                            data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                                        Cantrips
-                                                    </button>
-                                                </h2>
-                                                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                                    <div class="accordion-body">
-                                                        <div class="row row-cols-md-1 row-cols-lg-2 row-cols-xxl-3">
-                                                            <div class="col">
-                                                                <div class="card text-center" style="width: 20rem;">
-                                                                    <div class="card-body">
-                                                                        <h5 class="card-title">Spell Name</h5>
-                                                                        <h6 class="card-subtitle mb-2 text-body-secondary">School</h6>
-                                                                        <h6 class="mb-2">Casting Time: Action</h6>
-                                                                        <h6 class="mb-2">Range: Touch</h6>
-                                                                        <h6 class="mb-2">Components: V, S, M</h6>
-                                                                        <h6 class="mb-2">Duration: Instant</h6>
-                                                                        <p>Description</p>
-                                                                    </div>
-                                                                </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-Spells" aria-expanded="false" aria-controls="panelsStayOpen-Spells">
+                                Spells? If the character has none don't make this one?
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-Spells" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <strong>Maybe another accordion here for all spell levels?</strong>
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                Cantrips
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row row-cols-md-1 row-cols-lg-2 row-cols-xxl-3">
+                                                    <div class="col">
+                                                        <div class="card text-center" style="width: 20rem;">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Spell Name</h5>
+                                                                <h6 class="card-subtitle mb-2 text-body-secondary">School</h6>
+                                                                <h6 class="mb-2">Casting Time: Action</h6>
+                                                                <h6 class="mb-2">Range: Touch</h6>
+                                                                <h6 class="mb-2">Components: V, S, M</h6>
+                                                                <h6 class="mb-2">Duration: Instant</h6>
+                                                                <p>Description</p>
                                                             </div>
-                                                            <div class="col">
-                                                                <div class="card text-center" style="width: 20rem;">
-                                                                    <div class="card-body">
-                                                                        <h5 class="card-title">Spell Name</h5>
-                                                                        <h6 class="card-subtitle mb-2 text-body-secondary">School</h6>
-                                                                        <h6 class="mb-2">Casting Time: Action</h6>
-                                                                        <h6 class="mb-2">Range: Touch</h6>
-                                                                        <h6 class="mb-2">Components: V, S, M</h6>
-                                                                        <h6 class="mb-2">Duration: Instant</h6>
-                                                                        <p>Description</p>
-                                                                    </div>
-                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="card text-center" style="width: 20rem;">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Spell Name</h5>
+                                                                <h6 class="card-subtitle mb-2 text-body-secondary">School</h6>
+                                                                <h6 class="mb-2">Casting Time: Action</h6>
+                                                                <h6 class="mb-2">Range: Touch</h6>
+                                                                <h6 class="mb-2">Components: V, S, M</h6>
+                                                                <h6 class="mb-2">Duration: Instant</h6>
+                                                                <p>Description</p>
                                                             </div>
-                                                            <div class="col">
-                                                                <div class="card text-center" style="width: 20rem;">
-                                                                    <div class="card-body">
-                                                                        <h5 class="card-title">Spell Name</h5>
-                                                                        <h6 class="card-subtitle mb-2 text-body-secondary">School</h6>
-                                                                        <h6 class="mb-2">Casting Time: Action</h6>
-                                                                        <h6 class="mb-2">Range: Touch</h6>
-                                                                        <h6 class="mb-2">Components: V, S, M</h6>
-                                                                        <h6 class="mb-2">Duration: Instant</h6>
-                                                                        <p>Description</p>
-                                                                    </div>
-                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="card text-center" style="width: 20rem;">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Spell Name</h5>
+                                                                <h6 class="card-subtitle mb-2 text-body-secondary">School</h6>
+                                                                <h6 class="mb-2">Casting Time: Action</h6>
+                                                                <h6 class="mb-2">Range: Touch</h6>
+                                                                <h6 class="mb-2">Components: V, S, M</h6>
+                                                                <h6 class="mb-2">Duration: Instant</h6>
+                                                                <p>Description</p>
                                                             </div>
-                                                            <div class="col">
-                                                                <div class="card text-center" style="width: 20rem;">
-                                                                    <div class="card-body">
-                                                                        <h5 class="card-title">Spell Name</h5>
-                                                                        <h6 class="card-subtitle mb-2 text-body-secondary">School</h6>
-                                                                        <h6 class="mb-2">Casting Time: Action</h6>
-                                                                        <h6 class="mb-2">Range: Touch</h6>
-                                                                        <h6 class="mb-2">Components: V, S, M</h6>
-                                                                        <h6 class="mb-2">Duration: Instant</h6>
-                                                                        <p>Description</p>
-                                                                    </div>
-                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="card text-center" style="width: 20rem;">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Spell Name</h5>
+                                                                <h6 class="card-subtitle mb-2 text-body-secondary">School</h6>
+                                                                <h6 class="mb-2">Casting Time: Action</h6>
+                                                                <h6 class="mb-2">Range: Touch</h6>
+                                                                <h6 class="mb-2">Components: V, S, M</h6>
+                                                                <h6 class="mb-2">Duration: Instant</h6>
+                                                                <p>Description</p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header">
-                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                        Spell Slots Used
-                                                    </button>
-                                                </h2>
-                                                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                                    <div class="accordion-body">
-                                                        <strong>Loop to populate checkboxes for each spell slot the player has</strong>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                Spell Slots Used
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <strong>Loop to populate checkboxes for each spell slot the player has</strong>
                                             </div>
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header">
-                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                        1st Level Spells
-                                                    </button>
-                                                </h2>
-                                                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                                    <div class="accordion-body">
-                                                    </div>
-                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                1st Level Spells
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#panelsStayOpen-Features" aria-expanded="false" aria-controls="panelsStayOpen-Features">
-                                        Features
-                                    </button>
-                                </h2>
-                                <div id="panelsStayOpen-Features" class="accordion-collapse collapse">
-                                    <div class="accordion-body">
-                                        <strong>Placeholder for features</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#panelsStayOpen-Inventory" aria-expanded="false"
-                                            aria-controls="panelsStayOpen-Inventory">
-                                        Inventory
-                                    </button>
-                                </h2>
-                                <div id="panelsStayOpen-Inventory" class="accordion-collapse collapse">
-                                    <div class="accordion-body">
-                                        <strong>Placeholder</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#panelsStayOpen-Languages" aria-expanded="false"
-                                            aria-controls="panelsStayOpen-Languages">
-                                        Languages
-                                    </button>
-                                </h2>
-                                <div id="panelsStayOpen-Languages" class="accordion-collapse collapse">
-                                    <div class="accordion-body">
-                                        <strong>Placeholder for languages</strong>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-Features" aria-expanded="false" aria-controls="panelsStayOpen-Features">
+                                Features
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-Features" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <strong>Placeholder for features</strong>
                             </div>
                         </div>
-
-                        <!--Flex div close-->
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-Inventory" aria-expanded="false"
+                                    aria-controls="panelsStayOpen-Inventory">
+                                Inventory
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-Inventory" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <strong>Placeholder</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-Languages" aria-expanded="false"
+                                    aria-controls="panelsStayOpen-Languages">
+                                Languages
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-Languages" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <strong>Placeholder for languages</strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!--Flex div close-->
             </div>
-            <!--End of Character Sheet Layout-->
-            <div class="form-group">
-                <label asp-for="ProficiencyBonus" class="control-label"></label>
-                <input asp-for="ProficiencyBonus" class="form-control" disabled/>
-                <span asp-validation-for="ProficiencyBonus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaxHealth" class="control-label"></label>
-                <input asp-for="MaxHealth" class="form-control" disabled/>
-                <span asp-validation-for="MaxHealth" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CurrentHealth" class="control-label"></label>
-                <input asp-for="CurrentHealth" class="form-control" />
-                <span asp-validation-for="CurrentHealth" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TempHealth" class="control-label"></label>
-                <input asp-for="TempHealth" class="form-control" />
-                <span asp-validation-for="TempHealth" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AvailableHitDice" class="control-label"></label>
-                <input asp-for="AvailableHitDice" class="form-control" />
-                <span asp-validation-for="AvailableHitDice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="WalkingSpeed" class="control-label"></label>
-                <input asp-for="WalkingSpeed" class="form-control" />
-                <span asp-validation-for="WalkingSpeed" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Strength" class="control-label"></label>
-                <input asp-for="Strength" class="form-control" />
-                <span asp-validation-for="Strength" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Dexterity" class="control-label"></label>
-                <input asp-for="Dexterity" class="form-control" />
-                <span asp-validation-for="Dexterity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Constitution" class="control-label"></label>
-                <input asp-for="Constitution" class="form-control" />
-                <span asp-validation-for="Constitution" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Intelligence" class="control-label"></label>
-                <input asp-for="Intelligence" class="form-control" />
-                <span asp-validation-for="Intelligence" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Wisdom" class="control-label"></label>
-                <input asp-for="Wisdom" class="form-control" />
-                <span asp-validation-for="Wisdom" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Charisma" class="control-label"></label>
-                <input asp-for="Charisma" class="form-control" />
-                <span asp-validation-for="Charisma" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Resistances" class="control-label"></label>
-                <input asp-for="Resistances" class="form-control" />
-                <span asp-validation-for="Resistances" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Immunities" class="control-label"></label>
-                <input asp-for="Immunities" class="form-control" />
-                <span asp-validation-for="Immunities" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vulnerabilities" class="control-label"></label>
-                <input asp-for="Vulnerabilities" class="form-control" />
-                <span asp-validation-for="Vulnerabilities" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save and exit" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+    <!--End of Character Sheet Layout-->
+    <div class="form-group">
+        <label asp-for="ProficiencyBonus" class="control-label"></label>
+        <input asp-for="ProficiencyBonus" class="form-control" disabled/>
+        <span asp-validation-for="ProficiencyBonus" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MaxHealth" class="control-label"></label>
+        <input asp-for="MaxHealth" class="form-control" disabled/>
+        <span asp-validation-for="MaxHealth" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CurrentHealth" class="control-label"></label>
+        <input asp-for="CurrentHealth" class="form-control" />
+        <span asp-validation-for="CurrentHealth" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TempHealth" class="control-label"></label>
+        <input asp-for="TempHealth" class="form-control" />
+        <span asp-validation-for="TempHealth" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AvailableHitDice" class="control-label"></label>
+        <input asp-for="AvailableHitDice" class="form-control" />
+        <span asp-validation-for="AvailableHitDice" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="WalkingSpeed" class="control-label"></label>
+        <input asp-for="WalkingSpeed" class="form-control" />
+        <span asp-validation-for="WalkingSpeed" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Strength" class="control-label"></label>
+        <input asp-for="Strength" class="form-control" />
+        <span asp-validation-for="Strength" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Dexterity" class="control-label"></label>
+        <input asp-for="Dexterity" class="form-control" />
+        <span asp-validation-for="Dexterity" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Constitution" class="control-label"></label>
+        <input asp-for="Constitution" class="form-control" />
+        <span asp-validation-for="Constitution" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Intelligence" class="control-label"></label>
+        <input asp-for="Intelligence" class="form-control" />
+        <span asp-validation-for="Intelligence" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Wisdom" class="control-label"></label>
+        <input asp-for="Wisdom" class="form-control" />
+        <span asp-validation-for="Wisdom" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Charisma" class="control-label"></label>
+        <input asp-for="Charisma" class="form-control" />
+        <span asp-validation-for="Charisma" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Resistances" class="control-label"></label>
+        <input asp-for="Resistances" class="form-control" />
+        <span asp-validation-for="Resistances" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Immunities" class="control-label"></label>
+        <input asp-for="Immunities" class="form-control" />
+        <span asp-validation-for="Immunities" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Vulnerabilities" class="control-label"></label>
+        <input asp-for="Vulnerabilities" class="form-control" />
+        <span asp-validation-for="Vulnerabilities" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save and exit" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
     <a asp-action="Index">Exit without saving</a>

@@ -1,14 +1,8 @@
-﻿@model DnDesigner.Models.Character
+﻿@model Character
 
 @{
     ViewData["Title"] = Model.Name + " Character Sheet";
-    int strMod = (Model.Strength - 10) / 2;
-    int dexMod = (Model.Dexterity - 10) / 2;
-    int conMod = (Model.Constitution - 10) / 2;
-    int intMod = (Model.Intelligence - 10) / 2;
-    int wisMod = (Model.Wisdom - 10) / 2;
-    int chaMod = (Model.Charisma - 10) / 2;
-    int armorClass = 10 + dexMod;
+    int armorClass = 10;
 }
 
 <h1>@Model.Name</h1>
@@ -159,35 +153,18 @@
             <div class="col-auto">
                 <div class="collapse collapse-horizontal" id="saves">
                     <ul class="list-group" style="width: 12rem;">
-                        <li class="list-group-item">Strength</li>
-                        <li class="list-group-item">Dexterity</li>
-                        <li class="list-group-item">Constitution</li>
-                        <li class="list-group-item">Intelligence</li>
-                        <li class="list-group-item">Wisdom</li>
-                        <li class="list-group-item">Charisma</li>
+                        @foreach(CharacterProficiency save in Model.GetSaves()) {
+                            <li class="list-group-item">@save.GetRollBonus() @save.Proficiency.Name</li>
+                        }
                     </ul>
                 </div>
                 <br>
                 <div class="collapse collapse-horizontal" id="skills">
                     <ul class="list-group" style="width: 12rem;">
-                        <li class="list-group-item">Acrobatics (Dex)</li>
-                        <li class="list-group-item">Animal Handling (Wis)</li>
-                        <li class="list-group-item">Arcana (Int)</li>
-                        <li class="list-group-item">Athletics (Str)</li>
-                        <li class="list-group-item">Deception (Cha)</li>
-                        <li class="list-group-item">History (Int)</li>
-                        <li class="list-group-item">Insight (Wis)</li>
-                        <li class="list-group-item">Intimidation (Cha)</li>
-                        <li class="list-group-item">Investigation (Int)</li>
-                        <li class="list-group-item">Medicine (Wis)</li>
-                        <li class="list-group-item">Nature (Int)</li>
-                        <li class="list-group-item">Perception (Wis)</li>
-                        <li class="list-group-item">Performance (Cha)</li>
-                        <li class="list-group-item">Persuasion (Cha)</li>
-                        <li class="list-group-item">Religion (Int)</li>
-                        <li class="list-group-item">Sleight of Hand (Dex)</li>
-                        <li class="list-group-item">Stealth (Dex)</li>
-                        <li class="list-group-item">Survival (Wis)</li>
+                        @foreach(CharacterProficiency skill in Model.GetSkills())
+                        {
+                            <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name</li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -200,7 +177,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Strength</h5>
                                 <h3>@Model.Strength</h3>
-                                <h5>@strMod</h5>
+                                <h5>@Model.GetModifier("Strength")</h5>
                             </div>
                         </div>
                     </div>
@@ -209,7 +186,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Dexterity</h5>
                                 <h3>@Model.Dexterity</h3>
-                                <h5>@dexMod</h5>
+                                <h5>@Model.GetModifier("Dexterity")</h5>
                             </div>
                         </div>
                     </div>
@@ -218,7 +195,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Constitution</h5>
                                 <h3>@Model.Constitution</h3>
-                                <h5>@conMod</h5>
+                                <h5>@Model.GetModifier("Constitution")</h5>
                             </div>
                         </div>
                     </div>
@@ -227,7 +204,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Intelligence</h5>
                                 <h3>@Model.Intelligence</h3>
-                                <h5>@intMod</h5>
+                                <h5>@Model.GetModifier("Intelligence")</h5>
                             </div>
                         </div>
                     </div>
@@ -236,7 +213,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Wisdom</h5>
                                 <h3>@Model.Wisdom</h3>
-                                <h5>@wisMod</h5>
+                                <h5>@Model.GetModifier("Wisdom")</h5>
                             </div>
                         </div>
                     </div>
@@ -245,7 +222,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Charisma</h5>
                                 <h3>@Model.Charisma</h3>
-                                <h5>@chaMod</h5>
+                                <h5>@Model.GetModifier("Charisma")</h5>
                             </div>
                         </div>
                     </div>
@@ -262,7 +239,7 @@
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">Initiative</h5>
-                                    <h3>@dexMod</h3>
+                                    <h3>@Model.GetModifier("Dexterity")</h3>
                                 </div>
                             </div>
                         </div>
@@ -510,7 +487,7 @@
     <input type="hidden" asp-for="Wisdom" />
     <input type="hidden" asp-for="Charisma" />
     <!--Hidden Storage End-->
-
+    
     <div class="form-group">
         <label asp-for="Resistances" class="control-label"></label>
         <input asp-for="Resistances" class="form-control" />

@@ -113,7 +113,11 @@ namespace DnDesigner.Controllers
                 return NotFound();
             }
 
-            var character = await _context.Characters.FindAsync(id);
+            Character character = await _context.Characters
+            .Where(c => c.CharacterId == id)
+            .Include(c => c.Proficiencies)
+            .ThenInclude(cp => cp.Proficiency)
+            .FirstOrDefaultAsync();
             if (character == null)
             {
                 return NotFound();
@@ -126,7 +130,7 @@ namespace DnDesigner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CharacterSheet(int id, [Bind("CharacterId,Name,Level,ProficiencyBonus,MaxHealth,CurrentHealth,TempHealth,AvailableHitDice,HitDieType,WalkingSpeed,Strength,Dexterity,Constitution,Intelligence,Wisdom,Charisma,Resistances,Immunities,Vulnerabilities")] Character character)
+        public async Task<IActionResult> CharacterSheet(int id, Character character)
         {
             if (id != character.CharacterId)
             {

@@ -46,13 +46,13 @@ namespace DnDesigner.Controllers
         }
 
         // GET: Characters/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             CreateCharacterViewModel characterViewModel = new()
             {
-                AvailableClasses = _context.Classes.ToList(),
-                AvailableBackgrounds = _context.Backgrounds.ToList(),
-                AvailableRaces = _context.Races.ToList(),
+                AvailableClasses = await _context.Classes.ToListAsync(),
+                AvailableBackgrounds = await _context.Backgrounds.ToListAsync(),
+                AvailableRaces = await _context.Races.ToListAsync()
             };
             return View(characterViewModel);
         }
@@ -99,6 +99,9 @@ namespace DnDesigner.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            character.AvailableClasses = await _context.Classes.ToListAsync();
+            character.AvailableBackgrounds = await _context.Backgrounds.ToListAsync();
+            character.AvailableRaces = await _context.Races.ToListAsync();
             return View(character);
         }
 

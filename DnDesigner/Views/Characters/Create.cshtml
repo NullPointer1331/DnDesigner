@@ -37,6 +37,7 @@
                     </h2>
                     <div id="collapseClasses" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
+                            <input asp-for="AvailableClasses" type="hidden" value="@Model.AvailableClasses" />
                             <select asp-for="ClassId">
                                 @foreach(Class characterClass in Model.AvailableClasses)
 								{
@@ -59,6 +60,7 @@
                     </h2>
                     <div id="collapseBackground" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
+                            <input asp-for="AvailableBackgrounds" type="hidden" value="@Model.AvailableBackgrounds" />
                             <select asp-for="BackgroundId">
                                 @foreach(Background characterBackground in Model.AvailableBackgrounds)
                                 {
@@ -103,6 +105,7 @@
                     </h2>
                     <div id="collapseRaces" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
+                            <input asp-for="AvailableRaces" type="hidden" value="@Model.AvailableRaces" />
                             <select asp-for="RaceId" >
                                 @foreach(Race race in Model.AvailableRaces)
                                 {

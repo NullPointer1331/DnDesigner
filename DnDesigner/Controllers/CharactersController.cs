@@ -114,10 +114,17 @@ namespace DnDesigner.Controllers
             }
 
             Character character = await _context.Characters
-            .Where(c => c.CharacterId == id)
-            .Include(c => c.Proficiencies)
-            .ThenInclude(cp => cp.Proficiency)
-            .FirstOrDefaultAsync();
+                .Where(c => c.CharacterId == id)
+                .Include(c => c.Race)
+                .Include(c => c.Background)
+                .Include(c => c.Classes)
+                .ThenInclude(cc => cc.Class)
+                .Include(c => c.Proficiencies)
+                .ThenInclude(cp => cp.Proficiency)
+                .Include(c => c.Inventory)
+                .FirstOrDefaultAsync();
+
+            
             if (character == null)
             {
                 return NotFound();
@@ -130,13 +137,12 @@ namespace DnDesigner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CharacterSheet(int id, Character character)
+        public async Task<IActionResult> CharacterSheet(int id, [Bind("CharacterId,Name,Level,ProficiencyBonus,MaxHealth,CurrentHealth,TempHealth,AvailableHitDice,HitDieType,WalkingSpeed,Strength,Dexterity,Constitution,Intelligence,Wisdom,Charisma,Resistances,Immunities,Vulnerabilities")] Character character)
         {
             if (id != character.CharacterId)
             {
                 return NotFound();
-            }
-
+            }                        
             if (ModelState.IsValid)
             {
                 try

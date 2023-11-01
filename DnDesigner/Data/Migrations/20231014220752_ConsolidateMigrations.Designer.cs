@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Data.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20231010001902_RemoveBackgroundItems")]
-    partial class RemoveBackgroundItems
+    [Migration("20231014220752_ConsolidateMigrations")]
+    partial class ConsolidateMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,15 +33,7 @@ namespace DnDesigner.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BackgroundId"));
 
-                    b.Property<string>("Bonds")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Flaws")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ideals")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -49,17 +41,12 @@ namespace DnDesigner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OtherInformation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PersonalityTraits")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Sourcebook")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StarterGold")
+                        .HasColumnType("int");
 
                     b.HasKey("BackgroundId");
 
@@ -166,6 +153,9 @@ namespace DnDesigner.Data.Migrations
                     b.Property<int>("ProficiencyBonus")
                         .HasColumnType("int");
 
+                    b.Property<int>("RaceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Resistances")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -189,6 +179,8 @@ namespace DnDesigner.Data.Migrations
                     b.HasKey("CharacterId");
 
                     b.HasIndex("BackgroundId");
+
+                    b.HasIndex("RaceId");
 
                     b.ToTable("Characters");
                 });
@@ -494,6 +486,10 @@ namespace DnDesigner.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RaceId"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -582,9 +578,16 @@ namespace DnDesigner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Duration")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRitual")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -594,11 +597,10 @@ namespace DnDesigner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Sourcebook")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("RequiresConcentration")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("SpellDescription")
+                    b.Property<string>("Sourcebook")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -952,7 +954,15 @@ namespace DnDesigner.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DnDesigner.Models.Race", "Race")
+                        .WithMany()
+                        .HasForeignKey("RaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Background");
+
+                    b.Navigation("Race");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.CharacterClass", b =>

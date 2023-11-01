@@ -119,7 +119,7 @@ namespace DnDesigner.Models
         public List<CharacterProficiency> Proficiencies { get; set; } = null!;
 
         /// <summary>
-        /// A list of the character's classes
+        /// A list of the character's classes and subclasses
         /// </summary>
         public List<CharacterClass> Classes { get; set; } = null!;
 

@@ -5,7 +5,7 @@
 namespace DnDesigner.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class DnDesignerClasses : Migration
+    public partial class ConsolidateMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,15 +18,32 @@ namespace DnDesigner.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Sourcebook = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PersonalityTraits = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ideals = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Bonds = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Flaws = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OtherInformation = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StarterGold = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Backgrounds", x => x.BackgroundId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    ItemId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Sourcebook = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    Weight = table.Column<double>(type: "float", nullable: false),
+                    Equipable = table.Column<int>(type: "int", nullable: false),
+                    Attuneable = table.Column<bool>(type: "bit", nullable: false),
+                    Traits = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.ItemId);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,6 +69,7 @@ namespace DnDesigner.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Sourcebook = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StatBonuses = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Speed = table.Column<int>(type: "int", nullable: false)
@@ -93,7 +111,9 @@ namespace DnDesigner.Data.Migrations
                     Range = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Components = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Duration = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SpellDescription = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsRitual = table.Column<bool>(type: "bit", nullable: false),
+                    RequiresConcentration = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,6 +144,30 @@ namespace DnDesigner.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BackgroundProficiencies",
+                columns: table => new
+                {
+                    BackgroundId = table.Column<int>(type: "int", nullable: false),
+                    ProficiencyId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BackgroundProficiencies", x => new { x.BackgroundId, x.ProficiencyId });
+                    table.ForeignKey(
+                        name: "FK_BackgroundProficiencies_Backgrounds_BackgroundId",
+                        column: x => x.BackgroundId,
+                        principalTable: "Backgrounds",
+                        principalColumn: "BackgroundId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BackgroundProficiencies_Proficiencies_ProficiencyId",
+                        column: x => x.ProficiencyId,
+                        principalTable: "Proficiencies",
+                        principalColumn: "ProficiencyId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Characters",
                 columns: table => new
                 {
@@ -147,6 +191,7 @@ namespace DnDesigner.Data.Migrations
                     Resistances = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Immunities = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Vulnerabilities = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RaceId = table.Column<int>(type: "int", nullable: false),
                     BackgroundId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -158,55 +203,11 @@ namespace DnDesigner.Data.Migrations
                         principalTable: "Backgrounds",
                         principalColumn: "BackgroundId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Items",
-                columns: table => new
-                {
-                    ItemId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Sourcebook = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    Weight = table.Column<double>(type: "float", nullable: false),
-                    Equipable = table.Column<int>(type: "int", nullable: false),
-                    Attuneable = table.Column<bool>(type: "bit", nullable: false),
-                    Traits = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BackgroundId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items", x => x.ItemId);
                     table.ForeignKey(
-                        name: "FK_Items_Backgrounds_BackgroundId",
-                        column: x => x.BackgroundId,
-                        principalTable: "Backgrounds",
-                        principalColumn: "BackgroundId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BackgroundProficiencies",
-                columns: table => new
-                {
-                    BackgroundId = table.Column<int>(type: "int", nullable: false),
-                    ProficiencyId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BackgroundProficiencies", x => new { x.BackgroundId, x.ProficiencyId });
-                    table.ForeignKey(
-                        name: "FK_BackgroundProficiencies_Backgrounds_BackgroundId",
-                        column: x => x.BackgroundId,
-                        principalTable: "Backgrounds",
-                        principalColumn: "BackgroundId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BackgroundProficiencies_Proficiencies_ProficiencyId",
-                        column: x => x.ProficiencyId,
-                        principalTable: "Proficiencies",
-                        principalColumn: "ProficiencyId",
+                        name: "FK_Characters_Races_RaceId",
+                        column: x => x.RaceId,
+                        principalTable: "Races",
+                        principalColumn: "RaceId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -586,6 +587,11 @@ namespace DnDesigner.Data.Migrations
                 column: "BackgroundId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Characters_RaceId",
+                table: "Characters",
+                column: "RaceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CharacterSpellcasting_SpellcastingId",
                 table: "CharacterSpellcasting",
                 column: "SpellcastingId");
@@ -615,11 +621,6 @@ namespace DnDesigner.Data.Migrations
                 name: "IX_InventoryItems_InventoryId",
                 table: "InventoryItems",
                 column: "InventoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_BackgroundId",
-                table: "Items",
-                column: "BackgroundId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_KnownSpells_CharacterId_SpellcastingId",
@@ -717,9 +718,6 @@ namespace DnDesigner.Data.Migrations
                 name: "Proficiencies");
 
             migrationBuilder.DropTable(
-                name: "Races");
-
-            migrationBuilder.DropTable(
                 name: "Subclasses");
 
             migrationBuilder.DropTable(
@@ -730,6 +728,9 @@ namespace DnDesigner.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Backgrounds");
+
+            migrationBuilder.DropTable(
+                name: "Races");
 
             migrationBuilder.DropTable(
                 name: "Spellcasting");

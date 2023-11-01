@@ -87,7 +87,7 @@ namespace DnDesigner.Models
         public ClassFeature(Class @class, string name, string description, int level) : base(name, description, level)
         {
             Class = @class;
-            Source = $"{Class.Sourcebook}, Subclass, {Class.Name}";
+            Source = $"{Class.Sourcebook}, Class, {Class.Name}";
         }
         private ClassFeature() : base("", "", 0) { }
     }

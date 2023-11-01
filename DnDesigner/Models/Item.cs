@@ -19,17 +19,17 @@ namespace DnDesigner.Models
         /// <summary>
         /// The name of the item
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         /// <summary>
         /// The source book the item is from
         /// </summary>
-        public string Sourcebook { get; set; }
+        public string Sourcebook { get; set; } = null!;
 
         /// <summary>
         /// The items description
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
 
         /// <summary>
         /// The items cost in gold
@@ -44,7 +44,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// Can the item be equipped, if so, where
         /// Range guide: 0 = not equipable, 1 = armor, 2 = main hand only
-        /// 3 = off hand only, 4 = either hand, 5 = other
+        /// 3 = off hand only, 4 = either hand, 5 = both hands, 6 = other
         /// </summary>
         [Range(0, 5)]
         public int Equipable { get; set; }
@@ -57,30 +57,9 @@ namespace DnDesigner.Models
         /// <summary>
         /// The items traits
         /// </summary>
-        public string Traits { get; set; }
+        public string Traits { get; set; } = null!;
 
 
-        /// <summary>
-        /// Full constructor, sets all properties
-        /// </summary>
-        /// <param name="name">The name of the item</param>
-        /// <param name="description">The items description</param>
-        /// <param name="price">The items cost in gold</param>
-        /// <param name="weight">The items weight in pounds</param>
-        /// <param name="equipable">Can the item be equipped, if so, where</param>
-        /// <param name="attuneable">Can the item be attuned to</param>
-        /// <param name="traits">The items traits</param>
-        public Item(string name, string description, double price, double weight,
-                    int equipable, bool attuneable, string traits)
-        {
-            Name = name;
-            Description = description;
-            Price = price;
-            Weight = weight;
-            Equipable = equipable;
-            Attuneable = attuneable;
-            Traits = traits;
-        }
     }
 
     /// <summary>

@@ -23,6 +23,39 @@
         public void Remove(Character character);
     }
 
+    public class Choice : ICharacterModifier
+    {
+        public bool IsApplied { get; set; }
+        public int ChosenIndex { get; set; }
+        public IEnumerable<ICharacterModifier> Options { get; private set; }
+
+        public Choice(IEnumerable<ICharacterModifier> options)
+        {
+            Options = options;
+        }
+
+        public void Apply(Character character)
+        {
+            if(!IsApplied)
+            {
+                Options.ElementAt(ChosenIndex).Apply(character);
+                IsApplied = true;
+            }
+        }
+
+        public void Remove(Character character)
+        {
+            if (IsApplied)
+            {
+                Options.ElementAt(ChosenIndex).Remove(character);
+                IsApplied = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// When applied, this modifier will modify a character's attribute
+    /// </summary>
     public class ModifyAttribute : ICharacterModifier
     {
         public bool IsApplied { get; set; }
@@ -49,7 +82,7 @@
             if (IsApplied)
             {
                 character.ModifyAttribute(Attribute, -Value);
-                IsApplied = true;
+                IsApplied = false;
             }
         }
     }

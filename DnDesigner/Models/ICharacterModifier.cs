@@ -23,31 +23,57 @@
         public void Remove(Character character);
     }
 
-    public class Choice : ICharacterModifier
+    /// <summary>
+    /// A choice between multiple modifiers
+    /// </summary>
+    public class CharacterModifierChoice : ICharacterModifier
     {
         public bool IsApplied { get; set; }
         public int ChosenIndex { get; set; }
-        public IEnumerable<ICharacterModifier> Options { get; private set; }
+        public List<ICharacterModifier> Options { get; private set; }
 
-        public Choice(IEnumerable<ICharacterModifier> options)
+        public CharacterModifierChoice(List<ICharacterModifier> options)
         {
             Options = options;
         }
 
+        /// <summary>
+        /// Creates a new CharacterModifierChoice from a preset
+        /// </summary>
+        /// <param name="preset">The choice preset, 
+        /// can be "ASI", (TODO, implement more presets)</param>
+        public CharacterModifierChoice(string preset)
+        {
+            Options = new List<ICharacterModifier>();
+            switch (preset)
+            {
+                case "ASI":
+                    Options.Add(new ModifyAttribute("str", 1));
+                    Options.Add(new ModifyAttribute("dex", 1));
+                    Options.Add(new ModifyAttribute("con", 1));
+                    Options.Add(new ModifyAttribute("int", 1));
+                    Options.Add(new ModifyAttribute("wis", 1));
+                    Options.Add(new ModifyAttribute("cha", 1));
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void Apply(Character character)
         {
-            if(!IsApplied)
+            if(!IsApplied && Options.ElementAt(ChosenIndex) != null)
             {
-                Options.ElementAt(ChosenIndex).Apply(character);
+                Options[ChosenIndex].Apply(character);
                 IsApplied = true;
             }
         }
 
         public void Remove(Character character)
         {
-            if (IsApplied)
+            if (IsApplied && Options.ElementAt(ChosenIndex) != null)
             {
-                Options.ElementAt(ChosenIndex).Remove(character);
+                Options[ChosenIndex].Remove(character);
                 IsApplied = false;
             }
         }
@@ -82,6 +108,46 @@
             if (IsApplied)
             {
                 character.ModifyAttribute(Attribute, -Value);
+                IsApplied = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// When applied, this modifier will grant a character specific proficiencies
+    /// </summary>
+    public class GrantProficiencies : ICharacterModifier
+    {
+        public bool IsApplied { get; set; }
+        private List<Proficiency> Proficiencies { get; set; }
+        private bool Expertise { get; set; }
+
+        public GrantProficiencies(List<Proficiency> proficiencies, bool expertise)
+        {
+            Proficiencies = proficiencies;
+            Expertise = expertise;
+        }
+
+        public void Apply(Character character)
+        {
+            if (!IsApplied)
+            {
+                foreach (Proficiency proficiency in Proficiencies)
+                {
+                    character.GrantProficiency(proficiency, Expertise);
+                }
+                IsApplied = true;
+            }
+        }
+
+        public void Remove(Character character)
+        {
+            if (IsApplied)
+            {
+                foreach (Proficiency proficiency in Proficiencies)
+                {
+                    character.RemoveProficiency(character.GetProficiency(proficiency.Name));
+                }
                 IsApplied = false;
             }
         }

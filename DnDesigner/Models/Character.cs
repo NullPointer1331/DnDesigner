@@ -344,19 +344,53 @@ namespace DnDesigner.Models
         /// <param name="proficiency">The proficiency to grant</param>
         public void GrantProficiency(Proficiency proficiency)
         {
+            GrantProficiency(proficiency, false);
+        }
+
+        /// <summary>
+        /// Grants a proficiency to the character
+        /// </summary>
+        /// <param name="proficiency">The proficiency to grant</param>
+        /// <param name="expertise">Whether the character should get normal proficiency or expertise</param>
+        public void GrantProficiency(Proficiency proficiency, bool expertise)
+        {
             CharacterProficiency? existingProficiency = GetProficiency(proficiency.Name);
             if (existingProficiency == null)
             {
-                Proficiencies.Add(new CharacterProficiency(this, proficiency, 1, 0));
+                if(expertise)
+                {
+                    Proficiencies.Add(new CharacterProficiency(this, proficiency, 1, 0));
+                }
+                else
+                {
+                    Proficiencies.Add(new CharacterProficiency(this, proficiency, 2, 0));
+                }
             }
             else
             {
-                if(existingProficiency.ProficiencyLevel < 2)
+                if(expertise)
+                {
+                    existingProficiency.ProficiencyLevel = 2;
+                }
+                else if (existingProficiency.ProficiencyLevel < 2)
                 {
                     existingProficiency.ProficiencyLevel = 1;
                 }
             }
         }
+
+        /// <summary>
+        /// Removes a proficiency from the character
+        /// </summary>
+        /// <param name="proficiency"></param>
+        public void RemoveProficiency(CharacterProficiency proficiency)
+        {
+            proficiency.ProficiencyLevel = 0;
+            if(proficiency.Proficiency.Type != "saving throw" && proficiency.Proficiency.Type != "skill")
+            {
+                Proficiencies.Remove(proficiency);
+            }
+        } 
 
         /// <summary>
         /// Gets a CharacterProficiency with a given name

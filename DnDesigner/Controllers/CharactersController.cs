@@ -137,12 +137,14 @@ namespace DnDesigner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CharacterSheet(int id, [Bind("CharacterId,Name,Level,ProficiencyBonus,MaxHealth,CurrentHealth,TempHealth,AvailableHitDice,HitDieType,WalkingSpeed,Strength,Dexterity,Constitution,Intelligence,Wisdom,Charisma,Resistances,Immunities,Vulnerabilities")] Character character)
+        public async Task<IActionResult> CharacterSheet(int id, Character character)
         {
             if (id != character.CharacterId)
             {
                 return NotFound();
-            }                        
+            }
+            ModelState.Remove("Race");
+            ModelState.Remove("Background");
             if (ModelState.IsValid)
             {
                 try

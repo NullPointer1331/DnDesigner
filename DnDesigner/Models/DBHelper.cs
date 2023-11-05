@@ -40,7 +40,7 @@ namespace DnDesigner.Models
         /// </returns>
         public static async Task<List<Background>> GetAllBackgrounds(DbContext context) 
         {
-            return null;
+            return await context.Set<Background>().ToListAsync();
         }
 
         /// <summary>
@@ -62,9 +62,9 @@ namespace DnDesigner.Models
         /// <returns>
         /// A <see cref="List{Character}"/> of all the <see cref="Character"/> objects in the database.
         /// </returns>
-        public static List<Character> GetAllCharacters(DbContext context)
+        public static async Task<List<Character>> GetAllCharacters(DbContext context)
         {
-            return null;
+            return await context.Set<Character>().ToListAsync();
         }
 
         /// <summary>
@@ -84,9 +84,9 @@ namespace DnDesigner.Models
         /// </summary>
         /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
         /// <returns>A <see cref="List{Class}"/> of <see cref="Class"/> objects from the database.</returns>
-        public static List<Class> GetAllClasses(DbContext context)
+        public static async Task<List<Class>> GetAllClasses(DbContext context)
         {
-            return null;
+            return await context.Set<Class>().ToListAsync();
         }
 
         /// <summary>
@@ -108,9 +108,9 @@ namespace DnDesigner.Models
         /// <returns>
         /// A <see cref="List{Feature}"/> of all the <see cref="Feature"/> objects in the database.
         /// </returns>
-        public static List<Feature> GetAllFeatures(DbContext context)
+        public static async Task<List<Feature>> GetAllFeatures(DbContext context)
         {
-            return null;
+            return await context.Set<Feature>().ToListAsync();
         }
 
         /// <summary>
@@ -132,9 +132,9 @@ namespace DnDesigner.Models
         /// <returns>
         /// A <see cref="List{Inventory}"/> of all the <see cref="Inventory"/> objects in the database.
         /// </returns>
-        public static List<Inventory> GetAllInventories(DbContext context)
+        public static async Task<List<Inventory>> GetAllInventories(DbContext context)
         {
-            return null;
+            return await context.Set<Inventory>().ToListAsync();
         }
 
         /// <summary>
@@ -156,9 +156,9 @@ namespace DnDesigner.Models
         /// <returns>
         /// A <see cref="List{Inventory}"/> of all the <see cref="Inventory"/> objects in the database.
         /// </returns>
-        public static List<Item> GetAllItems(DbContext context)
+        public static async Task<TaskList<Item>> GetAllItems(DbContext context)
         {
-            return null;
+            return await context.Set<Item>().ToListAsync();
         }
 
         /// <summary>
@@ -180,9 +180,9 @@ namespace DnDesigner.Models
         /// <returns>
         /// A <see cref="List{Proficiency}"/> of all the <see cref="Proficiency"/> objects in the database.
         /// </returns>
-        public static List<Proficiency> GetAllProficiencies(DbContext context)
+        public static async Task<List<Proficiency>> GetAllProficiencies(DbContext context)
         {
-            return null;
+            return await context.Set<Proficiency>().ToListAsync();
         }
 
         /// <summary>
@@ -204,9 +204,9 @@ namespace DnDesigner.Models
         /// <returns>
         /// A <see cref="List{Race}"/> of all the <see cref="Race"/> objects in the database.
         /// </returns>
-        public static List<Race> GetAllRaces(DbContext context)
+        public static async Task<List<Race>> GetAllRaces(DbContext context)
         {
-            return null;
+            return await context.Set<Race>().ToListAsync();
         }
 
         /// <summary>
@@ -228,9 +228,9 @@ namespace DnDesigner.Models
         /// <returns>
         /// A <see cref="List{Spell}"/> of all the <see cref="Spell"/> objects in the database.
         /// </returns>
-        public static List<Spell> GetAllSpells(DbContext context)
+        public static async Task<List<Spell>> GetAllSpells(DbContext context)
         {
-            return null;
+            return await context.Set<Spell>().ToListAsync();
         }
 
         /// <summary>
@@ -252,9 +252,9 @@ namespace DnDesigner.Models
         /// <returns>
         /// A <see cref="List{Spellcasting}"/> of all the <see cref="Spellcasting"/> objects in the database.
         /// </returns>
-        public static List<Spellcasting> GetAllSpellcastings(DbContext context)
+        public static async Task<List<Spellcasting>> GetAllSpellcastings(DbContext context)
         {
-            return null;
+            return await context.Set<Spellcasting>().ToListAsync();
         }
 
         /// <summary>
@@ -276,9 +276,9 @@ namespace DnDesigner.Models
         /// <returns>
         /// A <see cref="List{Subclass}"/> of all the <see cref="Subclass"/> objects in the database.
         /// </returns>
-        public static List<Subclass> GetAllSubclasses(DbContext context )
+        public static async Task<List<Subclass>> GetAllSubclasses(DbContext context)
         {
-            return null;
+            return await context.Set<Subclass>().ToListAsync();
         }
     }
 }

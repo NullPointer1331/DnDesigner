@@ -433,7 +433,26 @@
                         </h2>
                         <div id="panelsStayOpen-Features" class="accordion-collapse collapse">
                             <div class="accordion-body">
-                                <strong>Placeholder for features</strong>
+                                <strong>Placeholder</strong>
+                                <div class="accordion" id="Features">
+                                    @foreach (Feature features in Model.GetActiveFeatures())
+                                    {
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                        data-bs-target="#panelsStayOpen-@features.Name" aria-expanded="false"
+                                                        aria-controls="panelsStayOpen-@features.Name">
+                                                    @features.Name, Level:@features.Level, @features.Source 
+                                                </button>
+                                            </h2>
+                                            <div id="panelsStayOpen-@features.Name" class="accordion-collapse collapse">
+                                                <div class="accordion-body">
+                                                    <strong>@features.Description</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+								</div>
                             </div>
                         </div>
                     </div>
@@ -456,12 +475,12 @@
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#panelsStayOpen-Languages" aria-expanded="false"
                                     aria-controls="panelsStayOpen-Languages">
-                                Languages
+                                Proficiencies
                             </button>
                         </h2>
                         <div id="panelsStayOpen-Languages" class="accordion-collapse collapse">
                             <div class="accordion-body">
-                                <strong>Placeholder for languages</strong>
+                                <strong>Placeholder for None skill profs (include break points for sub types)</strong>
                             </div>
                         </div>
                     </div>

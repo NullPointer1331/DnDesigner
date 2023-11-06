@@ -143,8 +143,6 @@ namespace DnDesigner.Controllers
             {
                 return NotFound();
             }
-            ModelState.Remove("Race");
-            ModelState.Remove("Background");
             if (ModelState.IsValid)
             {
                 try

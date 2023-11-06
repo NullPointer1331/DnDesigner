@@ -28,7 +28,7 @@ namespace DnDesigner.Models
 
         /// <summary>
         /// The proficiency type
-        /// Can be a skill, saving throw, language, tool, or type of equipment
+        /// Can be a skill, saving throw, language, tool, armor, weapon, or instrument
         /// </summary>
         public string Type { get; private set; }
 

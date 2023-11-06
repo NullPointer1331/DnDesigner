@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using DnDesigner.Models;
+using System.Text.Json;
+using NuGet.Protocol;
 
 namespace DnDesigner.Data
 {
@@ -10,7 +12,40 @@ namespace DnDesigner.Data
             : base(options)
         {
         }
-
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder
+               .Entity<ClassFeature>()
+               .Property(e => e.CharacterModifiers)
+               .HasConversion(
+                   v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+                   v => JsonSerializer.Deserialize<List<ICharacterModifier>>(v, new JsonSerializerOptions()));
+            builder
+               .Entity<SubclassFeature>()
+               .Property(e => e.CharacterModifiers)
+               .HasConversion(
+                   v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+                   v => JsonSerializer.Deserialize<List<ICharacterModifier>>(v, new JsonSerializerOptions()));
+            builder
+               .Entity<RaceFeature>()
+               .Property(e => e.CharacterModifiers)
+               .HasConversion(
+                   v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+                   v => JsonSerializer.Deserialize<List<ICharacterModifier>>(v, new JsonSerializerOptions()));
+            builder
+               .Entity<BackgroundFeature>()
+               .Property(e => e.CharacterModifiers)
+               .HasConversion(
+                   v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+                   v => JsonSerializer.Deserialize<List<ICharacterModifier>>(v, new JsonSerializerOptions()));
+            builder
+               .Entity<CharacterFeature>()
+               .Property(e => e.CharacterModifiers)
+               .HasConversion(
+                   v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+                   v => JsonSerializer.Deserialize<List<ICharacterModifier>>(v, new JsonSerializerOptions()));
+            base.OnModelCreating(builder);
+        }
         public DbSet<Proficiency> Proficiencies { get; set; }
         public DbSet<Background> Backgrounds { get; set; }
         public DbSet<BackgroundFeature> BackgroundFeatures { get; set; }
@@ -31,6 +66,7 @@ namespace DnDesigner.Data
         public DbSet<CharacterProficiency> CharacterProficiencies { get; set; }
         public DbSet<CharacterClass> CharacterClasses { get; set; }
         public DbSet<CharacterSpellcasting> CharacterSpellcasting { get; set;}
+        public DbSet<CharacterFeature> CharacterFeatures { get; set; }
         public DbSet<KnownSpell> KnownSpells { get; set; }
         public DbSet<Inventory> Inventory { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; } 

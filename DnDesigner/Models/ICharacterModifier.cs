@@ -1,4 +1,6 @@
-﻿namespace DnDesigner.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DnDesigner.Models
 {
     /// <summary>
     /// An interface for classes that modify a character
@@ -146,7 +148,7 @@
             {
                 foreach (Proficiency proficiency in Proficiencies)
                 {
-                    character.RemoveProficiency(character.GetProficiency(proficiency.Name));
+                    character.RemoveProficiency(proficiency);
                 }
                 IsApplied = false;
             }

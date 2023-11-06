@@ -170,6 +170,11 @@ namespace DnDesigner.Models
         public List<CharacterSpellcasting> Spellcasting { get; set; }
 
         /// <summary>
+        /// A list of the character's features
+        /// </summary>
+        public List<CharacterFeature> Features { get; set; }
+
+        /// <summary>
         /// Contains the character's inventory information
         /// </summary>
         public Inventory Inventory { get; set; }
@@ -382,13 +387,17 @@ namespace DnDesigner.Models
         /// <summary>
         /// Removes a proficiency from the character
         /// </summary>
-        /// <param name="proficiency"></param>
-        public void RemoveProficiency(CharacterProficiency proficiency)
+        /// <param name="characterProficiency"></param>
+        public void RemoveProficiency(Proficiency proficiency)
         {
-            proficiency.ProficiencyLevel = 0;
-            if(proficiency.Proficiency.Type != "saving throw" && proficiency.Proficiency.Type != "skill")
+            CharacterProficiency? characterProficiency = GetProficiency(proficiency.Name);
+            if (characterProficiency != null)
             {
-                Proficiencies.Remove(proficiency);
+                characterProficiency.ProficiencyLevel = 0;
+                if (characterProficiency.Proficiency.Type != "saving throw" && characterProficiency.Proficiency.Type != "skill")
+                {
+                    Proficiencies.Remove(characterProficiency);
+                }
             }
         } 
 

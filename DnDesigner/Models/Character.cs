@@ -326,6 +326,16 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
+        /// Gets a list of CharacterProficiencies by type
+        /// </summary>
+        /// <param name="type">The type of proficiency to get</param>
+        /// <returns>A list of character proficiencies</returns>
+        public List<CharacterProficiency> GetProficienciesByType(string type)
+        {
+            return Proficiencies.Where(t => t.Proficiency.Type == type).ToList();
+        }
+
+        /// <summary>
         /// Gets all CharacterProficiencies tagged as skills
         /// </summary>
         /// <returns>A list of CharacterProficiencies</returns>

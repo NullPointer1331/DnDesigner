@@ -46,13 +46,13 @@ namespace DnDesigner.Controllers
         }
 
         // GET: Characters/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             CreateCharacterViewModel characterViewModel = new()
             {
-                AvailableClasses = _context.Classes.ToList(),
-                AvailableBackgrounds = _context.Backgrounds.ToList(),
-                AvailableRaces = _context.Races.ToList(),
+                AvailableClasses = await _context.Classes.ToListAsync(),
+                AvailableBackgrounds = await _context.Backgrounds.ToListAsync(),
+                AvailableRaces = await _context.Races.ToListAsync()
             };
             return View(characterViewModel);
         }
@@ -99,18 +99,32 @@ namespace DnDesigner.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            character.AvailableClasses = await _context.Classes.ToListAsync();
+            character.AvailableBackgrounds = await _context.Backgrounds.ToListAsync();
+            character.AvailableRaces = await _context.Races.ToListAsync();
             return View(character);
         }
 
         // GET: Characters/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> CharacterSheet(int? id)
         {
             if (id == null || _context.Characters == null)
             {
                 return NotFound();
             }
 
-            var character = await _context.Characters.FindAsync(id);
+            Character character = await _context.Characters
+                .Where(c => c.CharacterId == id)
+                .Include(c => c.Race)
+                .Include(c => c.Background)
+                .Include(c => c.Classes)
+                .ThenInclude(cc => cc.Class)
+                .Include(c => c.Proficiencies)
+                .ThenInclude(cp => cp.Proficiency)
+                .Include(c => c.Inventory)
+                .FirstOrDefaultAsync();
+
+            
             if (character == null)
             {
                 return NotFound();
@@ -123,13 +137,14 @@ namespace DnDesigner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CharacterId,Name,Level,ProficiencyBonus,MaxHealth,CurrentHealth,TempHealth,AvailableHitDice,HitDieType,WalkingSpeed,Strength,Dexterity,Constitution,Intelligence,Wisdom,Charisma,Resistances,Immunities,Vulnerabilities")] Character character)
+        public async Task<IActionResult> CharacterSheet(int id, Character character)
         {
             if (id != character.CharacterId)
             {
                 return NotFound();
             }
-
+            ModelState.Remove("Race");
+            ModelState.Remove("Background");
             if (ModelState.IsValid)
             {
                 try

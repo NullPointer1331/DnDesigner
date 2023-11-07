@@ -24,7 +24,7 @@ namespace DnDesigner.Models
             return await _context.Set<Background>().ToListAsync();
         }
 
-        public async Task<Character> GetCharacterAsync(int id)
+        public async Task<Character> GetCharacter(int id)
         {
             return await _context.FindAsync<Character>(id);
         }
@@ -123,6 +123,7 @@ namespace DnDesigner.Models
         {
             return await _context.Set<Subclass>().ToListAsync();
         }
+
     }
 }
 

@@ -173,6 +173,11 @@ namespace DnDesigner.Models
         /// Contains the character's inventory information
         /// </summary>
         public Inventory Inventory { get; set; }
+
+        /// <summary>
+        /// Contains the Id of the user who created the character
+        /// </summary>
+        public string UserId { get; set; }
         #endregion
 
         public Character()

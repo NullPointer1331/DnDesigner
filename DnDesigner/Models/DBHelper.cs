@@ -2,283 +2,127 @@
 
 namespace DnDesigner.Models
 {
-    public static class DBHelper
+    /// <summary>
+    /// This class implements the IDBHelper interface and provides a way to access the database.
+    /// </summary>
+    public class DBHelper : IDBHelper
     {
-        /* TODO:
-            Get methods -
-                * Backgrounds
-                * Character
-                * Class
-                * Feature
-                * Inventory
-                * Item
-                * Proficiency
-                * Race
-                * Spell
-                * Spellcasting
-                * Subclass
-         */
+        private readonly DbContext _context;
 
-        /// <summary>
-        /// Gets a <see cref="Background"/> from the database,
-        /// using the specified id.
-        /// </summary>
-        /// <param name="id">The id of the <see cref="Background"/> that you're looking for.</param>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>The <see cref="Background"/> with the specified id.</returns>
-        public static async Task<Background> GetBackground(int id, DbContext context)
+        public DBHelper(DbContext context)
         {
-            return await context.FindAsync<Background>(id);
+            _context = context;
         }
 
-        /// <summary>
-        /// Gets all of the <see cref="Background"/> objects from the database.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>
-        /// A <see cref="List{Background}"/> of all the <see cref="Background"/> objects in the database
-        /// </returns>
-        public static async Task<List<Background>> GetAllBackgrounds(DbContext context) 
+        public async Task<Background> GetBackground(int id)
         {
-            return await context.Set<Background>().ToListAsync();
+            return await _context.FindAsync<Background>(id);
         }
 
-        /// <summary>
-        /// Gets a <see cref="Character"/> from the database,
-        /// with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the <see cref="Character"/> that you're looking for.</param>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>The <see cref="Character"/> with the specified id.</returns>
-        public static async Task<Character> GetCharacterAsync(int id, DbContext context)
+        public async Task<List<Background>> GetAllBackgrounds()
         {
-            return await context.FindAsync<Character>(id);
+            return await _context.Set<Background>().ToListAsync();
         }
 
-        /// <summary>
-        /// Gets all of the <see cref="Character"/> objects from the database.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>
-        /// A <see cref="List{Character}"/> of all the <see cref="Character"/> objects in the database.
-        /// </returns>
-        public static async Task<List<Character>> GetAllCharacters(DbContext context)
+        public async Task<Character> GetCharacterAsync(int id)
         {
-            return await context.Set<Character>().ToListAsync();
+            return await _context.FindAsync<Character>(id);
         }
 
-        /// <summary>
-        /// Gets a <see cref="Class"/> from the database,
-        /// with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the <see cref="Character"/> that you're looking for.</param>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>The <see cref="Character"/> with the specified id.</returns>
-        public static async Task<Class> GetClass(int id, DbContext context)
+        public async Task<List<Character>> GetAllCharacters()
         {
-            return await context.FindAsync<Class>(id);
+            return await _context.Set<Character>().ToListAsync();
         }
 
-        /// <summary>
-        /// Gets all of the <see cref="Class"/> objects from the database.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>A <see cref="List{Class}"/> of <see cref="Class"/> objects from the database.</returns>
-        public static async Task<List<Class>> GetAllClasses(DbContext context)
+        public async Task<Class> GetClass(int id)
         {
-            return await context.Set<Class>().ToListAsync();
+            return await _context.FindAsync<Class>(id);
         }
 
-        /// <summary>
-        /// Gets a <see cref="Feature"/> from the database,
-        /// with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the <see cref="Feature"/> that you're looking for.</param>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>The <see cref="Feature"/> with the specified id.</returns>
-        public static async Task<Feature> GetFeature(int id, DbContext context)
+        public async Task<List<Class>> GetAllClasses()
         {
-            return await context.FindAsync<Feature>(id);
+            return await _context.Set<Class>().ToListAsync();
         }
 
-        /// <summary>
-        /// Gets all of the <see cref="Feature"/> objects from the database.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>
-        /// A <see cref="List{Feature}"/> of all the <see cref="Feature"/> objects in the database.
-        /// </returns>
-        public static async Task<List<Feature>> GetAllFeatures(DbContext context)
+        public async Task<Feature> GetFeature(int id)
         {
-            return await context.Set<Feature>().ToListAsync();
+            return await _context.FindAsync<Feature>(id);
         }
 
-        /// <summary>
-        /// Gets a <see cref="Inventory"/> from the database,
-        /// with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the <see cref="Inventory"/> that you're looking for.</param>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>The <see cref="Inventory"/> with the specified id.</returns>
-        public static async Task<Inventory> GetInventory(int id, DbContext context)
+        public async Task<List<Feature>> GetAllFeatures()
         {
-            return await context.FindAsync<Inventory>(id);
+            return await _context.Set<Feature>().ToListAsync();
         }
 
-        /// <summary>
-        /// Gets all of the <see cref="Inventory"/> objects from the database.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>
-        /// A <see cref="List{Inventory}"/> of all the <see cref="Inventory"/> objects in the database.
-        /// </returns>
-        public static async Task<List<Inventory>> GetAllInventories(DbContext context)
+        public async Task<Inventory> GetInventory(int id)
         {
-            return await context.Set<Inventory>().ToListAsync();
+            return await _context.FindAsync<Inventory>(id);
         }
 
-        /// <summary>
-        /// Gets a <see cref="Item"/> from the database,
-        /// with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the <see cref="Item"/> that you're looking for.</param>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>The <see cref="Item"/> with the specified id.</returns>
-        public static async Task<Item> GetItem(int id, DbContext context)
+        public async Task<List<Inventory>> GetAllInventories()
         {
-            return await context.FindAsync<Item>(id);
+            return await _context.Set<Inventory>().ToListAsync();
         }
 
-        /// <summary>
-        /// Gets all of the <see cref="Inventory"/> objects from the database.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>
-        /// A <see cref="List{Inventory}"/> of all the <see cref="Inventory"/> objects in the database.
-        /// </returns>
-        public static async Task<TaskList<Item>> GetAllItems(DbContext context)
+        public async Task<Item> GetItem(int id)
         {
-            return await context.Set<Item>().ToListAsync();
+            return await _context.FindAsync<Item>(id);
         }
 
-        /// <summary>
-        /// Gets a <see cref="Proficiency"/> from the database,
-        /// with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the <see cref="Proficiency"/> that you're looking for.</param>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>The <see cref="Item"/> with the specified id.</returns>
-        public static async Task<Proficiency> GetProficiency(int id, DbContext context)
+        public async Task<List<Item>> GetAllItems()
         {
-            return await context.FindAsync<Proficiency>(id);
+            return await _context.Set<Item>().ToListAsync();
         }
 
-        /// <summary>
-        /// Gets all of the <see cref="Proficiency"/> objects from the database.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>
-        /// A <see cref="List{Proficiency}"/> of all the <see cref="Proficiency"/> objects in the database.
-        /// </returns>
-        public static async Task<List<Proficiency>> GetAllProficiencies(DbContext context)
+        public async Task<Proficiency> GetProficiency(int id)
         {
-            return await context.Set<Proficiency>().ToListAsync();
+            return await _context.FindAsync<Proficiency>(id);
         }
 
-        /// <summary>
-        /// Gets a <see cref="Race"/> from the database,
-        /// with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the <see cref="Race"/> that you're looking for.</param>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>The <see cref="Race"/> with the specified id.</returns>
-        public static async Task<Race> GetRace(int id, DbContext context)
+        public async Task<List<Proficiency>> GetAllProficiencies()
         {
-            return await context.FindAsync<Race>(id);
+            return await _context.Set<Proficiency>().ToListAsync();
         }
 
-        /// <summary>
-        /// Gets all of the <see cref="Race"/> objects from the database.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>
-        /// A <see cref="List{Race}"/> of all the <see cref="Race"/> objects in the database.
-        /// </returns>
-        public static async Task<List<Race>> GetAllRaces(DbContext context)
+        public async Task<Race> GetRace(int id)
         {
-            return await context.Set<Race>().ToListAsync();
+            return await _context.FindAsync<Race>(id);
         }
 
-        /// <summary>
-        /// Gets a <see cref="Spell"/> from the database,
-        /// with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the <see cref="Spell"/> that you're looking for.</param>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>The <see cref="Spell"/> with the specified id.</returns>
-        public static async Task<Spell> GetSpell(int id, DbContext context)
+        public async Task<List<Race>> GetAllRaces()
         {
-            return await context.FindAsync<Spell>(id);
+            return await _context.Set<Race>().ToListAsync();
         }
 
-        /// <summary>
-        /// Gets all of the <see cref="Spell"/> objects from the database.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>
-        /// A <see cref="List{Spell}"/> of all the <see cref="Spell"/> objects in the database.
-        /// </returns>
-        public static async Task<List<Spell>> GetAllSpells(DbContext context)
+        public async Task<Spell> GetSpell(int id)
         {
-            return await context.Set<Spell>().ToListAsync();
+            return await _context.FindAsync<Spell>(id);
         }
 
-        /// <summary>
-        /// Gets a <see cref="Spellcasting"/> from the database,
-        /// with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the <see cref="Spellcasting"/> that you're looking for.</param>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>The <see cref="Spellcasting"/> with the specified id.</returns>
-        public static async Task<Spellcasting> GetSpellcasting(int id, DbContext context)
+        public async Task<List<Spell>> GetAllSpells()
         {
-            return await context.FindAsync<Spellcasting>(id);
+            return await _context.Set<Spell>().ToListAsync();
         }
 
-        /// <summary>
-        /// Gets all of the <see cref="Spellcasting"/> objects from the database.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>
-        /// A <see cref="List{Spellcasting}"/> of all the <see cref="Spellcasting"/> objects in the database.
-        /// </returns>
-        public static async Task<List<Spellcasting>> GetAllSpellcastings(DbContext context)
+        public async Task<Spellcasting> GetSpellcasting(int id)
         {
-            return await context.Set<Spellcasting>().ToListAsync();
+            return await _context.FindAsync<Spellcasting>(id);
         }
 
-        /// <summary>
-        /// Gets a <see cref="Subclass"/> from the database,
-        /// with the specified id.
-        /// </summary>
-        /// <param name="id">The id of the <see cref="Subclass"/> that you're looking for.</param>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>The <see cref="Subclass"/> with the specified id.</returns>
-        public static async Task<Subclass> GetSubclass(int id, DbContext context)
+        public async Task<List<Spellcasting>> GetAllSpellcastings()
         {
-            return await context.FindAsync<Subclass>(id);
+            return await _context.Set<Spellcasting>().ToListAsync();
         }
 
-        /// <summary>
-        /// Gets all of the <see cref="Subclass"/> objects from the database.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext"/> that you're using.</param>
-        /// <returns>
-        /// A <see cref="List{Subclass}"/> of all the <see cref="Subclass"/> objects in the database.
-        /// </returns>
-        public static async Task<List<Subclass>> GetAllSubclasses(DbContext context)
+        public async Task<Subclass> GetSubclass(int id)
         {
-            return await context.Set<Subclass>().ToListAsync();
+            return await _context.FindAsync<Subclass>(id);
+        }
+
+        public async Task<List<Subclass>> GetAllSubclasses()
+        {
+            return await _context.Set<Subclass>().ToListAsync();
         }
     }
 }
+

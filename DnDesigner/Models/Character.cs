@@ -180,7 +180,7 @@ namespace DnDesigner.Models
         public string UserId { get; set; }
         #endregion
 
-        public Character(string userId)
+        public Character()
         {
             Proficiencies = new List<CharacterProficiency>();
             Classes = new List<CharacterClass>();
@@ -190,10 +190,9 @@ namespace DnDesigner.Models
             Resistances = "";
             Immunities = "";
             Vulnerabilities = "";
-            UserId = userId;
         }
         public Character(CreateCharacterViewModel character, Class @class, 
-            Race race, Background background, List<Proficiency> defaultProficiencies)
+            Race race, Background background, List<Proficiency> defaultProficiencies, string userId)
         {
             Name = character.Name;
             Classes = new List<CharacterClass>();
@@ -222,6 +221,7 @@ namespace DnDesigner.Models
                 Spellcasting.Add(new CharacterSpellcasting(this, @class.Spellcasting));
             }
             SetProficiencies(defaultProficiencies);
+            UserId = userId;
         }
 
         #region methods

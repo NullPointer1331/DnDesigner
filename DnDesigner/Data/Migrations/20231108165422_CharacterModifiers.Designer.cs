@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Data.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20231108025922_CharacterModifiers")]
+    [Migration("20231108165422_CharacterModifiers")]
     partial class CharacterModifiers
     {
         /// <inheritdoc />
@@ -169,6 +169,9 @@ namespace DnDesigner.Data.Migrations
 
                     b.Property<int>("ClassId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("InitialClass")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Level")
                         .HasColumnType("int");

@@ -47,6 +47,13 @@ namespace DnDesigner.Data.Migrations
                 nullable: false,
                 defaultValue: "");
 
+            migrationBuilder.AddColumn<bool>(
+                name: "InitialClass",
+                table: "CharacterClasses",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
+
             migrationBuilder.AddColumn<string>(
                 name: "CharacterModifiers",
                 table: "BackgroundFeatures",
@@ -105,6 +112,10 @@ namespace DnDesigner.Data.Migrations
             migrationBuilder.DropColumn(
                 name: "CharacterModifiers",
                 table: "ClassFeatures");
+
+            migrationBuilder.DropColumn(
+                name: "InitialClass",
+                table: "CharacterClasses");
 
             migrationBuilder.DropColumn(
                 name: "CharacterModifiers",

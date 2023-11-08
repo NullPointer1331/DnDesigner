@@ -95,6 +95,11 @@ namespace DnDesigner.Models
 		/// </summary>
 		public int Level { get; set; }
 
+		/// <summary>
+		/// Was this the class the character started with?
+		/// </summary>
+		public bool InitialClass { get; set; }
+
         /// <summary>
         /// Basic constructor, sets class, character, and level
         /// For use when there is no subclass

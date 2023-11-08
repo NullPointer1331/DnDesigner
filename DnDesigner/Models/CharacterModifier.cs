@@ -88,6 +88,10 @@ namespace DnDesigner.Models
         {
             if(!IsApplied && Modifiers.ElementAt(ChosenIndex) != null)
             {
+                foreach (CharacterModifier modifier in Modifiers)
+                {
+                    modifier.Remove(character);
+                }
                 Modifiers[ChosenIndex].Apply(character);
                 IsApplied = true;
             }
@@ -97,7 +101,10 @@ namespace DnDesigner.Models
         {
             if (IsApplied && Modifiers.ElementAt(ChosenIndex) != null)
             {
-                Modifiers[ChosenIndex].Remove(character);
+                foreach (CharacterModifier modifier in Modifiers)
+                {
+                    modifier.Remove(character);
+                }
                 IsApplied = false;
             }
         }

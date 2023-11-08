@@ -214,6 +214,7 @@ namespace DnDesigner.Models
             Vulnerabilities = "";
 
             Classes.Add(new CharacterClass(this, @class, 1));
+            Classes[0].InitialClass = true;
             if(@class.Spellcasting != null)
             {
                 Spellcasting.Add(new CharacterSpellcasting(this, @class.Spellcasting));

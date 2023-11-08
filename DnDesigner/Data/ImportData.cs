@@ -723,6 +723,7 @@ namespace DnDesigner.Data
                 }
                 @class.Spellcasting = spellcasting;
             }
+
             ClassFeature startingProficiencies = new ClassFeature(@class, "Starting Proficiencies", "", 1);
             List<Proficiency> classProficiencies = new List<Proficiency>();
             startingProficiencies.Description = "When gaining this class at first level, you gain proficiency in the following. ";
@@ -741,6 +742,7 @@ namespace DnDesigner.Data
                 startingProficiencies.Description = startingProficiencies.Description
                         .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
             }
+
             if (class5E.startingProficiencies.weapons != null)
             {
                 startingProficiencies.Description += "Weapons: ";
@@ -756,6 +758,7 @@ namespace DnDesigner.Data
                 startingProficiencies.Description = startingProficiencies.Description
                             .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
             }
+
             if (class5E.startingProficiencies.tools != null)
             {
                 startingProficiencies.Description += "Tools: ";
@@ -771,28 +774,9 @@ namespace DnDesigner.Data
                 startingProficiencies.Description = startingProficiencies.Description
                             .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
             }
-                /* Doesn't seem to work for classes at the moment, 
-                 * probably needs to use startingProficiencies.tools instead, but that probably needs some cleanup
-                if (class5E.startingProficiencies.toolProficiencies != null)
-                {
-                    foreach (ToolProficiency tool in class5E.startingProficiencies.toolProficiencies)
-                    {
-                        startingProficiencies.Description += "Tools: ";
-                        List<Proficiency> tools = FindTools(tool, allProficiencies);
-                        foreach (Proficiency proficiency in tools)
-                        {
-                            if (!classProficiencies.Where(p => p.Name == proficiency.Name).Any())
-                            {
-                                classProficiencies.Add(proficiency);
-                                startingProficiencies.Description += $"{proficiency.Name}, ";
-                            }
-                        }
-                        startingProficiencies.Description = startingProficiencies.Description
-                            .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
-                    } 
-                } */
-                startingProficiencies.Description += "Saving throws: ";
-            foreach (string proficiencyname in class5E.proficiency) // Saving throws
+
+            startingProficiencies.Description += "Saving throws: ";
+            foreach (string proficiencyname in class5E.proficiency)
             {
                 Proficiency? proficiency = FindProficiency(proficiencyname, allProficiencies);
                 if (proficiency != null && !classProficiencies.Where(p => p.Name == proficiency.Name).Any())
@@ -803,6 +787,7 @@ namespace DnDesigner.Data
             }
             startingProficiencies.Description = startingProficiencies.Description
                 .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
+
             if (class5E.startingProficiencies.skills != null)
             {
                 foreach (SkillProficiency skill in class5E.startingProficiencies.skills)
@@ -827,6 +812,7 @@ namespace DnDesigner.Data
                 startingProficiencies.Description = startingProficiencies.Description
                             .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
             }
+
             startingProficiencies.CharacterModifiers.Add(new GrantProficiencies(classProficiencies, false));
             @class.Features.Add(startingProficiencies);
             foreach (ClassFeature5ETools feature5E in classFeatures)

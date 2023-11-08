@@ -218,7 +218,10 @@ namespace DnDesigner.Models
             {
                 Spellcasting.Add(new CharacterSpellcasting(this, @class.Spellcasting));
             }
-            SetProficiencies(defaultProficiencies);
+            foreach (Proficiency proficiency in defaultProficiencies)
+            {
+                Proficiencies.Add(new CharacterProficiency(this, proficiency));
+            }
             SetActiveFeatures();
         }
 
@@ -314,32 +317,6 @@ namespace DnDesigner.Models
         public void ModifyAttribute(string name, int value)
         {
             SetAttribute(name, value + GetAttribute(name));
-        }
-
-        /// <summary>
-        /// Sets the character's proficiencies
-        /// </summary>
-        /// <param name="defaultProficiencies">A list of all skills and saving throws</param>
-        public void SetProficiencies(List<Proficiency> defaultProficiencies)
-        {
-            foreach(Proficiency proficiency in defaultProficiencies){
-                Proficiencies.Add(new CharacterProficiency(this, proficiency));
-            }
-            foreach (CharacterClass characterClass in Classes)
-            {
-                foreach (ClassProficiency classProficiency in characterClass.Class.Proficiencies)
-                {
-                    GrantProficiency(classProficiency.Proficiency);
-                }
-            }
-            foreach (BackgroundProficiency backgroundProficiency in Background.Proficiencies)
-            {
-                GrantProficiency(backgroundProficiency.Proficiency);
-            }
-            foreach (RaceProficiency raceProficiency in Race.Proficiencies)
-            {
-                GrantProficiency(raceProficiency.Proficiency);
-            }
         }
 
         /// <summary>

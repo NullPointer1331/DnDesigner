@@ -63,21 +63,15 @@ namespace DnDesigner.Controllers
             {
                 Class @class = await _context.Classes
                     .Where(c => c.ClassId == character.ClassId)
-                    .Include(c => c.Proficiencies)
-                    .ThenInclude(cp => cp.Proficiency)
                     .Include(c => c.Spellcasting)
                     .Include(c => c.Features)
                     .FirstOrDefaultAsync();
                 Background background = await _context.Backgrounds
                     .Where(b => b.BackgroundId == character.BackgroundId)
-                    .Include(b => b.Proficiencies)
-                    .ThenInclude(bp => bp.Proficiency)
                     .Include(b => b.Features)
                     .FirstOrDefaultAsync();
                 Race race = await _context.Races
                     .Where(r => r.RaceId == character.RaceId)
-                    .Include(r => r.Proficiencies)
-                    .ThenInclude(rp => rp.Proficiency)
                     .Include(r => r.Features)
                     .FirstOrDefaultAsync();
 

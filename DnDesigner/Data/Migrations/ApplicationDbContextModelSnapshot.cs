@@ -87,23 +87,6 @@ namespace DnDesigner.Data.Migrations
                     b.ToTable("BackgroundFeatures");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.BackgroundProficiency", b =>
-                {
-                    b.Property<int>("BackgroundId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
-
-                    b.Property<int>("ProficiencyId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(2);
-
-                    b.HasKey("BackgroundId", "ProficiencyId");
-
-                    b.HasIndex("ProficiencyId");
-
-                    b.ToTable("BackgroundProficiencies");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.Character", b =>
                 {
                     b.Property<int>("CharacterId")
@@ -338,21 +321,6 @@ namespace DnDesigner.Data.Migrations
                     b.HasIndex("ClassId");
 
                     b.ToTable("ClassFeatures");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.ClassProficiency", b =>
-                {
-                    b.Property<int>("ClassId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProficiencyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ClassId", "ProficiencyId");
-
-                    b.HasIndex("ProficiencyId");
-
-                    b.ToTable("ClassProficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Inventory", b =>
@@ -590,21 +558,6 @@ namespace DnDesigner.Data.Migrations
                     b.HasIndex("RaceId");
 
                     b.ToTable("RaceFeatures");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.RaceProficiency", b =>
-                {
-                    b.Property<int>("RaceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProficiencyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RaceId", "ProficiencyId");
-
-                    b.HasIndex("ProficiencyId");
-
-                    b.ToTable("RaceProficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Spell", b =>
@@ -976,25 +929,6 @@ namespace DnDesigner.Data.Migrations
                     b.Navigation("Background");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.BackgroundProficiency", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Background", "Background")
-                        .WithMany("Proficiencies")
-                        .HasForeignKey("BackgroundId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Proficiency", "Proficiency")
-                        .WithMany()
-                        .HasForeignKey("ProficiencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Background");
-
-                    b.Navigation("Proficiency");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.Character", b =>
                 {
                     b.HasOne("DnDesigner.Models.Background", "Background")
@@ -1108,25 +1042,6 @@ namespace DnDesigner.Data.Migrations
                     b.Navigation("Class");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.ClassProficiency", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Class", "Class")
-                        .WithMany("Proficiencies")
-                        .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Proficiency", "Proficiency")
-                        .WithMany()
-                        .HasForeignKey("ProficiencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Class");
-
-                    b.Navigation("Proficiency");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.Inventory", b =>
                 {
                     b.HasOne("DnDesigner.Models.Character", "Character")
@@ -1202,25 +1117,6 @@ namespace DnDesigner.Data.Migrations
                         .HasForeignKey("RaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Race");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.RaceProficiency", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Proficiency", "Proficiency")
-                        .WithMany()
-                        .HasForeignKey("ProficiencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Race", "Race")
-                        .WithMany("Proficiencies")
-                        .HasForeignKey("RaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Proficiency");
 
                     b.Navigation("Race");
                 });
@@ -1307,8 +1203,6 @@ namespace DnDesigner.Data.Migrations
             modelBuilder.Entity("DnDesigner.Models.Background", b =>
                 {
                     b.Navigation("Features");
-
-                    b.Navigation("Proficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Character", b =>
@@ -1334,8 +1228,6 @@ namespace DnDesigner.Data.Migrations
                 {
                     b.Navigation("Features");
 
-                    b.Navigation("Proficiencies");
-
                     b.Navigation("Subclasses");
                 });
 
@@ -1347,8 +1239,6 @@ namespace DnDesigner.Data.Migrations
             modelBuilder.Entity("DnDesigner.Models.Race", b =>
                 {
                     b.Navigation("Features");
-
-                    b.Navigation("Proficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Spell", b =>

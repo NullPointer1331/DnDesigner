@@ -129,17 +129,17 @@ namespace DnDesigner.Models
         /// <summary>
         /// The characters resistances
         /// </summary>
-        public string Resistances { get; set; } = null!;
+        public string Resistances { get; set; }
 
         /// <summary>
         /// The characters immunities
         /// </summary>
-        public string Immunities { get; set; } = null!;
+        public string Immunities { get; set; }
 
         /// <summary>
         /// The characters vulnerabilities
         /// </summary>
-        public string Vulnerabilities { get; set; } = null!;
+        public string Vulnerabilities { get; set; }
 
         /// <summary>
         /// The characters race
@@ -393,7 +393,8 @@ namespace DnDesigner.Models
         /// <returns>A list of CharacterProficiencies</returns>
         public List<CharacterProficiency> GetSkills()
         {
-            return Proficiencies.Where(p => p.Proficiency.Type == "skill").ToList();
+            List<CharacterProficiency> skills = Proficiencies.Where(p => p.Proficiency.Type == "skill").ToList();
+            return skills;
         }
 
         /// <summary>
@@ -402,7 +403,8 @@ namespace DnDesigner.Models
         /// <returns>A list of CharacterProficiencies</returns>
         public List<CharacterProficiency> GetSaves()
         {
-            return Proficiencies.Where(p => p.Proficiency.Type == "saving throw").ToList();
+            List<CharacterProficiency> saves = Proficiencies.Where(p => p.Proficiency.Type == "saving throw").ToList();
+            return saves;
         }
 
         /// <summary>

@@ -128,7 +128,7 @@ namespace DnDesigner.Models
         {
             if (Proficiency.MainAttribute != null)
             {
-                return Character.GetAttribute(Proficiency.MainAttribute) +
+                return Character.GetModifier(Proficiency.MainAttribute) +
                     (Character.ProficiencyBonus * ProficiencyLevel) + CheckBonus;
             }
             else

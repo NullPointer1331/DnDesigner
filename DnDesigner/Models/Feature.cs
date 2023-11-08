@@ -41,7 +41,7 @@ namespace DnDesigner.Models
         /// A list of modifiers that this feature applies to a character
         /// </summary>
         [NotMapped]
-        public List<ICharacterModifier> CharacterModifiers { get; set; }
+        public List<CharacterModifier> CharacterModifiers { get; set; }
 
         /// <summary>
         /// Full constructor, sets all properties
@@ -56,7 +56,7 @@ namespace DnDesigner.Models
             Source = source;
             Description = description;
             Level = level;
-            CharacterModifiers = new List<ICharacterModifier>();
+            CharacterModifiers = new List<CharacterModifier>();
         }
 
         /// <summary>
@@ -70,7 +70,13 @@ namespace DnDesigner.Models
             Name = name;
             Description = description;
             Level = level;
-            CharacterModifiers = new List<ICharacterModifier>();
+            CharacterModifiers = new List<CharacterModifier>();
+        }
+
+        public bool Equals(Feature other)
+        {
+            return Name == other.Name && Source == other.Source 
+                && Description == other.Description && Level == other.Level;
         }
     }
     public class CharacterFeature : Feature
@@ -95,9 +101,16 @@ namespace DnDesigner.Models
         private CharacterFeature() : base("", "", 0) { }
 
         public void Apply() {             
-            foreach (ICharacterModifier modifier in CharacterModifiers)
+            foreach (CharacterModifier modifier in CharacterModifiers)
             {
                 modifier.Apply(Character);
+            }
+        }
+        public void Remove()
+        {
+            foreach (CharacterModifier modifier in CharacterModifiers)
+            {
+                modifier.Remove(Character);
             }
         }
     }

@@ -198,6 +198,7 @@ namespace DnDesigner.Models
             Classes = new List<CharacterClass>();
             Proficiencies = new List<CharacterProficiency>();
             Spellcasting = new List<CharacterSpellcasting>();
+            Features = new List<CharacterFeature>();
             Inventory = new Inventory(this);
             Background = background;
             Race = race;
@@ -221,6 +222,7 @@ namespace DnDesigner.Models
                 Spellcasting.Add(new CharacterSpellcasting(this, @class.Spellcasting));
             }
             SetProficiencies(defaultProficiencies);
+            SetActiveFeatures();
         }
 
         #region methods
@@ -364,11 +366,11 @@ namespace DnDesigner.Models
             {
                 if(expertise)
                 {
-                    Proficiencies.Add(new CharacterProficiency(this, proficiency, 1, 0));
+                    Proficiencies.Add(new CharacterProficiency(this, proficiency, 2, 0));
                 }
                 else
                 {
-                    Proficiencies.Add(new CharacterProficiency(this, proficiency, 2, 0));
+                    Proficiencies.Add(new CharacterProficiency(this, proficiency, 1, 0));
                 }
             }
             else
@@ -430,24 +432,46 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
-        /// Gets all features from classes, subclasses, race and background 
-        /// where the character meets the required level
+        /// TODO: Remove this method
         /// </summary>
         /// <returns>All features the character meets the required level for</returns>
-        public List<Feature> GetActiveFeatures()
+        public List<CharacterFeature> GetActiveFeatures()
+        {
+            return Features;
+        }
+
+        public void SetActiveFeatures()
         {
             List<Feature> features = new List<Feature>();
-            foreach(CharacterClass @class in Classes)
+            foreach (CharacterClass @class in Classes)
             {
                 features.AddRange(@class.Class.GetAvailableFeatures(@class.Level));
-                if(@class.Subclass != null)
+                if (@class.Subclass != null)
                 {
                     features.AddRange(@class.Subclass.GetAvailableFeatures(@class.Level));
                 }
             }
             features.AddRange(Background.Features.Where(f => f.Level <= Level));
             features.AddRange(Race.Features.Where(f => f.Level <= Level));
-            return features;
+
+            //Remove features that shouldn't be active
+            foreach (CharacterFeature feature in Features.Where(f => f.Level > Level))
+            {
+                feature.Remove();
+                Features.Remove(feature);
+            }
+
+            //Add features that haven't been added yet
+            foreach (Feature feature in features)
+            {
+                if (!Features.Where(f => f.Equals(feature)).Any())
+                {
+                    CharacterFeature characterFeature = new CharacterFeature(this, feature);
+                    Features.Add(characterFeature);
+                    characterFeature.Apply();
+                }
+            }
+
         }
         #endregion
     }

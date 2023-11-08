@@ -1,11 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace DnDesigner.Models
 {
     /// <summary>
-    /// An interface for classes that modify a character
+    /// An abstract super class for classes that modify a character
     /// </summary>
-    public interface ICharacterModifier
+    [JsonDerivedType(typeof(CharacterModifierChoice), typeDiscriminator: "Choice")]
+    [JsonDerivedType(typeof(ModifyAttribute), typeDiscriminator: "Attribute")]
+    [JsonDerivedType(typeof(GrantProficiencies), typeDiscriminator: "Proficiencies")]
+    public abstract class CharacterModifier
     {
         /// <summary>
         /// Has this modifier been applied?
@@ -16,25 +20,24 @@ namespace DnDesigner.Models
         /// Apply this modifier to the character
         /// </summary>
         /// <param name="character">The character to be modified</param>
-        public void Apply(Character character);
+        public abstract void Apply(Character character);
 
         /// <summary>
         /// Remove this modifier from the character
         /// </summary>
         /// <param name="character">The character to be modified</param>
-        public void Remove(Character character);
+        public abstract void Remove(Character character);
     }
 
     /// <summary>
     /// A choice between multiple modifiers
     /// </summary>
-    public class CharacterModifierChoice : ICharacterModifier
+    public class CharacterModifierChoice : CharacterModifier
     {
-        public bool IsApplied { get; set; }
         public int ChosenIndex { get; set; }
-        public List<ICharacterModifier> Options { get; private set; }
+        public List<CharacterModifier> Options { get; private set; }
 
-        public CharacterModifierChoice(List<ICharacterModifier> options)
+        public CharacterModifierChoice(List<CharacterModifier> options)
         {
             Options = options;
         }
@@ -43,10 +46,10 @@ namespace DnDesigner.Models
         /// Creates a new CharacterModifierChoice from a preset
         /// </summary>
         /// <param name="preset">The choice preset, 
-        /// can be "ASI", (TODO, implement more presets)</param>
+        /// Options: "ASI" - Increase an ability score by 1, (TODO, implement more presets)</param>
         public CharacterModifierChoice(string preset)
         {
-            Options = new List<ICharacterModifier>();
+            Options = new List<CharacterModifier>();
             switch (preset)
             {
                 case "ASI":
@@ -62,7 +65,7 @@ namespace DnDesigner.Models
             }
         }
 
-        public void Apply(Character character)
+        public override void Apply(Character character)
         {
             if(!IsApplied && Options.ElementAt(ChosenIndex) != null)
             {
@@ -71,7 +74,7 @@ namespace DnDesigner.Models
             }
         }
 
-        public void Remove(Character character)
+        public override void Remove(Character character)
         {
             if (IsApplied && Options.ElementAt(ChosenIndex) != null)
             {
@@ -84,11 +87,10 @@ namespace DnDesigner.Models
     /// <summary>
     /// When applied, this modifier will modify a character's attribute
     /// </summary>
-    public class ModifyAttribute : ICharacterModifier
+    public class ModifyAttribute : CharacterModifier
     {
-        public bool IsApplied { get; set; }
-        private string Attribute { get; set; }
-        private int Value { get; set; }
+        public string Attribute { get; set; }
+        public int Value { get; set; }
 
         public ModifyAttribute(string attribute, int value)
         {
@@ -96,7 +98,7 @@ namespace DnDesigner.Models
             Value = value;
         }
 
-        public void Apply(Character character)
+        public override void Apply(Character character)
         {
             if (!IsApplied)
             {
@@ -105,7 +107,7 @@ namespace DnDesigner.Models
             }
         }
 
-        public void Remove(Character character)
+        public override void Remove(Character character)
         {
             if (IsApplied)
             {
@@ -118,11 +120,10 @@ namespace DnDesigner.Models
     /// <summary>
     /// When applied, this modifier will grant a character specific proficiencies
     /// </summary>
-    public class GrantProficiencies : ICharacterModifier
+    public class GrantProficiencies : CharacterModifier
     {
-        public bool IsApplied { get; set; }
-        private List<Proficiency> Proficiencies { get; set; }
-        private bool Expertise { get; set; }
+        public List<Proficiency> Proficiencies { get; set; }
+        public bool Expertise { get; set; }
 
         public GrantProficiencies(List<Proficiency> proficiencies, bool expertise)
         {
@@ -130,7 +131,7 @@ namespace DnDesigner.Models
             Expertise = expertise;
         }
 
-        public void Apply(Character character)
+        public override void Apply(Character character)
         {
             if (!IsApplied)
             {
@@ -142,7 +143,7 @@ namespace DnDesigner.Models
             }
         }
 
-        public void Remove(Character character)
+        public override void Remove(Character character)
         {
             if (IsApplied)
             {

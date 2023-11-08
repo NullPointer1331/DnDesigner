@@ -14,36 +14,40 @@ namespace DnDesigner.Data
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                IncludeFields = true,
+            };
             builder
                .Entity<ClassFeature>()
                .Property(e => e.CharacterModifiers)
                .HasConversion(
-                   v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
-                   v => JsonSerializer.Deserialize<List<ICharacterModifier>>(v, new JsonSerializerOptions()));
+                   v => JsonSerializer.Serialize(v, options),
+                   v => JsonSerializer.Deserialize<List<CharacterModifier>>(v, options));
             builder
                .Entity<SubclassFeature>()
                .Property(e => e.CharacterModifiers)
                .HasConversion(
-                   v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
-                   v => JsonSerializer.Deserialize<List<ICharacterModifier>>(v, new JsonSerializerOptions()));
+                   v => JsonSerializer.Serialize(v, options),
+                   v => JsonSerializer.Deserialize<List<CharacterModifier>>(v, options));
             builder
                .Entity<RaceFeature>()
                .Property(e => e.CharacterModifiers)
                .HasConversion(
-                   v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
-                   v => JsonSerializer.Deserialize<List<ICharacterModifier>>(v, new JsonSerializerOptions()));
+                   v => JsonSerializer.Serialize(v, options),
+                   v => JsonSerializer.Deserialize<List<CharacterModifier>>(v, options));
             builder
                .Entity<BackgroundFeature>()
                .Property(e => e.CharacterModifiers)
                .HasConversion(
-                   v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
-                   v => JsonSerializer.Deserialize<List<ICharacterModifier>>(v, new JsonSerializerOptions()));
+                   v => JsonSerializer.Serialize(v, options),
+                   v => JsonSerializer.Deserialize<List<CharacterModifier>>(v, options));
             builder
                .Entity<CharacterFeature>()
                .Property(e => e.CharacterModifiers)
                .HasConversion(
-                   v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
-                   v => JsonSerializer.Deserialize<List<ICharacterModifier>>(v, new JsonSerializerOptions()));
+                   v => JsonSerializer.Serialize(v, options),
+                   v => JsonSerializer.Deserialize<List<CharacterModifier>>(v, options));
             base.OnModelCreating(builder);
         }
         public DbSet<Proficiency> Proficiencies { get; set; }

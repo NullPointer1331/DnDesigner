@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Data.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20231106214552_CharacterModifiers")]
+    [Migration("20231108022911_CharacterModifiers")]
     partial class CharacterModifiers
     {
         /// <inheritdoc />
@@ -443,6 +443,9 @@ namespace DnDesigner.Data.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
 
                     b.Property<string>("Sourcebook")
                         .IsRequired()

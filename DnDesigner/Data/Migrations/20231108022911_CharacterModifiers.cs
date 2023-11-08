@@ -24,6 +24,13 @@ namespace DnDesigner.Data.Migrations
                 nullable: false,
                 defaultValue: "");
 
+            migrationBuilder.AddColumn<int>(
+                name: "Rarity",
+                table: "Items",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
             migrationBuilder.AddColumn<string>(
                 name: "CharacterModifiers",
                 table: "ClassFeatures",
@@ -81,6 +88,10 @@ namespace DnDesigner.Data.Migrations
             migrationBuilder.DropColumn(
                 name: "CharacterModifiers",
                 table: "RaceFeatures");
+
+            migrationBuilder.DropColumn(
+                name: "Rarity",
+                table: "Items");
 
             migrationBuilder.DropColumn(
                 name: "CharacterModifiers",

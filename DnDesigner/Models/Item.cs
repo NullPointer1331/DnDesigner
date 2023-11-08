@@ -56,6 +56,14 @@ namespace DnDesigner.Models
         public bool Attuneable { get; set; }
 
         /// <summary>
+        /// The rarity of the item
+        /// Range guide: 0 = nonmagical, 1 = common, 2 = uncommon, 3 = rare
+        /// 4 = very rare, 5 = legendary, 6 = artifact, -1 = unknown
+        /// </summary>
+        [Range(-1, 6)]
+        public int Rarity { get; set; }
+
+        /// <summary>
         /// The items traits
         /// </summary>
         public string Traits { get; set; } = null!;

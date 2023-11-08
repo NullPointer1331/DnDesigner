@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace DnDesigner.Models
 {
@@ -35,11 +34,18 @@ namespace DnDesigner.Models
     public class CharacterModifierChoice : CharacterModifier
     {
         public int ChosenIndex { get; set; }
-        public List<CharacterModifier> Options { get; private set; }
+        public List<CharacterModifier> Modifiers { get; private set; }
 
-        public CharacterModifierChoice(List<CharacterModifier> options)
+        public CharacterModifierChoice(List<CharacterModifier> modifiers)
         {
-            Options = options;
+            Modifiers = modifiers;
+        }
+
+        [JsonConstructor]
+        public CharacterModifierChoice(List<CharacterModifier> modifiers, int chosenIndex)
+        {
+            Modifiers = modifiers;
+            ChosenIndex = chosenIndex;
         }
 
         /// <summary>
@@ -49,36 +55,49 @@ namespace DnDesigner.Models
         /// Options: "ASI" - Increase an ability score by 1, (TODO, implement more presets)</param>
         public CharacterModifierChoice(string preset)
         {
-            Options = new List<CharacterModifier>();
+            Modifiers = new List<CharacterModifier>();
             switch (preset)
             {
                 case "ASI":
-                    Options.Add(new ModifyAttribute("str", 1));
-                    Options.Add(new ModifyAttribute("dex", 1));
-                    Options.Add(new ModifyAttribute("con", 1));
-                    Options.Add(new ModifyAttribute("int", 1));
-                    Options.Add(new ModifyAttribute("wis", 1));
-                    Options.Add(new ModifyAttribute("cha", 1));
+                    Modifiers.Add(new ModifyAttribute("str", 1));
+                    Modifiers.Add(new ModifyAttribute("dex", 1));
+                    Modifiers.Add(new ModifyAttribute("con", 1));
+                    Modifiers.Add(new ModifyAttribute("int", 1));
+                    Modifiers.Add(new ModifyAttribute("wis", 1));
+                    Modifiers.Add(new ModifyAttribute("cha", 1));
                     break;
                 default:
                     break;
             }
         }
 
+        /// <summary>
+        /// Creates a new CharacterModifierChoice to choose from a list of proficiencies
+        /// </summary>
+        /// <param name="proficiencies"></param>
+        public CharacterModifierChoice(List<Proficiency> proficiencies)
+        {
+            Modifiers = new List<CharacterModifier>();
+            foreach (Proficiency proficiency in proficiencies)
+            {
+                Modifiers.Add(new GrantProficiencies(proficiency, false));
+            }
+        } 
+
         public override void Apply(Character character)
         {
-            if(!IsApplied && Options.ElementAt(ChosenIndex) != null)
+            if(!IsApplied && Modifiers.ElementAt(ChosenIndex) != null)
             {
-                Options[ChosenIndex].Apply(character);
+                Modifiers[ChosenIndex].Apply(character);
                 IsApplied = true;
             }
         }
 
         public override void Remove(Character character)
         {
-            if (IsApplied && Options.ElementAt(ChosenIndex) != null)
+            if (IsApplied && Modifiers.ElementAt(ChosenIndex) != null)
             {
-                Options[ChosenIndex].Remove(character);
+                Modifiers[ChosenIndex].Remove(character);
                 IsApplied = false;
             }
         }
@@ -92,6 +111,7 @@ namespace DnDesigner.Models
         public string Attribute { get; set; }
         public int Value { get; set; }
 
+        [JsonConstructor]
         public ModifyAttribute(string attribute, int value)
         {
             Attribute = attribute;
@@ -125,9 +145,19 @@ namespace DnDesigner.Models
         public List<Proficiency> Proficiencies { get; set; }
         public bool Expertise { get; set; }
 
+        [JsonConstructor]
         public GrantProficiencies(List<Proficiency> proficiencies, bool expertise)
         {
             Proficiencies = proficiencies;
+            Expertise = expertise;
+        }
+
+        public GrantProficiencies(Proficiency proficiency, bool expertise)
+        {
+            Proficiencies = new List<Proficiency>
+            {
+                proficiency
+            };
             Expertise = expertise;
         }
 

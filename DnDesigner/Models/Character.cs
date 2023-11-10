@@ -418,14 +418,6 @@ namespace DnDesigner.Models
             return saves;
         }
 
-        /// <summary>
-        /// TODO: Remove this method
-        /// </summary>
-        /// <returns>All features the character meets the required level for</returns>
-        public List<CharacterFeature> GetActiveFeatures()
-        {
-            return Features;
-        }
 
         public void SetActiveFeatures()
         {

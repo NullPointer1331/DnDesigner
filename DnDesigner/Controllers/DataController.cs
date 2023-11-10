@@ -101,6 +101,14 @@ namespace DnDesigner.Controllers
             _context.Classes.AddRange(classes);
             _context.Subclasses.AddRange(subclasses);
             _context.Actions.AddRange(actions);
+
+            //This is a bad way to make sure the action ids line up for the AddActions, but I don't know a better way
+            List<Models.Action> actionsWithId = await _context.Actions.ToListAsync();
+            for (int i = 0; i < actions.Count; i++)
+            {
+                actions[i].ActionId = actionsWithId[i].ActionId;
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
         }

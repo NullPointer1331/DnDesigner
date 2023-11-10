@@ -11,7 +11,6 @@ namespace DnDesigner.Models
         /// Primary Key
         /// </summary>
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ActionId { get; set; }
 
         /// <summary>

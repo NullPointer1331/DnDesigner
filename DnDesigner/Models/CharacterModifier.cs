@@ -8,6 +8,7 @@ namespace DnDesigner.Models
     [JsonDerivedType(typeof(CharacterModifierChoice), typeDiscriminator: "Choice")]
     [JsonDerivedType(typeof(ModifyAttribute), typeDiscriminator: "Attribute")]
     [JsonDerivedType(typeof(GrantProficiencies), typeDiscriminator: "Proficiencies")]
+    [JsonDerivedType(typeof(AddAction), typeDiscriminator: "Action")]
     public abstract class CharacterModifier
     {
         /// <summary>
@@ -19,13 +20,13 @@ namespace DnDesigner.Models
         /// Apply this modifier to the character
         /// </summary>
         /// <param name="character">The character to be modified</param>
-        public abstract void Apply(Character character);
+        public abstract void ApplyEffect(Character character);
 
         /// <summary>
         /// Remove this modifier from the character
         /// </summary>
         /// <param name="character">The character to be modified</param>
-        public abstract void Remove(Character character);
+        public abstract void RemoveEffect(Character character);
     }
 
     /// <summary>
@@ -84,26 +85,26 @@ namespace DnDesigner.Models
             }
         } 
 
-        public override void Apply(Character character)
+        public override void ApplyEffect(Character character)
         {
             if(!IsApplied && Modifiers.ElementAt(ChosenIndex) != null)
             {
                 foreach (CharacterModifier modifier in Modifiers)
                 {
-                    modifier.Remove(character);
+                    modifier.RemoveEffect(character);
                 }
-                Modifiers[ChosenIndex].Apply(character);
+                Modifiers[ChosenIndex].ApplyEffect(character);
                 IsApplied = true;
             }
         }
 
-        public override void Remove(Character character)
+        public override void RemoveEffect(Character character)
         {
             if (IsApplied && Modifiers.ElementAt(ChosenIndex) != null)
             {
                 foreach (CharacterModifier modifier in Modifiers)
                 {
-                    modifier.Remove(character);
+                    modifier.RemoveEffect(character);
                 }
                 IsApplied = false;
             }
@@ -125,7 +126,7 @@ namespace DnDesigner.Models
             Value = value;
         }
 
-        public override void Apply(Character character)
+        public override void ApplyEffect(Character character)
         {
             if (!IsApplied)
             {
@@ -134,7 +135,7 @@ namespace DnDesigner.Models
             }
         }
 
-        public override void Remove(Character character)
+        public override void RemoveEffect(Character character)
         {
             if (IsApplied)
             {
@@ -168,7 +169,7 @@ namespace DnDesigner.Models
             Expertise = expertise;
         }
 
-        public override void Apply(Character character)
+        public override void ApplyEffect(Character character)
         {
             if (!IsApplied)
             {
@@ -180,13 +181,49 @@ namespace DnDesigner.Models
             }
         }
 
-        public override void Remove(Character character)
+        public override void RemoveEffect(Character character)
         {
             if (IsApplied)
             {
                 foreach (Proficiency proficiency in Proficiencies)
                 {
                     character.RemoveProficiency(proficiency);
+                }
+                IsApplied = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// When applied, this modifier will add an action to a character
+    /// </summary>
+    public class AddAction : CharacterModifier
+    {
+        public Action Action { get; set; }
+
+        [JsonConstructor]
+        public AddAction(Action action)
+        {
+            Action = action;
+        }
+
+        public override void ApplyEffect(Character character)
+        {
+            if (!IsApplied)
+            {
+                character.Actions.Add(new CharacterAction(character, Action));
+                IsApplied = true;
+            }
+        }
+
+        public override void RemoveEffect(Character character)
+        {
+            if (IsApplied)
+            {
+                CharacterAction? characterAction = character.GetAction(Action.Name);
+                if (characterAction != null)
+                {
+                    character.Actions.Remove(characterAction);
                 }
                 IsApplied = false;
             }

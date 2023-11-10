@@ -18,6 +18,13 @@ namespace DnDesigner.Data.Migrations
                 name: "IX_KnownSpells_CharacterId_SpellcastingId",
                 table: "KnownSpells");
 
+            migrationBuilder.AddColumn<string>(
+                name: "CharacterModifiers",
+                table: "Items",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
             migrationBuilder.AlterColumn<int>(
                 name: "ProficiencyId",
                 table: "CharacterProficiencies",
@@ -104,6 +111,10 @@ namespace DnDesigner.Data.Migrations
             migrationBuilder.DropPrimaryKey(
                 name: "PK_KnownSpells",
                 table: "KnownSpells");
+
+            migrationBuilder.DropColumn(
+                name: "CharacterModifiers",
+                table: "Items");
 
             migrationBuilder.AlterColumn<int>(
                 name: "ProficiencyId",

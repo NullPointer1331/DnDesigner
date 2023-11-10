@@ -48,6 +48,12 @@ namespace DnDesigner.Data
                .HasConversion(
                    v => JsonSerializer.Serialize(v, options),
                    v => JsonSerializer.Deserialize<List<CharacterModifier>>(v, options));
+            builder
+                .Entity<Item>()
+                .Property(e => e.CharacterModifiers)
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, options),
+                    v => JsonSerializer.Deserialize<List<CharacterModifier>>(v, options));
             base.OnModelCreating(builder);
         }
         public DbSet<Proficiency> Proficiencies { get; set; }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Data.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20231110214712_Actions")]
+    [Migration("20231110220451_Actions")]
     partial class Actions
     {
         /// <inheritdoc />
@@ -457,6 +457,10 @@ namespace DnDesigner.Data.Migrations
 
                     b.Property<bool>("Attuneable")
                         .HasColumnType("bit");
+
+                    b.Property<string>("CharacterModifiers")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()

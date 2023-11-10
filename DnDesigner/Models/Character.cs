@@ -391,6 +391,11 @@ namespace DnDesigner.Models
             SetAttribute(name, value + GetAttribute(name));
         }
 
+        public CharacterAction? GetAction(string name)
+        {
+            return Actions.Where(a => a.Action.Name == name).FirstOrDefault();
+        }
+
         /// <summary>
         /// Grants a proficiency to the character
         /// </summary>
@@ -505,7 +510,7 @@ namespace DnDesigner.Models
             //Remove features that shouldn't be active
             foreach (CharacterFeature feature in Features.Where(f => f.Level > Level))
             {
-                feature.Remove();
+                feature.RemoveEffect();
                 Features.Remove(feature);
             }
 
@@ -516,7 +521,7 @@ namespace DnDesigner.Models
                 {
                     CharacterFeature characterFeature = new CharacterFeature(this, feature);
                     Features.Add(characterFeature);
-                    characterFeature.Apply();
+                    characterFeature.ApplyEffect();
                 }
             }
 

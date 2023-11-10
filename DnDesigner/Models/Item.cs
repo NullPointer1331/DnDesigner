@@ -67,8 +67,21 @@ namespace DnDesigner.Models
         /// The items traits
         /// </summary>
         public string Traits { get; set; } = null!;
+
+        /// <summary>
+        /// The effects the item has on the character
+        /// </summary>
+        [NotMapped]
+        public List<CharacterModifier> CharacterModifiers { get; set; } = null!;
         #endregion
 
+        public Item() {
+            CharacterModifiers = new List<CharacterModifier>();
+            Name = "";
+            Sourcebook = "";
+            Description = "";
+            Traits = "";
+        }
     }
 
     /// <summary>
@@ -113,6 +126,7 @@ namespace DnDesigner.Models
         /// Is the item attuned
         /// </summary>
         public bool Attuned { get; set; }
+
         public InventoryItem(Item item, Inventory inventory, int quantity)
         {
             Item = item;
@@ -121,5 +135,20 @@ namespace DnDesigner.Models
             Attuned = false;
         }
         private InventoryItem() { }
+
+        public void ApplyEffect()
+        {
+            foreach (CharacterModifier modifier in Item.CharacterModifiers)
+            {
+                modifier.ApplyEffect(Inventory.Character);
+            }
+        }
+        public void RemoveEffect()
+        {
+            foreach (CharacterModifier modifier in Item.CharacterModifiers)
+            {
+                modifier.RemoveEffect(Inventory.Character);
+            }
+        }
     }
 }

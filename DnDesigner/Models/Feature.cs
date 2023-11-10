@@ -99,17 +99,17 @@ namespace DnDesigner.Models
 
         private CharacterFeature() : base("", "", 0) { }
 
-        public void Apply() {             
+        public void ApplyEffect() {             
             foreach (CharacterModifier modifier in CharacterModifiers)
             {
-                modifier.Apply(Character);
+                modifier.ApplyEffect(Character);
             }
         }
-        public void Remove()
+        public void RemoveEffect()
         {
             foreach (CharacterModifier modifier in CharacterModifiers)
             {
-                modifier.Remove(Character);
+                modifier.RemoveEffect(Character);
             }
         }
     }

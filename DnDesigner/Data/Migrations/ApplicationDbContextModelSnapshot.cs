@@ -455,6 +455,10 @@ namespace DnDesigner.Data.Migrations
                     b.Property<bool>("Attuneable")
                         .HasColumnType("bit");
 
+                    b.Property<string>("CharacterModifiers")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

@@ -79,7 +79,7 @@ namespace DnDesigner.Models
 
     }
 
-    [PrimaryKey(nameof(CharacterId), nameof(SpellcastingId))]
+    [PrimaryKey("CharacterId", "SpellcastingId")]
     public class CharacterSpellcasting
     {
         #region properties
@@ -89,15 +89,11 @@ namespace DnDesigner.Models
         [ForeignKey("CharacterId")]
         public Character Character { get; set; } = null!;
 
-        int CharacterId { get; set; }
-
         /// <summary>
         /// The spellcasting this is referencing
         /// </summary>
         [ForeignKey("SpellcastingId")]
         public Spellcasting Spellcasting { get; set; } = null!;
-
-        int SpellcastingId { get; set; }
 
         /// <summary>
         /// The total spellcasting level of this character 

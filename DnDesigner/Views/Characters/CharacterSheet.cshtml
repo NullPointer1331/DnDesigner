@@ -21,6 +21,7 @@
 <hr />
 <form asp-action="CharacterSheet">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
     <!--Start of Character Sheet Layout-->
     <div class="container">
 
@@ -480,7 +481,11 @@
     <input type="hidden" asp-for="CharacterId" />
     <input type="hidden" asp-for="Name" />
     <input type="hidden" asp-for="Race" />
+    <input type="hidden" asp-for="Race.RaceId" />
+    <input type="hidden" asp-for="Race.Name" />
     <input type="hidden" asp-for="Background" />
+    <input type="hidden" asp-for="Background.BackgroundId" />
+    <input type="hidden" asp-for="Background.Name" />
     <input type="hidden" asp-for="Level" />
     <input type="hidden" asp-for="Classes" />
     <input type="hidden" asp-for="AvailableHitDice" />
@@ -492,6 +497,7 @@
     <input type="hidden" asp-for="Charisma" />
     <input type="hidden" asp-for="Inventory" />
     <input type="hidden" asp-for="Inventory.InventoryId" />
+    <input type="hidden" asp-for="Features" />
     <!--Hidden Storage End-->
     <!--
     <div class="form-group">

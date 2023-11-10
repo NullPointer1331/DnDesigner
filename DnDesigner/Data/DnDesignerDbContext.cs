@@ -71,5 +71,7 @@ namespace DnDesigner.Data
         public DbSet<KnownSpell> KnownSpells { get; set; }
         public DbSet<Inventory> Inventory { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; } 
+        public DbSet<Models.Action> Actions { get; set; }
+        public DbSet<CharacterAction> CharacterActions { get; set; }
     }
 }

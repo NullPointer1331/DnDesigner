@@ -101,7 +101,7 @@ namespace DnDesigner.Models
     /// <summary>
     /// Shows which classes can learn which spells
     /// </summary>
-    [PrimaryKey(nameof(SpellId), nameof(SpellcastingId))]
+    [PrimaryKey("SpellId", "SpellcastingId")]
     public class LearnableSpell
     {
         /// <summary>
@@ -110,15 +110,11 @@ namespace DnDesigner.Models
         [ForeignKey("SpellId")]
         public Spell Spell { get; set; } = null!;
 
-        int SpellId { get; set; }
-
         /// <summary>
         /// A class that can learn a spell
         /// </summary>
         [ForeignKey("SpellcastingId")]
         public Spellcasting Spellcasting { get; set; } = null!;
-
-        int SpellcastingId { get; set; }
 
         /// <summary>
         /// Basic constructor
@@ -132,7 +128,7 @@ namespace DnDesigner.Models
         }
         private LearnableSpell() { }
     }
-    [PrimaryKey(nameof(CharacterId), nameof(SpellId))]
+    [PrimaryKey("CharacterId", "SpellcastingId", "SpellId")]
     public class KnownSpell
     {
         /// <summary>
@@ -141,17 +137,11 @@ namespace DnDesigner.Models
         [ForeignKey("CharacterId, SpellcastingId")]
         public CharacterSpellcasting Character { get; set; } = null!;
 
-        int CharacterId { get; set; }
-
-        int SpellcastingId { get; set; }
-
         /// <summary>
         /// The spell the character knows
         /// </summary>
         [ForeignKey("SpellId")]
         public Spell Spell { get; set; } = null!;
-
-        int SpellId { get; set; }
 
         /// <summary>
         /// Basic constructor

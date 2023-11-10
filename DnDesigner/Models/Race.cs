@@ -39,18 +39,12 @@ namespace DnDesigner.Models
 		public int Speed { get; set; }
 
 		/// <summary>
-		/// Any proficiencies provided by the race
-		/// </summary>
-		public List<RaceProficiency> Proficiencies { get; set; }
-
-		/// <summary>
 		/// Any features provided by the race
 		/// </summary>
 		public List<RaceFeature> Features { get; set; }
         #endregion
 
         public Race() {
-			Proficiencies = new List<RaceProficiency>();
             Features = new List<RaceFeature>();
 			Name = "";
 			Sourcebook = "";

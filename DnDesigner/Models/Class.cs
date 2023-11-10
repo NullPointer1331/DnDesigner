@@ -34,12 +34,6 @@ namespace DnDesigner.Models
         public List<ClassFeature> Features { get; set; }
 
 		/// <summary>
-		/// The proficiencies that can be learned 
-		/// through the class
-		/// </summary>
-		public List<ClassProficiency> Proficiencies { get; set; }
-
-		/// <summary>
 		/// The spellcasting abilities of the class, null if none
 		/// </summary>
 		[ForeignKey("SpellcastingId")]
@@ -53,7 +47,6 @@ namespace DnDesigner.Models
 
         public Class() {
 			Features = new List<ClassFeature>();
-            Proficiencies = new List<ClassProficiency>();
             Subclasses = new List<Subclass>();
 			Spellcasting = null;
 			Name = "";
@@ -101,6 +94,11 @@ namespace DnDesigner.Models
 		/// How many levels the character has in this class
 		/// </summary>
 		public int Level { get; set; }
+
+		/// <summary>
+		/// Was this the class the character started with?
+		/// </summary>
+		public bool InitialClass { get; set; }
 
         /// <summary>
         /// Basic constructor, sets class, character, and level

@@ -26,12 +26,6 @@ namespace DnDesigner.Models
         public string Sourcebook { get; set; }
 
         /// <summary>
-        /// The proficiencies this background gives
-        /// </summary>
-        public List<BackgroundProficiency> Proficiencies { get; set; }
-
-
-        /// <summary>
         /// The starting equipment this background gives
         /// </summary>
         [NotMapped]
@@ -58,7 +52,6 @@ namespace DnDesigner.Models
         /// </summary>
         public Background()
         {
-            Proficiencies = new List<BackgroundProficiency>();
             StarterEquipment = new List<Item>();
             Features = new List<BackgroundFeature>();
             Name = "";

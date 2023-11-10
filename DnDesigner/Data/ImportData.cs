@@ -468,18 +468,18 @@ namespace DnDesigner.Data
                 action.DamageType = ParseDamageType(item5E.dmgType);
                 if(item.Traits.Contains("Finesse") || item.Traits.Contains("Ranged"))
                 {
-                    action.AttackBonusCalculation = "proficiency + dexterity ";
+                    action.AttackBonusCalculation = "proficiency + dexteritymod ";
                     action.Damage = item5E.dmg1 + " + dexterity ";
                 }
                 else
                 {
-                    action.AttackBonusCalculation = $"proficiency + strength ";
+                    action.AttackBonusCalculation = $"proficiency + strengthmod ";
                     action.Damage = item5E.dmg1 + " + strength ";
                 }
                 if(!item5E.bonusWeapon.IsNullOrEmpty())
                 {
-                    action.AttackBonusCalculation += item5E.bonusWeapon;
-                    action.Damage += item5E.bonusWeapon;
+                    action.AttackBonusCalculation += "+ " + item5E.bonusWeapon;
+                    action.Damage += "+ " + item5E.bonusWeapon;
                 }
                 item.CharacterModifiers.Add(new AddAction(action));
             }

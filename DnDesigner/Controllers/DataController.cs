@@ -74,6 +74,7 @@ namespace DnDesigner.Controllers
             _context.Races.RemoveRange(_context.Races);
             _context.Classes.RemoveRange(_context.Classes);
             _context.Subclasses.RemoveRange(_context.Subclasses);
+            _context.Actions.RemoveRange(_context.Actions);
 
             List<Item> items = ImportData.ExtractItems();
             List<Proficiency> proficiencies = ImportData.ExtractProficiencies(items);
@@ -83,6 +84,15 @@ namespace DnDesigner.Controllers
             List<Class> classes = ImportData.ExtractClasses(proficiencies); 
             List<Subclass> subclasses = ImportData.ExtractSubclasses(classes); 
 
+            List<Models.Action> actions = new List<Models.Action>();
+            foreach (Item item in items)
+            {
+                foreach (AddAction action in item.CharacterModifiers)
+                {
+                    actions.Add(action.Action);
+                }
+            }
+
             _context.Proficiencies.AddRange(proficiencies);
             _context.Items.AddRange(items);
             _context.Spells.AddRange(spells);
@@ -90,6 +100,7 @@ namespace DnDesigner.Controllers
             _context.Races.AddRange(races);
             _context.Classes.AddRange(classes);
             _context.Subclasses.AddRange(subclasses);
+            _context.Actions.AddRange(actions);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
         }

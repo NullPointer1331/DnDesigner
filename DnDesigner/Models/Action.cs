@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DnDesigner.Models
 {
@@ -10,6 +11,7 @@ namespace DnDesigner.Models
         /// Primary Key
         /// </summary>
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ActionId { get; set; }
 
         /// <summary>

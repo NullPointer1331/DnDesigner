@@ -287,9 +287,13 @@ namespace DnDesigner.Models
             }
             else
             {
-                if (str.Contains("mod"))
+                if (str.ToLower().Contains("mod"))
                 {
                     return GetModifier(str.Substring(0, str.Length - 3));
+                }
+                else if (str.ToLower().Contains("prof"))
+                {
+                    return ProficiencyBonus;
                 }
                 else
                 {

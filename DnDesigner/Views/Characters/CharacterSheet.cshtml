@@ -170,6 +170,7 @@
                 </div>
             </div>
 
+            <!--Main Sheet Area-->
             <div class="col">
                 <!--Stat Cards-->
                 <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6">
@@ -488,10 +489,12 @@
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                                 <div class="ms-2 me-auto">
                                                     <div class="fw-bold">Language</div>
-                                                    @foreach (CharacterProficiency language in languageProf)
-                                                    {
-                                                        @language.Proficiency.Name
-                                                    }
+                                                    <ul class="list-group list-group-flush">
+                                                        @foreach (CharacterProficiency language in languageProf)
+                                                        {
+															<li class="list-group-item">@language.Proficiency.Name</li>
+                                                        }
+													</ul>
                                                 </div>
                                             </li>
                                         }
@@ -503,10 +506,12 @@
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                                 <div class="ms-2 me-auto">
                                                     <div class="fw-bold">Tool</div>
-                                                    @foreach (CharacterProficiency tool in toolProf)
-                                                    {
-                                                        @tool.Proficiency.Name
-                                                    }
+                                                    <ul class="list-group list-group-flush">
+                                                        @foreach (CharacterProficiency tool in toolProf)
+                                                        {
+															<li class="list-group-item">@tool.Proficiency.Name</li>
+                                                        }
+													</ul>
                                                 </div>
                                             </li>
                                         }
@@ -518,10 +523,12 @@
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                                 <div class="ms-2 me-auto">
                                                     <div class="fw-bold">Armor</div>
-                                                    @foreach (CharacterProficiency armor in armorProf)
-                                                    {
-                                                        @armor.Proficiency.Name
-                                                    }
+                                                    <ul class="list-group list-group-flush">
+                                                        @foreach (CharacterProficiency armor in armorProf)
+                                                        {
+															<li class="list-group-item">@armor.Proficiency.Name</li>
+														}
+													</ul>
                                                 </div>
                                             </li>
                                         }
@@ -533,10 +540,12 @@
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                                 <div class="ms-2 me-auto">
                                                     <div class="fw-bold">Weapon</div>
-                                                    @foreach (CharacterProficiency weapon in weaponProf)
-                                                    {
-                                                        @weapon.Proficiency.Name
-                                                    }
+                                                    <ul class="list-group list-group-flush">
+                                                        @foreach (CharacterProficiency weapon in weaponProf)
+                                                        {
+															<li class="list-group-item">@weapon.Proficiency.Name</li>
+														}
+													</ul>
                                                 </div>
                                             </li>
                                         }
@@ -548,10 +557,12 @@
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                                 <div class="ms-2 me-auto">
                                                     <div class="fw-bold">Instrument</div>
-											        @foreach (CharacterProficiency instrument in instrumentProf)
-											        {
-												        @instrument.Proficiency.Name
-											        }
+                                                    <ul class="list-group list-group-flush">
+											            @foreach (CharacterProficiency instrument in instrumentProf)
+											            {
+															<li class="list-group-item">@instrument.Proficiency.Name</li>
+														}
+													</ul>
                                                 </div>
                                             </li>
                                         }

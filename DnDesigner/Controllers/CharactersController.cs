@@ -108,8 +108,11 @@ namespace DnDesigner.Controllers
                 .Include(c => c.Background)
                 .Include(c => c.Classes)
                 .ThenInclude(cc => cc.Class)
+                .Include(c => c.Classes)
+                .ThenInclude(cc => cc.Subclass)
                 .Include(c => c.Proficiencies)
                 .ThenInclude(cp => cp.Proficiency)
+                .Include(c => c.Features)
                 .Include(c => c.Inventory)
                 .FirstOrDefaultAsync();
 
@@ -132,8 +135,6 @@ namespace DnDesigner.Controllers
             {
                 return NotFound();
             }
-            ModelState.Remove("Race");
-            ModelState.Remove("Background");
             if (ModelState.IsValid)
             {
                 try

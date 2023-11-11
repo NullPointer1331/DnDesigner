@@ -389,6 +389,16 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
+        /// Gets a list of CharacterProficiencies by type
+        /// </summary>
+        /// <param name="type">The type of proficiency to get</param>
+        /// <returns>A list of character proficiencies</returns>
+        public List<CharacterProficiency> GetProficienciesByType(string type)
+        {
+            return Proficiencies.Where(t => t.Proficiency.Type == type).ToList();
+        }
+
+        /// <summary>
         /// Gets all CharacterProficiencies tagged as skills
         /// </summary>
         /// <returns>A list of CharacterProficiencies</returns>
@@ -408,14 +418,6 @@ namespace DnDesigner.Models
             return saves;
         }
 
-        /// <summary>
-        /// TODO: Remove this method
-        /// </summary>
-        /// <returns>All features the character meets the required level for</returns>
-        public List<CharacterFeature> GetActiveFeatures()
-        {
-            return Features;
-        }
 
         public void SetActiveFeatures()
         {

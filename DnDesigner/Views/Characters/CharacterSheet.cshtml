@@ -155,7 +155,14 @@
                 <div class="collapse collapse-horizontal" id="saves">
                     <ul class="list-group" style="width: 12rem;">
                         @foreach(CharacterProficiency save in Model.GetSaves()) {
-                            <li class="list-group-item">@save.GetRollBonus() @save.Proficiency.Name</li>
+                            if(save.ProficiencyLevel == 1)
+                            {
+                                <li class="list-group-item">@save.GetRollBonus() @save.Proficiency.Name P</li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item">@save.GetRollBonus() @save.Proficiency.Name</li>
+                            }
                         }
                     </ul>
                 </div>
@@ -164,7 +171,18 @@
                     <ul class="list-group" style="width: 12rem;">
                         @foreach(CharacterProficiency skill in Model.GetSkills())
                         {
-                            <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name</li>
+                            if (skill.ProficiencyLevel == 1)
+                            {
+                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name P</li>
+                            }
+                            else if (skill.ProficiencyLevel == 2)
+                            {
+                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name E</li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name</li>
+                            }                            
                         }
                     </ul>
                 </div>

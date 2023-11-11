@@ -452,7 +452,6 @@
                         </h2>
                         <div id="panelsStayOpen-Features" class="accordion-collapse collapse">
                             <div class="accordion-body">
-                                <strong>Placeholder</strong>
                                 <div class="accordion" id="Features">
                                     @foreach (Feature features in Model.Features)
                                     {
@@ -461,7 +460,7 @@
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                                         data-bs-target="#panelsStayOpen-@features.FeatureId" aria-expanded="false"
                                                         aria-controls="panelsStayOpen-@features.FeatureId">
-                                                    @features.Name, Level:@features.Level, @features.Source 
+                                                    @features.Name, Level: @features.Level, @features.Source 
                                                 </button>
                                             </h2>
                                             <div id="panelsStayOpen-@features.FeatureId" class="accordion-collapse collapse">

@@ -479,52 +479,83 @@
                             </button>
                         </h2>
                         <div id="panelsStayOpen-Languages" class="accordion-collapse collapse">
-                            <div class="accordion-body"><ol class="list-group list-group">
-                                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                                        <div class="ms-2 me-auto">
-                                            <div class="fw-bold">Language</div>
-                                            @foreach (CharacterProficiency language in Model.GetProficienciesByType("language"))
-                                            {
-                                                @language.Proficiency.Name
-                                            }
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                                        <div class="ms-2 me-auto">
-                                            <div class="fw-bold">Tool</div>
-                                            @foreach (CharacterProficiency tool in Model.GetProficienciesByType("tool"))
-                                            {
-                                                @tool.Proficiency.Name
-                                            }
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                                        <div class="ms-2 me-auto">
-                                            <div class="fw-bold">Armor</div>
-                                            @foreach (CharacterProficiency armor in Model.GetProficienciesByType("armor"))
-                                            {
-                                                @armor.Proficiency.Name
-                                            }
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                                        <div class="ms-2 me-auto">
-                                            <div class="fw-bold">Weapon</div>
-                                            @foreach (CharacterProficiency weapon in Model.GetProficienciesByType("weapon"))
-                                            {
-                                                @weapon.Proficiency.Name
-                                            }
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                                        <div class="ms-2 me-auto">
-                                            <div class="fw-bold">Instrument</div>
-                                            @foreach (CharacterProficiency instrument in Model.GetProficienciesByType("instrument"))
-                                            {
-                                                @instrument.Proficiency.Name
-                                            }
-                                        </div>
-                                    </li>
+                            <div class="accordion-body">
+                                <ol class="list-group list-group">
+                                    @{
+                                        List<CharacterProficiency> languageProf = Model.GetProficienciesByType("language");
+                                        if (languageProf.Count > 0)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">Language</div>
+                                                    @foreach (CharacterProficiency language in languageProf)
+                                                    {
+                                                        @language.Proficiency.Name
+                                                    }
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    @{
+                                        List<CharacterProficiency> toolProf = Model.GetProficienciesByType("tool");
+                                        if (toolProf.Count > 0)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">Tool</div>
+                                                    @foreach (CharacterProficiency tool in toolProf)
+                                                    {
+                                                        @tool.Proficiency.Name
+                                                    }
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    @{
+                                        List<CharacterProficiency> armorProf = Model.GetProficienciesByType("armor");
+                                        if (armorProf.Count > 0)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">Armor</div>
+                                                    @foreach (CharacterProficiency armor in armorProf)
+                                                    {
+                                                        @armor.Proficiency.Name
+                                                    }
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    @{
+                                        List<CharacterProficiency> weaponProf = Model.GetProficienciesByType("weapon");
+                                        if (weaponProf.Count > 0)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">Weapon</div>
+                                                    @foreach (CharacterProficiency weapon in weaponProf)
+                                                    {
+                                                        @weapon.Proficiency.Name
+                                                    }
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    @{
+                                        List<CharacterProficiency> instrumentProf = Model.GetProficienciesByType("instrument");
+                                        if (instrumentProf.Count > 0) 
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">Instrument</div>
+											        @foreach (CharacterProficiency instrument in instrumentProf)
+											        {
+												        @instrument.Proficiency.Name
+											        }
+                                                </div>
+                                            </li>
+                                        }
+                                    }
                                 </ol>
                             </div>
                         </div>

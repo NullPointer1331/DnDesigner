@@ -2,6 +2,7 @@
 using System.Text.Json;
 using DnDesigner.Models;
 using Microsoft.IdentityModel.Tokens;
+using System;
 
 namespace DnDesigner.Data
 {
@@ -505,6 +506,7 @@ namespace DnDesigner.Data
                 }
             }
             race.Description = CleanText(race.Description);
+            race.Description = race.Description.Replace("\"", "");
             RaceFeature statBonuses = new RaceFeature(race, "Racial Stat Boosts", "", 0);
             race.StatBonuses = "";
             if (race5E.ability != null)
@@ -648,10 +650,9 @@ namespace DnDesigner.Data
                             background.Description += $"{item.name} ";
                             if (item.entry != null)
                             {
-                                background.Description += $"{item.entry} ";
+                                background.Description += $"{item.entry}. ";
                             }
                         }
-                        background.Description += ". ";
                     }
                     if (entry.entries != null)
                     {
@@ -659,8 +660,8 @@ namespace DnDesigner.Data
                         {
                             background.Description += $"{subEntry} ";
                         }
+                        background.Description += ". ";
                     }
-                    background.Description += ". ";
                 }
             }
             background.Description = CleanText(background.Description);
@@ -901,22 +902,28 @@ namespace DnDesigner.Data
             {
                 return "";
             }
-            text = text.Replace("}", "");
-            text = text.Replace("{", "");
-            text = text.Replace("[", "");
-            text = text.Replace("]", "");
             string[] textList = text.Split(" ");
             string cleanText = "";
             foreach (string word in textList)
             {
-                if(word.Contains("|"))
+                string mutableword = word;
+                if (mutableword.IndexOf("\"") != mutableword.LastIndexOf("\""))
                 {
-                    cleanText += word.Substring(0, word.IndexOf("|") - 1) + " ";
+                    mutableword = string.Concat(mutableword.AsSpan(0, mutableword.IndexOf("\"")), " ", mutableword.AsSpan(mutableword.LastIndexOf("\"") + 1));
                 }
-                else if (!word.Contains("@"))
+                if (mutableword.Contains("|"))
                 {
-                    cleanText += $"{word} ";
+                    mutableword = mutableword.Substring(0, mutableword.IndexOf("|"));
                 }
+                if (!mutableword.Contains("@"))
+                {
+                    cleanText += $"{mutableword} ";
+                }
+            }
+            string[] bannedStrings = { "{", "}", "[", "]", " . ", " : ", "col-1", "col-2", "text-center", "\u2014", "\n", "\r", "\\" };
+            foreach (string bannedString in bannedStrings)
+            {
+                cleanText = cleanText.Replace(bannedString, "");
             }
             return cleanText;
         }

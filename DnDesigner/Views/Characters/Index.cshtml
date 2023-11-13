@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<DnDesigner.Models.Character>
+@inject IDBHelper DBHelper
 
 @{
     ViewData["Title"] = "Characters";
@@ -48,9 +49,6 @@
                         @Html.DisplayFor(modelItem => Class.Subclass.Name)
                     }
                 }
-            </td>
-            <td>
-                @User.Identity.Name
             </td>
             <td>
                 <a asp-action="CharacterSheet" asp-route-id="@item.CharacterId">Character Sheet</a> |

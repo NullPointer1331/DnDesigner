@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using DnDesigner.Data;
 
 namespace DnDesigner.Models
 {
@@ -8,9 +9,9 @@ namespace DnDesigner.Models
     /// </summary>
     public class DBHelper : IDBHelper
     {
-        private readonly DbContext _context;
+        private readonly DnDesignerDbContext _context;
 
-        public DBHelper(DbContext context)
+        public DBHelper(DnDesignerDbContext context)
         {
             _context = context;
         }

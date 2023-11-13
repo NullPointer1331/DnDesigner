@@ -125,11 +125,6 @@ namespace DnDesigner.Models
         {
             return await _context.Set<Subclass>().ToListAsync();
         }
-
-        public async Task<string> GetUserName(string id)
-        {
-            return (await _context.FindAsync<IdentityUser>(id)).UserName;
-        }
     }
 }
 

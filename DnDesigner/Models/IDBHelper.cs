@@ -27,6 +27,5 @@
         Task<List<Spellcasting>> GetAllSpellcastings();
         Task<Subclass> GetSubclass(int id);
         Task<List<Subclass>> GetAllSubclasses();
-
     }
 }

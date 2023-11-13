@@ -1,4 +1,5 @@
 ﻿@model CreateCharacterViewModel
+@inject IDBHelper DBHelper
 
 @{
     ViewData["Title"] = "Create a Character";
@@ -84,7 +85,6 @@
                     <div id="collapseProficiencies" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <select>
-                                @* pseudocode *@
                                 @foreach (var characterProficiencies in await DBHelper.GetAllProficiencies())
                                 {
                                     <option value="@characterProficiencies.ProficiencyId">@characterProficiencies.Name</option>

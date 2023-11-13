@@ -85,10 +85,10 @@
                         <div class="accordion-body">
                             <select>
                                 @* pseudocode *@
-                                @* @foreach(var characterProficiencies in GetDBProficiencies())
+                                @foreach (var characterProficiencies in await DBHelper.GetAllProficiencies())
                                 {
-                                <option value="@characterProficiencies.ProficiencyId">@characterProficiencies.Name</option>
-                                }) *@
+                                    <option value="@characterProficiencies.ProficiencyId">@characterProficiencies.Name</option>
+                                })
                             </select>
                         </div>
                     </div>

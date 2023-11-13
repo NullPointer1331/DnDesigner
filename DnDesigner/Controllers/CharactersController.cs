@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DnDesigner.Data;
 using DnDesigner.Models;
+using System.Security.Claims;
 
 namespace DnDesigner.Controllers
 {
@@ -64,45 +65,52 @@ namespace DnDesigner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateCharacterViewModel character)
         {
-            if (ModelState.IsValid)
+            if (User.Identity == null)
             {
-                Class @class = await _context.Classes
-                    .Where(c => c.ClassId == character.ClassId)
-                    .Include(c => c.Proficiencies)
-                    .ThenInclude(cp => cp.Proficiency)
-                    .Include(c => c.Spellcasting)
-                    .Include(c => c.Features)
-                    .FirstOrDefaultAsync();
-                Background background = await _context.Backgrounds
-                    .Where(b => b.BackgroundId == character.BackgroundId)
-                    .Include(b => b.Proficiencies)
-                    .ThenInclude(bp => bp.Proficiency)
-                    .Include(b => b.Features)
-                    .FirstOrDefaultAsync();
-                Race race = await _context.Races
-                    .Where(r => r.RaceId == character.RaceId)
-                    .Include(r => r.Proficiencies)
-                    .ThenInclude(rp => rp.Proficiency)
-                    .Include(r => r.Features)
-                    .FirstOrDefaultAsync();
+                return Problem("User.Identity is null.");
+            } else
+            {
 
-                // This is to make sure all characters have all saving throws and skills even if they aren't proficient in them
-                // There's probably a better way to do this
-                List<Proficiency> defaultProficiencies = await _context.Proficiencies
-                    .Where(p => p.Type == "saving throw" || p.Type == "skill")
-                    .ToListAsync(); 
+                if (ModelState.IsValid)
+                {
+                    Class @class = await _context.Classes
+                        .Where(c => c.ClassId == character.ClassId)
+                        .Include(c => c.Proficiencies)
+                        .ThenInclude(cp => cp.Proficiency)
+                        .Include(c => c.Spellcasting)
+                        .Include(c => c.Features)
+                        .FirstOrDefaultAsync();
+                    Background background = await _context.Backgrounds
+                        .Where(b => b.BackgroundId == character.BackgroundId)
+                        .Include(b => b.Proficiencies)
+                        .ThenInclude(bp => bp.Proficiency)
+                        .Include(b => b.Features)
+                        .FirstOrDefaultAsync();
+                    Race race = await _context.Races
+                        .Where(r => r.RaceId == character.RaceId)
+                        .Include(r => r.Proficiencies)
+                        .ThenInclude(rp => rp.Proficiency)
+                        .Include(r => r.Features)
+                        .FirstOrDefaultAsync();
+
+                    // This is to make sure all characters have all saving throws and skills even if they aren't proficient in them
+                    // There's probably a better way to do this
+                    List<Proficiency> defaultProficiencies = await _context.Proficiencies
+                        .Where(p => p.Type == "saving throw" || p.Type == "skill")
+                        .ToListAsync(); 
                 
-                character.MaxHealth = @class.HitDie + (character.Constitution - 10) / 2;
-                Character newCharacter = new Character(character, @class, race, background, defaultProficiencies);
+                    character.MaxHealth = @class.HitDie + (character.Constitution - 10) / 2;
+                    Character newCharacter = new Character(character, @class, race, background, defaultProficiencies, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                _context.Add(newCharacter);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    _context.Add(newCharacter);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                character.AvailableClasses = await _context.Classes.ToListAsync();
+                character.AvailableBackgrounds = await _context.Backgrounds.ToListAsync();
+                character.AvailableRaces = await _context.Races.ToListAsync();
+                return View(character);
             }
-            character.AvailableClasses = await _context.Classes.ToListAsync();
-            character.AvailableBackgrounds = await _context.Backgrounds.ToListAsync();
-            character.AvailableRaces = await _context.Races.ToListAsync();
-            return View(character);
         }
 
         // GET: Characters/Edit/5

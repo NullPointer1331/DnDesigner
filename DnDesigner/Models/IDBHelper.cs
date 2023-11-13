@@ -8,7 +8,7 @@
         Task<Background> GetBackground(int id);
         Task<List<Background>> GetAllBackgrounds();
         Task<Character> GetCharacter(int id);
-        Task<List<Character>> GetAllCharacters();
+        Task<List<Character>> GetAllCharacters(string userId);
         Task<Class> GetClass(int id);
         Task<List<Class>> GetAllClasses();
         Task<Feature> GetFeature(int id);

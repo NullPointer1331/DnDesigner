@@ -50,6 +50,9 @@
                 }
             </td>
             <td>
+                @User.Identity.Name
+            </td>
+            <td>
                 <a asp-action="CharacterSheet" asp-route-id="@item.CharacterId">Character Sheet</a> |
                 <a asp-action="Details" asp-route-id="@item.CharacterId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.CharacterId">Delete</a>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace DnDesigner.Models
 {
@@ -29,9 +30,9 @@ namespace DnDesigner.Models
             return await _context.FindAsync<Character>(id);
         }
 
-        public async Task<List<Character>> GetAllCharacters()
+        public async Task<List<Character>> GetAllCharacters(string userId)
         {
-            return await _context.Set<Character>().ToListAsync();
+            return await _context.Set<Character>().Where(r => r.UserId.Equals(userId)).ToListAsync();
         }
 
         public async Task<Class> GetClass(int id)
@@ -124,6 +125,10 @@ namespace DnDesigner.Models
             return await _context.Set<Subclass>().ToListAsync();
         }
 
+        public async Task<string> GetUserName(string id)
+        {
+            return (await _context.FindAsync<IdentityUser>(id)).UserName;
+        }
     }
 }
 

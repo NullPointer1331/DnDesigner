@@ -2,7 +2,7 @@
 using System.Text.Json;
 using DnDesigner.Models;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Build.Evaluation;
+using System;
 
 namespace DnDesigner.Data
 {
@@ -407,13 +407,21 @@ namespace DnDesigner.Data
             {
                 item.Attuneable = false;
             }
+            if(item5E.weaponCategory == "simple")
+            {
+                item.Traits = "Simple ";
+            }
+            else if(item5E.weaponCategory == "martial")
+            {
+                item.Traits = "Martial ";
+            }
             if(item5E.wondrous)
             {
-                item.Traits = "WI ";
+                item.Traits += "WI ";
             }
             else
             {
-                item.Traits = $"{item5E.type} ";
+                item.Traits += $"{item5E.type} ";
             }
             if (item5E.property != null)
             {
@@ -429,7 +437,7 @@ namespace DnDesigner.Data
                     }
                 }
             }
-            item.Traits = DecodeTraits(item.Traits);
+            item.Traits = ParseTraits(item.Traits);
             item.Equipable = 0;
             if (item.Traits.Contains("Armor"))
             {
@@ -450,6 +458,31 @@ namespace DnDesigner.Data
             else if (item.Traits.Contains("Shield"))
             {
                 item.Equipable = 3;
+            }
+            if(item5E.dmg1 != null)
+            {
+                Models.Action action = new Models.Action();
+                action.Name = item.Name;
+                action.Description = item.Description;
+                action.ActionTime = "1 action";
+                action.Range = (item5E.range ?? "5") + " feet";
+                action.DamageType = ParseDamageType(item5E.dmgType);
+                if(item.Traits.Contains("Finesse") || item.Traits.Contains("Ranged"))
+                {
+                    action.AttackBonusCalculation = "proficiency + dexteritymod ";
+                    action.Damage = item5E.dmg1 + " + dexterity ";
+                }
+                else
+                {
+                    action.AttackBonusCalculation = $"proficiency + strengthmod ";
+                    action.Damage = item5E.dmg1 + " + strength ";
+                }
+                if(!item5E.bonusWeapon.IsNullOrEmpty())
+                {
+                    action.AttackBonusCalculation += "+ " + item5E.bonusWeapon;
+                    action.Damage += "+ " + item5E.bonusWeapon;
+                }
+                item.CharacterModifiers.Add(new AddAction(action));
             }
             return item;
         }
@@ -473,6 +506,7 @@ namespace DnDesigner.Data
                 }
             }
             race.Description = CleanText(race.Description);
+            race.Description = race.Description.Replace("\"", "");
             RaceFeature statBonuses = new RaceFeature(race, "Racial Stat Boosts", "", 0);
             race.StatBonuses = "";
             if (race5E.ability != null)
@@ -616,10 +650,9 @@ namespace DnDesigner.Data
                             background.Description += $"{item.name} ";
                             if (item.entry != null)
                             {
-                                background.Description += $"{item.entry} ";
+                                background.Description += $"{item.entry}. ";
                             }
                         }
-                        background.Description += ". ";
                     }
                     if (entry.entries != null)
                     {
@@ -627,8 +660,8 @@ namespace DnDesigner.Data
                         {
                             background.Description += $"{subEntry} ";
                         }
+                        background.Description += ". ";
                     }
-                    background.Description += ". ";
                 }
             }
             background.Description = CleanText(background.Description);
@@ -869,22 +902,28 @@ namespace DnDesigner.Data
             {
                 return "";
             }
-            text = text.Replace("}", "");
-            text = text.Replace("{", "");
-            text = text.Replace("[", "");
-            text = text.Replace("]", "");
             string[] textList = text.Split(" ");
             string cleanText = "";
             foreach (string word in textList)
             {
-                if(word.Contains("|"))
+                string mutableword = word;
+                if (mutableword.IndexOf("\"") != mutableword.LastIndexOf("\""))
                 {
-                    cleanText += word.Substring(0, word.IndexOf("|") - 1) + " ";
+                    mutableword = string.Concat(mutableword.AsSpan(0, mutableword.IndexOf("\"")), " ", mutableword.AsSpan(mutableword.LastIndexOf("\"") + 1));
                 }
-                else if (!word.Contains("@"))
+                if (mutableword.Contains("|"))
                 {
-                    cleanText += $"{word} ";
+                    mutableword = mutableword.Substring(0, mutableword.IndexOf("|"));
                 }
+                if (!mutableword.Contains("@"))
+                {
+                    cleanText += $"{mutableword} ";
+                }
+            }
+            string[] bannedStrings = { "{", "}", "[", "]", " . ", " : ", "col-1", "col-2", "text-center", "\u2014", "\n", "\r", "\\" };
+            foreach (string bannedString in bannedStrings)
+            {
+                cleanText = cleanText.Replace(bannedString, "");
             }
             return cleanText;
         }
@@ -1071,7 +1110,7 @@ namespace DnDesigner.Data
         {
             return proficiencies.Where(p => p.Name.ToLower().Contains(proficiencyName.Trim().ToLower())).FirstOrDefault();
         }
-        public static string DecodeTraits(string traits)
+        public static string ParseTraits(string traits)
         {
             string allTraits = "";
             if (traits != null)
@@ -1118,7 +1157,7 @@ namespace DnDesigner.Data
                 {"VEH", "Vehicle (land)" },
                 {"MNT", "Mount" },
                 {"WD", "Wand" },
-                {"WI", "Wondrous Item" }
+                {"WI", "Wondrous Item" },
             };
                 if (traitList.Length > 0)
                 {
@@ -1138,6 +1177,25 @@ namespace DnDesigner.Data
                 { allTraits += trait; }
             }
             return allTraits;
+        }
+        public static string ParseDamageType(string damageType)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>
+            {
+                {"A", "Acid" },
+                {"B", "Bludgeoning" },
+                {"C", "Cold" },
+                {"F", "Fire" },
+                {"O", "Force" },
+                {"L", "Lightning" },
+                {"N", "Necrotic" },
+                {"P", "Piercing" },
+                {"PS", "Psychic" },
+                {"R", "Radiant" },
+                {"S", "Slashing" },
+                {"T", "Thunder" }
+            };
+            return dict[damageType];
         }
         #endregion
     }

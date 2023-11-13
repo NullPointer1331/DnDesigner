@@ -21,6 +21,7 @@
 <hr />
 <form asp-action="CharacterSheet">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
     <!--Start of Character Sheet Layout-->
     <div class="container">
 
@@ -623,6 +624,7 @@
     <input type="hidden" asp-for="Charisma" />
     <input type="hidden" asp-for="Inventory" />
     <input type="hidden" asp-for="Inventory.InventoryId" />
+    <input type="hidden" asp-for="Features" />
     <!--Hidden Storage End-->
     <!--
     <div class="form-group">

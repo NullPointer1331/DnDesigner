@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using DnDesigner.Models;
 using System.Text.Json;
-using NuGet.Protocol;
 
 namespace DnDesigner.Data
 {
@@ -48,6 +47,12 @@ namespace DnDesigner.Data
                .HasConversion(
                    v => JsonSerializer.Serialize(v, options),
                    v => JsonSerializer.Deserialize<List<CharacterModifier>>(v, options));
+            builder
+                .Entity<Item>()
+                .Property(e => e.CharacterModifiers)
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, options),
+                    v => JsonSerializer.Deserialize<List<CharacterModifier>>(v, options));
             base.OnModelCreating(builder);
         }
         public DbSet<Proficiency> Proficiencies { get; set; }
@@ -71,5 +76,7 @@ namespace DnDesigner.Data
         public DbSet<KnownSpell> KnownSpells { get; set; }
         public DbSet<Inventory> Inventory { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; } 
+        public DbSet<Models.Action> Actions { get; set; }
+        public DbSet<CharacterAction> CharacterActions { get; set; }
     }
 }

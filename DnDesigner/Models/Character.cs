@@ -172,6 +172,11 @@ namespace DnDesigner.Models
         public List<CharacterFeature> Features { get; set; }
 
         /// <summary>
+        /// A list of the character's actions
+        /// </summary>
+        public List<CharacterAction> Actions { get; set; }
+
+        /// <summary>
         /// Contains the character's inventory information
         /// </summary>
         public Inventory Inventory { get; set; }
@@ -182,6 +187,8 @@ namespace DnDesigner.Models
             Proficiencies = new List<CharacterProficiency>();
             Classes = new List<CharacterClass>();
             Spellcasting = new List<CharacterSpellcasting>();
+            Features = new List<CharacterFeature>();
+            Actions = new List<CharacterAction>();
             Inventory = new Inventory(this);
             Name = "Unnamed Character";
             Resistances = "";
@@ -196,6 +203,7 @@ namespace DnDesigner.Models
             Proficiencies = new List<CharacterProficiency>();
             Spellcasting = new List<CharacterSpellcasting>();
             Features = new List<CharacterFeature>();
+            Actions = new List<CharacterAction>();
             Inventory = new Inventory(this);
             Background = background;
             Race = race;
@@ -227,6 +235,73 @@ namespace DnDesigner.Models
         }
 
         #region methods
+        /// <summary>
+        /// Calculates a value based on a formula
+        /// </summary>
+        /// <param name="formula">The formula to use, 
+        /// using numbers, operators, attributes,
+        /// and attribute modifiers separated by spaces, 
+        /// for example dex + 10 - strmod</param>
+        /// <returns>The result of the formula, throws an exception if the formula is invalid</returns>
+        public int Calculate(string formula)
+        {
+            string[] parts = formula.Split(' ');
+            int value = ParseValue(parts[0]);
+            for (int i = 1; i < parts.Length; i += 2)
+            {
+                if (parts[i] == "+")
+                {
+                    value += ParseValue(parts[i + 1]);
+                }
+                else if (parts[i] == "-")
+                {
+                    value -= ParseValue(parts[i + 1]);
+                }
+                else if (parts[i] == "*")
+                {
+                    value *= ParseValue(parts[i + 1]);
+                }
+                else if (parts[i] == "/")
+                {
+                    value /= ParseValue(parts[i + 1]);
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid formula", formula);
+                }
+            }
+            return value;
+        } 
+
+        /// <summary>
+        /// Attempts to translate a string into a number, 
+        /// either by getting the value of an attribute, attribute modifier or by parsing the string
+        /// </summary>
+        /// <param name="str">The string to parse</param>
+        /// <returns>The translated value</returns>
+        public int ParseValue(string str)
+        {
+            if(int.TryParse(str, out int value))
+            {
+                return value;
+            }
+            else
+            {
+                if (str.ToLower().Contains("mod"))
+                {
+                    return GetModifier(str.Substring(0, str.Length - 3));
+                }
+                else if (str.ToLower().Contains("prof"))
+                {
+                    return ProficiencyBonus;
+                }
+                else
+                {
+                    return GetAttribute(str);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the score of the specified attribute
         /// </summary>
@@ -318,6 +393,11 @@ namespace DnDesigner.Models
         public void ModifyAttribute(string name, int value)
         {
             SetAttribute(name, value + GetAttribute(name));
+        }
+
+        public CharacterAction? GetAction(string name)
+        {
+            return Actions.Where(a => a.Action.Name == name).FirstOrDefault();
         }
 
         /// <summary>
@@ -436,7 +516,7 @@ namespace DnDesigner.Models
             //Remove features that shouldn't be active
             foreach (CharacterFeature feature in Features.Where(f => f.Level > Level))
             {
-                feature.Remove();
+                feature.RemoveEffect();
                 Features.Remove(feature);
             }
 
@@ -447,7 +527,7 @@ namespace DnDesigner.Models
                 {
                     CharacterFeature characterFeature = new CharacterFeature(this, feature);
                     Features.Add(characterFeature);
-                    characterFeature.Apply();
+                    characterFeature.ApplyEffect();
                 }
             }
 

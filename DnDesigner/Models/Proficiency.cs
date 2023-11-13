@@ -50,7 +50,7 @@ namespace DnDesigner.Models
     /// <summary>
     /// Represents a character's proficiency in a saving, throw skill, or other proficiency
     /// </summary>
-    [PrimaryKey(nameof(CharacterId), nameof(ProficiencyId))]
+    [PrimaryKey("CharacterId", "ProficiencyId")]
     public class CharacterProficiency
     {
         /// <summary>
@@ -59,19 +59,11 @@ namespace DnDesigner.Models
         [ForeignKey("CharacterId")]
         public Character Character { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        public int CharacterId { get; set; }
-
         /// <summary>
         /// The proficiency this is referencing
         /// </summary>
         [ForeignKey("ProficiencyId")]
         public Proficiency Proficiency { get; set; }
-
-        [Key]
-        [Column(Order = 2)]
-        public int ProficiencyId { get; set; }
 
         /// <summary>
         /// A representation of how proficient the character is in this skill or saving throw.
@@ -114,10 +106,7 @@ namespace DnDesigner.Models
             CheckBonus = checkBonus;
         }
 
-        public CharacterProficiency(int characterId, int proficiencyId) {
-            CharacterId = characterId;
-            ProficiencyId = proficiencyId;
-        }
+        private CharacterProficiency() { }
 
         /// <summary>
         /// Calculates the character's bonus to rolls with this proficiency 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.InteropServices;
 
 namespace DnDesigner.Models
 {
@@ -56,17 +55,38 @@ namespace DnDesigner.Models
         public bool Attuneable { get; set; }
 
         /// <summary>
+        /// The rarity of the item
+        /// Range guide: 0 = nonmagical, 1 = common, 2 = uncommon, 3 = rare
+        /// 4 = very rare, 5 = legendary, 6 = artifact, -1 = unknown
+        /// </summary>
+        [Range(-1, 6)]
+        public int Rarity { get; set; }
+
+        /// <summary>
         /// The items traits
         /// </summary>
         public string Traits { get; set; } = null!;
+
+        /// <summary>
+        /// The effects the item has on the character
+        /// </summary>
+        [NotMapped]
+        public List<CharacterModifier> CharacterModifiers { get; set; } = null!;
         #endregion
 
+        public Item() {
+            CharacterModifiers = new List<CharacterModifier>();
+            Name = "";
+            Sourcebook = "";
+            Description = "";
+            Traits = "";
+        }
     }
 
     /// <summary>
     /// Represents a single item in an inventory
     /// </summary>
-    [PrimaryKey(nameof(ItemId), nameof(InventoryId))]
+    [PrimaryKey("ItemId", "InventoryId")]
     public class InventoryItem
     {
         /// <summary>
@@ -75,15 +95,11 @@ namespace DnDesigner.Models
         [ForeignKey("ItemId")]
         public Item Item { get; set; }
 
-        public int ItemId { get; set; }
-
         /// <summary>
         /// The inventory the item is in
         /// </summary>
         [ForeignKey("InventoryId")]
         public Inventory Inventory { get; set; }
-
-        public int InventoryId { get; set; }
 
         /// <summary>
         /// How many of the item are in the inventory
@@ -109,6 +125,7 @@ namespace DnDesigner.Models
         /// Is the item attuned
         /// </summary>
         public bool Attuned { get; set; }
+
         public InventoryItem(Item item, Inventory inventory, int quantity)
         {
             Item = item;
@@ -117,5 +134,20 @@ namespace DnDesigner.Models
             Attuned = false;
         }
         private InventoryItem() { }
+
+        public void ApplyEffect()
+        {
+            foreach (CharacterModifier modifier in Item.CharacterModifiers)
+            {
+                modifier.ApplyEffect(Inventory.Character);
+            }
+        }
+        public void RemoveEffect()
+        {
+            foreach (CharacterModifier modifier in Item.CharacterModifiers)
+            {
+                modifier.RemoveEffect(Inventory.Character);
+            }
+        }
     }
 }

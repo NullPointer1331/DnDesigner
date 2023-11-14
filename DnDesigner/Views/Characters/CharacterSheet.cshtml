@@ -21,6 +21,7 @@
 <hr />
 <form asp-action="CharacterSheet">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
     <!--Start of Character Sheet Layout-->
     <div class="container">
 
@@ -155,7 +156,14 @@
                 <div class="collapse collapse-horizontal" id="saves">
                     <ul class="list-group" style="width: 12rem;">
                         @foreach(CharacterProficiency save in Model.GetSaves()) {
-                            <li class="list-group-item">@save.GetRollBonus() @save.Proficiency.Name</li>
+                            if(save.ProficiencyLevel == 1)
+                            {
+                                <li class="list-group-item">@save.GetRollBonus() @save.Proficiency.Name P</li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item">@save.GetRollBonus() @save.Proficiency.Name</li>
+                            }
                         }
                     </ul>
                 </div>
@@ -164,12 +172,24 @@
                     <ul class="list-group" style="width: 12rem;">
                         @foreach(CharacterProficiency skill in Model.GetSkills())
                         {
-                            <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name</li>
+                            if (skill.ProficiencyLevel == 1)
+                            {
+                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name P</li>
+                            }
+                            else if (skill.ProficiencyLevel == 2)
+                            {
+                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name E</li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name</li>
+                            }                            
                         }
                     </ul>
                 </div>
             </div>
 
+            <!--Main Sheet Area-->
             <div class="col">
                 <!--Stat Cards-->
                 <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6">
@@ -304,6 +324,7 @@
 
                 <!--Character Accordion-->
                 <div class="accordion" id="CharacterSheet">
+                    <!--Action Area-->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -318,6 +339,7 @@
                             </div>
                         </div>
                     </div>
+                    <!--Spell Area-->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -424,6 +446,7 @@
                             </div>
                         </div>
                     </div>
+                    <!--Feature Area-->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -433,10 +456,29 @@
                         </h2>
                         <div id="panelsStayOpen-Features" class="accordion-collapse collapse">
                             <div class="accordion-body">
-                                <strong>Placeholder for features</strong>
+                                <div class="accordion" id="Features">
+                                    @foreach (Feature features in Model.Features)
+                                    {
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                        data-bs-target="#panelsStayOpen-@features.FeatureId" aria-expanded="false"
+                                                        aria-controls="panelsStayOpen-@features.FeatureId">
+                                                    @features.Name, Level: @features.Level, @features.Source 
+                                                </button>
+                                            </h2>
+                                            <div id="panelsStayOpen-@features.FeatureId" class="accordion-collapse collapse">
+                                                <div class="accordion-body">
+                                                    <strong>@features.Description</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+								</div>
                             </div>
                         </div>
                     </div>
+                    <!--Inventory Area-->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -451,23 +493,108 @@
                             </div>
                         </div>
                     </div>
+                    <!--Proficiencies Area-->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#panelsStayOpen-Languages" aria-expanded="false"
                                     aria-controls="panelsStayOpen-Languages">
-                                Languages
+                                Proficiencies
                             </button>
                         </h2>
                         <div id="panelsStayOpen-Languages" class="accordion-collapse collapse">
                             <div class="accordion-body">
-                                <strong>Placeholder for languages</strong>
+                                <ol class="list-group list-group">
+                                    @{
+                                        List<CharacterProficiency> languageProf = Model.GetProficienciesByType("language");
+                                        if (languageProf.Count > 0)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">Language</div>
+                                                    <ul class="list-group list-group-flush">
+                                                        @foreach (CharacterProficiency language in languageProf)
+                                                        {
+															<li class="list-group-item">@language.Proficiency.Name</li>
+                                                        }
+													</ul>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    @{
+                                        List<CharacterProficiency> toolProf = Model.GetProficienciesByType("tool");
+                                        if (toolProf.Count > 0)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">Tool</div>
+                                                    <ul class="list-group list-group-flush">
+                                                        @foreach (CharacterProficiency tool in toolProf)
+                                                        {
+															<li class="list-group-item">@tool.Proficiency.Name</li>
+                                                        }
+													</ul>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    @{
+                                        List<CharacterProficiency> armorProf = Model.GetProficienciesByType("armor");
+                                        if (armorProf.Count > 0)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">Armor</div>
+                                                    <ul class="list-group list-group-flush">
+                                                        @foreach (CharacterProficiency armor in armorProf)
+                                                        {
+															<li class="list-group-item">@armor.Proficiency.Name</li>
+														}
+													</ul>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    @{
+                                        List<CharacterProficiency> weaponProf = Model.GetProficienciesByType("weapon");
+                                        if (weaponProf.Count > 0)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">Weapon</div>
+                                                    <ul class="list-group list-group-flush">
+                                                        @foreach (CharacterProficiency weapon in weaponProf)
+                                                        {
+															<li class="list-group-item">@weapon.Proficiency.Name</li>
+														}
+													</ul>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    @{
+                                        List<CharacterProficiency> instrumentProf = Model.GetProficienciesByType("instrument");
+                                        if (instrumentProf.Count > 0) 
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">Instrument</div>
+                                                    <ul class="list-group list-group-flush">
+											            @foreach (CharacterProficiency instrument in instrumentProf)
+											            {
+															<li class="list-group-item">@instrument.Proficiency.Name</li>
+														}
+													</ul>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                </ol>
                             </div>
                         </div>
                     </div>
-                </div>
-
-        
+                </div>        
             </div>
         </div>
         <!--Flex div close-->
@@ -480,9 +607,14 @@
     <input type="hidden" asp-for="CharacterId" />
     <input type="hidden" asp-for="Name" />
     <input type="hidden" asp-for="Race" />
+    <input type="hidden" asp-for="Race.RaceId" />
+    <input type="hidden" asp-for="Race.Name" />
     <input type="hidden" asp-for="Background" />
+    <input type="hidden" asp-for="Background.BackgroundId" />
+    <input type="hidden" asp-for="Background.Name" />
     <input type="hidden" asp-for="Level" />
     <input type="hidden" asp-for="Classes" />
+    <input type="hidden" asp-for="Features" />
     <input type="hidden" asp-for="AvailableHitDice" />
     <input type="hidden" asp-for="Strength" />
     <input type="hidden" asp-for="Dexterity" />
@@ -492,6 +624,7 @@
     <input type="hidden" asp-for="Charisma" />
     <input type="hidden" asp-for="Inventory" />
     <input type="hidden" asp-for="Inventory.InventoryId" />
+    <input type="hidden" asp-for="Features" />
     <!--Hidden Storage End-->
     <!--
     <div class="form-group">
@@ -510,14 +643,19 @@
         <span asp-validation-for="Vulnerabilities" class="text-danger"></span>
     </div>
     -->
-    <div class="form-group">
-        <input type="submit" value="Save and exit" class="btn btn-primary" />
+    <br>
+    <div class="form-group btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups" role="toolbar">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group me-2" role="group">
+                <input type="submit" value="Save and exit" class="btn btn-primary" />
+			</div>
+            <div class="btn-group me-2" role="group">
+                <input type="button" value="Exit w/o Saving" class="btn btn-danger" onclick="location.href='@Url.Action("Index", "Characters")'" />
+            </div>
+        </div>
     </div>
 </form>
 
-<div>
-    <a asp-action="Index">Exit without saving</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

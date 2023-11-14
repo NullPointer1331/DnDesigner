@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics;
 
 namespace DnDesigner.Models
 {
@@ -170,6 +167,16 @@ namespace DnDesigner.Models
         public List<CharacterSpellcasting> Spellcasting { get; set; }
 
         /// <summary>
+        /// A list of the character's features
+        /// </summary>
+        public List<CharacterFeature> Features { get; set; }
+
+        /// <summary>
+        /// A list of the character's actions
+        /// </summary>
+        public List<CharacterAction> Actions { get; set; }
+
+        /// <summary>
         /// Contains the character's inventory information
         /// </summary>
         public Inventory Inventory { get; set; }
@@ -185,6 +192,8 @@ namespace DnDesigner.Models
             Proficiencies = new List<CharacterProficiency>();
             Classes = new List<CharacterClass>();
             Spellcasting = new List<CharacterSpellcasting>();
+            Features = new List<CharacterFeature>();
+            Actions = new List<CharacterAction>();
             Inventory = new Inventory(this);
             Name = "Unnamed Character";
             Resistances = "";
@@ -198,6 +207,8 @@ namespace DnDesigner.Models
             Classes = new List<CharacterClass>();
             Proficiencies = new List<CharacterProficiency>();
             Spellcasting = new List<CharacterSpellcasting>();
+            Features = new List<CharacterFeature>();
+            Actions = new List<CharacterAction>();
             Inventory = new Inventory(this);
             Background = background;
             Race = race;
@@ -216,15 +227,86 @@ namespace DnDesigner.Models
             Vulnerabilities = "";
 
             Classes.Add(new CharacterClass(this, @class, 1));
+            Classes[0].InitialClass = true;
             if(@class.Spellcasting != null)
             {
                 Spellcasting.Add(new CharacterSpellcasting(this, @class.Spellcasting));
             }
-            SetProficiencies(defaultProficiencies);
-            UserId = userId;
+            foreach (Proficiency proficiency in defaultProficiencies)
+            {
+                Proficiencies.Add(new CharacterProficiency(this, proficiency));
+            }
+            SetActiveFeatures();
         }
 
         #region methods
+        /// <summary>
+        /// Calculates a value based on a formula
+        /// </summary>
+        /// <param name="formula">The formula to use, 
+        /// using numbers, operators, attributes,
+        /// and attribute modifiers separated by spaces, 
+        /// for example dex + 10 - strmod</param>
+        /// <returns>The result of the formula, throws an exception if the formula is invalid</returns>
+        public int Calculate(string formula)
+        {
+            string[] parts = formula.Split(' ');
+            int value = ParseValue(parts[0]);
+            for (int i = 1; i < parts.Length; i += 2)
+            {
+                if (parts[i] == "+")
+                {
+                    value += ParseValue(parts[i + 1]);
+                }
+                else if (parts[i] == "-")
+                {
+                    value -= ParseValue(parts[i + 1]);
+                }
+                else if (parts[i] == "*")
+                {
+                    value *= ParseValue(parts[i + 1]);
+                }
+                else if (parts[i] == "/")
+                {
+                    value /= ParseValue(parts[i + 1]);
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid formula", formula);
+                }
+            }
+            return value;
+        } 
+
+        /// <summary>
+        /// Attempts to translate a string into a number, 
+        /// either by getting the value of an attribute, attribute modifier or by parsing the string
+        /// </summary>
+        /// <param name="str">The string to parse</param>
+        /// <returns>The translated value</returns>
+        public int ParseValue(string str)
+        {
+            if(int.TryParse(str, out int value))
+            {
+                return value;
+            }
+            else
+            {
+                if (str.ToLower().Contains("mod"))
+                {
+                    return GetModifier(str.Substring(0, str.Length - 3));
+                }
+                else if (str.ToLower().Contains("prof"))
+                {
+                    return ProficiencyBonus;
+                }
+                else
+                {
+                    return GetAttribute(str);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the score of the specified attribute
         /// </summary>
@@ -276,29 +358,51 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
-        /// Sets the character's proficiencies
+        /// Sets the score of the specified attribute
         /// </summary>
-        /// <param name="defaultProficiencies">A list of all skills and saving throws</param>
-        public void SetProficiencies(List<Proficiency> defaultProficiencies)
+        /// <param name="name">The attribute to set</param>
+        /// <param name="value">The number to set it to</param>
+        public void SetAttribute(string name, int value)
         {
-            foreach(Proficiency proficiency in defaultProficiencies){
-                Proficiencies.Add(new CharacterProficiency(this, proficiency));
-            }
-            foreach (CharacterClass characterClass in Classes)
+            if (name.ToLower().Contains("str"))
             {
-                foreach (ClassProficiency classProficiency in characterClass.Class.Proficiencies)
-                {
-                    GrantProficiency(classProficiency.Proficiency);
-                }
+                Strength = value;
             }
-            foreach (BackgroundProficiency backgroundProficiency in Background.Proficiencies)
+            else if (name.ToLower().Contains("dex"))
             {
-                GrantProficiency(backgroundProficiency.Proficiency);
+                Dexterity = value;
             }
-            foreach (RaceProficiency raceProficiency in Race.Proficiencies)
+            else if (name.ToLower().Contains("con"))
             {
-                GrantProficiency(raceProficiency.Proficiency);
+                Constitution = value;
             }
+            else if (name.ToLower().Contains("int"))
+            {
+                Intelligence = value;
+            }
+            else if (name.ToLower().Contains("wis"))
+            {
+                Wisdom = value;
+            }
+            else if (name.ToLower().Contains("cha"))
+            {
+                Charisma = value;
+            }
+        }
+
+        /// <summary>
+        /// Changes the score of the specified attribute by the specified amount
+        /// </summary>
+        /// <param name="name">The attribute to change</param>
+        /// <param name="value">The amount to change it by</param>
+        public void ModifyAttribute(string name, int value)
+        {
+            SetAttribute(name, value + GetAttribute(name));
+        }
+
+        public CharacterAction? GetAction(string name)
+        {
+            return Actions.Where(a => a.Action.Name == name).FirstOrDefault();
         }
 
         /// <summary>
@@ -307,19 +411,57 @@ namespace DnDesigner.Models
         /// <param name="proficiency">The proficiency to grant</param>
         public void GrantProficiency(Proficiency proficiency)
         {
+            GrantProficiency(proficiency, false);
+        }
+
+        /// <summary>
+        /// Grants a proficiency to the character
+        /// </summary>
+        /// <param name="proficiency">The proficiency to grant</param>
+        /// <param name="expertise">Whether the character should get normal proficiency or expertise</param>
+        public void GrantProficiency(Proficiency proficiency, bool expertise)
+        {
             CharacterProficiency? existingProficiency = GetProficiency(proficiency.Name);
             if (existingProficiency == null)
             {
-                Proficiencies.Add(new CharacterProficiency(this, proficiency, 1, 0));
+                if(expertise)
+                {
+                    Proficiencies.Add(new CharacterProficiency(this, proficiency, 2, 0));
+                }
+                else
+                {
+                    Proficiencies.Add(new CharacterProficiency(this, proficiency, 1, 0));
+                }
             }
             else
             {
-                if(existingProficiency.ProficiencyLevel < 2)
+                if(expertise)
+                {
+                    existingProficiency.ProficiencyLevel = 2;
+                }
+                else if (existingProficiency.ProficiencyLevel < 2)
                 {
                     existingProficiency.ProficiencyLevel = 1;
                 }
             }
         }
+
+        /// <summary>
+        /// Removes a proficiency from the character
+        /// </summary>
+        /// <param name="characterProficiency"></param>
+        public void RemoveProficiency(Proficiency proficiency)
+        {
+            CharacterProficiency? characterProficiency = GetProficiency(proficiency.Name);
+            if (characterProficiency != null)
+            {
+                characterProficiency.ProficiencyLevel = 0;
+                if (characterProficiency.Proficiency.Type != "saving throw" && characterProficiency.Proficiency.Type != "skill")
+                {
+                    Proficiencies.Remove(characterProficiency);
+                }
+            }
+        } 
 
         /// <summary>
         /// Gets a CharacterProficiency with a given name
@@ -329,6 +471,16 @@ namespace DnDesigner.Models
         public CharacterProficiency? GetProficiency(string name)
         {
             return Proficiencies.Where(p => p.Proficiency.Name == name).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets a list of CharacterProficiencies by type
+        /// </summary>
+        /// <param name="type">The type of proficiency to get</param>
+        /// <returns>A list of character proficiencies</returns>
+        public List<CharacterProficiency> GetProficienciesByType(string type)
+        {
+            return Proficiencies.Where(t => t.Proficiency.Type == type).ToList();
         }
 
         /// <summary>
@@ -351,25 +503,39 @@ namespace DnDesigner.Models
             return saves;
         }
 
-        /// <summary>
-        /// Gets all features from classes, subclasses, race and background 
-        /// where the character meets the required level
-        /// </summary>
-        /// <returns>All features the character meets the required level for</returns>
-        public List<Feature> GetActiveFeatures()
+
+        public void SetActiveFeatures()
         {
             List<Feature> features = new List<Feature>();
-            foreach(CharacterClass @class in Classes)
+            foreach (CharacterClass @class in Classes)
             {
                 features.AddRange(@class.Class.GetAvailableFeatures(@class.Level));
-                if(@class.Subclass != null)
+                if (@class.Subclass != null)
                 {
                     features.AddRange(@class.Subclass.GetAvailableFeatures(@class.Level));
                 }
             }
             features.AddRange(Background.Features.Where(f => f.Level <= Level));
             features.AddRange(Race.Features.Where(f => f.Level <= Level));
-            return features;
+
+            //Remove features that shouldn't be active
+            foreach (CharacterFeature feature in Features.Where(f => f.Level > Level))
+            {
+                feature.RemoveEffect();
+                Features.Remove(feature);
+            }
+
+            //Add features that haven't been added yet
+            foreach (Feature feature in features)
+            {
+                if (!Features.Where(f => f.Equals(feature)).Any())
+                {
+                    CharacterFeature characterFeature = new CharacterFeature(this, feature);
+                    Features.Add(characterFeature);
+                    characterFeature.ApplyEffect();
+                }
+            }
+
         }
         #endregion
     }

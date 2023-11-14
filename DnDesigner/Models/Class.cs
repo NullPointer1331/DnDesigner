@@ -34,12 +34,6 @@ namespace DnDesigner.Models
         public List<ClassFeature> Features { get; set; }
 
 		/// <summary>
-		/// The proficiencies that can be learned 
-		/// through the class
-		/// </summary>
-		public List<ClassProficiency> Proficiencies { get; set; }
-
-		/// <summary>
 		/// The spellcasting abilities of the class, null if none
 		/// </summary>
 		[ForeignKey("SpellcastingId")]
@@ -53,7 +47,6 @@ namespace DnDesigner.Models
 
         public Class() {
 			Features = new List<ClassFeature>();
-            Proficiencies = new List<ClassProficiency>();
             Subclasses = new List<Subclass>();
 			Spellcasting = null;
 			Name = "";
@@ -71,7 +64,7 @@ namespace DnDesigner.Models
 		}
 	}
 
-	[PrimaryKey(nameof(CharacterId), nameof(ClassId))]
+	[PrimaryKey("CharacterId", "ClassId")]
 	public class CharacterClass {
 		/// <summary>
 		/// A class the character has
@@ -79,15 +72,11 @@ namespace DnDesigner.Models
 		[ForeignKey("ClassId")]
 		public Class Class { get; set; }
 
-		int ClassId { get; set; }
-
 		/// <summary>
 		/// The chosen subclass of the class
 		/// </summary>
 		[ForeignKey("SubclassId")]
 		public Subclass? Subclass { get; set; }
-
-		int? SubclassId { get; set; }
 
 		/// <summary>
 		/// The character the class belongs to
@@ -95,12 +84,15 @@ namespace DnDesigner.Models
 		[ForeignKey("CharacterId")]
 		public Character Character { get; set; }
 
-		int CharacterId { get; set; }
-
 		/// <summary>
 		/// How many levels the character has in this class
 		/// </summary>
 		public int Level { get; set; }
+
+		/// <summary>
+		/// Was this the class the character started with?
+		/// </summary>
+		public bool InitialClass { get; set; }
 
         /// <summary>
         /// Basic constructor, sets class, character, and level

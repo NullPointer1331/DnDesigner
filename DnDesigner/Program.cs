@@ -19,6 +19,13 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+#if DEBUG
+// Apply migrations on startup in debug mode
+using IServiceScope scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService<DnDesignerDbContext>();
+db.Database.Migrate();
+#endif
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

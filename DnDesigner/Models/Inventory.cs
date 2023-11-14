@@ -212,6 +212,7 @@ namespace DnDesigner.Models
                 }
                 Attune(item);
             }
+            item.ApplyEffect();
         }
 
         /// <summary>
@@ -240,6 +241,7 @@ namespace DnDesigner.Models
                     OtherEquippedItems.Remove(item);
                 }
                 item.EquippedIn = 0;
+                item.RemoveEffect();
             }
         }
 
@@ -253,6 +255,7 @@ namespace DnDesigner.Models
             {
                 item.Attuned = true;
                 AttunedItems.Add(item);
+                item.ApplyEffect();
             }
         }
 
@@ -266,6 +269,7 @@ namespace DnDesigner.Models
             {
                 item.Attuned = false;
                 AttunedItems.Remove(item);
+                item.RemoveEffect();
             }
         }
 

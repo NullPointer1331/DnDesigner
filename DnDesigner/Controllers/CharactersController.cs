@@ -65,33 +65,21 @@ namespace DnDesigner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateCharacterViewModel character)
         {
-            if (User.Identity == null)
+            if (ModelState.IsValid)
             {
-                return Problem("User.Identity is null.");
-            } else
-            {
-
-                if (ModelState.IsValid)
-                {
-                    Class @class = await _context.Classes
-                        .Where(c => c.ClassId == character.ClassId)
-                        .Include(c => c.Proficiencies)
-                        .ThenInclude(cp => cp.Proficiency)
-                        .Include(c => c.Spellcasting)
-                        .Include(c => c.Features)
-                        .FirstOrDefaultAsync();
-                    Background background = await _context.Backgrounds
-                        .Where(b => b.BackgroundId == character.BackgroundId)
-                        .Include(b => b.Proficiencies)
-                        .ThenInclude(bp => bp.Proficiency)
-                        .Include(b => b.Features)
-                        .FirstOrDefaultAsync();
-                    Race race = await _context.Races
-                        .Where(r => r.RaceId == character.RaceId)
-                        .Include(r => r.Proficiencies)
-                        .ThenInclude(rp => rp.Proficiency)
-                        .Include(r => r.Features)
-                        .FirstOrDefaultAsync();
+                Class @class = await _context.Classes
+                    .Where(c => c.ClassId == character.ClassId)
+                    .Include(c => c.Spellcasting)
+                    .Include(c => c.Features)
+                    .FirstOrDefaultAsync();
+                Background background = await _context.Backgrounds
+                    .Where(b => b.BackgroundId == character.BackgroundId)
+                    .Include(b => b.Features)
+                    .FirstOrDefaultAsync();
+                Race race = await _context.Races
+                    .Where(r => r.RaceId == character.RaceId)
+                    .Include(r => r.Features)
+                    .FirstOrDefaultAsync();
 
                     // This is to make sure all characters have all saving throws and skills even if they aren't proficient in them
                     // There's probably a better way to do this
@@ -127,8 +115,11 @@ namespace DnDesigner.Controllers
                 .Include(c => c.Background)
                 .Include(c => c.Classes)
                 .ThenInclude(cc => cc.Class)
+                .Include(c => c.Classes)
+                .ThenInclude(cc => cc.Subclass)
                 .Include(c => c.Proficiencies)
                 .ThenInclude(cp => cp.Proficiency)
+                .Include(c => c.Features)
                 .Include(c => c.Inventory)
                 .FirstOrDefaultAsync();
 
@@ -151,8 +142,6 @@ namespace DnDesigner.Controllers
             {
                 return NotFound();
             }
-            ModelState.Remove("Race");
-            ModelState.Remove("Background");
             if (ModelState.IsValid)
             {
                 try

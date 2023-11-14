@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.InteropServices;
 
 namespace DnDesigner.Models
 {
@@ -37,6 +36,11 @@ namespace DnDesigner.Models
         /// </summary>
         public int Level { get; set; }
 
+        /// <summary>
+        /// A list of modifiers that this feature applies to a character
+        /// </summary>
+        [NotMapped]
+        public List<CharacterModifier> CharacterModifiers { get; set; }
 
         /// <summary>
         /// Full constructor, sets all properties
@@ -51,6 +55,7 @@ namespace DnDesigner.Models
             Source = source;
             Description = description;
             Level = level;
+            CharacterModifiers = new List<CharacterModifier>();
         }
 
         /// <summary>
@@ -64,6 +69,48 @@ namespace DnDesigner.Models
             Name = name;
             Description = description;
             Level = level;
+            CharacterModifiers = new List<CharacterModifier>();
+        }
+
+        public bool Equals(Feature other)
+        {
+            return Name == other.Name && Source == other.Source 
+                && Description == other.Description && Level == other.Level;
+        }
+    }
+    public class CharacterFeature : Feature
+    {
+        /// <summary>
+        /// The character that has the feature
+        /// </summary>
+        [ForeignKey("CharacterId")]
+        public Character Character { get; set; }
+
+        /// <summary>
+        /// Constructor converting an existing feature to a character feature
+        /// </summary>
+        /// <param name="character">The character that has the feature</param>
+        /// <param name="feature">The feature given to the character</param>
+        public CharacterFeature(Character character, Feature feature) : base(feature.Name, feature.Description, feature.Level, feature.Source)
+        {
+            Character = character;
+            CharacterModifiers = feature.CharacterModifiers;
+        }
+
+        private CharacterFeature() : base("", "", 0) { }
+
+        public void ApplyEffect() {             
+            foreach (CharacterModifier modifier in CharacterModifiers)
+            {
+                modifier.ApplyEffect(Character);
+            }
+        }
+        public void RemoveEffect()
+        {
+            foreach (CharacterModifier modifier in CharacterModifiers)
+            {
+                modifier.RemoveEffect(Character);
+            }
         }
     }
     /// <summary>

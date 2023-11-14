@@ -1,16 +1,8 @@
 ﻿using DnDesigner.Models.ImportModels;
 using System.Text.Json;
-using System.IO;
-using Microsoft.AspNetCore.Components.Web;
-using System.Linq;
 using DnDesigner.Models;
-using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
-using Humanizer;
-using System.Collections.Generic;
-using DnDesigner.Controllers;
-using Elfie.Serialization;
-using System.Linq.Expressions;
+using System;
 
 namespace DnDesigner.Data
 {
@@ -33,7 +25,7 @@ namespace DnDesigner.Data
                         if (!class5E.source.Contains("UA"))
                         {
                             List<ClassFeature5ETools> classFeatures = classRoot.classFeature
-                                .Where(f => f.className == class5E.name && f.source.Contains("UA")).ToList();
+                                .Where(f => f.className == class5E.name && !f.source.Contains("UA")).ToList();
                             classes.Add(ConvertClass(class5E, classFeatures, proficiencies));
                         }
                     }
@@ -60,7 +52,8 @@ namespace DnDesigner.Data
                         if (!subclass5E.source.Contains("UA"))
                         {
                             Class @class = classes.Where(c => c.Name == subclass5E.className).FirstOrDefault();
-                            List<SubclassFeature5ETools> subclassFeatures = classRoot.subclassFeature.Where(f => f.subclassShortName == subclass5E.shortName).ToList();
+                            List<SubclassFeature5ETools> subclassFeatures = classRoot.subclassFeature
+                                .Where(f => f.subclassShortName == subclass5E.shortName).ToList();
                             if (@class != null)
                             {
                                 subclasses.Add(ConvertSubclass(subclass5E, @class, subclassFeatures));
@@ -112,10 +105,18 @@ namespace DnDesigner.Data
         public static List<Item> ExtractItems()
         {
             ItemRoot itemRoot = GetItemRoot();
+            BaseItemRoot baseItemRoot = GetBaseItemRoot();
             List<Item> items = new List<Item>();
             foreach (Item5ETools item5E in itemRoot.item)
             {
                 if(!item5E.source.Contains("UA"))
+                {
+                    items.Add(ConvertItem(item5E));
+                }
+            }
+            foreach (Item5ETools item5E in baseItemRoot.baseitem)
+            {
+                if (!item5E.source.Contains("UA"))
                 {
                     items.Add(ConvertItem(item5E));
                 }
@@ -152,46 +153,47 @@ namespace DnDesigner.Data
         /// </summary>
         public static List<Proficiency> ExtractProficiencies(List<Item> items)
         {
-            List<Proficiency> proficiencies = new List<Proficiency>();
+            List<Proficiency> proficiencies = new List<Proficiency>
+            {
+                //Saving Throws
+                new Proficiency("Strength Saves", "Strength", "saving throw"),
+                new Proficiency("Dexterity Saves", "Dexterity", "saving throw"),
+                new Proficiency("Constitution Saves", "Constitution", "saving throw"),
+                new Proficiency("Intelligence Saves", "Intelligence", "saving throw"),
+                new Proficiency("Wisdom Saves", "Wisdom", "saving throw"),
+                new Proficiency("Charisma Saves", "Charisma", "saving throw"),
 
-            //Saving Throws
-            proficiencies.Add(new Proficiency("Strength Saving Throw", "Strength", "saving throw"));
-            proficiencies.Add(new Proficiency("Dexterity Saving Throw", "Dexterity", "saving throw"));
-            proficiencies.Add(new Proficiency("Constitution Saving Throw", "Constitution", "saving throw"));
-            proficiencies.Add(new Proficiency("Intelligence Saving Throw", "Intelligence", "saving throw"));
-            proficiencies.Add(new Proficiency("Wisdom Saving Throw", "Wisdom", "saving throw"));
-            proficiencies.Add(new Proficiency("Charisma Saving Throw", "Charisma", "saving throw"));
+                //Skills
+                new Proficiency("Acrobatics", "Dexterity", "skill"),
+                new Proficiency("Animal Handling", "Wisdom", "skill"),
+                new Proficiency("Arcana", "Intelligence", "skill"),
+                new Proficiency("Athletics", "Strength", "skill"),
+                new Proficiency("Deception", "Charisma", "skill"),
+                new Proficiency("History", "Intelligence", "skill"),
+                new Proficiency("Insight", "Wisdom", "skill"),
+                new Proficiency("Intimidation", "Charisma", "skill"),
+                new Proficiency("Investigation", "Intelligence", "skill"),
+                new Proficiency("Medicine", "Wisdom", "skill"),
+                new Proficiency("Nature", "Intelligence", "skill"),
+                new Proficiency("Perception", "Wisdom", "skill"),
+                new Proficiency("Performance", "Charisma", "skill"),
+                new Proficiency("Persuasion", "Charisma", "skill"),
+                new Proficiency("Religion", "Intelligence", "skill"),
+                new Proficiency("Sleight of Hand", "Dexterity", "skill"),
+                new Proficiency("Stealth", "Dexterity", "skill"),
+                new Proficiency("Survival", "Wisdom", "skill"),
 
-            //Skills
-            proficiencies.Add(new Proficiency("Acrobatics", "Dexterity", "skill"));
-            proficiencies.Add(new Proficiency("Animal Handling", "Wisdom", "skill"));
-            proficiencies.Add(new Proficiency("Arcana", "Intelligence", "skill"));
-            proficiencies.Add(new Proficiency("Athletics", "Strength", "skill"));
-            proficiencies.Add(new Proficiency("Deception", "Charisma", "skill"));
-            proficiencies.Add(new Proficiency("History", "Intelligence", "skill"));
-            proficiencies.Add(new Proficiency("Insight", "Wisdom", "skill"));
-            proficiencies.Add(new Proficiency("Intimidation", "Charisma", "skill"));
-            proficiencies.Add(new Proficiency("Investigation", "Intelligence", "skill"));
-            proficiencies.Add(new Proficiency("Medicine", "Wisdom", "skill"));
-            proficiencies.Add(new Proficiency("Nature", "Intelligence", "skill"));
-            proficiencies.Add(new Proficiency("Perception", "Wisdom", "skill"));
-            proficiencies.Add(new Proficiency("Performance", "Charisma", "skill"));
-            proficiencies.Add(new Proficiency("Persuasion", "Charisma", "skill"));
-            proficiencies.Add(new Proficiency("Religion", "Intelligence", "skill"));
-            proficiencies.Add(new Proficiency("Sleight of Hand", "Dexterity", "skill"));
-            proficiencies.Add(new Proficiency("Stealth", "Dexterity", "skill"));
-            proficiencies.Add(new Proficiency("Survival", "Wisdom", "skill"));
+                //Weapons and armor
+                new Proficiency("Light Armor", null, "armor"),
+                new Proficiency("Medium Armor", null, "armor"),
+                new Proficiency("Heavy Armor", null, "armor"),
+                new Proficiency("Shield", null, "armor"),
+                new Proficiency("Simple Weapons", null, "weapon"),
+                new Proficiency("Martial Weapons", null, "weapon")
+            };
 
-            //Weapons and armor
-            proficiencies.Add(new Proficiency("Light Armor", null, "armor"));
-            proficiencies.Add(new Proficiency("Medium Armor", null, "armor"));
-            proficiencies.Add(new Proficiency("Heavy Armor", null, "armor"));
-            proficiencies.Add(new Proficiency("Shield", null, "armor"));
-            proficiencies.Add(new Proficiency("Simple Weapons", null, "weapon"));
-            proficiencies.Add(new Proficiency("Martial Weapons", null, "weapon"));
-
-            //Tools and Instruments
-            foreach (Item item in items)
+            //Weapons, Tools and Instruments
+            foreach (Item item in items.Where(i => i.Rarity == 0))
             {
                 if (item.Traits.Contains("Tool"))
                 {
@@ -204,6 +206,14 @@ namespace DnDesigner.Data
                 else if (item.Traits.Contains("Instrument"))
                 {
                     Proficiency proficiency = new Proficiency(item.Name, null, "instrument");
+                    if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
+                    {
+                        proficiencies.Add(proficiency);
+                    }
+                }
+                else if (item.Traits.Contains("Weapon") && item.Sourcebook == "PHB")
+                {
+                    Proficiency proficiency = new Proficiency(item.Name, null, "weapon");
                     if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
                     {
                         proficiencies.Add(proficiency);
@@ -336,6 +346,11 @@ namespace DnDesigner.Data
             string contents = File.ReadAllText("Data\\5EToolsData\\items.json");
             return JsonSerializer.Deserialize<ItemRoot>(contents);
         }
+        public static BaseItemRoot GetBaseItemRoot()
+        {
+            string contents = File.ReadAllText("Data\\5EToolsData\\items-base.json");
+            return JsonSerializer.Deserialize<BaseItemRoot>(contents);
+        }
         public static Item ConvertItem(Item5ETools item5E)
         {
             Item item = new Item();
@@ -352,6 +367,38 @@ namespace DnDesigner.Data
             item.Description = CleanText(item.Description);
             item.Price = item5E.value / 100 ?? 0; 
             item.Weight = item5E.weight ?? 0;
+            if(item5E.rarity == "none")
+            {
+                item.Rarity = 0;
+            } 
+            else if (item5E.rarity == "common")
+            {
+                item.Rarity = 1;
+            }
+            else if (item5E.rarity == "uncommon")
+            {
+                item.Rarity = 2;
+            }
+            else if (item5E.rarity == "rare")
+            {
+                item.Rarity = 3;
+            }
+            else if (item5E.rarity == "very rare")
+            {
+                item.Rarity = 4;
+            }
+            else if (item5E.rarity == "legendary")
+            {
+                item.Rarity = 5;
+            }
+            else if (item5E.rarity == "artifact")
+            {
+                item.Rarity = 6;
+            }
+            else
+            {
+                item.Rarity = -1;
+            }
             if (item5E.reqAttune != null && item5E.reqAttune.ToString().ToLower().Equals("true"))
             {
                 item.Attuneable = true;
@@ -360,14 +407,21 @@ namespace DnDesigner.Data
             {
                 item.Attuneable = false;
             }
-
+            if(item5E.weaponCategory == "simple")
+            {
+                item.Traits = "Simple ";
+            }
+            else if(item5E.weaponCategory == "martial")
+            {
+                item.Traits = "Martial ";
+            }
             if(item5E.wondrous)
             {
-                item.Traits = "WI ";
+                item.Traits += "WI ";
             }
             else
             {
-                item.Traits = $"{item5E.type} ";
+                item.Traits += $"{item5E.type} ";
             }
             if (item5E.property != null)
             {
@@ -383,7 +437,7 @@ namespace DnDesigner.Data
                     }
                 }
             }
-            item.Traits = DecodeTraits(item.Traits);
+            item.Traits = ParseTraits(item.Traits);
             item.Equipable = 0;
             if (item.Traits.Contains("Armor"))
             {
@@ -405,6 +459,31 @@ namespace DnDesigner.Data
             {
                 item.Equipable = 3;
             }
+            if(item5E.dmg1 != null)
+            {
+                Models.Action action = new Models.Action();
+                action.Name = item.Name;
+                action.Description = item.Description;
+                action.ActionTime = "1 action";
+                action.Range = (item5E.range ?? "5") + " feet";
+                action.DamageType = ParseDamageType(item5E.dmgType);
+                if(item.Traits.Contains("Finesse") || item.Traits.Contains("Ranged"))
+                {
+                    action.AttackBonusCalculation = "proficiency + dexteritymod ";
+                    action.Damage = item5E.dmg1 + " + dexterity ";
+                }
+                else
+                {
+                    action.AttackBonusCalculation = $"proficiency + strengthmod ";
+                    action.Damage = item5E.dmg1 + " + strength ";
+                }
+                if(!item5E.bonusWeapon.IsNullOrEmpty())
+                {
+                    action.AttackBonusCalculation += "+ " + item5E.bonusWeapon;
+                    action.Damage += "+ " + item5E.bonusWeapon;
+                }
+                item.CharacterModifiers.Add(new AddAction(action));
+            }
             return item;
         }
 
@@ -413,7 +492,7 @@ namespace DnDesigner.Data
             string contents = File.ReadAllText("Data\\5EToolsData\\races.json");
             return JsonSerializer.Deserialize<RaceRoot>(contents);
         }
-        public static Race ConvertRace(Race5ETools race5E, List<Proficiency> proficiencies)
+        public static Race ConvertRace(Race5ETools race5E, List<Proficiency> allProficiencies)
         {
             Race race = new Race();
             race.Name = race5E.name;
@@ -427,6 +506,8 @@ namespace DnDesigner.Data
                 }
             }
             race.Description = CleanText(race.Description);
+            race.Description = race.Description.Replace("\"", "");
+            RaceFeature statBonuses = new RaceFeature(race, "Racial Stat Boosts", "", 0);
             race.StatBonuses = "";
             if (race5E.ability != null)
             {
@@ -435,33 +516,50 @@ namespace DnDesigner.Data
                     if (ability.cha != null)
                     {
                         race.StatBonuses += $"+{ability.cha} Charisma. ";
+                        ModifyAttribute statBonus = new ModifyAttribute("cha", ability.cha.Value);
+                        statBonuses.CharacterModifiers.Add(statBonus);
                     }
                     if (ability.con != null)
                     {
                         race.StatBonuses += $"+{ability.con} Constitution. ";
+                        ModifyAttribute statBonus = new ModifyAttribute("con", ability.con.Value);
+                        statBonuses.CharacterModifiers.Add(statBonus);
                     }
                     if (ability.dex != null)
                     {
                         race.StatBonuses += $"+{ability.dex} Dexterity. ";
+                        ModifyAttribute statBonus = new ModifyAttribute("dex", ability.dex.Value);
+                        statBonuses.CharacterModifiers.Add(statBonus);
                     }
                     if (ability.@int != null)
                     {
                         race.StatBonuses += $"+{ability.@int} Intelligence. ";
+                        ModifyAttribute statBonus = new ModifyAttribute("int", ability.@int.Value);
+                        statBonuses.CharacterModifiers.Add(statBonus);
                     }
                     if (ability.str != null)
                     {
                         race.StatBonuses += $"+{ability.str} Strength. ";
+                        ModifyAttribute statBonus = new ModifyAttribute("str", ability.str.Value);
+                        statBonuses.CharacterModifiers.Add(statBonus);
                     }
                     if (ability.wis != null)
                     {
                         race.StatBonuses += $"+{ability.wis} Wisdom. ";
+                        ModifyAttribute statBonus = new ModifyAttribute("wis", ability.wis.Value);
+                        statBonuses.CharacterModifiers.Add(statBonus);
                     }
                 }
             }
             if(race.StatBonuses == "")
             {
                 race.StatBonuses = "+2 +1, or 3 +1s to any stats of your choice.";
+                statBonuses.CharacterModifiers.Add(new CharacterModifierChoice("ASI"));
+                statBonuses.CharacterModifiers.Add(new CharacterModifierChoice("ASI"));
+                statBonuses.CharacterModifiers.Add(new CharacterModifierChoice("ASI"));
             }
+            statBonuses.Description = race.StatBonuses;
+            race.Features.Add(statBonuses);
             if (race5E.size != null)
             {
                 race.Size = "";
@@ -486,17 +584,17 @@ namespace DnDesigner.Data
                 race.Size = "Medium";
             }
             race.Speed = 30;
-            List<RaceProficiency> raceProficiencies = new List<RaceProficiency>();
+            List<Proficiency> raceProficiencies = new List<Proficiency>();
             if (race5E.skillProficiencies != null)
             {
                 foreach (SkillProficiency skill in race5E.skillProficiencies)
                 {
-                    List<Proficiency> skills = FindSkills(skill, proficiencies);
+                    List<Proficiency> skills = FindSkills(skill, allProficiencies);
                     foreach (Proficiency proficiency in skills)
                     {
-                        if (!raceProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        if (!raceProficiencies.Where(p => p.Name == proficiency.Name).Any())
                         {
-                            raceProficiencies.Add(new RaceProficiency(race, proficiency));
+                            raceProficiencies.Add(proficiency);
                         }
                     }
                 }
@@ -505,17 +603,27 @@ namespace DnDesigner.Data
             {
                 foreach (LanguageProficiency language in race5E.languageProficiencies)
                 {
-                    List<Proficiency> languages = FindLanguages(language, proficiencies);
+                    List<Proficiency> languages = FindLanguages(language, allProficiencies);
                     foreach (Proficiency proficiency in languages)
                     {
-                        if (!raceProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        if (!raceProficiencies.Where(p => p.Name == proficiency.Name).Any())
                         {
-                            raceProficiencies.Add(new RaceProficiency(race, proficiency));
+                            raceProficiencies.Add(proficiency);
                         }
                     }
                 }
             }
-            race.Proficiencies = raceProficiencies;
+            if (raceProficiencies.Any())
+            {
+                RaceFeature proficiencies = new RaceFeature(race, "Racial Proficiencies", "You gain proficiency in ", 0);
+                foreach (Proficiency proficiency in raceProficiencies)
+                {
+                    proficiencies.Description += $"{proficiency.Name}, ";
+                }
+                proficiencies.Description = proficiencies.Description.Substring(0, proficiencies.Description.Length - 2);
+                proficiencies.CharacterModifiers.Add(new GrantProficiencies(raceProficiencies, false));
+                race.Features.Add(proficiencies);
+            }
             //TODO: Features, Subraces, actually check speed
             return race;
         }
@@ -525,7 +633,7 @@ namespace DnDesigner.Data
             string contents = File.ReadAllText("Data\\5EToolsData\\backgrounds.json");
             return JsonSerializer.Deserialize<BackgroundRoot>(contents);
         }
-        public static Background ConvertBackground(Background5ETools background5E, List<Proficiency> proficiencies)
+        public static Background ConvertBackground(Background5ETools background5E, List<Proficiency> allProficiencies)
         {
             Background background = new Background();
             background.Name = background5E.name;
@@ -542,10 +650,9 @@ namespace DnDesigner.Data
                             background.Description += $"{item.name} ";
                             if (item.entry != null)
                             {
-                                background.Description += $"{item.entry} ";
+                                background.Description += $"{item.entry}. ";
                             }
                         }
-                        background.Description += ". ";
                     }
                     if (entry.entries != null)
                     {
@@ -553,23 +660,23 @@ namespace DnDesigner.Data
                         {
                             background.Description += $"{subEntry} ";
                         }
+                        background.Description += ". ";
                     }
-                    background.Description += ". ";
                 }
             }
             background.Description = CleanText(background.Description);
-            List<BackgroundProficiency> backgroundProficiencies = new List<BackgroundProficiency>();
+            List<Proficiency> backgroundProficiencies = new List<Proficiency>();
             if (background5E.skillProficiencies != null)
             {
 
                 foreach (SkillProficiency skill in background5E.skillProficiencies)
                 {
-                    List<Proficiency> skills = FindSkills(skill, proficiencies);
+                    List<Proficiency> skills = FindSkills(skill, allProficiencies);
                     foreach (Proficiency proficiency in skills)
                     {
-                        if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        if (!backgroundProficiencies.Where(p => p.Name == proficiency.Name).Any())
                         {
-                            backgroundProficiencies.Add(new BackgroundProficiency(background, proficiency));
+                            backgroundProficiencies.Add(proficiency);
                         }
                     }
                 }
@@ -578,12 +685,12 @@ namespace DnDesigner.Data
             {
                 foreach (ToolProficiency tool in background5E.toolProficiencies)
                 {
-                    List<Proficiency> tools = FindTools(tool, proficiencies);
+                    List<Proficiency> tools = FindTools(tool, allProficiencies);
                     foreach (Proficiency proficiency in tools)
                     {
-                        if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        if (!backgroundProficiencies.Where(p => p.Name == proficiency.Name).Any())
                         {
-                            backgroundProficiencies.Add(new BackgroundProficiency(background, proficiency));
+                            backgroundProficiencies.Add(proficiency);
                         }
                     }
                 }
@@ -592,17 +699,27 @@ namespace DnDesigner.Data
             {
                 foreach (LanguageProficiency language in background5E.languageProficiencies)
                 {
-                    List<Proficiency> languages = FindLanguages(language, proficiencies);
+                    List<Proficiency> languages = FindLanguages(language, allProficiencies);
                     foreach (Proficiency proficiency in languages)
                     {
-                        if (!backgroundProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
+                        if (!backgroundProficiencies.Where(p => p.Name == proficiency.Name).Any())
                         {
-                            backgroundProficiencies.Add(new BackgroundProficiency(background, proficiency));
+                            backgroundProficiencies.Add(proficiency);
                         }
                     }
                 }
             }
-            background.Proficiencies = backgroundProficiencies;
+            if (backgroundProficiencies.Any())
+            {
+                BackgroundFeature proficiencies = new BackgroundFeature(background, "Background Proficiencies", "You gain proficiency in ");
+                foreach (Proficiency proficiency in backgroundProficiencies)
+                {
+                    proficiencies.Description += $"{proficiency.Name}, ";
+                }
+                proficiencies.Description = proficiencies.Description.Substring(0, proficiencies.Description.Length - 2);
+                background.Features.Add(proficiencies);
+                proficiencies.CharacterModifiers.Add(new GrantProficiencies(backgroundProficiencies, false));
+            }
             //TODO:equipment, features
             return background;
         }
@@ -617,7 +734,7 @@ namespace DnDesigner.Data
             }
             return classRoots;
         }
-        public static Class ConvertClass(Class5ETools class5E, List<ClassFeature5ETools> classFeatures, List<Proficiency> proficiencies)
+        public static Class ConvertClass(Class5ETools class5E, List<ClassFeature5ETools> classFeatures, List<Proficiency> allProficiencies)
         {
             Class @class = new Class();
             @class.Name = class5E.name;
@@ -639,79 +756,115 @@ namespace DnDesigner.Data
                 }
                 @class.Spellcasting = spellcasting;
             }
+
+            ClassFeature startingProficiencies = new ClassFeature(@class, "Starting Proficiencies", "", 1);
+            List<Proficiency> classProficiencies = new List<Proficiency>();
+            startingProficiencies.Description = "When gaining this class at first level, you gain proficiency in the following. ";
+            if(class5E.startingProficiencies.armor != null)
+            {
+                startingProficiencies.Description += "Armor: ";
+                foreach (object armor in class5E.startingProficiencies.armor)
+                {
+                    Proficiency? proficiency = FindProficiency(CleanText(armor.ToString()), allProficiencies);
+                    if(proficiency != null && !classProficiencies.Where(p => p.Name == proficiency.Name).Any())
+                    {
+                        classProficiencies.Add(proficiency);
+                        startingProficiencies.Description += $"{proficiency.Name}, ";
+                    }
+                }
+                startingProficiencies.Description = startingProficiencies.Description
+                        .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
+            }
+
+            if (class5E.startingProficiencies.weapons != null)
+            {
+                startingProficiencies.Description += "Weapons: ";
+                foreach (object weapon in class5E.startingProficiencies.weapons)
+                {
+                    Proficiency? proficiency = FindProficiency(CleanText(weapon.ToString()), allProficiencies);
+                    if (proficiency != null && !classProficiencies.Where(p => p.Name == proficiency.Name).Any())
+                    {
+                        classProficiencies.Add(proficiency);
+                        startingProficiencies.Description += $"{proficiency.Name}, ";
+                    }
+                }
+                startingProficiencies.Description = startingProficiencies.Description
+                            .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
+            }
+
+            if (class5E.startingProficiencies.tools != null)
+            {
+                startingProficiencies.Description += "Tools: ";
+                foreach (object tool in class5E.startingProficiencies.tools)
+                {
+                    Proficiency? proficiency = FindProficiency(CleanText(tool.ToString()), allProficiencies);
+                    if (proficiency != null && !classProficiencies.Where(p => p.Name == proficiency.Name).Any())
+                    {
+                        classProficiencies.Add(proficiency);
+                        startingProficiencies.Description += $"{proficiency.Name}, ";
+                    }
+                }
+                startingProficiencies.Description = startingProficiencies.Description
+                            .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
+            }
+
+            startingProficiencies.Description += "Saving throws: ";
+            foreach (string proficiencyname in class5E.proficiency)
+            {
+                Proficiency? proficiency = FindProficiency(proficiencyname, allProficiencies);
+                if (proficiency != null && !classProficiencies.Where(p => p.Name == proficiency.Name).Any())
+                {
+                    classProficiencies.Add(proficiency);
+                    startingProficiencies.Description += $"{proficiency.Name}, ";
+                }
+            }
+            startingProficiencies.Description = startingProficiencies.Description
+                .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
+
+            if (class5E.startingProficiencies.skills != null)
+            {
+                foreach (SkillProficiency skill in class5E.startingProficiencies.skills)
+                {
+                    if (skill.choose != null)
+                    {
+                        startingProficiencies.Description += $"Skills: Choose {skill.choose.count} from ";
+                        List<Proficiency> skills = FindSkills(skill, allProficiencies);
+                        for (int i = 0; i < skill.choose.count; i++)
+                        {
+                            CharacterModifierChoice choice = new CharacterModifierChoice(skills);
+                            startingProficiencies.CharacterModifiers.Add(choice);
+                        }
+                        
+                        foreach (Proficiency proficiency in skills)
+                        {
+                            startingProficiencies.Description += $"{proficiency.Name}, ";
+                        }
+                        
+                    }
+                }
+                startingProficiencies.Description = startingProficiencies.Description
+                            .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
+            }
+
+            startingProficiencies.CharacterModifiers.Add(new GrantProficiencies(classProficiencies, false));
+            @class.Features.Add(startingProficiencies);
             foreach (ClassFeature5ETools feature5E in classFeatures)
             {
                 string description = "";
                 foreach (object entry in feature5E.entries)
                 {
-                    description += entry.ToString();
+                    description += entry.ToString() + " ";
                 }
                 description = CleanText(description);
                 ClassFeature feature = new ClassFeature(@class, feature5E.name, description, feature5E.level);
                 feature.Source = $"{feature5E.source}, Class, {@class.Name}";
+                if (feature.Name == "Ability Score Improvement")
+                {
+                    feature.CharacterModifiers.Add(new CharacterModifierChoice("ASI"));
+                    feature.CharacterModifiers.Add(new CharacterModifierChoice("ASI"));
+                }
                 @class.Features.Add(feature);
             }
-            List<ClassProficiency> classProficiencies = new List<ClassProficiency>();
-            if (class5E.startingProficiencies.skills != null)
-            {
-
-                foreach (SkillProficiency skill in class5E.startingProficiencies.skills)
-                {
-                    List<Proficiency> skills = FindSkills(skill, proficiencies);
-                    if (skill.choose != null)
-                    {
-                        foreach (string str in skill.choose.from)
-                        {
-                            Proficiency? proficiency = FindProficiency(str, proficiencies);
-                            if (proficiency != null)
-                            {
-                                skills.Add(proficiency);
-                            }
-                        }
-                    }
-                    foreach (Proficiency proficiency in skills)
-                    {
-                        if (!classProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
-                        {
-                            classProficiencies.Add(new ClassProficiency(@class, proficiency));
-                        }
-                    }
-                }
-            }
-            if (class5E.startingProficiencies.toolProficiencies != null)
-            {
-                foreach (ToolProficiency tool in class5E.startingProficiencies.toolProficiencies)
-                {
-                    List<Proficiency> tools = FindTools(tool, proficiencies);
-                    if (tool.choose != null)
-                    {
-                        foreach (string str in tool.choose.from)
-                        {
-                            Proficiency? proficiency = FindProficiency(str, proficiencies);
-                            if (proficiency != null)
-                            {
-                                tools.Add(proficiency);
-                            }
-                        }
-                    }
-                    foreach (Proficiency proficiency in tools)
-                    {
-                        if (!classProficiencies.Where(p => p.Proficiency.Name == proficiency.Name).Any())
-                        {
-                            classProficiencies.Add(new ClassProficiency(@class, proficiency));
-                        }
-                    }
-                }
-            }
-            foreach(string proficiencyname in class5E.proficiency)
-            {
-                Proficiency? proficiency = FindProficiency(proficiencyname, proficiencies);
-                if(proficiency != null)
-                {
-                    classProficiencies.Add(new ClassProficiency(@class, proficiency));
-                }
-            }
-            @class.Proficiencies = classProficiencies;
             return @class;
         }
         public static Subclass ConvertSubclass(Subclass5ETools subclass5E, Class @class, List<SubclassFeature5ETools> subclassFeatures)
@@ -731,7 +884,7 @@ namespace DnDesigner.Data
                 string description = "";
                 foreach (object entry in feature5E.entries)
                 {
-                    description += entry.ToString();
+                    description += entry.ToString() + " ";
                 }
                 description = CleanText(description);
                 SubclassFeature feature = new SubclassFeature(subclass, feature5E.name, description, feature5E.level);
@@ -749,22 +902,28 @@ namespace DnDesigner.Data
             {
                 return "";
             }
-            text = text.Replace("}", "");
-            text = text.Replace("{", "");
-            text = text.Replace("[", "");
-            text = text.Replace("]", "");
             string[] textList = text.Split(" ");
             string cleanText = "";
             foreach (string word in textList)
             {
-                if(word.Contains("|"))
+                string mutableword = word;
+                if (mutableword.IndexOf("\"") != mutableword.LastIndexOf("\""))
                 {
-                    cleanText += word.Substring(0, word.IndexOf("|") - 1);
+                    mutableword = string.Concat(mutableword.AsSpan(0, mutableword.IndexOf("\"")), " ", mutableword.AsSpan(mutableword.LastIndexOf("\"") + 1));
                 }
-                else if (!word.Contains("@"))
+                if (mutableword.Contains("|"))
                 {
-                    cleanText += $"{word} ";
+                    mutableword = mutableword.Substring(0, mutableword.IndexOf("|"));
                 }
+                if (!mutableword.Contains("@"))
+                {
+                    cleanText += $"{mutableword} ";
+                }
+            }
+            string[] bannedStrings = { "{", "}", "[", "]", " . ", " : ", "col-1", "col-2", "text-center", "\u2014", "\n", "\r", "\\" };
+            foreach (string bannedString in bannedStrings)
+            {
+                cleanText = cleanText.Replace(bannedString, "");
             }
             return cleanText;
         }
@@ -898,12 +1057,34 @@ namespace DnDesigner.Data
                 skills.Add(FindProficiency("Investigation", proficiencies));
             }
 
+            if (skill.choose != null)
+            {
+                foreach (string str in skill.choose.from)
+                {
+                    Proficiency? proficiency = FindProficiency(str, proficiencies);
+                    if (proficiency != null)
+                    {
+                        skills.Add(proficiency);
+                    }
+                }
+            }
             return skills;
         }
         public static List<Proficiency> FindTools(ToolProficiency tool, List<Proficiency> proficiencies)
         {
             List<Proficiency> tools = new List<Proficiency>();
-            if(tool.herbalismkit.HasValue &&  tool.herbalismkit.Value)
+            if (tool.choose != null)
+            {
+                foreach (string str in tool.choose.from)
+                {
+                    Proficiency? proficiency = FindProficiency(str, proficiencies);
+                    if (proficiency != null)
+                    {
+                        tools.Add(proficiency);
+                    }
+                }
+            }
+            if (tool.herbalismkit.HasValue &&  tool.herbalismkit.Value)
             {
                 tools.Add(FindProficiency("herbalism kit", proficiencies));
             }
@@ -929,7 +1110,7 @@ namespace DnDesigner.Data
         {
             return proficiencies.Where(p => p.Name.ToLower().Contains(proficiencyName.Trim().ToLower())).FirstOrDefault();
         }
-        public static string DecodeTraits(string traits)
+        public static string ParseTraits(string traits)
         {
             string allTraits = "";
             if (traits != null)
@@ -976,7 +1157,7 @@ namespace DnDesigner.Data
                 {"VEH", "Vehicle (land)" },
                 {"MNT", "Mount" },
                 {"WD", "Wand" },
-                {"WI", "Wondrous Item" }
+                {"WI", "Wondrous Item" },
             };
                 if (traitList.Length > 0)
                 {
@@ -996,6 +1177,25 @@ namespace DnDesigner.Data
                 { allTraits += trait; }
             }
             return allTraits;
+        }
+        public static string ParseDamageType(string damageType)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>
+            {
+                {"A", "Acid" },
+                {"B", "Bludgeoning" },
+                {"C", "Cold" },
+                {"F", "Fire" },
+                {"O", "Force" },
+                {"L", "Lightning" },
+                {"N", "Necrotic" },
+                {"P", "Piercing" },
+                {"PS", "Psychic" },
+                {"R", "Radiant" },
+                {"S", "Slashing" },
+                {"T", "Thunder" }
+            };
+            return dict[damageType];
         }
         #endregion
     }

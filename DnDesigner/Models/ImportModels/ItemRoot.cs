@@ -25,8 +25,8 @@ namespace DnDesigner.Models.ImportModels
         public string type { get; set; }
         public string weaponCategory { get; set; }
         public List<string> property { get; set; }
-        public string dmg1 { get; set; }
-        public string dmgType { get; set; }
+        public string? dmg1 { get; set; }
+        public string? dmgType { get; set; }
         public string bonusWeapon { get; set; }
         public bool? grantsProficiency { get; set; }
         public string tier { get; set; }
@@ -59,6 +59,7 @@ namespace DnDesigner.Models.ImportModels
         public string dmg2 { get; set; }
         public List<AdditionalSource> additionalSources { get; set; }
         public List<object> additionalEntries { get; set; }
+        public string? range { get; set; }
     }
 
     public class ItemGroup

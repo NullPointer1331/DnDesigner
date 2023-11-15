@@ -199,6 +199,7 @@ namespace DnDesigner.Models
             Resistances = "";
             Immunities = "";
             Vulnerabilities = "";
+            PlayerNotes = "";
         }
         public Character(CreateCharacterViewModel character, Class @class, 
             Race race, Background background, List<Proficiency> defaultProficiencies)
@@ -225,6 +226,7 @@ namespace DnDesigner.Models
             Resistances = "";
             Immunities = "";
             Vulnerabilities = "";
+            PlayerNotes = "";
 
             Classes.Add(new CharacterClass(this, @class, 1));
             Classes[0].InitialClass = true;

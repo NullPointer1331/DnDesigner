@@ -106,10 +106,10 @@ namespace DnDesigner.Controllers
 
             // Manually fixing the Ids for serialized objects
             items = await _context.Items.ToListAsync();
-            List<BackgroundFeature> backgroundFeatures = await _context.BackgroundFeatures.ToListAsync();
-            List<RaceFeature> raceFeatures = await _context.RaceFeatures.ToListAsync();
-            List<ClassFeature> classFeatures = await _context.ClassFeatures.ToListAsync();
-            List<SubclassFeature> subclassFeatures = await _context.SubclassFeatures.ToListAsync();
+            backgrounds = await _context.Backgrounds.ToListAsync();
+            races = await _context.Races.ToListAsync();
+            classes = await _context.Classes.ToListAsync();
+            subclasses = await _context.Subclasses.ToListAsync();
 
             List<CharacterModifier> characterModifiers = new List<CharacterModifier>();
             foreach (Item item in items)
@@ -119,44 +119,56 @@ namespace DnDesigner.Controllers
                     characterModifiers.Add(modifier);
                 }
             }
-            foreach (BackgroundFeature feature in backgroundFeatures)
+            foreach (Background background in backgrounds)
             {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
+                foreach (Feature feature in background.Features)
                 {
-                    characterModifiers.Add(modifier);
+                    foreach (CharacterModifier modifier in feature.CharacterModifiers)
+                    {
+                        characterModifiers.Add(modifier);
+                    }
                 }
             }
-            foreach (RaceFeature feature in raceFeatures)
+            foreach (Race race in races)
             {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
+                foreach (Feature feature in race.Features)
                 {
-                    characterModifiers.Add(modifier);
+                    foreach (CharacterModifier modifier in feature.CharacterModifiers)
+                    {
+                        characterModifiers.Add(modifier);
+                    }
                 }
             }
-            foreach (ClassFeature feature in classFeatures)
+            foreach (Class @class in classes)
             {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
+                foreach (Feature feature in @class.Features)
                 {
-                    characterModifiers.Add(modifier);
+                    foreach (CharacterModifier modifier in feature.CharacterModifiers)
+                    {
+                        characterModifiers.Add(modifier);
+                    }
                 }
             }
-            foreach (SubclassFeature feature in subclassFeatures)
+            foreach (Subclass subclass in subclasses)
             {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
+                foreach (Feature feature in subclass.Features)
                 {
-                    characterModifiers.Add(modifier);
+                    foreach (CharacterModifier modifier in feature.CharacterModifiers)
+                    {
+                        characterModifiers.Add(modifier);
+                    }
                 }
             }
             foreach (CharacterModifier modifier in characterModifiers)
             {
                 await SetModifierIds(modifier);
-            } 
+            }
 
             _context.Items.UpdateRange(items);
-            _context.BackgroundFeatures.UpdateRange(backgroundFeatures);
-            _context.RaceFeatures.UpdateRange(raceFeatures);
-            _context.ClassFeatures.UpdateRange(classFeatures);
-            _context.SubclassFeatures.UpdateRange(subclassFeatures);
+            _context.Backgrounds.UpdateRange(backgrounds);
+            _context.Races.UpdateRange(races);
+            _context.Classes.UpdateRange(classes);
+            _context.Subclasses.UpdateRange(subclasses);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
@@ -166,16 +178,14 @@ namespace DnDesigner.Controllers
         {
             if (modifier is GrantProficiencies grantProficiencies)
             {
-                List<Proficiency> proficiencies = new List<Proficiency>();
-                foreach (Proficiency proficiency in grantProficiencies.Proficiencies)
+                for (int i = 0; i < grantProficiencies.Proficiencies.Count; i++)
                 {
-                    Proficiency? p = await _context.Proficiencies.FirstOrDefaultAsync(p => p.Name == proficiency.Name);
+                    Proficiency? p = await _context.Proficiencies.FirstOrDefaultAsync(p => p.Name == grantProficiencies.Proficiencies[i].Name);
                     if (p != null)
                     {
-                        proficiencies.Add(p);
+                        grantProficiencies.Proficiencies[i] = p;
                     }
                 }
-                grantProficiencies.Proficiencies = proficiencies;
             }
             else if (modifier is AddAction addAction)
             {

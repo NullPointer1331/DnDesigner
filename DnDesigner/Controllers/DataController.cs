@@ -1,6 +1,5 @@
 ﻿using DnDesigner.Data;
 using DnDesigner.Models;
-using DnDesigner.Models.ImportModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -94,7 +93,6 @@ namespace DnDesigner.Controllers
                 }
             }
 
-            _context.Actions.AddRange(actions);
             _context.Proficiencies.AddRange(proficiencies);
             _context.Items.AddRange(items);
             _context.Spells.AddRange(spells);
@@ -102,106 +100,17 @@ namespace DnDesigner.Controllers
             _context.Races.AddRange(races);
             _context.Classes.AddRange(classes);
             _context.Subclasses.AddRange(subclasses);
+            _context.Actions.AddRange(actions);
+
+            //This is a bad way to make sure the action ids line up for the AddActions, but I don't know a better way
+            List<Models.Action> actionsWithId = await _context.Actions.ToListAsync();
+            for (int i = 0; i < actions.Count; i++)
+            {
+                actions[i].ActionId = actionsWithId[i].ActionId;
+            }
+
             await _context.SaveChangesAsync();
-
-            // Manually fixing the Ids for serialized objects
-            items = await _context.Items.ToListAsync();
-            backgrounds = await _context.Backgrounds.ToListAsync();
-            races = await _context.Races.ToListAsync();
-            classes = await _context.Classes.ToListAsync();
-            subclasses = await _context.Subclasses.ToListAsync();
-
-            List<CharacterModifier> characterModifiers = new List<CharacterModifier>();
-            foreach (Item item in items)
-            {
-                foreach (CharacterModifier modifier in item.CharacterModifiers)
-                {
-                    characterModifiers.Add(modifier);
-                }
-            }
-            foreach (Background background in backgrounds)
-            {
-                foreach (Feature feature in background.Features)
-                {
-                    foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                    {
-                        characterModifiers.Add(modifier);
-                    }
-                }
-            }
-            foreach (Race race in races)
-            {
-                foreach (Feature feature in race.Features)
-                {
-                    foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                    {
-                        characterModifiers.Add(modifier);
-                    }
-                }
-            }
-            foreach (Class @class in classes)
-            {
-                foreach (Feature feature in @class.Features)
-                {
-                    foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                    {
-                        characterModifiers.Add(modifier);
-                    }
-                }
-            }
-            foreach (Subclass subclass in subclasses)
-            {
-                foreach (Feature feature in subclass.Features)
-                {
-                    foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                    {
-                        characterModifiers.Add(modifier);
-                    }
-                }
-            }
-            foreach (CharacterModifier modifier in characterModifiers)
-            {
-                await SetModifierIds(modifier);
-            }
-
-            _context.Items.UpdateRange(items);
-            _context.Backgrounds.UpdateRange(backgrounds);
-            _context.Races.UpdateRange(races);
-            _context.Classes.UpdateRange(classes);
-            _context.Subclasses.UpdateRange(subclasses);
-            await _context.SaveChangesAsync();
-
             return RedirectToAction("Index", "Home");
-        }
-
-        public async Task SetModifierIds(CharacterModifier modifier) 
-        {
-            if (modifier is GrantProficiencies grantProficiencies)
-            {
-                for (int i = 0; i < grantProficiencies.Proficiencies.Count; i++)
-                {
-                    Proficiency? p = await _context.Proficiencies.FirstOrDefaultAsync(p => p.Name == grantProficiencies.Proficiencies[i].Name);
-                    if (p != null)
-                    {
-                        grantProficiencies.Proficiencies[i] = p;
-                    }
-                }
-            }
-            else if (modifier is AddAction addAction)
-            {
-                Models.Action? a = await _context.Actions.FirstOrDefaultAsync(a => a.Name == addAction.Action.Name);
-                if (a != null)
-                {
-                    addAction.Action = a;
-                }
-            }
-            else if (modifier is CharacterModifierChoice choice)
-            {
-                foreach (CharacterModifier option in choice.Modifiers)
-                {
-                    await SetModifierIds(option);
-                }
-            }
         }
     }
 }

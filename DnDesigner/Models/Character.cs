@@ -142,6 +142,11 @@ namespace DnDesigner.Models
         public string Vulnerabilities { get; set; }
 
         /// <summary>
+        /// The notes a player wants to keep with this character
+        /// </summary>
+        public string PlayerNotes { get; set; }
+
+        /// <summary>
         /// The characters race
         /// </summary>
         public Race Race { get; set; }

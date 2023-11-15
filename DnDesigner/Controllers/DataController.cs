@@ -1,6 +1,5 @@
 ﻿using DnDesigner.Data;
 using DnDesigner.Models;
-using DnDesigner.Models.ImportModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -94,7 +93,6 @@ namespace DnDesigner.Controllers
                 }
             }
 
-            _context.Actions.AddRange(actions);
             _context.Proficiencies.AddRange(proficiencies);
             _context.Items.AddRange(items);
             _context.Spells.AddRange(spells);
@@ -102,96 +100,10 @@ namespace DnDesigner.Controllers
             _context.Races.AddRange(races);
             _context.Classes.AddRange(classes);
             _context.Subclasses.AddRange(subclasses);
+            _context.Actions.AddRange(actions);
+
             await _context.SaveChangesAsync();
-
-            // Manually fixing the Ids for serialized objects
-            items = await _context.Items.ToListAsync();
-            List<BackgroundFeature> backgroundFeatures = await _context.BackgroundFeatures.ToListAsync();
-            List<RaceFeature> raceFeatures = await _context.RaceFeatures.ToListAsync();
-            List<ClassFeature> classFeatures = await _context.ClassFeatures.ToListAsync();
-            List<SubclassFeature> subclassFeatures = await _context.SubclassFeatures.ToListAsync();
-
-            List<CharacterModifier> characterModifiers = new List<CharacterModifier>();
-            foreach (Item item in items)
-            {
-                foreach (CharacterModifier modifier in item.CharacterModifiers)
-                {
-                    characterModifiers.Add(modifier);
-                }
-            }
-            foreach (BackgroundFeature feature in backgroundFeatures)
-            {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                {
-                    characterModifiers.Add(modifier);
-                }
-            }
-            foreach (RaceFeature feature in raceFeatures)
-            {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                {
-                    characterModifiers.Add(modifier);
-                }
-            }
-            foreach (ClassFeature feature in classFeatures)
-            {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                {
-                    characterModifiers.Add(modifier);
-                }
-            }
-            foreach (SubclassFeature feature in subclassFeatures)
-            {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                {
-                    characterModifiers.Add(modifier);
-                }
-            }
-            foreach (CharacterModifier modifier in characterModifiers)
-            {
-                await SetModifierIds(modifier);
-            } 
-
-            _context.Items.UpdateRange(items);
-            _context.BackgroundFeatures.UpdateRange(backgroundFeatures);
-            _context.RaceFeatures.UpdateRange(raceFeatures);
-            _context.ClassFeatures.UpdateRange(classFeatures);
-            _context.SubclassFeatures.UpdateRange(subclassFeatures);
-            await _context.SaveChangesAsync();
-
             return RedirectToAction("Index", "Home");
-        }
-
-        public async Task SetModifierIds(CharacterModifier modifier) 
-        {
-            if (modifier is GrantProficiencies grantProficiencies)
-            {
-                List<Proficiency> proficiencies = new List<Proficiency>();
-                foreach (Proficiency proficiency in grantProficiencies.Proficiencies)
-                {
-                    Proficiency? p = await _context.Proficiencies.FirstOrDefaultAsync(p => p.Name == proficiency.Name);
-                    if (p != null)
-                    {
-                        proficiencies.Add(p);
-                    }
-                }
-                grantProficiencies.Proficiencies = proficiencies;
-            }
-            else if (modifier is AddAction addAction)
-            {
-                Models.Action? a = await _context.Actions.FirstOrDefaultAsync(a => a.Name == addAction.Action.Name);
-                if (a != null)
-                {
-                    addAction.Action = a;
-                }
-            }
-            else if (modifier is CharacterModifierChoice choice)
-            {
-                foreach (CharacterModifier option in choice.Modifiers)
-                {
-                    await SetModifierIds(option);
-                }
-            }
         }
     }
 }

@@ -66,18 +66,6 @@ namespace DnDesigner.Controllers
         }
         public async Task<IActionResult> Import()
         {
-            // TODO: do this better
-            // Removing existing data also removes all characters
-            /*
-            _context.Proficiencies.RemoveRange(_context.Proficiencies);
-            _context.Items.RemoveRange(_context.Items);
-            _context.Spells.RemoveRange(_context.Spells);
-            _context.Backgrounds.RemoveRange(_context.Backgrounds);
-            _context.Races.RemoveRange(_context.Races);
-            _context.Classes.RemoveRange(_context.Classes);
-            _context.Subclasses.RemoveRange(_context.Subclasses);
-            _context.CharacterModifiers.RemoveRange(_context.CharacterModifiers);*/
-
             List<Item> existingItems = await _context.Items.AsNoTracking().ToListAsync();
             List<Proficiency> existingProficiencies = await _context.Proficiencies.AsNoTracking().ToListAsync();
             List<Spell> existingSpells = await _context.Spells.AsNoTracking().ToListAsync();

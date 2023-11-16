@@ -482,7 +482,7 @@ namespace DnDesigner.Data
                     action.AttackBonusCalculation += "+ " + item5E.bonusWeapon;
                     action.Damage += "+ " + item5E.bonusWeapon;
                 }
-                item.CharacterModifiers.Add(new AddAction(action));
+                item.Effects.Add(new AddAction(action));
             }
             return item;
         }
@@ -517,46 +517,46 @@ namespace DnDesigner.Data
                     {
                         race.StatBonuses += $"+{ability.cha} Charisma. ";
                         ModifyAttribute statBonus = new ModifyAttribute("cha", ability.cha.Value);
-                        statBonuses.CharacterModifiers.Add(statBonus);
+                        statBonuses.Effects.Add(statBonus);
                     }
                     if (ability.con != null)
                     {
                         race.StatBonuses += $"+{ability.con} Constitution. ";
                         ModifyAttribute statBonus = new ModifyAttribute("con", ability.con.Value);
-                        statBonuses.CharacterModifiers.Add(statBonus);
+                        statBonuses.Effects.Add(statBonus);
                     }
                     if (ability.dex != null)
                     {
                         race.StatBonuses += $"+{ability.dex} Dexterity. ";
                         ModifyAttribute statBonus = new ModifyAttribute("dex", ability.dex.Value);
-                        statBonuses.CharacterModifiers.Add(statBonus);
+                        statBonuses.Effects.Add(statBonus);
                     }
                     if (ability.@int != null)
                     {
                         race.StatBonuses += $"+{ability.@int} Intelligence. ";
                         ModifyAttribute statBonus = new ModifyAttribute("int", ability.@int.Value);
-                        statBonuses.CharacterModifiers.Add(statBonus);
+                        statBonuses.Effects.Add(statBonus);
                     }
                     if (ability.str != null)
                     {
                         race.StatBonuses += $"+{ability.str} Strength. ";
                         ModifyAttribute statBonus = new ModifyAttribute("str", ability.str.Value);
-                        statBonuses.CharacterModifiers.Add(statBonus);
+                        statBonuses.Effects.Add(statBonus);
                     }
                     if (ability.wis != null)
                     {
                         race.StatBonuses += $"+{ability.wis} Wisdom. ";
                         ModifyAttribute statBonus = new ModifyAttribute("wis", ability.wis.Value);
-                        statBonuses.CharacterModifiers.Add(statBonus);
+                        statBonuses.Effects.Add(statBonus);
                     }
                 }
             }
             if(race.StatBonuses == "")
             {
                 race.StatBonuses = "+2 +1, or 3 +1s to any stats of your choice.";
-                statBonuses.CharacterModifiers.Add(new CharacterModifierChoice("ASI"));
-                statBonuses.CharacterModifiers.Add(new CharacterModifierChoice("ASI"));
-                statBonuses.CharacterModifiers.Add(new CharacterModifierChoice("ASI"));
+                statBonuses.Effects.Add(new EffectChoice("ASI"));
+                statBonuses.Effects.Add(new EffectChoice("ASI"));
+                statBonuses.Effects.Add(new EffectChoice("ASI"));
             }
             statBonuses.Description = race.StatBonuses;
             race.Features.Add(statBonuses);
@@ -621,7 +621,7 @@ namespace DnDesigner.Data
                     proficiencies.Description += $"{proficiency.Name}, ";
                 }
                 proficiencies.Description = proficiencies.Description.Substring(0, proficiencies.Description.Length - 2);
-                proficiencies.CharacterModifiers.Add(new GrantProficiencies(raceProficiencies, false));
+                proficiencies.Effects.Add(new GrantProficiencies(raceProficiencies, false));
                 race.Features.Add(proficiencies);
             }
             //TODO: Features, Subraces, actually check speed
@@ -718,7 +718,7 @@ namespace DnDesigner.Data
                 }
                 proficiencies.Description = proficiencies.Description.Substring(0, proficiencies.Description.Length - 2);
                 background.Features.Add(proficiencies);
-                proficiencies.CharacterModifiers.Add(new GrantProficiencies(backgroundProficiencies, false));
+                proficiencies.Effects.Add(new GrantProficiencies(backgroundProficiencies, false));
             }
             //TODO:equipment, features
             return background;
@@ -831,8 +831,8 @@ namespace DnDesigner.Data
                         List<Proficiency> skills = FindSkills(skill, allProficiencies);
                         for (int i = 0; i < skill.choose.count; i++)
                         {
-                            CharacterModifierChoice choice = new CharacterModifierChoice(skills);
-                            startingProficiencies.CharacterModifiers.Add(choice);
+                            EffectChoice choice = new EffectChoice(skills);
+                            startingProficiencies.Effects.Add(choice);
                         }
                         
                         foreach (Proficiency proficiency in skills)
@@ -846,7 +846,7 @@ namespace DnDesigner.Data
                             .Substring(0, startingProficiencies.Description.Length - 2) + ". ";
             }
 
-            startingProficiencies.CharacterModifiers.Add(new GrantProficiencies(classProficiencies, false));
+            startingProficiencies.Effects.Add(new GrantProficiencies(classProficiencies, false));
             @class.Features.Add(startingProficiencies);
             foreach (ClassFeature5ETools feature5E in classFeatures)
             {
@@ -860,8 +860,8 @@ namespace DnDesigner.Data
                 feature.Source = $"{feature5E.source}, Class, {@class.Name}";
                 if (feature.Name == "Ability Score Improvement")
                 {
-                    feature.CharacterModifiers.Add(new CharacterModifierChoice("ASI"));
-                    feature.CharacterModifiers.Add(new CharacterModifierChoice("ASI"));
+                    feature.Effects.Add(new EffectChoice("ASI"));
+                    feature.Effects.Add(new EffectChoice("ASI"));
                 }
                 @class.Features.Add(feature);
             }

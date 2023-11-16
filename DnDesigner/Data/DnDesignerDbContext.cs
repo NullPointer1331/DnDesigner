@@ -14,25 +14,25 @@ namespace DnDesigner.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Item>()
-                .HasMany(e => e.CharacterModifiers)
+                .HasMany(e => e.Effects)
                 .WithOne();
             builder.Entity<BackgroundFeature>()
-                .HasMany(e => e.CharacterModifiers)
+                .HasMany(e => e.Effects)
                 .WithOne();
             builder.Entity<CharacterFeature>()
-                .HasMany(e => e.CharacterModifiers)
+                .HasMany(e => e.Effects)
                 .WithOne();
             builder.Entity<ClassFeature>()
-                .HasMany(e => e.CharacterModifiers)
+                .HasMany(e => e.Effects)
                 .WithMany();
             builder.Entity<SubclassFeature>()
-                .HasMany(e => e.CharacterModifiers)
+                .HasMany(e => e.Effects)
                 .WithMany();
             builder.Entity<RaceFeature>()
-                .HasMany(e => e.CharacterModifiers)
+                .HasMany(e => e.Effects)
                 .WithOne();
-            builder.Entity<CharacterModifierChoice>()
-                .HasMany(e => e.CharacterModifiers)
+            builder.Entity<EffectChoice>()
+                .HasMany(e => e.Effects)
                 .WithOne();
             builder.Entity<ModifyAttribute>();
             builder.Entity<GrantProficiencies>()
@@ -49,7 +49,8 @@ namespace DnDesigner.Data
                 .WithMany();
             base.OnModelCreating(builder);
         }
-        public DbSet<CharacterModifier> CharacterModifiers { get; set; }
+        public DbSet<Effect> Effects { get; set; }
+        public DbSet<CharacterEffect> CharacterEffects { get; set; }
         public DbSet<Proficiency> Proficiencies { get; set; }
         public DbSet<Background> Backgrounds { get; set; }
         public DbSet<BackgroundFeature> BackgroundFeatures { get; set; }

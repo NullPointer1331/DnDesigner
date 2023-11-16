@@ -11,6 +11,7 @@ namespace DnDesigner.Models
     [JsonDerivedType(typeof(AddAction), typeDiscriminator: "Action")]
     public abstract class CharacterModifier
     {
+        public int CharacterModifierId { get; set; }
         /// <summary>
         /// Has this modifier been applied?
         /// </summary>
@@ -35,19 +36,21 @@ namespace DnDesigner.Models
     public class CharacterModifierChoice : CharacterModifier
     {
         public int ChosenIndex { get; set; }
-        public List<CharacterModifier> Modifiers { get; private set; }
+        public List<CharacterModifier> CharacterModifiers { get; private set; }
 
         public CharacterModifierChoice(List<CharacterModifier> modifiers)
         {
-            Modifiers = modifiers;
+            CharacterModifiers = modifiers;
         }
 
         [JsonConstructor]
         public CharacterModifierChoice(List<CharacterModifier> modifiers, int chosenIndex)
         {
-            Modifiers = modifiers;
+            CharacterModifiers = modifiers;
             ChosenIndex = chosenIndex;
         }
+
+        private CharacterModifierChoice() { }
 
         /// <summary>
         /// Creates a new CharacterModifierChoice from a preset
@@ -56,16 +59,16 @@ namespace DnDesigner.Models
         /// Options: "ASI" - Increase an ability score by 1, (TODO, implement more presets)</param>
         public CharacterModifierChoice(string preset)
         {
-            Modifiers = new List<CharacterModifier>();
+            CharacterModifiers = new List<CharacterModifier>();
             switch (preset)
             {
                 case "ASI":
-                    Modifiers.Add(new ModifyAttribute("str", 1));
-                    Modifiers.Add(new ModifyAttribute("dex", 1));
-                    Modifiers.Add(new ModifyAttribute("con", 1));
-                    Modifiers.Add(new ModifyAttribute("int", 1));
-                    Modifiers.Add(new ModifyAttribute("wis", 1));
-                    Modifiers.Add(new ModifyAttribute("cha", 1));
+                    CharacterModifiers.Add(new ModifyAttribute("str", 1));
+                    CharacterModifiers.Add(new ModifyAttribute("dex", 1));
+                    CharacterModifiers.Add(new ModifyAttribute("con", 1));
+                    CharacterModifiers.Add(new ModifyAttribute("int", 1));
+                    CharacterModifiers.Add(new ModifyAttribute("wis", 1));
+                    CharacterModifiers.Add(new ModifyAttribute("cha", 1));
                     break;
                 default:
                     break;
@@ -78,31 +81,31 @@ namespace DnDesigner.Models
         /// <param name="proficiencies"></param>
         public CharacterModifierChoice(List<Proficiency> proficiencies)
         {
-            Modifiers = new List<CharacterModifier>();
+            CharacterModifiers = new List<CharacterModifier>();
             foreach (Proficiency proficiency in proficiencies)
             {
-                Modifiers.Add(new GrantProficiencies(proficiency, false));
+                CharacterModifiers.Add(new GrantProficiencies(proficiency, false));
             }
         } 
 
         public override void ApplyEffect(Character character)
         {
-            if(!IsApplied && Modifiers.ElementAt(ChosenIndex) != null)
+            if(!IsApplied && CharacterModifiers.ElementAt(ChosenIndex) != null)
             {
-                foreach (CharacterModifier modifier in Modifiers)
+                foreach (CharacterModifier modifier in CharacterModifiers)
                 {
                     modifier.RemoveEffect(character);
                 }
-                Modifiers[ChosenIndex].ApplyEffect(character);
+                CharacterModifiers[ChosenIndex].ApplyEffect(character);
                 IsApplied = true;
             }
         }
 
         public override void RemoveEffect(Character character)
         {
-            if (IsApplied && Modifiers.ElementAt(ChosenIndex) != null)
+            if (IsApplied && CharacterModifiers.ElementAt(ChosenIndex) != null)
             {
-                foreach (CharacterModifier modifier in Modifiers)
+                foreach (CharacterModifier modifier in CharacterModifiers)
                 {
                     modifier.RemoveEffect(character);
                 }
@@ -125,6 +128,8 @@ namespace DnDesigner.Models
             Attribute = attribute;
             Value = value;
         }
+
+        private ModifyAttribute() { }
 
         public override void ApplyEffect(Character character)
         {
@@ -169,6 +174,8 @@ namespace DnDesigner.Models
             Expertise = expertise;
         }
 
+        private GrantProficiencies() { }
+
         public override void ApplyEffect(Character character)
         {
             if (!IsApplied)
@@ -206,6 +213,8 @@ namespace DnDesigner.Models
         {
             Action = action;
         }
+
+        private AddAction(){}
 
         public override void ApplyEffect(Character character)
         {

@@ -39,7 +39,6 @@ namespace DnDesigner.Models
         /// <summary>
         /// A list of modifiers that this feature applies to a character
         /// </summary>
-        [NotMapped]
         public List<CharacterModifier> CharacterModifiers { get; set; }
 
         /// <summary>

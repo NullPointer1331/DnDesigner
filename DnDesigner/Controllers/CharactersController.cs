@@ -65,14 +65,17 @@ namespace DnDesigner.Controllers
                     .Where(c => c.ClassId == character.ClassId)
                     .Include(c => c.Spellcasting)
                     .Include(c => c.Features)
+                    .ThenInclude(cf => cf.CharacterModifiers)
                     .FirstOrDefaultAsync();
                 Background background = await _context.Backgrounds
                     .Where(b => b.BackgroundId == character.BackgroundId)
                     .Include(b => b.Features)
+                    .ThenInclude(bf => bf.CharacterModifiers)
                     .FirstOrDefaultAsync();
                 Race race = await _context.Races
                     .Where(r => r.RaceId == character.RaceId)
                     .Include(r => r.Features)
+                    .ThenInclude(rf => rf.CharacterModifiers)
                     .FirstOrDefaultAsync();
 
                 // This is to make sure all characters have all saving throws and skills even if they aren't proficient in them

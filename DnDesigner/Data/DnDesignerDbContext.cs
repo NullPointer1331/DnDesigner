@@ -13,7 +13,34 @@ namespace DnDesigner.Data
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            
+            builder.Entity<Item>()
+                .HasMany(e => e.CharacterModifiers)
+                .WithOne();
+            builder.Entity<BackgroundFeature>()
+                .HasMany(e => e.CharacterModifiers)
+                .WithOne();
+            builder.Entity<CharacterFeature>()
+                .HasMany(e => e.CharacterModifiers)
+                .WithOne();
+            builder.Entity<ClassFeature>()
+                .HasMany(e => e.CharacterModifiers)
+                .WithMany();
+            builder.Entity<SubclassFeature>()
+                .HasMany(e => e.CharacterModifiers)
+                .WithMany();
+            builder.Entity<RaceFeature>()
+                .HasMany(e => e.CharacterModifiers)
+                .WithOne();
+            builder.Entity<CharacterModifierChoice>()
+                .HasMany(e => e.CharacterModifiers)
+                .WithOne();
+            builder.Entity<ModifyAttribute>();
+            builder.Entity<GrantProficiencies>()
+                .HasMany(e => e.Proficiencies)
+                .WithMany();
+            builder.Entity<AddAction>()
+                .HasOne(e => e.Action)
+                .WithMany();
             base.OnModelCreating(builder);
         }
         public DbSet<CharacterModifier> CharacterModifiers { get; set; }

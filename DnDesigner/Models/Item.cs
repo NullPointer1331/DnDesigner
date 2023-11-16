@@ -70,7 +70,6 @@ namespace DnDesigner.Models
         /// <summary>
         /// The effects the item has on the character
         /// </summary>
-        [NotMapped]
         public List<CharacterModifier> CharacterModifiers { get; set; } = null!;
         #endregion
 

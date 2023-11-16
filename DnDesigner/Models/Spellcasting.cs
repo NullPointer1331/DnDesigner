@@ -74,7 +74,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The spells that can be learned from this spellcasting
         /// </summary>
-        public List<LearnableSpell> LearnableSpells { get; set; }
+        public List<Spell> LearnableSpells { get; set; }
         #endregion
 
     }
@@ -152,7 +152,7 @@ namespace DnDesigner.Models
         /// The spells this character currently has prepared
         /// or if they aren't a prepared caster, the spells they know
         /// </summary>
-        public List<KnownSpell> PreparedSpells { get; set; }
+        public List<Spell> PreparedSpells { get; set; }
         #endregion
 
         /// <summary>
@@ -164,12 +164,12 @@ namespace DnDesigner.Models
         {
             Character = character;
             Spellcasting = spellcasting;
-            PreparedSpells = new List<KnownSpell>();
+            PreparedSpells = new List<Spell>();
         }
 
         private CharacterSpellcasting() // For EF
         {
-            PreparedSpells = new List<KnownSpell>();
+            PreparedSpells = new List<Spell>();
         }
 
     }

@@ -41,6 +41,12 @@ namespace DnDesigner.Data
             builder.Entity<AddAction>()
                 .HasOne(e => e.Action)
                 .WithMany();
+            builder.Entity<Spellcasting>()
+                .HasMany(e => e.LearnableSpells)
+                .WithMany(e => e.LearnedBy);
+            builder.Entity<CharacterSpellcasting>()
+                .HasMany(e => e.PreparedSpells)
+                .WithMany();
             base.OnModelCreating(builder);
         }
         public DbSet<CharacterModifier> CharacterModifiers { get; set; }
@@ -55,14 +61,12 @@ namespace DnDesigner.Data
         public DbSet<RaceFeature> RaceFeatures { get; set; }
         public DbSet<Spellcasting> Spellcasting { get; set; }
         public DbSet<Spell> Spells { get; set; }
-        public DbSet<LearnableSpell> LearnableSpells { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<CharacterProficiency> CharacterProficiencies { get; set; }
         public DbSet<CharacterClass> CharacterClasses { get; set; }
         public DbSet<CharacterSpellcasting> CharacterSpellcasting { get; set;}
         public DbSet<CharacterFeature> CharacterFeatures { get; set; }
-        public DbSet<KnownSpell> KnownSpells { get; set; }
         public DbSet<Inventory> Inventory { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; } 
         public DbSet<Models.Action> Actions { get; set; }

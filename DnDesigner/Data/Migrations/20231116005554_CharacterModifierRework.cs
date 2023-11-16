@@ -10,6 +10,12 @@ namespace DnDesigner.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "KnownSpells");
+
+            migrationBuilder.DropTable(
+                name: "LearnableSpells");
+
             migrationBuilder.DropColumn(
                 name: "CharacterModifiers",
                 table: "SubclassFeatures");
@@ -87,6 +93,55 @@ namespace DnDesigner.Data.Migrations
                         column: x => x.RaceFeatureFeatureId,
                         principalTable: "RaceFeatures",
                         principalColumn: "FeatureId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CharacterSpellcastingSpell",
+                columns: table => new
+                {
+                    PreparedSpellsSpellId = table.Column<int>(type: "int", nullable: false),
+                    CharacterSpellcastingCharacterId = table.Column<int>(type: "int", nullable: false),
+                    CharacterSpellcastingSpellcastingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CharacterSpellcastingSpell", x => new { x.PreparedSpellsSpellId, x.CharacterSpellcastingCharacterId, x.CharacterSpellcastingSpellcastingId });
+                    table.ForeignKey(
+                        name: "FK_CharacterSpellcastingSpell_CharacterSpellcasting_CharacterSpellcastingCharacterId_CharacterSpellcastingSpellcastingId",
+                        columns: x => new { x.CharacterSpellcastingCharacterId, x.CharacterSpellcastingSpellcastingId },
+                        principalTable: "CharacterSpellcasting",
+                        principalColumns: new[] { "CharacterId", "SpellcastingId" },
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CharacterSpellcastingSpell_Spells_PreparedSpellsSpellId",
+                        column: x => x.PreparedSpellsSpellId,
+                        principalTable: "Spells",
+                        principalColumn: "SpellId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SpellSpellcasting",
+                columns: table => new
+                {
+                    LearnableSpellsSpellId = table.Column<int>(type: "int", nullable: false),
+                    LearnedBySpellcastingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SpellSpellcasting", x => new { x.LearnableSpellsSpellId, x.LearnedBySpellcastingId });
+                    table.ForeignKey(
+                        name: "FK_SpellSpellcasting_Spellcasting_LearnedBySpellcastingId",
+                        column: x => x.LearnedBySpellcastingId,
+                        principalTable: "Spellcasting",
+                        principalColumn: "SpellcastingId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SpellSpellcasting_Spells_LearnableSpellsSpellId",
+                        column: x => x.LearnableSpellsSpellId,
+                        principalTable: "Spells",
+                        principalColumn: "SpellId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -202,9 +257,19 @@ namespace DnDesigner.Data.Migrations
                 column: "SubclassFeatureFeatureId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CharacterSpellcastingSpell_CharacterSpellcastingCharacterId_CharacterSpellcastingSpellcastingId",
+                table: "CharacterSpellcastingSpell",
+                columns: new[] { "CharacterSpellcastingCharacterId", "CharacterSpellcastingSpellcastingId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GrantProficienciesProficiency_ProficienciesProficiencyId",
                 table: "GrantProficienciesProficiency",
                 column: "ProficienciesProficiencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SpellSpellcasting_LearnedBySpellcastingId",
+                table: "SpellSpellcasting",
+                column: "LearnedBySpellcastingId");
         }
 
         /// <inheritdoc />
@@ -217,7 +282,13 @@ namespace DnDesigner.Data.Migrations
                 name: "CharacterModifierSubclassFeature");
 
             migrationBuilder.DropTable(
+                name: "CharacterSpellcastingSpell");
+
+            migrationBuilder.DropTable(
                 name: "GrantProficienciesProficiency");
+
+            migrationBuilder.DropTable(
+                name: "SpellSpellcasting");
 
             migrationBuilder.DropTable(
                 name: "CharacterModifiers");
@@ -263,6 +334,65 @@ namespace DnDesigner.Data.Migrations
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
+
+            migrationBuilder.CreateTable(
+                name: "KnownSpells",
+                columns: table => new
+                {
+                    CharacterId = table.Column<int>(type: "int", nullable: false),
+                    SpellcastingId = table.Column<int>(type: "int", nullable: false),
+                    SpellId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KnownSpells", x => new { x.CharacterId, x.SpellcastingId, x.SpellId });
+                    table.ForeignKey(
+                        name: "FK_KnownSpells_CharacterSpellcasting_CharacterId_SpellcastingId",
+                        columns: x => new { x.CharacterId, x.SpellcastingId },
+                        principalTable: "CharacterSpellcasting",
+                        principalColumns: new[] { "CharacterId", "SpellcastingId" },
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_KnownSpells_Spells_SpellId",
+                        column: x => x.SpellId,
+                        principalTable: "Spells",
+                        principalColumn: "SpellId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LearnableSpells",
+                columns: table => new
+                {
+                    SpellId = table.Column<int>(type: "int", nullable: false),
+                    SpellcastingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LearnableSpells", x => new { x.SpellId, x.SpellcastingId });
+                    table.ForeignKey(
+                        name: "FK_LearnableSpells_Spellcasting_SpellcastingId",
+                        column: x => x.SpellcastingId,
+                        principalTable: "Spellcasting",
+                        principalColumn: "SpellcastingId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LearnableSpells_Spells_SpellId",
+                        column: x => x.SpellId,
+                        principalTable: "Spells",
+                        principalColumn: "SpellId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_KnownSpells_SpellId",
+                table: "KnownSpells",
+                column: "SpellId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LearnableSpells_SpellcastingId",
+                table: "LearnableSpells",
+                column: "SpellcastingId");
         }
     }
 }

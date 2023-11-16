@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Data.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20231115233607_CharacterModifierRework")]
+    [Migration("20231116005554_CharacterModifierRework")]
     partial class CharacterModifierRework
     {
         /// <inheritdoc />
@@ -53,6 +53,24 @@ namespace DnDesigner.Data.Migrations
                     b.HasIndex("SubclassFeatureFeatureId");
 
                     b.ToTable("CharacterModifierSubclassFeature");
+                });
+
+            modelBuilder.Entity("CharacterSpellcastingSpell", b =>
+                {
+                    b.Property<int>("PreparedSpellsSpellId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CharacterSpellcastingCharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CharacterSpellcastingSpellcastingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PreparedSpellsSpellId", "CharacterSpellcastingCharacterId", "CharacterSpellcastingSpellcastingId");
+
+                    b.HasIndex("CharacterSpellcastingCharacterId", "CharacterSpellcastingSpellcastingId");
+
+                    b.ToTable("CharacterSpellcastingSpell");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Action", b =>
@@ -558,39 +576,6 @@ namespace DnDesigner.Data.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.KnownSpell", b =>
-                {
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SpellcastingId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SpellId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CharacterId", "SpellcastingId", "SpellId");
-
-                    b.HasIndex("SpellId");
-
-                    b.ToTable("KnownSpells");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.LearnableSpell", b =>
-                {
-                    b.Property<int>("SpellId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SpellcastingId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SpellId", "SpellcastingId");
-
-                    b.HasIndex("SpellcastingId");
-
-                    b.ToTable("LearnableSpells");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.Proficiency", b =>
                 {
                     b.Property<int>("ProficiencyId")
@@ -1053,6 +1038,21 @@ namespace DnDesigner.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SpellSpellcasting", b =>
+                {
+                    b.Property<int>("LearnableSpellsSpellId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LearnedBySpellcastingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LearnableSpellsSpellId", "LearnedBySpellcastingId");
+
+                    b.HasIndex("LearnedBySpellcastingId");
+
+                    b.ToTable("SpellSpellcasting");
+                });
+
             modelBuilder.Entity("DnDesigner.Models.AddAction", b =>
                 {
                     b.HasBaseType("DnDesigner.Models.CharacterModifier");
@@ -1125,6 +1125,21 @@ namespace DnDesigner.Data.Migrations
                     b.HasOne("DnDesigner.Models.SubclassFeature", null)
                         .WithMany()
                         .HasForeignKey("SubclassFeatureFeatureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CharacterSpellcastingSpell", b =>
+                {
+                    b.HasOne("DnDesigner.Models.Spell", null)
+                        .WithMany()
+                        .HasForeignKey("PreparedSpellsSpellId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DnDesigner.Models.CharacterSpellcasting", null)
+                        .WithMany()
+                        .HasForeignKey("CharacterSpellcastingCharacterId", "CharacterSpellcastingSpellcastingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1325,44 +1340,6 @@ namespace DnDesigner.Data.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.KnownSpell", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Spell", "Spell")
-                        .WithMany()
-                        .HasForeignKey("SpellId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.CharacterSpellcasting", "Character")
-                        .WithMany("PreparedSpells")
-                        .HasForeignKey("CharacterId", "SpellcastingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character");
-
-                    b.Navigation("Spell");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.LearnableSpell", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Spell", "Spell")
-                        .WithMany("LearnedBy")
-                        .HasForeignKey("SpellId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Spellcasting", "Spellcasting")
-                        .WithMany("LearnableSpells")
-                        .HasForeignKey("SpellcastingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Spell");
-
-                    b.Navigation("Spellcasting");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.RaceFeature", b =>
                 {
                     b.HasOne("DnDesigner.Models.Race", "Race")
@@ -1468,6 +1445,21 @@ namespace DnDesigner.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SpellSpellcasting", b =>
+                {
+                    b.HasOne("DnDesigner.Models.Spell", null)
+                        .WithMany()
+                        .HasForeignKey("LearnableSpellsSpellId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DnDesigner.Models.Spellcasting", null)
+                        .WithMany()
+                        .HasForeignKey("LearnedBySpellcastingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DnDesigner.Models.AddAction", b =>
                 {
                     b.HasOne("DnDesigner.Models.Action", "Action")
@@ -1510,11 +1502,6 @@ namespace DnDesigner.Data.Migrations
                     b.Navigation("CharacterModifiers");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.CharacterSpellcasting", b =>
-                {
-                    b.Navigation("PreparedSpells");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.Class", b =>
                 {
                     b.Navigation("Features");
@@ -1540,16 +1527,6 @@ namespace DnDesigner.Data.Migrations
             modelBuilder.Entity("DnDesigner.Models.RaceFeature", b =>
                 {
                     b.Navigation("CharacterModifiers");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.Spell", b =>
-                {
-                    b.Navigation("LearnedBy");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.Spellcasting", b =>
-                {
-                    b.Navigation("LearnableSpells");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Subclass", b =>

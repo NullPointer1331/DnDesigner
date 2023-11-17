@@ -101,7 +101,7 @@ namespace DnDesigner.Models
         public void ApplyEffect() {             
             foreach (Effect effect in Effects)
             {
-                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect == effect);
+                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
                 if(existingEffect != null)
                 {
                     existingEffect.ApplyEffect();
@@ -118,7 +118,7 @@ namespace DnDesigner.Models
         {
             foreach (Effect effect in Effects)
             {
-                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect == effect);
+                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
                 if (existingEffect != null)
                 {
                     existingEffect.RemoveEffect();

@@ -482,7 +482,7 @@ namespace DnDesigner.Data
                     action.AttackBonusCalculation += "+ " + item5E.bonusWeapon;
                     action.Damage += "+ " + item5E.bonusWeapon;
                 }
-                item.Effects.Add(new AddAction(action));
+                item.Effects.Add(new GrantAction(action));
             }
             return item;
         }

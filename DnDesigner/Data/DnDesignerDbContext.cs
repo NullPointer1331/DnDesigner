@@ -38,7 +38,7 @@ namespace DnDesigner.Data
             builder.Entity<GrantProficiencies>()
                 .HasMany(e => e.Proficiencies)
                 .WithMany();
-            builder.Entity<AddAction>()
+            builder.Entity<GrantAction>()
                 .HasOne(e => e.Action)
                 .WithMany();
             builder.Entity<Spellcasting>()

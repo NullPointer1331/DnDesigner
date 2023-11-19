@@ -216,16 +216,16 @@ namespace DnDesigner.Models
     /// <summary>
     /// When applied, this effect will add an action to a character
     /// </summary>
-    public class AddAction : Effect
+    public class GrantAction : Effect
     {
         public Action Action { get; set; }
 
-        public AddAction(Action action)
+        public GrantAction(Action action)
         {
             Action = action;
         }
 
-        private AddAction(){}
+        private GrantAction(){}
 
         public override void ApplyEffect(Character character)
         {

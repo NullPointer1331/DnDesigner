@@ -1,6 +1,5 @@
 ﻿using DnDesigner.Data;
 using DnDesigner.Models;
-using DnDesigner.Models.ImportModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -93,6 +92,7 @@ namespace DnDesigner.Controllers
                     j--;
                 }
             }
+
             for (int j = 0; j < proficiencies.Count; j++)
             {
                 Proficiency? existingProficiency = existingProficiencies.Find(p => p.Name == proficiencies[j].Name && p.Type == proficiencies[j].Type);
@@ -175,8 +175,8 @@ namespace DnDesigner.Controllers
             _context.Races.AddRange(races);
             _context.Classes.AddRange(classes);
             _context.Subclasses.AddRange(subclasses);
+            
             await _context.SaveChangesAsync();
-
             return RedirectToAction("Index", "Home");
         }
     }

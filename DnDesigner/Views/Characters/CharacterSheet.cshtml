@@ -282,13 +282,13 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Current Health</h5>
                                     <div class="input-group input-group-lg">
-                                        <input asp-for="CurrentHealth" type="number" class="form-control text-center">
+                                        <input asp-for="CurrentHealth" type="number" max="@Model.MaxHealth" min="0" class="form-control text-center">
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">Temp Health</h5>
                                     <div class="input-group input-group-lg">
-                                        <input asp-for="TempHealth" type="number" class="form-control text-center" />
+                                        <input asp-for="TempHealth" type="number" min="0" class="form-control text-center" />
                                     </div>
                                 </div>
                             </div>
@@ -594,11 +594,25 @@
                             </div>
                         </div>
                     </div>
+                    <!--Notes Area-->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-Notes" aria-expanded="false"
+                                    aria-controls="panelsStayOpen-Notes">
+                                Notes
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-Notes" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <textarea asp-for="PlayerNotes" style="width: 100%; min-height:15rem"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>        
             </div>
         </div>
         <!--Flex div close-->
-
 
     </div>
     <!--End of Character Sheet Layout-->

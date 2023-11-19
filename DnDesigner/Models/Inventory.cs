@@ -288,14 +288,7 @@ namespace DnDesigner.Models
         /// </summary>
         public void SimplifyCoins()
         {
-            int total = TotalCoinValue;
-            Platinum = total / 1000;
-            total -= Platinum * 1000;
-            Gold = total / 100;
-            total -= Gold * 100;
-            Silver = total / 10;
-            total -= Silver * 10;
-            Copper = total;
+            SimplifyCoins(TotalCoinValue);
         }
 
         /// <summary>

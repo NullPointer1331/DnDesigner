@@ -121,18 +121,25 @@ namespace DnDesigner.Models
 
         public override void ApplyEffect(Character character)
         {
-            foreach (Effect effect in Effects)
+            RemoveEffect(character);
+            if (ChosenIndex < Effects.Count && ChosenIndex >= 0)
             {
-                effect.RemoveEffect(character);
+                CharacterEffect characterEffect = new CharacterEffect(character, Effects[ChosenIndex]);
+                character.CharacterEffects.Add(characterEffect);
+                characterEffect.ApplyEffect();
             }
-            Effects[ChosenIndex].ApplyEffect(character);
         }
 
         public override void RemoveEffect(Character character)
         {
             foreach (Effect effect in Effects)
             {
-                effect.RemoveEffect(character);
+                CharacterEffect? existingEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
+                if (existingEffect != null)
+                {
+                    existingEffect.RemoveEffect();
+                    character.CharacterEffects.Remove(existingEffect);
+                }
             }
         }
     }

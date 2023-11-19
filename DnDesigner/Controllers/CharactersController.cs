@@ -65,16 +65,41 @@ namespace DnDesigner.Controllers
                     .Where(c => c.ClassId == character.ClassId)
                     .Include(c => c.Spellcasting)
                     .Include(c => c.Features)
+                    .ThenInclude(cf => cf.Effects)
                     .FirstOrDefaultAsync();
                 Background background = await _context.Backgrounds
                     .Where(b => b.BackgroundId == character.BackgroundId)
                     .Include(b => b.Features)
+                    .ThenInclude(bf => bf.Effects)
                     .FirstOrDefaultAsync();
                 Race race = await _context.Races
                     .Where(r => r.RaceId == character.RaceId)
                     .Include(r => r.Features)
+                    .ThenInclude(rf => rf.Effects)
                     .FirstOrDefaultAsync();
 
+                //A temporary measure to load everything we need, this will be replaced once we have the dbhelper
+                foreach (Feature feature in @class.Features)
+                {
+                    foreach (Effect effect in feature.Effects)
+                    {
+                        await PopulateEffect(effect);
+                    }
+                }
+                foreach (Feature feature in background.Features)
+                {
+                    foreach (Effect effect in feature.Effects)
+                    {
+                        await PopulateEffect(effect);
+                    }
+                }
+                foreach (Feature feature in race.Features)
+                {
+                    foreach (Effect effect in feature.Effects)
+                    {
+                        await PopulateEffect(effect);
+                    }
+                }
                 // This is to make sure all characters have all saving throws and skills even if they aren't proficient in them
                 // There's probably a better way to do this
                 List<Proficiency> defaultProficiencies = await _context.Proficiencies
@@ -114,8 +139,13 @@ namespace DnDesigner.Controllers
                 .ThenInclude(cp => cp.Proficiency)
                 .Include(c => c.Features)
                 .Include(c => c.Inventory)
+                .Include(c => c.CharacterEffects)
                 .FirstOrDefaultAsync();
 
+            foreach (CharacterEffect characterEffect in character.CharacterEffects)
+            {
+                await PopulateEffect(characterEffect.Effect);
+            }
             
             if (character == null)
             {
@@ -198,6 +228,38 @@ namespace DnDesigner.Controllers
         private bool CharacterExists(int id)
         {
           return (_context.Characters?.Any(e => e.CharacterId == id)).GetValueOrDefault();
+        }
+
+        /// <summary>
+        /// Loads all the data for an effect
+        /// Will be replaced once we have the dbhelper
+        /// </summary>
+        /// <param name="effect"></param>
+        /// <returns></returns>
+        private async Task PopulateEffect(Effect effect)
+        {
+            if (effect is GrantProficiencies grantProficiencies)
+            {
+                await _context.Entry(grantProficiencies)
+                    .Collection(gp => gp.Proficiencies)
+                    .LoadAsync();
+            }
+            else if (effect is GrantAction grantAction)
+            {
+                await _context.Entry(grantAction)
+                    .Reference(ga => ga.Action)
+                    .LoadAsync();
+            }
+            else if (effect is EffectChoice effectChoice)
+            {
+                await _context.Entry(effectChoice)
+                    .Collection(ec => ec.Effects)
+                    .LoadAsync();
+                foreach (Effect effectChoiceEffect in effectChoice.Effects)
+                {
+                    await PopulateEffect(effectChoiceEffect);
+                }
+            }
         }
     }
 }

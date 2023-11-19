@@ -37,10 +37,9 @@ namespace DnDesigner.Models
         public int Level { get; set; }
 
         /// <summary>
-        /// A list of modifiers that this feature applies to a character
+        /// A list of effects that this feature applies to a character
         /// </summary>
-        [NotMapped]
-        public List<CharacterModifier> CharacterModifiers { get; set; }
+        public List<Effect> Effects { get; set; }
 
         /// <summary>
         /// Full constructor, sets all properties
@@ -55,7 +54,7 @@ namespace DnDesigner.Models
             Source = source;
             Description = description;
             Level = level;
-            CharacterModifiers = new List<CharacterModifier>();
+            Effects = new List<Effect>();
         }
 
         /// <summary>
@@ -69,7 +68,7 @@ namespace DnDesigner.Models
             Name = name;
             Description = description;
             Level = level;
-            CharacterModifiers = new List<CharacterModifier>();
+            Effects = new List<Effect>();
         }
 
         public bool Equals(Feature other)
@@ -94,22 +93,37 @@ namespace DnDesigner.Models
         public CharacterFeature(Character character, Feature feature) : base(feature.Name, feature.Description, feature.Level, feature.Source)
         {
             Character = character;
-            CharacterModifiers = feature.CharacterModifiers;
+            Effects = feature.Effects;
         }
 
         private CharacterFeature() : base("", "", 0) { }
 
         public void ApplyEffect() {             
-            foreach (CharacterModifier modifier in CharacterModifiers)
+            foreach (Effect effect in Effects)
             {
-                modifier.ApplyEffect(Character);
+                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
+                if(existingEffect != null)
+                {
+                    existingEffect.ApplyEffect();
+                }
+                else
+                {
+                    CharacterEffect characterEffect = new CharacterEffect(Character, effect);
+                    Character.CharacterEffects.Add(characterEffect);
+                    characterEffect.ApplyEffect();
+                }
             }
         }
         public void RemoveEffect()
         {
-            foreach (CharacterModifier modifier in CharacterModifiers)
+            foreach (Effect effect in Effects)
             {
-                modifier.RemoveEffect(Character);
+                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
+                if (existingEffect != null)
+                {
+                    existingEffect.RemoveEffect();
+                    Character.CharacterEffects.Remove(existingEffect);
+                }
             }
         }
     }

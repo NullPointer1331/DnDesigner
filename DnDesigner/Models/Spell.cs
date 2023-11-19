@@ -78,7 +78,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// Who can learn the spell
         /// </summary>
-        public List<LearnableSpell> LearnedBy { get; set; }
+        public List<Spellcasting> LearnedBy { get; set; }
         #endregion
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace DnDesigner.Models
         /// </summary>
         public Spell()
         {
-            LearnedBy = new List<LearnableSpell>();
+            LearnedBy = new List<Spellcasting>();
             Name = "";
             Sourcebook = "";
             SpellSchool = "";
@@ -96,63 +96,5 @@ namespace DnDesigner.Models
             Duration = "";
             Description = "";
         }
-    }
-
-    /// <summary>
-    /// Shows which classes can learn which spells
-    /// </summary>
-    [PrimaryKey("SpellId", "SpellcastingId")]
-    public class LearnableSpell
-    {
-        /// <summary>
-        /// A spell that can be learned by a class
-        /// </summary>
-        [ForeignKey("SpellId")]
-        public Spell Spell { get; set; } = null!;
-
-        /// <summary>
-        /// A class that can learn a spell
-        /// </summary>
-        [ForeignKey("SpellcastingId")]
-        public Spellcasting Spellcasting { get; set; } = null!;
-
-        /// <summary>
-        /// Basic constructor
-        /// </summary>
-        /// <param name="spell">A spell that can be learned by a class</param>
-        /// <param name="spellcasting">A class that can learn a spell</param>
-        public LearnableSpell(Spell spell, Spellcasting spellcasting)
-        {
-            Spell = spell;
-            Spellcasting = spellcasting;
-        }
-        private LearnableSpell() { }
-    }
-    [PrimaryKey("CharacterId", "SpellcastingId", "SpellId")]
-    public class KnownSpell
-    {
-        /// <summary>
-        /// The character who knows this spell
-        /// </summary>
-        [ForeignKey("CharacterId, SpellcastingId")]
-        public CharacterSpellcasting Character { get; set; } = null!;
-
-        /// <summary>
-        /// The spell the character knows
-        /// </summary>
-        [ForeignKey("SpellId")]
-        public Spell Spell { get; set; } = null!;
-
-        /// <summary>
-        /// Basic constructor
-        /// </summary>
-        /// <param name="character">The character who knows this spell</param>
-        /// <param name="spell">The spell the character knows</param>
-        public KnownSpell(CharacterSpellcasting character, Spell spell)
-        {
-            Character = character;
-            Spell = spell;
-        }
-        private KnownSpell() { }
     }
 }

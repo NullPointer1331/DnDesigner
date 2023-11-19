@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Data.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20231116211339_CharacterModifierRework")]
+    [Migration("20231119183921_CharacterModifierRework")]
     partial class CharacterModifierRework
     {
         /// <inheritdoc />
@@ -24,6 +24,21 @@ namespace DnDesigner.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CharacterFeatureEffect", b =>
+                {
+                    b.Property<int>("CharacterFeatureFeatureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EffectsEffectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CharacterFeatureFeatureId", "EffectsEffectId");
+
+                    b.HasIndex("EffectsEffectId");
+
+                    b.ToTable("CharacterFeatureEffect");
+                });
 
             modelBuilder.Entity("CharacterSpellcastingSpell", b =>
                 {
@@ -41,21 +56,6 @@ namespace DnDesigner.Data.Migrations
                     b.HasIndex("CharacterSpellcastingCharacterId", "CharacterSpellcastingSpellcastingId");
 
                     b.ToTable("CharacterSpellcastingSpell");
-                });
-
-            modelBuilder.Entity("ClassFeatureEffect", b =>
-                {
-                    b.Property<int>("ClassFeatureFeatureId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EffectsEffectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ClassFeatureFeatureId", "EffectsEffectId");
-
-                    b.HasIndex("EffectsEffectId");
-
-                    b.ToTable("ClassFeatureEffect");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Action", b =>
@@ -436,7 +436,7 @@ namespace DnDesigner.Data.Migrations
                     b.Property<int?>("BackgroundFeatureFeatureId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CharacterFeatureFeatureId")
+                    b.Property<int?>("ClassFeatureFeatureId")
                         .HasColumnType("int");
 
                     b.Property<string>("Discriminator")
@@ -452,17 +452,22 @@ namespace DnDesigner.Data.Migrations
                     b.Property<int?>("RaceFeatureFeatureId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SubclassFeatureFeatureId")
+                        .HasColumnType("int");
+
                     b.HasKey("EffectId");
 
                     b.HasIndex("BackgroundFeatureFeatureId");
 
-                    b.HasIndex("CharacterFeatureFeatureId");
+                    b.HasIndex("ClassFeatureFeatureId");
 
                     b.HasIndex("EffectChoiceEffectId");
 
                     b.HasIndex("ItemId");
 
                     b.HasIndex("RaceFeatureFeatureId");
+
+                    b.HasIndex("SubclassFeatureFeatureId");
 
                     b.ToTable("Effects");
 
@@ -821,21 +826,6 @@ namespace DnDesigner.Data.Migrations
                     b.ToTable("SubclassFeatures");
                 });
 
-            modelBuilder.Entity("EffectSubclassFeature", b =>
-                {
-                    b.Property<int>("EffectsEffectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubclassFeatureFeatureId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EffectsEffectId", "SubclassFeatureFeatureId");
-
-                    b.HasIndex("SubclassFeatureFeatureId");
-
-                    b.ToTable("EffectSubclassFeature");
-                });
-
             modelBuilder.Entity("GrantProficienciesProficiency", b =>
                 {
                     b.Property<int>("GrantProficienciesEffectId")
@@ -1068,18 +1058,6 @@ namespace DnDesigner.Data.Migrations
                     b.ToTable("SpellSpellcasting");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.AddAction", b =>
-                {
-                    b.HasBaseType("DnDesigner.Models.Effect");
-
-                    b.Property<int>("ActionId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ActionId");
-
-                    b.HasDiscriminator().HasValue("AddAction");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.EffectChoice", b =>
                 {
                     b.HasBaseType("DnDesigner.Models.Effect");
@@ -1088,6 +1066,18 @@ namespace DnDesigner.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("EffectChoice");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.GrantAction", b =>
+                {
+                    b.HasBaseType("DnDesigner.Models.Effect");
+
+                    b.Property<int>("ActionId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("ActionId");
+
+                    b.HasDiscriminator().HasValue("GrantAction");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.GrantProficiencies", b =>
@@ -1114,6 +1104,21 @@ namespace DnDesigner.Data.Migrations
                     b.HasDiscriminator().HasValue("ModifyAttribute");
                 });
 
+            modelBuilder.Entity("CharacterFeatureEffect", b =>
+                {
+                    b.HasOne("DnDesigner.Models.CharacterFeature", null)
+                        .WithMany()
+                        .HasForeignKey("CharacterFeatureFeatureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DnDesigner.Models.Effect", null)
+                        .WithMany()
+                        .HasForeignKey("EffectsEffectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CharacterSpellcastingSpell", b =>
                 {
                     b.HasOne("DnDesigner.Models.Spell", null)
@@ -1125,21 +1130,6 @@ namespace DnDesigner.Data.Migrations
                     b.HasOne("DnDesigner.Models.CharacterSpellcasting", null)
                         .WithMany()
                         .HasForeignKey("CharacterSpellcastingCharacterId", "CharacterSpellcastingSpellcastingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ClassFeatureEffect", b =>
-                {
-                    b.HasOne("DnDesigner.Models.ClassFeature", null)
-                        .WithMany()
-                        .HasForeignKey("ClassFeatureFeatureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Effect", null)
-                        .WithMany()
-                        .HasForeignKey("EffectsEffectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1312,9 +1302,9 @@ namespace DnDesigner.Data.Migrations
                         .WithMany("Effects")
                         .HasForeignKey("BackgroundFeatureFeatureId");
 
-                    b.HasOne("DnDesigner.Models.CharacterFeature", null)
+                    b.HasOne("DnDesigner.Models.ClassFeature", null)
                         .WithMany("Effects")
-                        .HasForeignKey("CharacterFeatureFeatureId");
+                        .HasForeignKey("ClassFeatureFeatureId");
 
                     b.HasOne("DnDesigner.Models.EffectChoice", null)
                         .WithMany("Effects")
@@ -1327,6 +1317,10 @@ namespace DnDesigner.Data.Migrations
                     b.HasOne("DnDesigner.Models.RaceFeature", null)
                         .WithMany("Effects")
                         .HasForeignKey("RaceFeatureFeatureId");
+
+                    b.HasOne("DnDesigner.Models.SubclassFeature", null)
+                        .WithMany("Effects")
+                        .HasForeignKey("SubclassFeatureFeatureId");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Inventory", b =>
@@ -1396,21 +1390,6 @@ namespace DnDesigner.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Subclass");
-                });
-
-            modelBuilder.Entity("EffectSubclassFeature", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Effect", null)
-                        .WithMany()
-                        .HasForeignKey("EffectsEffectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.SubclassFeature", null)
-                        .WithMany()
-                        .HasForeignKey("SubclassFeatureFeatureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("GrantProficienciesProficiency", b =>
@@ -1494,7 +1473,7 @@ namespace DnDesigner.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.AddAction", b =>
+            modelBuilder.Entity("DnDesigner.Models.GrantAction", b =>
                 {
                     b.HasOne("DnDesigner.Models.Action", "Action")
                         .WithMany()
@@ -1533,16 +1512,16 @@ namespace DnDesigner.Data.Migrations
                     b.Navigation("Spellcasting");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.CharacterFeature", b =>
-                {
-                    b.Navigation("Effects");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.Class", b =>
                 {
                     b.Navigation("Features");
 
                     b.Navigation("Subclasses");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.ClassFeature", b =>
+                {
+                    b.Navigation("Effects");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Inventory", b =>
@@ -1568,6 +1547,11 @@ namespace DnDesigner.Data.Migrations
             modelBuilder.Entity("DnDesigner.Models.Subclass", b =>
                 {
                     b.Navigation("Features");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.SubclassFeature", b =>
+                {
+                    b.Navigation("Effects");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.EffectChoice", b =>

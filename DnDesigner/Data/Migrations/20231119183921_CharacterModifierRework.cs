@@ -72,13 +72,14 @@ namespace DnDesigner.Data.Migrations
                     EffectId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BackgroundFeatureFeatureId = table.Column<int>(type: "int", nullable: true),
-                    CharacterFeatureFeatureId = table.Column<int>(type: "int", nullable: true),
+                    ClassFeatureFeatureId = table.Column<int>(type: "int", nullable: true),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EffectChoiceEffectId = table.Column<int>(type: "int", nullable: true),
                     ItemId = table.Column<int>(type: "int", nullable: true),
                     RaceFeatureFeatureId = table.Column<int>(type: "int", nullable: true),
-                    ActionId = table.Column<int>(type: "int", nullable: true),
+                    SubclassFeatureFeatureId = table.Column<int>(type: "int", nullable: true),
                     ChosenIndex = table.Column<int>(type: "int", nullable: true),
+                    ActionId = table.Column<int>(type: "int", nullable: true),
                     Expertise = table.Column<bool>(type: "bit", nullable: true),
                     Attribute = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Value = table.Column<int>(type: "int", nullable: true)
@@ -98,9 +99,9 @@ namespace DnDesigner.Data.Migrations
                         principalTable: "BackgroundFeatures",
                         principalColumn: "FeatureId");
                     table.ForeignKey(
-                        name: "FK_Effects_CharacterFeatures_CharacterFeatureFeatureId",
-                        column: x => x.CharacterFeatureFeatureId,
-                        principalTable: "CharacterFeatures",
+                        name: "FK_Effects_ClassFeatures_ClassFeatureFeatureId",
+                        column: x => x.ClassFeatureFeatureId,
+                        principalTable: "ClassFeatures",
                         principalColumn: "FeatureId");
                     table.ForeignKey(
                         name: "FK_Effects_Effects_EffectChoiceEffectId",
@@ -116,6 +117,11 @@ namespace DnDesigner.Data.Migrations
                         name: "FK_Effects_RaceFeatures_RaceFeatureFeatureId",
                         column: x => x.RaceFeatureFeatureId,
                         principalTable: "RaceFeatures",
+                        principalColumn: "FeatureId");
+                    table.ForeignKey(
+                        name: "FK_Effects_SubclassFeatures_SubclassFeatureFeatureId",
+                        column: x => x.SubclassFeatureFeatureId,
+                        principalTable: "SubclassFeatures",
                         principalColumn: "FeatureId");
                 });
 
@@ -169,50 +175,26 @@ namespace DnDesigner.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClassFeatureEffect",
+                name: "CharacterFeatureEffect",
                 columns: table => new
                 {
-                    ClassFeatureFeatureId = table.Column<int>(type: "int", nullable: false),
+                    CharacterFeatureFeatureId = table.Column<int>(type: "int", nullable: false),
                     EffectsEffectId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassFeatureEffect", x => new { x.ClassFeatureFeatureId, x.EffectsEffectId });
+                    table.PrimaryKey("PK_CharacterFeatureEffect", x => new { x.CharacterFeatureFeatureId, x.EffectsEffectId });
                     table.ForeignKey(
-                        name: "FK_ClassFeatureEffect_ClassFeatures_ClassFeatureFeatureId",
-                        column: x => x.ClassFeatureFeatureId,
-                        principalTable: "ClassFeatures",
+                        name: "FK_CharacterFeatureEffect_CharacterFeatures_CharacterFeatureFeatureId",
+                        column: x => x.CharacterFeatureFeatureId,
+                        principalTable: "CharacterFeatures",
                         principalColumn: "FeatureId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClassFeatureEffect_Effects_EffectsEffectId",
+                        name: "FK_CharacterFeatureEffect_Effects_EffectsEffectId",
                         column: x => x.EffectsEffectId,
                         principalTable: "Effects",
                         principalColumn: "EffectId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EffectSubclassFeature",
-                columns: table => new
-                {
-                    EffectsEffectId = table.Column<int>(type: "int", nullable: false),
-                    SubclassFeatureFeatureId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EffectSubclassFeature", x => new { x.EffectsEffectId, x.SubclassFeatureFeatureId });
-                    table.ForeignKey(
-                        name: "FK_EffectSubclassFeature_Effects_EffectsEffectId",
-                        column: x => x.EffectsEffectId,
-                        principalTable: "Effects",
-                        principalColumn: "EffectId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EffectSubclassFeature_SubclassFeatures_SubclassFeatureFeatureId",
-                        column: x => x.SubclassFeatureFeatureId,
-                        principalTable: "SubclassFeatures",
-                        principalColumn: "FeatureId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -246,14 +228,14 @@ namespace DnDesigner.Data.Migrations
                 column: "EffectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CharacterFeatureEffect_EffectsEffectId",
+                table: "CharacterFeatureEffect",
+                column: "EffectsEffectId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CharacterSpellcastingSpell_CharacterSpellcastingCharacterId_CharacterSpellcastingSpellcastingId",
                 table: "CharacterSpellcastingSpell",
                 columns: new[] { "CharacterSpellcastingCharacterId", "CharacterSpellcastingSpellcastingId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClassFeatureEffect_EffectsEffectId",
-                table: "ClassFeatureEffect",
-                column: "EffectsEffectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Effects_ActionId",
@@ -266,9 +248,9 @@ namespace DnDesigner.Data.Migrations
                 column: "BackgroundFeatureFeatureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Effects_CharacterFeatureFeatureId",
+                name: "IX_Effects_ClassFeatureFeatureId",
                 table: "Effects",
-                column: "CharacterFeatureFeatureId");
+                column: "ClassFeatureFeatureId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Effects_EffectChoiceEffectId",
@@ -286,8 +268,8 @@ namespace DnDesigner.Data.Migrations
                 column: "RaceFeatureFeatureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EffectSubclassFeature_SubclassFeatureFeatureId",
-                table: "EffectSubclassFeature",
+                name: "IX_Effects_SubclassFeatureFeatureId",
+                table: "Effects",
                 column: "SubclassFeatureFeatureId");
 
             migrationBuilder.CreateIndex(
@@ -308,13 +290,10 @@ namespace DnDesigner.Data.Migrations
                 name: "CharacterEffects");
 
             migrationBuilder.DropTable(
+                name: "CharacterFeatureEffect");
+
+            migrationBuilder.DropTable(
                 name: "CharacterSpellcastingSpell");
-
-            migrationBuilder.DropTable(
-                name: "ClassFeatureEffect");
-
-            migrationBuilder.DropTable(
-                name: "EffectSubclassFeature");
 
             migrationBuilder.DropTable(
                 name: "GrantProficienciesProficiency");

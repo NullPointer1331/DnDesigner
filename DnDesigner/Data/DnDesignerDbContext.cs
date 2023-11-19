@@ -21,13 +21,13 @@ namespace DnDesigner.Data
                 .WithOne();
             builder.Entity<CharacterFeature>()
                 .HasMany(e => e.Effects)
-                .WithOne();
+                .WithMany();
             builder.Entity<ClassFeature>()
                 .HasMany(e => e.Effects)
-                .WithMany();
+                .WithOne();
             builder.Entity<SubclassFeature>()
                 .HasMany(e => e.Effects)
-                .WithMany();
+                .WithOne();
             builder.Entity<RaceFeature>()
                 .HasMany(e => e.Effects)
                 .WithOne();

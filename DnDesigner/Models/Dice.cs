@@ -14,6 +14,18 @@
 
         /*
         public int D4 { get { return 5; } }
+
+        public int D6 { get { return 7; } }
+
+        public int D8 { get { return 9; } }
+
+        public int D10 { get { return 11; } }
+
+        public int D12 { get { return 13; } }
+
+        public int D20 { get { return 21; } }
+
+        public int D100 { get { return 101; } }
         */
 
         #endregion
@@ -32,6 +44,15 @@
                 result += roll.Next(1, dieSize + 1);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Rolls one d20
+        /// </summary>
+        /// <returns>The result of the roll</returns>
+        public int RollSingleD20()
+        {
+            return roll.Next(1, 21);
         }
 
         /// <summary>

@@ -36,23 +36,23 @@
         /// <param name="dieSize">The maximum number on the die</param>
         /// <param name="dieCount">How many dice will be rolled</param>
         /// <returns>The sum of the rolls</returns>
-        public int RollBasic(int dieSize, int dieCount)
+        public string RollBasic(int dieSize, int dieCount)
         {
             int result = 0;
             for (int i = 0; i < dieCount; i++)
             {
                 result += roll.Next(1, dieSize + 1);
             }
-            return result;
+            return result.ToString();
         }
 
         /// <summary>
         /// Rolls one d20
         /// </summary>
         /// <returns>The result of the roll</returns>
-        public int RollSingleD20()
+        public string RollSingleD20()
         {
-            return roll.Next(1, 21);
+            return roll.Next(1, 21).ToString();
         }
 
         /// <summary>
@@ -61,15 +61,15 @@
         /// <param name="rollType">True if roll is at advantage,
         ///     False if roll is at disadvantage</param>
         /// <returns>The result of the roll</returns>
-        public int RollAdvOrDis(bool rollType)
+        public string RollAdvOrDis(bool rollType)
         {
             int roll1 = roll.Next(1, 21);
             int roll2 = roll.Next(1, 21);
             if (rollType)
             {
-                return Math.Max(roll1, roll2);
+                return Math.Max(roll1, roll2).ToString();
             }
-            return Math.Min(roll1, roll2);
+            return Math.Min(roll1, roll2).ToString();
         }
     }    
 }

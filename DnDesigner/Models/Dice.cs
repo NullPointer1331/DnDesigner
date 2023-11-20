@@ -31,6 +31,20 @@
         #endregion
 
         /// <summary>
+        /// Checks if a roll is a 20
+        /// </summary>
+        /// <param name="roll">The roll to check</param>
+        /// <returns>Natural 20 or an empty string</returns>
+        public string CheckNat20(int roll)
+        {
+            if(roll == 20)
+            {
+                return "Natural 20!";
+            }
+            return "";
+        }
+
+        /// <summary>
         /// Rolls a given size die a given number of times 
         /// </summary>
         /// <param name="dieSize">The maximum number on the die</param>

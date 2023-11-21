@@ -34,14 +34,14 @@
         /// Checks if a roll is a 20
         /// </summary>
         /// <param name="roll">The roll to check</param>
-        /// <returns>Natural 20 or an empty string</returns>
+        /// <returns>Natural 20 or the original value</returns>
         public string CheckNat20(int roll)
         {
             if(roll == 20)
             {
                 return "Natural 20!";
             }
-            return "";
+            return roll.ToString();
         }
 
         /// <summary>
@@ -66,14 +66,15 @@
         /// <returns>The result of the roll</returns>
         public string RollSingleD20()
         {
-            return roll.Next(1, 21).ToString();
+            int singleRoll = roll.Next(1, 21);
+            return CheckNat20(singleRoll);
         }
 
         /// <summary>
         /// Rolls two d20 and returns the result
         /// </summary>
-        /// <param name="rollType">True if roll is at advantage,
-        ///     False if roll is at disadvantage</param>
+        /// <param name="rollType">True if roll is at advantage
+        ///    , False if roll is at disadvantage</param>
         /// <returns>The result of the roll</returns>
         public string RollAdvOrDis(bool rollType)
         {
@@ -81,9 +82,9 @@
             int roll2 = roll.Next(1, 21);
             if (rollType)
             {
-                return Math.Max(roll1, roll2).ToString();
+                return "You Keep A: " + CheckNat20(Math.Max(roll1, roll2)) + ", Lower Roll: " + CheckNat20(Math.Min(roll1, roll2));
             }
-            return Math.Min(roll1, roll2).ToString();
+            return "You Keep A: " + CheckNat20(Math.Min(roll1, roll2)) + ", Higher Roll: " + CheckNat20(Math.Max(roll1, roll2));
         }
     }    
 }

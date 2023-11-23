@@ -82,9 +82,11 @@
             int roll2 = roll.Next(1, 21);
             if (rollType)
             {
-                return "You Keep A: " + CheckNat20(Math.Max(roll1, roll2)) + ", Lower Roll: " + CheckNat20(Math.Min(roll1, roll2));
+                return "You Keep A: " + CheckNat20(Math.Max(roll1, roll2)) + 
+                    ", Lower Roll: " + CheckNat20(Math.Min(roll1, roll2));
             }
-            return "You Keep A: " + CheckNat20(Math.Min(roll1, roll2)) + ", Higher Roll: " + CheckNat20(Math.Max(roll1, roll2));
+            return "You Keep A: " + CheckNat20(Math.Min(roll1, roll2)) + 
+                ", Higher Roll: " + CheckNat20(Math.Max(roll1, roll2));
         }
     }    
 }

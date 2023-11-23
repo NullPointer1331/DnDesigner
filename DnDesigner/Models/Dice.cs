@@ -13,50 +13,50 @@
         static Random roll = new();
 
         /// <summary>
-        /// The upper limit to generate a random int from 1 to 4
-        /// </summary>
-        static int D4 = 5;
-
-        /// <summary>
-        /// The upper limit to generate a random int from 1 to 6
-        /// </summary>
-        static int D6 = 7;
-
-        /// <summary>
-        /// The upper limit to generate a random int from 1 to 8
-        /// </summary>
-        static int D8 = 9;
-
-        /// <summary>
-        /// The upper limit to generate a random int from 1 to 10
-        /// </summary>
-        static int D10 = 11;
-
-        /// <summary>
-        /// The upper limit to generate a random int from 1 to 12
-        /// </summary>
-        static int D12 = 13;
-
-        /// <summary>
         /// The upper limit to generate a random int from 1 to 20
         /// </summary>
         static int D20 = 21;
 
-        /// <summary>
-        /// The upper limit to generate a random int from 1 to 100
-        /// </summary>
-        static int D100 = 101;
-
         #endregion
-
 
         /// <summary>
         /// Rolls a given size die a given number of times
         /// </summary>
         /// <param name="dieSize">The maximum number on the die</param>
         /// <param name="dieCount">How many dice will be rolled</param>
-        /// <returns>The sum of the rolls</returns>
-        public static string RollBasic(int dieSize, int dieCount)
+        /// <returns>The sum of the rolls as an int</returns>
+        public static int Roll(int dieSize, int dieCount)
+        {
+            int rollTotal = roll.Next(1, dieSize + 1);
+
+            // if die count is greater than 1, roll and add to total
+            for (int i = 1; i < dieCount; i++)
+            {
+                rollTotal += roll.Next(1, dieSize + 1);
+                
+            }
+            return rollTotal;
+        }
+
+        /// <summary>
+        /// Rolls a given size die a given number of times
+        /// </summary>
+        /// <param name="dieSize">The maximum number on the die</param>
+        /// <param name="dieCount">How many dice will be rolled</param>
+        /// <param name="modifier">The characters modifier for this roll</param>
+        /// <returns>The sum of the rolls as an int</returns>
+        public static int Roll(int dieSize, int dieCount, int modifier)
+        {
+            return Roll(dieSize, dieCount) + modifier;
+        }
+
+        /// <summary>
+        /// Rolls a given size die a given number of times
+        /// </summary>
+        /// <param name="dieSize">The maximum number on the die</param>
+        /// <param name="dieCount">How many dice will be rolled</param>
+        /// <returns>The sum of the rolls as a string</returns>
+        public static string RollString(int dieSize, int dieCount)
         {
             int rollTotal = roll.Next(1, dieSize + 1);
             string resultString = rollTotal.ToString();
@@ -81,8 +81,8 @@
         /// <param name="dieSize">The maximum number on the die</param>
         /// <param name="dieCount">How many dice will be rolled</param>
         /// <param name="modifier">The characters modifier for this roll</param>
-        /// <returns>The sum of the rolls</returns>
-        public static string RollBasic(int dieSize, int dieCount, int modifier)
+        /// <returns>The sum of the rolls as a string</returns>
+        public static string RollString(int dieSize, int dieCount, int modifier)
         {
             int rollTotal = roll.Next(1, dieSize + 1);
             string resultString = rollTotal.ToString();
@@ -120,7 +120,7 @@
         /// Rolls one d20
         /// </summary>
         /// <returns>The result of the roll</returns>
-        public static string RollSingleD20()
+        public static string RollD20()
         {
             int singleRoll = roll.Next(1, D20);
             return CheckNat20(singleRoll);
@@ -131,7 +131,7 @@
         /// </summary>
         /// <param name="modifier">The characters modifier for this roll</param>
         /// <returns>The result of the roll</returns>
-        public static string RollSingleD20(int modifier)
+        public static string RollD20(int modifier)
         {
             int singleRoll = roll.Next(1, D20);
             return CheckNat20(singleRoll) + " Modified by " + modifier.ToString() +

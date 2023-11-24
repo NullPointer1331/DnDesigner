@@ -889,6 +889,10 @@ namespace DnDesigner.Data
                 description = CleanText(description);
                 SubclassFeature feature = new SubclassFeature(subclass, feature5E.name, description, feature5E.level);
                 subclass.Features.Add(feature);
+                if(@class.SubclassLevel == 0 || feature.Level <= @class.SubclassLevel)
+                {
+                    @class.SubclassLevel = feature.Level;
+                }
             }
             @class.Subclasses.Add(subclass);
             return subclass;

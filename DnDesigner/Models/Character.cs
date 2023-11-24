@@ -557,40 +557,20 @@ namespace DnDesigner.Models
         [DefaultValue("Unnamed Character")]
         public string Name { get; set; }
 
-        /*
-        /// <summary>
-        /// The level of the character.
-        /// Cannot be more than 20, or less than 1.
-        /// </summary>
-        [Range(1, 20)]
-        public int Level { get; set; }*/
-
-        /// <summary>
-        /// The classes the character has.
-        /// </summary>
-        //public List<CharacterClass> Classes { get; set; }
-
-        /// <summary>
+        /// <summary> TODO: Remove this
         /// The id of selected class
         /// </summary>
         public int ClassId { get; set; }
 
         /// <summary>
+        /// A list containing arrays of class id, level and subclass id
+        /// </summary>
+        List<int[]> Classes { get; set; }
+
+        /// <summary>
         /// The id of background of the character.
         /// </summary>
         public int BackgroundId { get; set; }
-
-        /*
-        /// <summary>
-        /// The proficiencies the character has.
-        /// </summary>
-        public List<CharacterProficiency> Proficiencies { get; set; }*/
-
-        /*
-        /// <summary>
-        /// The spellcasting ability of the character, if they have one.
-        /// </summary>
-        public List<CharacterSpellcasting> Spellcasting { get; set; }*/
 
         /// <summary>
         /// The Id of characters race
@@ -602,6 +582,11 @@ namespace DnDesigner.Models
         /// </summary>
         public List<Class> AvailableClasses { get; set; }
 
+        /// <summary>
+        /// The list of available subclasses
+        /// </summary>
+        public List<Subclass> AvailableSubclasses { get; set; }
+
 		/// <summary>
 		/// The list of available races
 		/// </summary>
@@ -612,7 +597,7 @@ namespace DnDesigner.Models
 		/// </summary>
 		public List<Background> AvailableBackgrounds { get; set; }
 
-		/// <summary>
+		/// <summary> TODO: Remove this
 		/// The character's maximum health points.
 		/// </summary>
 		public int MaxHealth { get; set; }
@@ -658,5 +643,30 @@ namespace DnDesigner.Models
         /// </summary>
         [Range(1, 20)]
         public int Charisma { get; set;}
+    }
+
+    public class LevelCharacterViewModel
+    {
+        public Character Character { get; set; }
+
+        /// <summary>
+        /// The list of available classes
+        /// </summary>
+        public List<Class> AvailableClasses { get; set; }
+
+        /// <summary>
+        /// The list of available subclasses
+        /// </summary>
+        public List<Subclass> AvailableSubclasses { get; set; }
+
+        /// <summary>
+        /// The list of available races
+        /// </summary>
+        public List<Race> AvailableRaces { get; set; }
+
+        /// <summary>
+        /// The list of available backgrounds
+        /// </summary>
+        public List<Background> AvailableBackgrounds { get; set; }
     }
 }

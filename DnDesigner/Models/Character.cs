@@ -142,6 +142,11 @@ namespace DnDesigner.Models
         public string Vulnerabilities { get; set; }
 
         /// <summary>
+        /// The notes a player wants to keep with this character
+        /// </summary>
+        public string PlayerNotes { get; set; }
+
+        /// <summary>
         /// The characters race
         /// </summary>
         public Race Race { get; set; }
@@ -172,6 +177,11 @@ namespace DnDesigner.Models
         public List<CharacterFeature> Features { get; set; }
 
         /// <summary>
+        /// A list of the effects applied to the character
+        /// </summary>
+        public List<CharacterEffect> CharacterEffects { get; set; }
+
+        /// <summary>
         /// A list of the character's actions
         /// </summary>
         public List<CharacterAction> Actions { get; set; }
@@ -194,11 +204,13 @@ namespace DnDesigner.Models
             Spellcasting = new List<CharacterSpellcasting>();
             Features = new List<CharacterFeature>();
             Actions = new List<CharacterAction>();
+            CharacterEffects = new List<CharacterEffect>();
             Inventory = new Inventory(this);
             Name = "Unnamed Character";
             Resistances = "";
             Immunities = "";
             Vulnerabilities = "";
+            PlayerNotes = "";
         }
         public Character(CreateCharacterViewModel character, Class @class, 
             Race race, Background background, List<Proficiency> defaultProficiencies, string userId)
@@ -208,6 +220,7 @@ namespace DnDesigner.Models
             Proficiencies = new List<CharacterProficiency>();
             Spellcasting = new List<CharacterSpellcasting>();
             Features = new List<CharacterFeature>();
+            CharacterEffects = new List<CharacterEffect>();
             Actions = new List<CharacterAction>();
             Inventory = new Inventory(this);
             Background = background;
@@ -225,6 +238,7 @@ namespace DnDesigner.Models
             Resistances = "";
             Immunities = "";
             Vulnerabilities = "";
+            PlayerNotes = "";
 
             Classes.Add(new CharacterClass(this, @class, 1));
             Classes[0].InitialClass = true;

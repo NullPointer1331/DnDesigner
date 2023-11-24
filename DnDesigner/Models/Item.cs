@@ -70,12 +70,11 @@ namespace DnDesigner.Models
         /// <summary>
         /// The effects the item has on the character
         /// </summary>
-        [NotMapped]
-        public List<CharacterModifier> CharacterModifiers { get; set; } = null!;
+        public List<Effect> Effects { get; set; } = null!;
         #endregion
 
         public Item() {
-            CharacterModifiers = new List<CharacterModifier>();
+            Effects = new List<Effect>();
             Name = "";
             Sourcebook = "";
             Description = "";
@@ -137,16 +136,31 @@ namespace DnDesigner.Models
 
         public void ApplyEffect()
         {
-            foreach (CharacterModifier modifier in Item.CharacterModifiers)
+            foreach (Effect effect in Item.Effects)
             {
-                modifier.ApplyEffect(Inventory.Character);
+                CharacterEffect? existingEffect = Inventory.Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
+                if (existingEffect != null)
+                {
+                    existingEffect.ApplyEffect();
+                }
+                else
+                {
+                    CharacterEffect characterEffect = new CharacterEffect(Inventory.Character, effect);
+                    Inventory.Character.CharacterEffects.Add(characterEffect);
+                    characterEffect.ApplyEffect();
+                }
             }
         }
         public void RemoveEffect()
         {
-            foreach (CharacterModifier modifier in Item.CharacterModifiers)
+            foreach (Effect effect in Item.Effects)
             {
-                modifier.RemoveEffect(Inventory.Character);
+                CharacterEffect? existingEffect = Inventory.Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
+                if (existingEffect != null)
+                {
+                    existingEffect.RemoveEffect();
+                    Inventory.Character.CharacterEffects.Remove(existingEffect);
+                }
             }
         }
     }

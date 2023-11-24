@@ -284,19 +284,27 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
-        /// Simplifies coin values to the smallest number of coins possible 
-        /// ignoring electrum
+        /// Simplifies coin values to the smallest number of coins possible ignoring electrum
         /// </summary>
         public void SimplifyCoins()
         {
-            int total = TotalCoinValue;
-            Platinum = total / 1000;
-            total -= Platinum * 1000;
-            Gold = total / 100;
-            total -= Gold * 100;
-            Silver = total / 10;
-            total -= Silver * 10;
-            Copper = total;
+            SimplifyCoins(TotalCoinValue);
+        }
+
+        /// <summary>
+        /// Simplifies coin values to the smallest number of coins possible ignoring electrum
+        /// while given a total number of copper coins
+        /// </summary>
+        /// <param name="copper">The total copper value</param>
+        public void SimplifyCoins(int copper)
+        {
+            Platinum = copper / 1000;
+            copper -= Platinum * 1000;
+            Gold = copper / 100;
+            copper -= Gold * 100;
+            Silver = copper / 10;
+            copper -= Silver * 10;
+            Copper = copper;
         }
 
         /// <summary>

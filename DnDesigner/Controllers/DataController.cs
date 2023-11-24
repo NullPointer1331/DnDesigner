@@ -1,6 +1,5 @@
 ﻿using DnDesigner.Data;
 using DnDesigner.Models;
-using DnDesigner.Models.ImportModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -66,16 +65,13 @@ namespace DnDesigner.Controllers
         }
         public async Task<IActionResult> Import()
         {
-            // TODO: do this better
-            // Removing existing data also removes all characters
-            _context.Proficiencies.RemoveRange(_context.Proficiencies);
-            _context.Items.RemoveRange(_context.Items);
-            _context.Spells.RemoveRange(_context.Spells);
-            _context.Backgrounds.RemoveRange(_context.Backgrounds);
-            _context.Races.RemoveRange(_context.Races);
-            _context.Classes.RemoveRange(_context.Classes);
-            _context.Subclasses.RemoveRange(_context.Subclasses);
-            _context.Actions.RemoveRange(_context.Actions);
+            List<Item> existingItems = await _context.Items.AsNoTracking().ToListAsync();
+            List<Proficiency> existingProficiencies = await _context.Proficiencies.AsNoTracking().ToListAsync();
+            List<Spell> existingSpells = await _context.Spells.AsNoTracking().ToListAsync();
+            List<Background> existingBackgrounds = await _context.Backgrounds.AsNoTracking().ToListAsync();
+            List<Race> existingRaces = await _context.Races.AsNoTracking().ToListAsync();
+            List<Class> existingClasses = await _context.Classes.AsNoTracking().ToListAsync();
+            List<Subclass> existingSubclasses = await _context.Subclasses.AsNoTracking().ToListAsync();
 
             List<Item> items = ImportData.ExtractItems();
             List<Proficiency> proficiencies = ImportData.ExtractProficiencies(items);
@@ -85,16 +81,93 @@ namespace DnDesigner.Controllers
             List<Class> classes = ImportData.ExtractClasses(proficiencies); 
             List<Subclass> subclasses = ImportData.ExtractSubclasses(classes); 
 
-            List<Models.Action> actions = new List<Models.Action>();
-            foreach (Item item in items)
+            for (int j = 0; j < items.Count; j++)
             {
-                foreach (AddAction action in item.CharacterModifiers)
+                Item? existingItem = existingItems.Find(i => i.Name == items[j].Name && i.Sourcebook == items[j].Sourcebook);
+                if (existingItem != null)
                 {
-                    actions.Add(action.Action);
+                    items[j].ItemId = existingItem.ItemId;
+                    existingItem = items[j];
+                    items.RemoveAt(j);
+                    j--;
                 }
             }
 
-            _context.Actions.AddRange(actions);
+            for (int j = 0; j < proficiencies.Count; j++)
+            {
+                Proficiency? existingProficiency = existingProficiencies.Find(p => p.Name == proficiencies[j].Name && p.Type == proficiencies[j].Type);
+                if (existingProficiency != null)
+                {
+                    proficiencies[j].ProficiencyId = existingProficiency.ProficiencyId;
+                    existingProficiency = proficiencies[j];
+                    proficiencies.RemoveAt(j);
+                    j--;
+                }
+            }
+            for (int j = 0; j < spells.Count; j++)
+            {
+                Spell? existingSpell = existingSpells.Find(s => s.Name == spells[j].Name && s.Sourcebook == spells[j].Sourcebook);
+                if (existingSpell != null)
+                {
+                    spells[j].SpellId = existingSpell.SpellId;
+                    existingSpell = spells[j];
+                    spells.RemoveAt(j);
+                    j--;
+                }
+            }
+            for (int j = 0; j < backgrounds.Count; j++)
+            {
+                Background? existingBackground = existingBackgrounds.Find(b => b.Name == backgrounds[j].Name && b.Sourcebook == backgrounds[j].Sourcebook);
+                if (existingBackground != null)
+                {
+                    backgrounds[j].BackgroundId = existingBackground.BackgroundId;
+                    existingBackground = backgrounds[j];
+                    backgrounds.RemoveAt(j);
+                    j--;
+                }
+            }
+            for (int j = 0; j < races.Count; j++)
+            {
+                Race? existingRace = existingRaces.Find(r => r.Name == races[j].Name && r.Sourcebook == races[j].Sourcebook);
+                if (existingRace != null)
+                {
+                    races[j].RaceId = existingRace.RaceId;
+                    existingRace = races[j];
+                    races.RemoveAt(j);
+                    j--;
+                }
+            }
+            for (int j = 0; j < classes.Count; j++)
+            {
+                Class? existingClass = existingClasses.Find(c => c.Name == classes[j].Name && c.Sourcebook == classes[j].Sourcebook);
+                if (existingClass != null)
+                {
+                    classes[j].ClassId = existingClass.ClassId;
+                    existingClass = classes[j];
+                    classes.RemoveAt(j);
+                    j--;
+                }
+            }
+            for (int j = 0; j < subclasses.Count; j++)
+            {
+                Subclass? existingSubclass = existingSubclasses.Find(s => s.Name == subclasses[j].Name && s.Sourcebook == subclasses[j].Sourcebook);
+                if (existingSubclass != null)
+                {
+                    subclasses[j].SubclassId = existingSubclass.SubclassId;
+                    existingSubclass = subclasses[j];
+                    subclasses.RemoveAt(j);
+                    j--;
+                }
+            }
+
+            _context.UpdateRange(existingItems);
+            _context.UpdateRange(existingProficiencies);
+            _context.UpdateRange(existingSpells);
+            _context.UpdateRange(existingBackgrounds);
+            _context.UpdateRange(existingRaces);
+            _context.UpdateRange(existingClasses);
+            _context.UpdateRange(existingSubclasses);
+
             _context.Proficiencies.AddRange(proficiencies);
             _context.Items.AddRange(items);
             _context.Spells.AddRange(spells);
@@ -102,96 +175,9 @@ namespace DnDesigner.Controllers
             _context.Races.AddRange(races);
             _context.Classes.AddRange(classes);
             _context.Subclasses.AddRange(subclasses);
+            
             await _context.SaveChangesAsync();
-
-            // Manually fixing the Ids for serialized objects
-            items = await _context.Items.ToListAsync();
-            List<BackgroundFeature> backgroundFeatures = await _context.BackgroundFeatures.ToListAsync();
-            List<RaceFeature> raceFeatures = await _context.RaceFeatures.ToListAsync();
-            List<ClassFeature> classFeatures = await _context.ClassFeatures.ToListAsync();
-            List<SubclassFeature> subclassFeatures = await _context.SubclassFeatures.ToListAsync();
-
-            List<CharacterModifier> characterModifiers = new List<CharacterModifier>();
-            foreach (Item item in items)
-            {
-                foreach (CharacterModifier modifier in item.CharacterModifiers)
-                {
-                    characterModifiers.Add(modifier);
-                }
-            }
-            foreach (BackgroundFeature feature in backgroundFeatures)
-            {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                {
-                    characterModifiers.Add(modifier);
-                }
-            }
-            foreach (RaceFeature feature in raceFeatures)
-            {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                {
-                    characterModifiers.Add(modifier);
-                }
-            }
-            foreach (ClassFeature feature in classFeatures)
-            {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                {
-                    characterModifiers.Add(modifier);
-                }
-            }
-            foreach (SubclassFeature feature in subclassFeatures)
-            {
-                foreach (CharacterModifier modifier in feature.CharacterModifiers)
-                {
-                    characterModifiers.Add(modifier);
-                }
-            }
-            foreach (CharacterModifier modifier in characterModifiers)
-            {
-                await SetModifierIds(modifier);
-            } 
-
-            _context.Items.UpdateRange(items);
-            _context.BackgroundFeatures.UpdateRange(backgroundFeatures);
-            _context.RaceFeatures.UpdateRange(raceFeatures);
-            _context.ClassFeatures.UpdateRange(classFeatures);
-            _context.SubclassFeatures.UpdateRange(subclassFeatures);
-            await _context.SaveChangesAsync();
-
             return RedirectToAction("Index", "Home");
-        }
-
-        public async Task SetModifierIds(CharacterModifier modifier) 
-        {
-            if (modifier is GrantProficiencies grantProficiencies)
-            {
-                List<Proficiency> proficiencies = new List<Proficiency>();
-                foreach (Proficiency proficiency in grantProficiencies.Proficiencies)
-                {
-                    Proficiency? p = await _context.Proficiencies.FirstOrDefaultAsync(p => p.Name == proficiency.Name);
-                    if (p != null)
-                    {
-                        proficiencies.Add(p);
-                    }
-                }
-                grantProficiencies.Proficiencies = proficiencies;
-            }
-            else if (modifier is AddAction addAction)
-            {
-                Models.Action? a = await _context.Actions.FirstOrDefaultAsync(a => a.Name == addAction.Action.Name);
-                if (a != null)
-                {
-                    addAction.Action = a;
-                }
-            }
-            else if (modifier is CharacterModifierChoice choice)
-            {
-                foreach (CharacterModifier option in choice.Modifiers)
-                {
-                    await SetModifierIds(option);
-                }
-            }
         }
     }
 }

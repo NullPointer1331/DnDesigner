@@ -86,11 +86,6 @@ namespace DnDesigner.Models
                     .FirstOrDefaultAsync();
         }
 
-        public async Task<List<Inventory>> GetAllInventories()
-        {
-            return await _context.Set<Inventory>().ToListAsync();
-        }
-
         public async Task<Item> GetItem(int id)
         {
             return await _context.Items.Where(i => i.ItemId == id)

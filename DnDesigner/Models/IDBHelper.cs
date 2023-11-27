@@ -12,7 +12,6 @@
         Task<Class> GetClass(int id);
         Task<List<Class>> GetAllClasses();
         Task<Inventory> GetInventory(int id);
-        Task<List<Inventory>> GetAllInventories();
         Task<Item> GetItem(int id);
         Task<List<Item>> GetAllItems();
         Task<Proficiency> GetProficiency(int id);

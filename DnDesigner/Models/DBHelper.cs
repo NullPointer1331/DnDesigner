@@ -40,7 +40,11 @@ namespace DnDesigner.Models
 
         public async Task<List<Background>> GetAllBackgrounds()
         {
-            return await _context.Set<Background>().ToListAsync();
+            return await _context.Set<Background>()
+                    .Include(b => b.Features)
+                    .ThenInclude(be => be.Effects)
+                    .Include(b => b.StarterEquipment)
+                    .ToListAsync();
         }
 
         public async Task<Character> GetCharacter(int id)

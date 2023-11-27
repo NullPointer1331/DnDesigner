@@ -95,7 +95,9 @@ namespace DnDesigner.Models
 
         public async Task<List<Item>> GetAllItems()
         {
-            return await _context.Set<Item>().ToListAsync();
+            return await _context.Set<Item>()
+                    .Include(ie => ie.Effects)
+                    .ToListAsync();
         }
 
         public async Task<Proficiency> GetProficiency(int id)
@@ -106,7 +108,8 @@ namespace DnDesigner.Models
 
         public async Task<List<Proficiency>> GetAllProficiencies()
         {
-            return await _context.Set<Proficiency>().ToListAsync();
+            return await _context.Set<Proficiency>()
+                    .ToListAsync();
         }
 
         public async Task<Race> GetRace(int id)
@@ -120,7 +123,10 @@ namespace DnDesigner.Models
 
         public async Task<List<Race>> GetAllRaces()
         {
-            return await _context.Set<Race>().ToListAsync();
+            return await _context.Set<Race>()
+                    .Include (r => r.Features)
+                    .ThenInclude(re => re.Effects)
+                    .ToListAsync();
         }
 
         public async Task<Spell> GetSpell(int id)
@@ -133,7 +139,10 @@ namespace DnDesigner.Models
 
         public async Task<List<Spell>> GetAllSpells()
         {
-            return await _context.Set<Spell>().ToListAsync();
+            return await _context.Set<Spell>()
+                    .Include(ss => ss.LearnedBy)
+                    .ThenInclude(ss => ss.LearnableSpells)
+                    .ToListAsync();
         }
 
         public async Task<Spellcasting> GetSpellcasting(int id)
@@ -146,20 +155,26 @@ namespace DnDesigner.Models
 
         public async Task<List<Spellcasting>> GetAllSpellcastings()
         {
-            return await _context.Set<Spellcasting>().ToListAsync();
+            return await _context.Set<Spellcasting>()
+                    .Include(ss => ss.LearnableSpells)
+                    .ThenInclude(ss => ss.LearnedBy)
+                    .ToListAsync();
         }
 
         public async Task<Subclass> GetSubclass(int id)
         {
             return await _context.Subclasses.Where(s => s.SubclassId == id)
-                    .Include(id => id.Features)
-                    .ThenInclude(ie => ie.Effects)
+                    .Include(sf => sf.Features)
+                    .ThenInclude(se => se.Effects)
                     .FirstOrDefaultAsync();
         }
 
         public async Task<List<Subclass>> GetAllSubclasses()
         {
-            return await _context.Set<Subclass>().ToListAsync();
+            return await _context.Set<Subclass>()
+                    .Include(sf => sf.Features)
+                    .ThenInclude(se => se.Effects)
+                    .ToListAsync();
         }
     }
 }

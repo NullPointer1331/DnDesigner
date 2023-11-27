@@ -17,18 +17,11 @@ namespace DnDesigner.Models
             _context = context;
         }
 
-
-        /*
-            TODO: Implement the complex functionality to get the full objects from the database.
-            
-            Race race = 
-                await _context.Races.Where(r => r.RaceId == character.RaceId)
-                              .Include(r => r.Proficiencies)
-                              .ThenInclude(rp => rp.Proficiency)
-                              .Include(r => r.Features)
-        
-            The above code is an example of what we need to do.
-         */
+        /// <summary>
+        /// Gets the <see cref="Background"/> from the database with the given id
+        /// </summary>
+        /// <param name="id">An id of a <see cref="Background"/> in the database</param>
+        /// <returns>The <see cref="Background"/> with the specified id</returns>
         public async Task<Background> GetBackground(int id)
         {
             return await _context.Backgrounds.Where(b => b.BackgroundId == id)
@@ -38,6 +31,12 @@ namespace DnDesigner.Models
                     .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Gets all <see cref="Background"/>s from the database
+        /// </summary>
+        /// <returns>
+        /// A <see cref="List{Background}"/> that contains all of the backgrounds in the database
+        /// </returns>
         public async Task<List<Background>> GetAllBackgrounds()
         {
             return await _context.Set<Background>()
@@ -47,6 +46,11 @@ namespace DnDesigner.Models
                     .ToListAsync();
         }
 
+        /// <summary>
+        /// Gets the <see cref="Character"/> from the database with the given id
+        /// </summary>
+        /// <param name="id">An id of a <see cref="Character"/> in the database</param>
+        /// <returns>The <see cref="Character"/> with the given id</returns>
         public async Task<Character> GetCharacter(int id)
         {
             return await _context.Characters.Where(c => c.CharacterId == id)
@@ -61,11 +65,24 @@ namespace DnDesigner.Models
                     .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Gets all <see cref="Character"/>s from the database with the given userId
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <returns>
+        /// A <see cref="List{Character}"/> that contains all of the characters made by that user
+        /// </returns>
         public async Task<List<Character>> GetAllCharacters(string userId)
         {
-            return await _context.Set<Character>().Where(r => r.UserId.Equals(userId)).ToListAsync();
+            return await _context.Set<Character>().Where(r => r.UserId.Equals(userId))
+                    .ToListAsync();
         }
 
+        /// <summary>
+        /// Gets the <see cref="Class"/> from the database with the given id
+        /// </summary>
+        /// <param name="id">The id of a <see cref="Character"/> in the database</param>
+        /// <returns>The <see cref="Character"/> with the given id</returns>
         public async Task<Class> GetClass(int id)
         {
             return await _context.Classes.Where(c => c.ClassId == id)
@@ -76,11 +93,20 @@ namespace DnDesigner.Models
                     .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Gets all <see cref="Class"/>es from the database
+        /// </summary>
+        /// <returns>A <see cref="List{Class}"/> of all the classes in the database</returns>
         public async Task<List<Class>> GetAllClasses()
         {
             return await _context.Set<Class>().ToListAsync();
         }
 
+        /// <summary>
+        /// Gets the <see cref="Inventory"/> from the database with the given id
+        /// </summary>
+        /// <param name="id">The id of an <see cref="Inventory"/> in the database</param>
+        /// <returns>The <see cref="Inventory"/> in from the database with the given id</returns>
         public async Task<Inventory> GetInventory(int id)
         {
             return await _context.Inventory.Where(i => i.InventoryId == id)
@@ -90,6 +116,11 @@ namespace DnDesigner.Models
                     .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Gets the <see cref="Item"/> from the database with the given id
+        /// </summary>
+        /// <param name="id">The id of an <see cref="Item"/> in the database</param>
+        /// <returns>The <see cref="Item"/> from the database with the given id</returns>
         public async Task<Item> GetItem(int id)
         {
             return await _context.Items.Where(i => i.ItemId == id)
@@ -97,6 +128,10 @@ namespace DnDesigner.Models
                     .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Gets all <see cref="Item"/>s from the database
+        /// </summary>
+        /// <returns>A <see cref="List{Item}"/> that contains all of the items in the database</returns>
         public async Task<List<Item>> GetAllItems()
         {
             return await _context.Set<Item>()
@@ -104,18 +139,32 @@ namespace DnDesigner.Models
                     .ToListAsync();
         }
 
+        /// <summary>
+        /// Gets the <see cref="Proficiency"/> from the database with the given id
+        /// </summary>
+        /// <param name="id">The id of a <see cref="Proficiency"/> in the database</param>
+        /// <returns>A <see cref="Proficiency"/> from the database with the given id.</returns>
         public async Task<Proficiency> GetProficiency(int id)
         {
             return await _context.Proficiencies.Where(p => p.ProficiencyId == id)
                     .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Gets all <see cref="Proficiency"/>s from the database
+        /// </summary>
+        /// <returns>A <see cref="List{Proficiency}"/> with all the proficiencies from the database</returns>
         public async Task<List<Proficiency>> GetAllProficiencies()
         {
             return await _context.Set<Proficiency>()
                     .ToListAsync();
         }
 
+        /// <summary>
+        /// Gets a <see cref="Race"/> from the database with the given id
+        /// </summary>
+        /// <param name="id">The id of a <see cref="Race"/> in the database</param>
+        /// <returns>The <see cref="Race"/> from the database with the given id</returns>
         public async Task<Race> GetRace(int id)
         {
             return await _context.Races.Where(r => r.RaceId == id)
@@ -124,7 +173,10 @@ namespace DnDesigner.Models
                     .FirstOrDefaultAsync();
         }
 
-
+        /// <summary>
+        /// Gets all the <see cref="Race"/>s from the database
+        /// </summary>
+        /// <returns>A <see cref="List{Race}"/> with all the races from the database</returns>
         public async Task<List<Race>> GetAllRaces()
         {
             return await _context.Set<Race>()
@@ -133,6 +185,11 @@ namespace DnDesigner.Models
                     .ToListAsync();
         }
 
+        /// <summary>
+        /// Gets a <see cref="Spell"/> from the database with the given id
+        /// </summary>
+        /// <param name="id">The id of a <see cref="Spell"/> from the database</param>
+        /// <returns>The <see cref="Spell"/> from the database with the given id</returns>
         public async Task<Spell> GetSpell(int id)
         {
             return await _context.Spells.Where(s => s.SpellId == id)
@@ -141,6 +198,10 @@ namespace DnDesigner.Models
                     .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Gets all <see cref="Spell"/>s from the database
+        /// </summary>
+        /// <returns>A <see cref="List{Spell}"/> with all the spells from the database</returns>
         public async Task<List<Spell>> GetAllSpells()
         {
             return await _context.Set<Spell>()
@@ -149,6 +210,11 @@ namespace DnDesigner.Models
                     .ToListAsync();
         }
 
+        /// <summary>
+        /// Gets a <see cref="Spellcasting"/> from the database with the given id
+        /// </summary>
+        /// <param name="id">The id of a <see cref="Spellcasting"/> in the database</param>
+        /// <returns>The <see cref="Spellcasting"/> from the database with the given id</returns>
         public async Task<Spellcasting> GetSpellcasting(int id)
         {
             return await _context.Spellcasting.Where(s => s.SpellcastingId == id)
@@ -157,6 +223,12 @@ namespace DnDesigner.Models
                     .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Gets all <see cref="Spellcasting"/>s from the database
+        /// </summary>
+        /// <returns>
+        /// A <see cref="List{Spellcasting}"/> with all the spellcasting objects from the database
+        /// </returns>
         public async Task<List<Spellcasting>> GetAllSpellcastings()
         {
             return await _context.Set<Spellcasting>()
@@ -165,6 +237,11 @@ namespace DnDesigner.Models
                     .ToListAsync();
         }
 
+        /// <summary>
+        /// Gets a <see cref="Subclass"/> from the database with the given id
+        /// </summary>
+        /// <param name="id">The id of a <see cref="Subclass"/> in the database</param>
+        /// <returns>The <see cref="Subclass"/> from the database with the given id</returns>
         public async Task<Subclass> GetSubclass(int id)
         {
             return await _context.Subclasses.Where(s => s.SubclassId == id)
@@ -173,6 +250,10 @@ namespace DnDesigner.Models
                     .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Gets all <see cref="Subclass"/>es from the database
+        /// </summary>
+        /// <returns>A <see cref="List{Subclass}"/> with all the subclasses from the database</returns>
         public async Task<List<Subclass>> GetAllSubclasses()
         {
             return await _context.Set<Subclass>()

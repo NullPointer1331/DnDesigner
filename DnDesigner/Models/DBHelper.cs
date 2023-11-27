@@ -32,9 +32,9 @@ namespace DnDesigner.Models
         public async Task<Background> GetBackground(int id)
         {
             return await _context.Backgrounds.Where(b => b.BackgroundId == id)
-                    .Include(bf => bf.Features)
+                    .Include(b => b.Features)
                     .ThenInclude(be => be.Effects)
-                    .Include(bi => bi.StarterEquipment)
+                    .Include(b => b.StarterEquipment)
                     .FirstOrDefaultAsync();
         }
 
@@ -46,14 +46,14 @@ namespace DnDesigner.Models
         public async Task<Character> GetCharacter(int id)
         {
             return await _context.Characters.Where(c => c.CharacterId == id)
-                    .Include(cp => cp.Proficiencies)
+                    .Include(c => c.Proficiencies)
                     .ThenInclude(cp => cp.Proficiency)
-                    .Include(cc => cc.Classes)
+                    .Include(c => c.Classes)
                     .ThenInclude(cc => cc.Class)
-                    .Include(cs => cs.Spellcasting)
-                    .Include(cf => cf.Features)
+                    .Include(c => c.Spellcasting)
+                    .Include(c => c.Features)
                     .ThenInclude(ce => ce.Effects)
-                    .Include(ca => ca.Actions)
+                    .Include(c => c.Actions)
                     .FirstOrDefaultAsync();
         }
 
@@ -65,9 +65,9 @@ namespace DnDesigner.Models
         public async Task<Class> GetClass(int id)
         {
             return await _context.Classes.Where(c => c.ClassId == id)
-                    .Include(cf => cf.Features)
+                    .Include(c => c.Features)
                     .ThenInclude(ce => ce.Effects)
-                    .Include(cs => cs.Subclasses)
+                    .Include(c => c.Subclasses)
                     .ThenInclude(cf => cf.Features)
                     .FirstOrDefaultAsync();
         }
@@ -80,23 +80,23 @@ namespace DnDesigner.Models
         public async Task<Inventory> GetInventory(int id)
         {
             return await _context.Inventory.Where(i => i.InventoryId == id)
-                    .Include(ii => ii.Items)
-                    .Include(io => io.OtherEquippedItems)
-                    .Include(ia => ia.AttunedItems)
+                    .Include(i => i.Items)
+                    .Include(i => i.OtherEquippedItems)
+                    .Include(i => i.AttunedItems)
                     .FirstOrDefaultAsync();
         }
 
         public async Task<Item> GetItem(int id)
         {
             return await _context.Items.Where(i => i.ItemId == id)
-                    .Include(ie => ie.Effects)
+                    .Include(i => i.Effects)
                     .FirstOrDefaultAsync();
         }
 
         public async Task<List<Item>> GetAllItems()
         {
             return await _context.Set<Item>()
-                    .Include(ie => ie.Effects)
+                    .Include(i => i.Effects)
                     .ToListAsync();
         }
 
@@ -132,7 +132,7 @@ namespace DnDesigner.Models
         public async Task<Spell> GetSpell(int id)
         {
             return await _context.Spells.Where(s => s.SpellId == id)
-                    .Include(ss => ss.LearnedBy)
+                    .Include(s => s.LearnedBy)
                     .ThenInclude(ss => ss.LearnableSpells)
                     .FirstOrDefaultAsync();
         }

@@ -11,8 +11,6 @@
         Task<List<Character>> GetAllCharacters(string userId);
         Task<Class> GetClass(int id);
         Task<List<Class>> GetAllClasses();
-        Task<Feature> GetFeature(int id);
-        Task<List<Feature>> GetAllFeatures();
         Task<Inventory> GetInventory(int id);
         Task<List<Inventory>> GetAllInventories();
         Task<Item> GetItem(int id);

@@ -123,7 +123,7 @@ namespace DnDesigner.Controllers
                 character.AvailableBackgrounds = await _context.Backgrounds.ToListAsync();
                 character.AvailableRaces = await _context.Races.ToListAsync();
                 return View(character);
-            }
+            
         }
 
         // GET: Characters/Edit/5

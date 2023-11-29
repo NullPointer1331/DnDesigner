@@ -14,10 +14,12 @@ namespace DnDesigner.Controllers
     public class CharactersController : Controller
     {
         private readonly DnDesignerDbContext _context;
+        private readonly IDBHelper _dbHelper;
 
-        public CharactersController(DnDesignerDbContext context)
+        public CharactersController(DnDesignerDbContext context, IDBHelper dBHelper)
         {
             _context = context;
+            _dbHelper = dBHelper;
         }
 
         // GET: Characters
@@ -51,9 +53,9 @@ namespace DnDesigner.Controllers
         {
             CreateCharacterViewModel characterViewModel = new()
             {
-                AvailableClasses = await _context.Classes.ToListAsync(),
-                AvailableBackgrounds = await _context.Backgrounds.ToListAsync(),
-                AvailableRaces = await _context.Races.ToListAsync()
+                AvailableClasses = await _dbHelper.GetAllClasses(),
+                AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
+                AvailableRaces = await _dbHelper.GetAllRaces()
             };
             return View(characterViewModel);
         }
@@ -67,22 +69,9 @@ namespace DnDesigner.Controllers
         {
             if (ModelState.IsValid)
             {
-                Class @class = await _context.Classes
-                    .Where(c => c.ClassId == character.ClassId)
-                    .Include(c => c.Spellcasting)
-                    .Include(c => c.Features)
-                    .ThenInclude(cf => cf.Effects)
-                    .FirstOrDefaultAsync();
-                Background background = await _context.Backgrounds
-                    .Where(b => b.BackgroundId == character.BackgroundId)
-                    .Include(b => b.Features)
-                    .ThenInclude(bf => bf.Effects)
-                    .FirstOrDefaultAsync();
-                Race race = await _context.Races
-                    .Where(r => r.RaceId == character.RaceId)
-                    .Include(r => r.Features)
-                    .ThenInclude(rf => rf.Effects)
-                    .FirstOrDefaultAsync();
+                Class @class = await _dbHelper.GetClass(character.ClassId);
+                Background background = await _dbHelper.GetBackground(character.BackgroundId);
+                Race race = await _dbHelper.GetRace(character.RaceId);
 
                 //A temporary measure to load everything we need, this will be replaced once we have the dbhelper
                 foreach (Feature feature in @class.Features)
@@ -134,20 +123,7 @@ namespace DnDesigner.Controllers
                 return NotFound();
             }
 
-            Character character = await _context.Characters
-                .Where(c => c.CharacterId == id)
-                .Include(c => c.Race)
-                .Include(c => c.Background)
-                .Include(c => c.Classes)
-                .ThenInclude(cc => cc.Class)
-                .Include(c => c.Classes)
-                .ThenInclude(cc => cc.Subclass)
-                .Include(c => c.Proficiencies)
-                .ThenInclude(cp => cp.Proficiency)
-                .Include(c => c.Features)
-                .Include(c => c.Inventory)
-                .Include(c => c.CharacterEffects)
-                .FirstOrDefaultAsync();
+            Character character = await _dbHelper.GetCharacter((int)id);
 
             foreach (CharacterEffect characterEffect in character.CharacterEffects)
             {

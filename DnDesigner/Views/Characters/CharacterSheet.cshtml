@@ -171,19 +171,54 @@
                             <!--Populate save roll buttons-->
                             <li class="list-group-item">
                                 @if (modifier == 0) {
-                                    <button class="btn btn-sm btn-primary" onclick="">D20</button>
-                                    <button class="btn btn-sm btn-success" onclick="">Adv</button>
-                                    <button class="btn btn-sm btn-danger"  onclick="">Dis</button>
+                                    <button class="btn btn-sm btn-primary" id="singleD20Save_@save.Proficiency.ProficiencyId">D20</button>
+                                    <button class="btn btn-sm btn-success" id="advantageSave_@save.Proficiency.ProficiencyId">Adv</button>
+                                    <button class="btn btn-sm btn-danger" id="disadvantageSave_@save.Proficiency.ProficiencyId">Dis</button>
                                 }
                                 else
                                 {
-                                    <button class="btn btn-sm btn-primary" onclick="">D20</button>
-                                    <button class="btn btn-sm btn-success" onclick="">Adv</button>
-                                    <button class="btn btn-sm btn-danger" onclick="">Dis</button>
+                                    <button class="btn btn-sm btn-primary" id="singleD20Save_@save.Proficiency.ProficiencyId">D20</button>
+                                    <button class="btn btn-sm btn-success" id="advantageSave_@save.Proficiency.ProficiencyId">Adv</button>
+                                    <button class="btn btn-sm btn-danger" id="disadvantageSave_@save.Proficiency.ProficiencyId">Dis</button>
                                 }
                             </li>
                             <!--Start of save roll Toast Section-->
-
+                            <!--Single D20 Save-->
+                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                                <div id="singleD20SaveToast_@save.Proficiency.ProficiencyId" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header">
+                                        <strong class="me-auto">@save.Proficiency.Name</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Save Advantage-->
+                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                                <div id="advantageSaveToast_@save.Proficiency.ProficiencyId" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header">
+                                        <strong class="me-auto">@save.Proficiency.Name at Advantage</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Save Disadvantage-->
+                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                                <div id="disadvantageSaveToast_@save.Proficiency.ProficiencyId" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header">
+                                        <strong class="me-auto">@save.Proficiency.Name at Disadvantage</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        
+                                    </div>
+                                </div>
+                            </div>
                             <!--End of save roll Toast Section-->
                         }
                     </ul>
@@ -212,15 +247,15 @@
                             <li class="list-group-item">
                                 @if (modifier == 0)
                                 {
-                                    <button class="btn btn-sm btn-primary" onclick="">D20</button>
-                                    <button class="btn btn-sm btn-success" onclick="">Adv</button>
-                                    <button class="btn btn-sm btn-danger" onclick="">Dis</button>
+                                    <button class="btn btn-sm btn-primary" id="">D20</button>
+                                    <button class="btn btn-sm btn-success" id="">Adv</button>
+                                    <button class="btn btn-sm btn-danger" id="">Dis</button>
                                 }
                                 else
                                 {
-                                    <button class="btn btn-sm btn-primary" onclick="">D20</button>
-                                    <button class="btn btn-sm btn-success" onclick="">Adv</button>
-                                    <button class="btn btn-sm btn-danger" onclick="">Dis</button>
+                                    <button class="btn btn-sm btn-primary" id="">D20</button>
+                                    <button class="btn btn-sm btn-success" id="">Adv</button>
+                                    <button class="btn btn-sm btn-danger" id="">Dis</button>
                                 }
                             </li>
                             <!--Start of skill roll Toast Section-->
@@ -720,4 +755,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+ 
 }

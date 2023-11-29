@@ -155,19 +155,29 @@
             <div class="col-auto text-center">
                 <div class="collapse collapse-horizontal" id="saves">
                     <ul class="list-group" style="width: 12rem;">
-                        @foreach(CharacterProficiency save in Model.GetSaves()) {
+                        @foreach(CharacterProficiency save in Model.GetSaves())
+                        {
+                            int? modifier = save.GetRollBonus();
                             if(save.ProficiencyLevel == 1)
                             {
-                                <li class="list-group-item">@save.GetRollBonus() @save.Proficiency.Name P</li>
+                                <li class="list-group-item">@modifier @save.Proficiency.Name P</li>
                             }
                             else
                             {
-                                <li class="list-group-item">@save.GetRollBonus() @save.Proficiency.Name</li>
+                                <li class="list-group-item">@modifier @save.Proficiency.Name</li>
                             }
                             <li class="list-group-item">
-                                <button class="btn btn-sm btn-primary">D20</button>
-                                <button class="btn btn-sm btn-success">Adv</button>
-                                <button class="btn btn-sm btn-danger">Dis</button>
+                                @if (modifier == 0) {
+                                    <button class="btn btn-sm btn-primary" onclick="">D20</button>
+                                    <button class="btn btn-sm btn-success" onclick="">Adv</button>
+                                    <button class="btn btn-sm btn-danger"  onclick="">Dis</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm btn-primary" onclick="">D20</button>
+                                    <button class="btn btn-sm btn-success" onclick="">Adv</button>
+                                    <button class="btn btn-sm btn-danger" onclick="">Dis</button>
+                                }
                             </li>
                         }
                     </ul>
@@ -177,22 +187,32 @@
                     <ul class="list-group" style="width: 12rem;">
                         @foreach(CharacterProficiency skill in Model.GetSkills())
                         {
+                            int? modifier = skill.GetRollBonus();
                             if (skill.ProficiencyLevel == 1)
                             {
-                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name P</li>
+                                <li class="list-group-item">@modifier @skill.Proficiency.Name P</li>
                             }
                             else if (skill.ProficiencyLevel == 2)
                             {
-                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name E</li>
+                                <li class="list-group-item">@modifier @skill.Proficiency.Name E</li>
                             }
                             else
                             {
-                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name</li>
+                                <li class="list-group-item">@modifier @skill.Proficiency.Name</li>
                             }
                             <li class="list-group-item">
-                                <button class="btn btn-sm btn-primary">D20</button>
-                                <button class="btn btn-sm btn-success">Adv</button>
-                                <button class="btn btn-sm btn-danger">Dis</button>
+                                @if (modifier == 0)
+                                {
+                                    <button class="btn btn-sm btn-primary" onclick="">D20</button>
+                                    <button class="btn btn-sm btn-success" onclick="">Adv</button>
+                                    <button class="btn btn-sm btn-danger" onclick="">Dis</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm btn-primary" onclick="">D20</button>
+                                    <button class="btn btn-sm btn-success" onclick="">Adv</button>
+                                    <button class="btn btn-sm btn-danger" onclick="">Dis</button>
+                                }
                             </li>
                         }
                     </ul>
@@ -626,6 +646,20 @@
 
     </div>
     <!--End of Character Sheet Layout-->
+
+    <!--Start of Roll Toast Section-->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="RollToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Roll Trigger Here</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Roll Result Here
+            </div>
+        </div>
+    </div>
+    <!--End of Roll Toast Section-->
 
     <!--Hidden Storage Start-->
     <input type="hidden" asp-for="CharacterId" />

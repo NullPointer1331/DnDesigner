@@ -215,6 +215,7 @@ namespace DnDesigner.Models
         public Character(CreateCharacterViewModel character, Class @class, 
             Race race, Background background, List<Proficiency> defaultProficiencies, string userId)
         {
+            UserId = userId;
             Name = character.Name;
             Classes = new List<CharacterClass>();
             Proficiencies = new List<CharacterProficiency>();

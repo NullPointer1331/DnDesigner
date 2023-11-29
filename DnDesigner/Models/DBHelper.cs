@@ -27,7 +27,6 @@ namespace DnDesigner.Models
             return await _context.Backgrounds.Where(b => b.BackgroundId == id)
                     .Include(b => b.Features)
                     .ThenInclude(be => be.Effects)
-                    .Include(b => b.StarterEquipment)
                     .FirstOrDefaultAsync();
         }
 
@@ -89,10 +88,9 @@ namespace DnDesigner.Models
         public async Task<Class> GetClass(int id)
         {
             return await _context.Classes.Where(c => c.ClassId == id)
+                    .Include(c => c.Spellcasting)
                     .Include(c => c.Features)
-                    .ThenInclude(ce => ce.Effects)
-                    .Include(c => c.Subclasses)
-                    .ThenInclude(cf => cf.Features)
+                    .ThenInclude(cf => cf.Effects)
                     .FirstOrDefaultAsync();
         }
 

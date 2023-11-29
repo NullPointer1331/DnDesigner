@@ -41,7 +41,6 @@ namespace DnDesigner.Models
             return await _context.Set<Background>()
                     .Include(b => b.Features)
                     .ThenInclude(be => be.Effects)
-                    .Include(b => b.StarterEquipment)
                     .ToListAsync();
         }
 

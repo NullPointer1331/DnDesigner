@@ -54,14 +54,17 @@ namespace DnDesigner.Models
         public async Task<Character> GetCharacter(int id)
         {
             return await _context.Characters.Where(c => c.CharacterId == id)
-                    .Include(c => c.Proficiencies)
-                    .ThenInclude(cp => cp.Proficiency)
+                    .Include(c => c.Race)
+                    .Include(c => c.Background)
                     .Include(c => c.Classes)
                     .ThenInclude(cc => cc.Class)
-                    .Include(c => c.Spellcasting)
+                    .Include(c => c.Classes)
+                    .ThenInclude(cc => cc.Subclass)
+                    .Include(c => c.Proficiencies)
+                    .ThenInclude(cp => cp.Proficiency)
                     .Include(c => c.Features)
-                    .ThenInclude(ce => ce.Effects)
-                    .Include(c => c.Actions)
+                    .Include(c => c.Inventory)
+                    .Include(c => c.CharacterEffects)
                     .FirstOrDefaultAsync();
         }
 

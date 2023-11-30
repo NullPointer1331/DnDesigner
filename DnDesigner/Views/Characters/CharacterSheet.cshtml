@@ -180,13 +180,13 @@
                             <li class="list-group-item">
                                 @if (modifier == 0)
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onload="assignToast(@saveBtnIdSingleD20, @saveToastIdSingleD20)" id="@saveBtnIdSingleD20">D20</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast(@saveBtnIdSingleD20, @saveToastIdSingleD20)" id="@saveBtnIdSingleD20">D20</button>
                                     <button type="button" class="btn btn-sm btn-success" id="@saveBtnIdAdv">Adv</button>
                                     <button type="button" class="btn btn-sm btn-danger" id="@saveBtnIdDis">Dis</button>
                                 }
                                 else
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onload="assignToast(@saveBtnIdSingleD20, @saveToastIdSingleD20)" id="@saveBtnIdSingleD20">D20</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast(@saveBtnIdSingleD20, @saveToastIdSingleD20)" id="@saveBtnIdSingleD20">D20</button>
                                     <button type="button" class="btn btn-sm btn-success" id="@saveBtnIdAdv">Adv</button>
                                     <button type="button" class="btn btn-sm btn-danger" id="@saveBtnIdDis">Dis</button>
                                 }
@@ -200,6 +200,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                     </div>
                                     <div class="toast-body">
+                                        @Dice.RollD20()
                                     </div>
                                 </div>
                             </div>
@@ -211,6 +212,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                     </div>
                                     <div class="toast-body">
+                                        @Dice.RollAdvOrDis(true)
                                     </div>
                                 </div>
                             </div>
@@ -222,6 +224,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                     </div>
                                     <div class="toast-body">
+                                        @Dice.RollAdvOrDis(false)
                                     </div>
                                 </div>
                             </div>
@@ -763,11 +766,11 @@
 
     <script>
         function assignToast(button, toast) {
-            const toastTrigger = document.getElementById(button)
-            const toastLiveExample = document.getElementById(toast)
+            let toastTrigger = document.getElementById(button)
+            let toastBox = document.getElementById(toast)
 
             if (toastTrigger) {
-                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+                let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox)
                 toastTrigger.addEventListener('click', () => {
                     toastBootstrap.show()
                 })

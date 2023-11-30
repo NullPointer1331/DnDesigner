@@ -180,13 +180,13 @@
                             <li class="list-group-item">
                                 @if (modifier == 0)
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast(@saveBtnIdSingleD20, @saveToastIdSingleD20)" id="@saveBtnIdSingleD20">D20</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveToastIdSingleD20')" id="@saveBtnIdSingleD20">D20</button>
                                     <button type="button" class="btn btn-sm btn-success" id="@saveBtnIdAdv">Adv</button>
                                     <button type="button" class="btn btn-sm btn-danger" id="@saveBtnIdDis">Dis</button>
                                 }
                                 else
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast(@saveBtnIdSingleD20, @saveToastIdSingleD20)" id="@saveBtnIdSingleD20">D20</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveToastIdSingleD20')" id="@saveBtnIdSingleD20">D20</button>
                                     <button type="button" class="btn btn-sm btn-success" id="@saveBtnIdAdv">Adv</button>
                                     <button type="button" class="btn btn-sm btn-danger" id="@saveBtnIdDis">Dis</button>
                                 }
@@ -762,17 +762,13 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script>
-        function assignToast(button, toast) {
-            let toastTrigger = document.getElementById(button)
-            let toastBox = document.getElementById(toast)
+    
 
-            if (toastTrigger) {
-                let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox)
-                toastTrigger.addEventListener('click', () => {
-                    toastBootstrap.show()
-                })
-            }
+    <script>
+        function assignToast(toast) {
+            let toastBox = document.getElementById(toast)
+            let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox)
+            toastBootstrap.show()
         }
     </script>
 }

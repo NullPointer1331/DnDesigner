@@ -161,14 +161,14 @@
                             <!--Get save bonus and generate id strings-->
                             int? modifier = save.GetRollBonus();
                             string saveId = save.Proficiency.ProficiencyId.ToString();
-                            string saveBtnIdSingleD20 = "singleD20Save_" + saveId;
-                            string saveBtnIdAdv = "advSave_" + saveId;
-                            string saveBtnIdDis = "disSave_" + saveId;
+                            string saveBtnSingleD20 = "singleD20Save";
+                            string saveBtnAdv = "advSave";
+                            string saveBtnDis = "disSave";
                             if (modifier != 0)
                             {
-                                saveBtnIdSingleD20 = "singleD20Save_mod_" + saveId;
-                                saveBtnIdAdv = "advSave_mod_" + saveId;
-                                saveBtnIdDis = "disSave_mod_" + saveId;
+                                saveBtnSingleD20 = "singleD20Save_mod";
+                                saveBtnAdv = "advSave_mod";
+                                saveBtnDis = "disSave_mod";
                             }
                             string saveToastIdSingleD20 = "singleD20SaveToast_" + saveId;
                             string saveToastIdAdv = "advSaveToast_" + saveId;
@@ -186,15 +186,15 @@
                             <li class="list-group-item">
                                 @if (modifier == 0)
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveBtnIdSingleD20', '@saveToastIdSingleD20')" id="@saveBtnIdSingleD20">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" id="@saveBtnIdAdv">Adv</button>
-                                    <button type="button" class="btn btn-sm btn-danger" id="@saveBtnIdDis">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveBtnSingleD20', '@saveToastIdSingleD20')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" id="@saveBtnAdv">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" id="@saveBtnDis">Dis</button>
                                 }
                                 else
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveBtnIdSingleD20', '@saveToastIdSingleD20')" id="@saveBtnIdSingleD20">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" id="@saveBtnIdAdv">Adv</button>
-                                    <button type="button" class="btn btn-sm btn-danger" id="@saveBtnIdDis">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveBtnSingleD20', '@saveToastIdSingleD20', '@modifier')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" id="@saveBtnAdv">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" id="@saveBtnDis">Dis</button>
                                 }
                             </li>
                             <!--Start of save roll Toast Section-->
@@ -205,9 +205,9 @@
                                         <strong class="me-auto">@save.Proficiency.Name</strong>
                                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                     </div>
-                                    <div id="" class="toast-body">
-                                        @Dice.RollD20()
-                                    </div>
+                                    <p class="toast-body">
+                                        
+                                    </p>
                                 </div>
                             </div>
                             <!--Save Advantage-->
@@ -217,9 +217,9 @@
                                         <strong class="me-auto">@save.Proficiency.Name at Advantage</strong>
                                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                     </div>
-                                    <div class="toast-body">
-                                        @Dice.RollAdvOrDis(true)
-                                    </div>
+                                    <p class="toast-body">
+                                        
+                                    </p>
                                 </div>
                             </div>
                             <!--Save Disadvantage-->
@@ -229,9 +229,9 @@
                                         <strong class="me-auto">@save.Proficiency.Name at Disadvantage</strong>
                                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                     </div>
-                                    <div class="toast-body">
-                                        @Dice.RollAdvOrDis(false)
-                                    </div>
+                                    <p class="toast-body">
+                                        
+                                    </p>
                                 </div>
                             </div>
                             <!--End of save roll Toast Section-->

@@ -161,17 +161,14 @@
                             <!--Get save bonus and generate id strings-->
                             int? modifier = save.GetRollBonus();
                             string saveId = save.Proficiency.ProficiencyId.ToString();
-                            if (modifier == 0)
+                            string saveBtnIdSingleD20 = "singleD20Save_" + saveId;
+                            string saveBtnIdAdv = "advSave_" + saveId;
+                            string saveBtnIdDis = "disSave_" + saveId;
+                            if (modifier != 0)
                             {
-                                string saveBtnIdSingleD20 = "singleD20Save_" + saveId;
-                                string saveBtnIdAdv = "advSave_" + saveId;
-                                string saveBtnIdDis = "disSave_" + saveId;
-                            }
-                            else
-                            {
-                                string saveBtnIdSingleD20 = "singleD20Save_mod_" + saveId;
-                                string saveBtnIdAdv = "advSave_mod_" + saveId;
-                                string saveBtnIdDis = "disSave_mod_" + saveId;
+                                saveBtnIdSingleD20 = "singleD20Save_mod_" + saveId;
+                                saveBtnIdAdv = "advSave_mod_" + saveId;
+                                saveBtnIdDis = "disSave_mod_" + saveId;
                             }
                             string saveToastIdSingleD20 = "singleD20SaveToast_" + saveId;
                             string saveToastIdAdv = "advSaveToast_" + saveId;
@@ -208,7 +205,7 @@
                                         <strong class="me-auto">@save.Proficiency.Name</strong>
                                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                     </div>
-                                    <div class="toast-body">
+                                    <div id="" class="toast-body">
                                         @Dice.RollD20()
                                     </div>
                                 </div>

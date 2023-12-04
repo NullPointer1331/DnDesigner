@@ -97,8 +97,8 @@
 
             // add on modifier
             rollTotal += modifier;
-            resultString += " + " + modifier.ToString();
-            resultString += " = " + rollTotal.ToString();
+            resultString += " + " + modifier.ToString() + " = " + rollTotal.ToString();
+            
             return resultString;
         }
 

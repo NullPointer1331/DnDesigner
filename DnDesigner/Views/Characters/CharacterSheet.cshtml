@@ -161,9 +161,18 @@
                             <!--Get save bonus and generate id strings-->
                             int? modifier = save.GetRollBonus();
                             string saveId = save.Proficiency.ProficiencyId.ToString();
-                            string saveBtnIdSingleD20 = "singleD20Save_" + saveId;
-                            string saveBtnIdAdv = "advSave_" + saveId;
-                            string saveBtnIdDis = "disSave_" + saveId;
+                            if (modifier == 0)
+                            {
+                                string saveBtnIdSingleD20 = "singleD20Save_" + saveId;
+                                string saveBtnIdAdv = "advSave_" + saveId;
+                                string saveBtnIdDis = "disSave_" + saveId;
+                            }
+                            else
+                            {
+                                string saveBtnIdSingleD20 = "singleD20Save_mod" + saveId;
+                                string saveBtnIdAdv = "advSave_mod" + saveId;
+                                string saveBtnIdDis = "disSave_mod" + saveId;
+                            }
                             string saveToastIdSingleD20 = "singleD20SaveToast_" + saveId;
                             string saveToastIdAdv = "advSaveToast_" + saveId;
                             string saveToastIdDis = "disSaveToast_" + saveId;
@@ -180,13 +189,13 @@
                             <li class="list-group-item">
                                 @if (modifier == 0)
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveToastIdSingleD20')" id="@saveBtnIdSingleD20">D20</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveBtnIdSingleD20', '@saveToastIdSingleD20')" id="@saveBtnIdSingleD20">D20</button>
                                     <button type="button" class="btn btn-sm btn-success" id="@saveBtnIdAdv">Adv</button>
                                     <button type="button" class="btn btn-sm btn-danger" id="@saveBtnIdDis">Dis</button>
                                 }
                                 else
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveToastIdSingleD20')" id="@saveBtnIdSingleD20">D20</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveBtnIdSingleD20', '@saveToastIdSingleD20')" id="@saveBtnIdSingleD20">D20</button>
                                     <button type="button" class="btn btn-sm btn-success" id="@saveBtnIdAdv">Adv</button>
                                     <button type="button" class="btn btn-sm btn-danger" id="@saveBtnIdDis">Dis</button>
                                 }
@@ -762,13 +771,5 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    
-
-    <script>
-        function assignToast(toast) {
-            let toastBox = document.getElementById(toast)
-            let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox)
-            toastBootstrap.show()
-        }
-    </script>
+    <script src="~/js/site.js"></script>
 }

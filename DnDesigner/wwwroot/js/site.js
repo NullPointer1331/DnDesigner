@@ -8,29 +8,31 @@ function assignToast(button, toast)
     let toastBox = document.getElementById(toast)
     let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox)
     
-    switch (button) {
-        case button.includes("singleD20Save"):
+    switch (button)
+    {
+        case "singleD20Save":
             toastBox.lastElementChild.innerHTML = RollD20();
             break;
 
-        case button.includes("advSave"):
+        case "advSave":
             toastBox.lastElementChild.innerHTML = RollAdvOrDis(true);
             break;
 
-        case button.includes("disSave"):
+        case "disSave":
             toastBox.lastElementChild.innerHTML = RollAdvOrDis(false);
             break;
     }
     toastBootstrap.show()
 }
 
-function assignToast(button, toast, modifier) {
+function assignToastMod(button, toast, modifier)
+{
     let toastBox = document.getElementById(toast)
     let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox)
 
-    switch (button) {
+    switch (button)
+    {
         case "singleD20Save_mod":
-            console.log(toastBox.lastElementChild);
             toastBox.lastElementChild.innerHTML = RollD20Mod(modifier);
             break;
 
@@ -169,8 +171,9 @@ function RollD20()
 function RollD20Mod(modifier)
 {
     var singleRoll = generateRandomValue(1, 20);
-    return CheckNat20(singleRoll) + " Modified by " + modifier.toString() +
-        " = " + (singleRoll + modifier).toString();
+    var total = parseInt(singleRoll) + parseInt(modifier);
+    return CheckNat20(singleRoll) + " Modified by " + modifier +
+        " = " + total;
 }
 
 

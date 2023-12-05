@@ -101,17 +101,17 @@ namespace DnDesigner.Controllers
                     .Where(p => p.Type == "saving throw" || p.Type == "skill")
                     .ToListAsync(); 
                 
-                    character.MaxHealth = @class.HitDie + (character.Constitution - 10) / 2;
-                    Character newCharacter = new Character(character, @class, race, background, defaultProficiencies, User.FindFirstValue(ClaimTypes.NameIdentifier));
+                character.MaxHealth = @class.HitDie + (character.Constitution - 10) / 2;
+                Character newCharacter = new Character(character, @class, race, background, defaultProficiencies, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                    _context.Add(newCharacter);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                character.AvailableClasses = await _context.Classes.ToListAsync();
-                character.AvailableBackgrounds = await _context.Backgrounds.ToListAsync();
-                character.AvailableRaces = await _context.Races.ToListAsync();
-                return View(character);
+                _context.Add(newCharacter);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            character.AvailableClasses = await _context.Classes.ToListAsync();
+            character.AvailableBackgrounds = await _context.Backgrounds.ToListAsync();
+            character.AvailableRaces = await _context.Races.ToListAsync();
+            return View(character);
             
         }
 

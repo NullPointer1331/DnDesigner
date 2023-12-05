@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using DnDesigner.Data;
-using System.Linq;
 
 namespace DnDesigner.Models
 {
@@ -24,10 +22,15 @@ namespace DnDesigner.Models
         /// <returns>The <see cref="Background"/> with the specified id</returns>
         public async Task<Background> GetBackground(int id)
         {
-            return await _context.Backgrounds.Where(b => b.BackgroundId == id)
+            Background background = await _context.Backgrounds.Where(b => b.BackgroundId == id)
                     .Include(b => b.Features)
                     .ThenInclude(be => be.Effects)
                     .FirstOrDefaultAsync();
+            foreach (BackgroundFeature feature in background.Features)
+            {
+                await LoadEffects(feature.Effects);
+            }
+            return background;
         }
 
         /// <summary>
@@ -38,7 +41,7 @@ namespace DnDesigner.Models
         /// </returns>
         public async Task<List<Background>> GetAllBackgrounds()
         {
-            return await _context.Set<Background>()
+            return  await _context.Backgrounds
                     .Include(b => b.Features)
                     .ThenInclude(be => be.Effects)
                     .ToListAsync();
@@ -51,7 +54,7 @@ namespace DnDesigner.Models
         /// <returns>The <see cref="Character"/> with the given id</returns>
         public async Task<Character> GetCharacter(int id)
         {
-            return await _context.Characters.Where(c => c.CharacterId == id)
+            Character character = await _context.Characters.Where(c => c.CharacterId == id)
                     .Include(c => c.Race)
                     .Include(c => c.Background)
                     .Include(c => c.Classes)
@@ -64,6 +67,15 @@ namespace DnDesigner.Models
                     .Include(c => c.Inventory)
                     .Include(c => c.CharacterEffects)
                     .FirstOrDefaultAsync();
+            foreach (CharacterEffect characterEffect in character.CharacterEffects)
+            {
+                await LoadEffect(characterEffect.Effect);
+            }
+            foreach (Feature feature in character.Features)
+            {
+                await LoadEffects(feature.Effects);
+            }
+            return character;
         }
 
         /// <summary>
@@ -75,8 +87,12 @@ namespace DnDesigner.Models
         /// </returns>
         public async Task<List<Character>> GetAllCharacters(string userId)
         {
-            return await _context.Set<Character>().Where(r => r.UserId.Equals(userId))
-                    .ToListAsync();
+            return await _context.Characters.Where(r => r.UserId.Equals(userId))
+                .Include(r => r.Race)
+                .Include(r => r.Background)
+                .Include(r => r.Classes)
+                .ThenInclude(cc => cc.Class)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -86,11 +102,16 @@ namespace DnDesigner.Models
         /// <returns>The <see cref="Character"/> with the given id</returns>
         public async Task<Class> GetClass(int id)
         {
-            return await _context.Classes.Where(c => c.ClassId == id)
+            Class @class = await _context.Classes.Where(c => c.ClassId == id)
                     .Include(c => c.Spellcasting)
                     .Include(c => c.Features)
                     .ThenInclude(cf => cf.Effects)
                     .FirstOrDefaultAsync();
+            foreach (Feature feature in @class.Features)
+            {
+                await LoadEffects(feature.Effects);
+            }
+            return @class;
         }
 
         /// <summary>
@@ -99,7 +120,11 @@ namespace DnDesigner.Models
         /// <returns>A <see cref="List{Class}"/> of all the classes in the database</returns>
         public async Task<List<Class>> GetAllClasses()
         {
-            return await _context.Set<Class>().ToListAsync();
+            return await _context.Classes
+                .Include(c => c.Spellcasting)
+                .Include(c => c.Features)
+                .ThenInclude(cf => cf.Effects)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -109,11 +134,12 @@ namespace DnDesigner.Models
         /// <returns>The <see cref="Inventory"/> in from the database with the given id</returns>
         public async Task<Inventory> GetInventory(int id)
         {
-            return await _context.Inventory.Where(i => i.InventoryId == id)
+            Inventory inventory = await _context.Inventory.Where(i => i.InventoryId == id)
                     .Include(i => i.Items)
-                    .Include(i => i.OtherEquippedItems)
-                    .Include(i => i.AttunedItems)
+                    .ThenInclude(ii => ii.Item)
                     .FirstOrDefaultAsync();
+            inventory.PopulateEquipmentSlots();
+            return inventory;
         }
 
         /// <summary>
@@ -123,9 +149,11 @@ namespace DnDesigner.Models
         /// <returns>The <see cref="Item"/> from the database with the given id</returns>
         public async Task<Item> GetItem(int id)
         {
-            return await _context.Items.Where(i => i.ItemId == id)
+            Item item = await _context.Items.Where(i => i.ItemId == id)
                     .Include(i => i.Effects)
                     .FirstOrDefaultAsync();
+            await LoadEffects(item.Effects);
+            return item;
         }
 
         /// <summary>
@@ -134,9 +162,14 @@ namespace DnDesigner.Models
         /// <returns>A <see cref="List{Item}"/> that contains all of the items in the database</returns>
         public async Task<List<Item>> GetAllItems()
         {
-            return await _context.Set<Item>()
+            List<Item> items = await _context.Items
                     .Include(i => i.Effects)
                     .ToListAsync();
+            foreach (Item item in items)
+            {
+                await LoadEffects(item.Effects);
+            }
+            return items;
         }
 
         /// <summary>
@@ -156,7 +189,7 @@ namespace DnDesigner.Models
         /// <returns>A <see cref="List{Proficiency}"/> with all the proficiencies from the database</returns>
         public async Task<List<Proficiency>> GetAllProficiencies()
         {
-            return await _context.Set<Proficiency>()
+            return await _context.Proficiencies
                     .ToListAsync();
         }
 
@@ -167,10 +200,15 @@ namespace DnDesigner.Models
         /// <returns>The <see cref="Race"/> from the database with the given id</returns>
         public async Task<Race> GetRace(int id)
         {
-            return await _context.Races.Where(r => r.RaceId == id)
+            Race race = await _context.Races.Where(r => r.RaceId == id)
                     .Include(r => r.Features)
                     .ThenInclude(re => re.Effects)
                     .FirstOrDefaultAsync();
+            foreach (Feature feature in race.Features)
+            {
+                await LoadEffects(feature.Effects);
+            }
+            return race;
         }
 
         /// <summary>
@@ -179,7 +217,7 @@ namespace DnDesigner.Models
         /// <returns>A <see cref="List{Race}"/> with all the races from the database</returns>
         public async Task<List<Race>> GetAllRaces()
         {
-            return await _context.Set<Race>()
+            return await _context.Races
                     .Include (r => r.Features)
                     .ThenInclude(re => re.Effects)
                     .ToListAsync();
@@ -204,7 +242,7 @@ namespace DnDesigner.Models
         /// <returns>A <see cref="List{Spell}"/> with all the spells from the database</returns>
         public async Task<List<Spell>> GetAllSpells()
         {
-            return await _context.Set<Spell>()
+            return await _context.Spells
                     .Include(ss => ss.LearnedBy)
                     .ThenInclude(ss => ss.LearnableSpells)
                     .ToListAsync();
@@ -231,7 +269,7 @@ namespace DnDesigner.Models
         /// </returns>
         public async Task<List<Spellcasting>> GetAllSpellcastings()
         {
-            return await _context.Set<Spellcasting>()
+            return await _context.Spellcasting
                     .Include(ss => ss.LearnableSpells)
                     .ThenInclude(ss => ss.LearnedBy)
                     .ToListAsync();
@@ -244,10 +282,15 @@ namespace DnDesigner.Models
         /// <returns>The <see cref="Subclass"/> from the database with the given id</returns>
         public async Task<Subclass> GetSubclass(int id)
         {
-            return await _context.Subclasses.Where(s => s.SubclassId == id)
+            Subclass subclass = await _context.Subclasses.Where(s => s.SubclassId == id)
                     .Include(sf => sf.Features)
                     .ThenInclude(se => se.Effects)
                     .FirstOrDefaultAsync();
+            foreach (Feature feature in subclass.Features)
+            {
+                await LoadEffects(feature.Effects);
+            }
+            return subclass;
         }
 
         /// <summary>
@@ -256,10 +299,49 @@ namespace DnDesigner.Models
         /// <returns>A <see cref="List{Subclass}"/> with all the subclasses from the database</returns>
         public async Task<List<Subclass>> GetAllSubclasses()
         {
-            return await _context.Set<Subclass>()
+            return await _context.Subclasses
                     .Include(sf => sf.Features)
                     .ThenInclude(se => se.Effects)
                     .ToListAsync();
+        }
+
+        /// <summary>
+        /// Loads all the data for a list of <see cref="Effect"/>s
+        /// </summary>
+        /// <param name="effects">The effects to load</param>
+        private async Task LoadEffects(List<Effect> effects)
+        {
+            foreach (Effect effect in effects)
+            {
+                await LoadEffect(effect);
+            }
+        }
+
+        /// <summary>
+        /// Loads all the data for an <see cref="Effect"/>
+        /// </summary>
+        /// <param name="effect">The effect to load</param>
+        private async Task LoadEffect(Effect effect)
+        {
+            if (effect is GrantProficiencies grantProficiencies)
+            {
+                await _context.Entry(grantProficiencies)
+                    .Collection(gp => gp.Proficiencies)
+                    .LoadAsync();
+            }
+            else if (effect is GrantAction grantAction)
+            {
+                await _context.Entry(grantAction)
+                    .Reference(ga => ga.Action)
+                    .LoadAsync();
+            }
+            else if (effect is EffectChoice effectChoice)
+            {
+                await _context.Entry(effectChoice)
+                    .Collection(ec => ec.Effects)
+                    .LoadAsync();
+                await LoadEffects(effectChoice.Effects);
+            }
         }
     }
 }

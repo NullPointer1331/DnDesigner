@@ -19,6 +19,19 @@
 </h3>
 <h4>@Model.Race.Name @Model.Background.Name</h4>
 
+<!--Roll Toast Box-->
+<div class="toast-container w-50 position-fixed top-1 start-50 translate-middle">
+    <div id="rollToast" class="toast w-100" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <h3 class="me-auto">
+            </h3>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <h2 class="toast-body">
+        </h2>
+    </div>
+</div>
+
 <hr />
 <form asp-action="CharacterSheet">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -161,6 +174,9 @@
                             <!--Get save bonus and generate id strings-->
                             int? modifier = save.GetRollBonus();
                             string saveId = save.Proficiency.ProficiencyId.ToString();
+                            string saveSingleD20Message = save.Proficiency.Name.ToString();
+                            string saveAdvMessage = save.Proficiency.Name.ToString() + " at Advantage";
+                            string saveDisMessage = save.Proficiency.Name.ToString() + " at Disadvantage";
                             string saveBtnSingleD20 = "singleD20";
                             string saveBtnAdv = "adv";
                             string saveBtnDis = "dis";
@@ -170,9 +186,6 @@
                                 saveBtnAdv = "adv_mod";
                                 saveBtnDis = "dis_mod";
                             }
-                            string saveToastIdSingleD20 = "singleD20SaveToast_" + saveId;
-                            string saveToastIdAdv = "advSaveToast_" + saveId;
-                            string saveToastIdDis = "disSaveToast_" + saveId;
                             <!--Populate save list item-->
                             if (save.ProficiencyLevel == 1)
                             {
@@ -186,55 +199,17 @@
                             <li class="list-group-item">
                                 @if (modifier == 0)
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveBtnSingleD20', '@saveToastIdSingleD20')">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToast('@saveBtnAdv', '@saveToastIdAdv')">Adv</button>
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToast('@saveBtnDis', '@saveToastIdDis')">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveBtnSingleD20', '@saveSingleD20Message')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToast('@saveBtnAdv', '@saveAdvMessage')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToast('@saveBtnDis', '@saveDisMessage')">Dis</button>
                                 }
                                 else
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToastMod('@saveBtnSingleD20', '@saveToastIdSingleD20', '@modifier')">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToastMod('@saveBtnAdv', '@saveToastIdAdv', '@modifier')">Adv</button>
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToastMod('@saveBtnDis', '@saveToastIdDis', '@modifier')">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToastMod('@saveBtnSingleD20', '@saveSingleD20Message' , '@modifier')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToastMod('@saveBtnAdv', '@saveAdvMessage', '@modifier')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToastMod('@saveBtnDis', '@saveDisMessage', '@modifier')">Dis</button>
                                 }
                             </li>
-                            <!--Start of save roll Toast Section-->
-                            <!--Single D20 Save-->
-                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                                <div id="@saveToastIdSingleD20" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                    <div class="toast-header">
-                                        <strong class="me-auto">@save.Proficiency.Name</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                    </div>
-                                    <div class="toast-body">
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Save Advantage-->
-                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                                <div id="@saveToastIdAdv" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                    <div class="toast-header">
-                                        <strong class="me-auto">@save.Proficiency.Name at Advantage</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                    </div>
-                                    <div class="toast-body">
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Save Disadvantage-->
-                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                                <div id="@saveToastIdDis" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                    <div class="toast-header">
-                                        <strong class="me-auto">@save.Proficiency.Name at Disadvantage</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                    </div>
-                                    <div class="toast-body">
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <!--End of save roll Toast Section-->
                         }
                     </ul>
                 </div>
@@ -246,6 +221,9 @@
                             <!--Get skill bonus and generate id strings-->
                             int? modifier = skill.GetRollBonus();
                             string skillId = skill.Proficiency.ProficiencyId.ToString();
+                            string skillSingleD20Message = skill.Proficiency.Name.ToString();
+                            string skillAdvMessage = skill.Proficiency.Name.ToString() + " at Advantage";
+                            string skillDisMessage = skill.Proficiency.Name.ToString() + " at Disadvantage";
                             string skillBtnSingleD20 = "singleD20";
                             string skillBtnAdv = "adv";
                             string skillBtnDis = "dis";
@@ -255,9 +233,6 @@
                                 skillBtnAdv = "adv_mod";
                                 skillBtnDis = "dis_mod";
                             }
-                            string skillToastIdSingleD20 = "singleD20SkillToast_" + skillId;
-                            string skillToastIdAdv = "advSkillToast_" + skillId;
-                            string skillToastIdDis = "disSkillToast_" + skillId;
                             <!--Populate skill list item-->
                             if (skill.ProficiencyLevel == 1)
                             {
@@ -275,55 +250,17 @@
                             <li class="list-group-item">
                                 @if (modifier == 0)
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@skillBtnSingleD20', '@skillToastIdSingleD20')">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToast('@skillBtnAdv', '@skillToastIdAdv')">Adv</button>
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToast('@skillBtnDis', '@skillToastIdDis')">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@skillBtnSingleD20', '@skillSingleD20Message')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToast('@skillBtnAdv', '@skillAdvMessage')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToast('@skillBtnDis', '@skillDisMessage')">Dis</button>
                                 }
                                 else
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToastMod('@skillBtnSingleD20', '@skillToastIdSingleD20', '@modifier')">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToastMod('@skillBtnAdv', '@skillToastIdAdv', '@modifier')">Adv</button>
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToastMod('@skillBtnDis', '@skillToastIdDis', '@modifier')">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToastMod('@skillBtnSingleD20', '@skillSingleD20Message', '@modifier')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToastMod('@skillBtnAdv', '@skillAdvMessage', '@modifier')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToastMod('@skillBtnDis', '@skillDisMessage', '@modifier')">Dis</button>
                                 }
                             </li>
-                            <!--Start of skill roll Toast Section-->
-                            <!--Single D20 Skill-->
-                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                                <div id="@skillToastIdSingleD20" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                    <div class="toast-header">
-                                        <strong class="me-auto">@skill.Proficiency.Name</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                    </div>
-                                    <div class="toast-body">
-
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Skill Advantage-->
-                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                                <div id="@skillToastIdAdv" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                    <div class="toast-header">
-                                        <strong class="me-auto">@skill.Proficiency.Name at Advantage</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                    </div>
-                                    <div class="toast-body">
-
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Skill Disadvantage-->
-                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                                <div id="@skillToastIdDis" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                    <div class="toast-header">
-                                        <strong class="me-auto">@skill.Proficiency.Name at Disadvantage</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                    </div>
-                                    <div class="toast-body">
-
-                                    </div>
-                                </div>
-                            </div>
-                            <!--End of skill roll Toast Section-->
                         }
                     </ul>
                 </div>

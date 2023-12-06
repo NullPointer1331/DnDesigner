@@ -3,10 +3,12 @@
 
 // Write your JavaScript code.
 
-function assignToast(button, toast)
+function assignToast(button, rollType)
 {
-    let toastBox = document.getElementById(toast)
-    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox)
+    let toastBox = document.getElementById('rollToast');
+    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
+
+    toastBox.firstElementChild.firstElementChild.innerHTML = rollType;
     
     switch (button)
     {
@@ -25,10 +27,12 @@ function assignToast(button, toast)
     toastBootstrap.show()
 }
 
-function assignToastMod(button, toast, modifier)
+function assignToastMod(button, rollType, modifier)
 {
-    let toastBox = document.getElementById(toast)
-    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox)
+    let toastBox = document.getElementById('rollToast');
+    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
+
+    toastBox.firstElementChild.firstElementChild.innerHTML = rollType;
 
     switch (button)
     {
@@ -191,11 +195,11 @@ function RollAdvOrDis(rollType)
     // Advantage, take the higher roll
     if (rollType)
     {
-        return "You Keep A: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2))) +
+        return "You Keep: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2))) +
             ",<br/>Lower Roll: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2)));
     }
     // Disadvantage, take the lower roll
-    return "You Keep A: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2))) +
+    return "You Keep: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2))) +
         ",<br/>Higher Roll: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2)));
 }
 
@@ -214,13 +218,13 @@ function RollAdvOrDisMod(rollType, modifier) {
     // Advantage, take the higher roll
     if (rollType)
     {
-        return "You Keep A: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2))) +
+        return "You Keep: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2))) +
             " Modified by " + modifier.toString() +
             " = " + (Math.max(parseInt(roll1), parseInt(roll2)) + parseInt(modifier)).toString() +
             ",<br/>Lower Roll: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2)));
     }
     // Disadvantage, take the lower roll
-    return "You Keep A: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2))) +
+    return "You Keep: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2))) +
         " Modified by " + modifier.toString() +
         " = " + (Math.min(parseInt(roll1), parseInt(roll2)) + parseInt(modifier)).toString() +
         ",<br/>Higher Roll: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2)));

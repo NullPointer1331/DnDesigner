@@ -10,15 +10,15 @@ function assignToast(button, toast)
     
     switch (button)
     {
-        case "singleD20Save":
+        case "singleD20":
             toastBox.lastElementChild.innerHTML = RollD20();
             break;
 
-        case "advSave":
+        case "adv":
             toastBox.lastElementChild.innerHTML = RollAdvOrDis(true);
             break;
 
-        case "disSave":
+        case "dis":
             toastBox.lastElementChild.innerHTML = RollAdvOrDis(false);
             break;
     }
@@ -32,15 +32,15 @@ function assignToastMod(button, toast, modifier)
 
     switch (button)
     {
-        case "singleD20Save_mod":
+        case "singleD20_mod":
             toastBox.lastElementChild.innerHTML = RollD20Mod(modifier);
             break;
 
-        case "advSave_mod":
+        case "adv_mod":
             toastBox.lastElementChild.innerHTML = RollAdvOrDisMod(true, modifier);
             break;
 
-        case "disSave_mod":
+        case "dis_mod":
             toastBox.lastElementChild.innerHTML = RollAdvOrDisMod(false, modifier);
             break;
     }

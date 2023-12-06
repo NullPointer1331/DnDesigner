@@ -161,14 +161,14 @@
                             <!--Get save bonus and generate id strings-->
                             int? modifier = save.GetRollBonus();
                             string saveId = save.Proficiency.ProficiencyId.ToString();
-                            string saveBtnSingleD20 = "singleD20Save";
-                            string saveBtnAdv = "advSave";
-                            string saveBtnDis = "disSave";
+                            string saveBtnSingleD20 = "singleD20";
+                            string saveBtnAdv = "adv";
+                            string saveBtnDis = "dis";
                             if (modifier != 0)
                             {
-                                saveBtnSingleD20 = "singleD20Save_mod";
-                                saveBtnAdv = "advSave_mod";
-                                saveBtnDis = "disSave_mod";
+                                saveBtnSingleD20 = "singleD20_mod";
+                                saveBtnAdv = "adv_mod";
+                                saveBtnDis = "dis_mod";
                             }
                             string saveToastIdSingleD20 = "singleD20SaveToast_" + saveId;
                             string saveToastIdAdv = "advSaveToast_" + saveId;
@@ -246,14 +246,14 @@
                             <!--Get skill bonus and generate id strings-->
                             int? modifier = skill.GetRollBonus();
                             string skillId = skill.Proficiency.ProficiencyId.ToString();
-                            string skillBtnSingleD20 = "singleD20Skill";
-                            string skillBtnAdv = "advSkill";
-                            string skillBtnDis = "disSkill";
+                            string skillBtnSingleD20 = "singleD20";
+                            string skillBtnAdv = "adv";
+                            string skillBtnDis = "dis";
                             if (modifier != 0)
                             {
-                                skillBtnSingleD20 = "singleD20Skill_mod";
-                                skillBtnAdv = "advSkill_mod";
-                                skillBtnDis = "disSkill_mod";
+                                skillBtnSingleD20 = "singleD20_mod";
+                                skillBtnAdv = "adv_mod";
+                                skillBtnDis = "dis_mod";
                             }
                             string skillToastIdSingleD20 = "singleD20SkillToast_" + skillId;
                             string skillToastIdAdv = "advSkillToast_" + skillId;
@@ -275,15 +275,15 @@
                             <li class="list-group-item">
                                 @if (modifier == 0)
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" id="">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" id="">Adv</button>
-                                    <button type="button" class="btn btn-sm btn-danger" id="">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@skillBtnSingleD20', '@skillToastIdSingleD20')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToast('@skillBtnAdv', '@skillToastIdAdv')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToast('@skillBtnDis', '@skillToastIdDis')">Dis</button>
                                 }
                                 else
                                 {
-                                    <button type="button" class="btn btn-sm btn-primary" id="">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" id="">Adv</button>
-                                    <button type="button" class="btn btn-sm btn-danger" id="">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToastMod('@skillBtnSingleD20', '@skillToastIdSingleD20', '@modifier')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToastMod('@skillBtnAdv', '@skillToastIdAdv', '@modifier')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToastMod('@skillBtnDis', '@skillToastIdDis', '@modifier')">Dis</button>
                                 }
                             </li>
                             <!--Start of skill roll Toast Section-->
@@ -323,7 +323,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!--End of skill roll Toast Section-->
                         }
                     </ul>

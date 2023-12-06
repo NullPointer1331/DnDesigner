@@ -187,13 +187,13 @@
                                 @if (modifier == 0)
                                 {
                                     <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveBtnSingleD20', '@saveToastIdSingleD20')">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" id="@saveBtnAdv">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToast('@saveBtnAdv', '@saveToastIdAdv')">Adv</button>
                                     <button type="button" class="btn btn-sm btn-danger" id="@saveBtnDis">Dis</button>
                                 }
                                 else
                                 {
                                     <button type="button" class="btn btn-sm btn-primary" onclick="assignToastMod('@saveBtnSingleD20', '@saveToastIdSingleD20', '@modifier')">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" id="@saveBtnAdv">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToastMod('@saveBtnAdv', '@saveToastIdAdv', '@modifier')">Adv</button>
                                     <button type="button" class="btn btn-sm btn-danger" id="@saveBtnDis">Dis</button>
                                 }
                             </li>

@@ -243,8 +243,21 @@
                     <ul class="list-group" style="width: 12rem;">
                         @foreach (CharacterProficiency skill in Model.GetSkills())
                         {
-                            <!--Get bonus for this skill-->
+                            <!--Get skill bonus and generate id strings-->
                             int? modifier = skill.GetRollBonus();
+                            string skillId = skill.Proficiency.ProficiencyId.ToString();
+                            string skillBtnSingleD20 = "singleD20Skill";
+                            string skillBtnAdv = "advSkill";
+                            string skillBtnDis = "disSkill";
+                            if (modifier != 0)
+                            {
+                                skillBtnSingleD20 = "singleD20Skill_mod";
+                                skillBtnAdv = "advSkill_mod";
+                                skillBtnDis = "disSkill_mod";
+                            }
+                            string skillToastIdSingleD20 = "singleD20SkillToast_" + skillId;
+                            string skillToastIdAdv = "advSkillToast_" + skillId;
+                            string skillToastIdDis = "disSkillToast_" + skillId;
                             <!--Populate skill list item-->
                             if (skill.ProficiencyLevel == 1)
                             {
@@ -274,6 +287,42 @@
                                 }
                             </li>
                             <!--Start of skill roll Toast Section-->
+                            <!--Single D20 Skill-->
+                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                                <div id="@skillToastIdSingleD20" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header">
+                                        <strong class="me-auto">@skill.Proficiency.Name</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Skill Advantage-->
+                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                                <div id="@skillToastIdAdv" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header">
+                                        <strong class="me-auto">@skill.Proficiency.Name at Advantage</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Skill Disadvantage-->
+                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                                <div id="@skillToastIdDis" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header">
+                                        <strong class="me-auto">@skill.Proficiency.Name at Disadvantage</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body">
+
+                                    </div>
+                                </div>
+                            </div>
 
                             <!--End of skill roll Toast Section-->
                         }

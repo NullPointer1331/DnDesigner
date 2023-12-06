@@ -192,11 +192,11 @@ function RollAdvOrDis(rollType)
     if (rollType)
     {
         return "You Keep A: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2))) +
-            ", Lower Roll: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2)));
+            ",<br/>Lower Roll: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2)));
     }
     // Disadvantage, take the lower roll
     return "You Keep A: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2))) +
-        ", Higher Roll: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2)));
+        ",<br/>Higher Roll: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2)));
 }
 
 
@@ -217,11 +217,11 @@ function RollAdvOrDisMod(rollType, modifier) {
         return "You Keep A: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2))) +
             " Modified by " + modifier.toString() +
             " = " + (Math.max(parseInt(roll1), parseInt(roll2)) + parseInt(modifier)).toString() +
-            ", Lower Roll: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2)));
+            ",<br/>Lower Roll: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2)));
     }
     // Disadvantage, take the lower roll
     return "You Keep A: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2))) +
         " Modified by " + modifier.toString() +
         " = " + (Math.min(parseInt(roll1), parseInt(roll2)) + parseInt(modifier)).toString() +
-        ", Higher Roll: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2)));
+        ",<br/>Higher Roll: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2)));
 }

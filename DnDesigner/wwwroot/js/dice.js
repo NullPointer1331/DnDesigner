@@ -142,15 +142,19 @@ function RollStringMod(dieSize, dieCount, modifier)
 }
 
 /// <summary>
-/// Checks if a roll is a 20
+/// Checks if a roll is a 20 or a 1
 /// </summary>
 /// <param name="roll">The roll to check</param>
-/// <returns>Natural 20 or the original value</returns>
-function CheckNat20(roll)
+/// <returns>Natural 20, Natural 1, or the original value</returns>
+function CheckNat20Or1(roll)
 {
     if (roll == 20)
     {
         return "Natural 20!";
+    }
+    else if (roll == 1)
+    {
+        return "Oh no, Natural 1!";
     }
     return roll.toString();
 }
@@ -163,7 +167,7 @@ function CheckNat20(roll)
 function RollD20()
 {
     var singleRoll = generateRandomValue(1, 20);
-    return CheckNat20(singleRoll);
+    return CheckNat20Or1(singleRoll);
 }
 
 
@@ -176,7 +180,13 @@ function RollD20Mod(modifier)
 {
     var singleRoll = generateRandomValue(1, 20);
     var total = parseInt(singleRoll) + parseInt(modifier);
-    return CheckNat20(singleRoll) + " Modified by " + modifier +
+
+    if (modifier > 0)
+    {
+        return CheckNat20Or1(singleRoll) + " + " + modifier +
+                " = " + total;
+    }
+    return CheckNat20Or1(singleRoll) + " - " + Math.abs(modifier) +
         " = " + total;
 }
 
@@ -195,12 +205,12 @@ function RollAdvOrDis(rollType)
     // Advantage, take the higher roll
     if (rollType)
     {
-        return "You Keep: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2))) +
-            ",<br/>Lower Roll: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2)));
+        return "You Keep: " + CheckNat20Or1(Math.max(parseInt(roll1), parseInt(roll2))) +
+            "<br/>Lower Roll: " + CheckNat20Or1(Math.min(parseInt(roll1), parseInt(roll2)));
     }
     // Disadvantage, take the lower roll
-    return "You Keep: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2))) +
-        ",<br/>Higher Roll: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2)));
+    return "You Keep: " + CheckNat20Or1(Math.min(parseInt(roll1), parseInt(roll2))) +
+        "<br/>Higher Roll: " + CheckNat20Or1(Math.max(parseInt(roll1), parseInt(roll2)));
 }
 
 
@@ -216,16 +226,31 @@ function RollAdvOrDisMod(rollType, modifier) {
     var roll2 = generateRandomValue(1, 20);
 
     // Advantage, take the higher roll
-    if (rollType)
-    {
-        return "You Keep: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2))) +
-            " Modified by " + modifier.toString() +
+    if (rollType) {
+        if (modifier > 0) {
+            return "You Keep: " + CheckNat20Or1(Math.max(parseInt(roll1), parseInt(roll2))) +
+                " + " + modifier +
+                " = " + (Math.max(parseInt(roll1), parseInt(roll2)) + parseInt(modifier)).toString() +
+                "<br/>Lower Roll: " + CheckNat20Or1(Math.min(parseInt(roll1), parseInt(roll2)));
+        }
+        return "You Keep: " + CheckNat20Or1(Math.max(parseInt(roll1), parseInt(roll2))) +
+            " - " + Math.abs(modifier) +
             " = " + (Math.max(parseInt(roll1), parseInt(roll2)) + parseInt(modifier)).toString() +
-            ",<br/>Lower Roll: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2)));
+            "<br/>Lower Roll: " + CheckNat20Or1(Math.min(parseInt(roll1), parseInt(roll2)));
     }
     // Disadvantage, take the lower roll
-    return "You Keep: " + CheckNat20(Math.min(parseInt(roll1), parseInt(roll2))) +
-        " Modified by " + modifier.toString() +
-        " = " + (Math.min(parseInt(roll1), parseInt(roll2)) + parseInt(modifier)).toString() +
-        ",<br/>Higher Roll: " + CheckNat20(Math.max(parseInt(roll1), parseInt(roll2)));
+    else
+    {
+        if (modifier > 0)
+        {
+            return "You Keep: " + CheckNat20Or1(Math.min(parseInt(roll1), parseInt(roll2))) +
+                " + " + modifier +
+                " = " + (Math.min(parseInt(roll1), parseInt(roll2)) + parseInt(modifier)).toString() +
+                "<br/>Higher Roll: " + CheckNat20Or1(Math.max(parseInt(roll1), parseInt(roll2)));
+        }
+        return "You Keep: " + CheckNat20Or1(Math.min(parseInt(roll1), parseInt(roll2))) +
+            " - " + Math.abs(modifier) +
+            " = " + (Math.min(parseInt(roll1), parseInt(roll2)) + parseInt(modifier)).toString() +
+            "<br/>Higher Roll: " + CheckNat20Or1(Math.max(parseInt(roll1), parseInt(roll2)));
+    }
 }

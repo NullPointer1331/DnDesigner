@@ -51,6 +51,10 @@ namespace DnDesigner.Controllers
         // GET: Characters/Create
         public async Task<IActionResult> Create()
         {
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) == null)
+            {
+                return RedirectToAction("Login, Accounts");
+            }
             CreateCharacterViewModel characterViewModel = new()
             {
                 AvailableClasses = await _dbHelper.GetAllClasses(),

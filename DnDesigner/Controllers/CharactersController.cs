@@ -25,9 +25,17 @@ namespace DnDesigner.Controllers
         // GET: Characters
         public async Task<IActionResult> Index()
         {
-              return _context.Characters != null ? 
-                          View(await _context.Characters.ToListAsync()) :
-                          Problem("Entity set 'DnDesignerDbContext.Characters'  is null.");
+            // checks if the user is logged in, if not redirects to login page
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            } else
+            {
+                return View
+                    (
+                        await _dbHelper.GetAllCharacters(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    );
+            }
         }
 
         // GET: Characters/Details/5
@@ -51,6 +59,7 @@ namespace DnDesigner.Controllers
         // GET: Characters/Create
         public async Task<IActionResult> Create()
         {
+            // checks if the user is logged in, if not redirects to login page
             if (User.FindFirstValue(ClaimTypes.NameIdentifier) == null)
             {
                 return RedirectToPage("/Account/Login", new { area = "Identity" });

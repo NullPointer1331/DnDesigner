@@ -6,22 +6,36 @@
 }
 
 <h2>@Model.Name</h2>
-<h3>@Model.Level 
-    @foreach(CharacterClass Class in Model.Classes)
+<h3>
+    @Model.Level
+    @foreach (CharacterClass Class in Model.Classes)
     {
         @Html.DisplayFor(Model => Class.Class.Name)
-        if(Class.Subclass != null)
+        if (Class.Subclass != null)
         {
             @Html.DisplayFor(Model => Class.Subclass.Name)
         }
     }
-</h3> 
+</h3>
 <h4>@Model.Race.Name @Model.Background.Name</h4>
+
+<!--Roll Toast Box-->
+<div class="toast-container w-50 position-fixed top-1 start-50 translate-middle">
+    <div id="rollToast" class="toast w-100" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <h3 class="me-auto">
+            </h3>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <h2 class="toast-body">
+        </h2>
+    </div>
+</div>
 
 <hr />
 <form asp-action="CharacterSheet">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    
+
     <!--Start of Character Sheet Layout-->
     <div class="container">
 
@@ -30,12 +44,12 @@
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group me-2" role="group">
                     <input type="checkbox" class="btn-check" role="button" id="saveToggle" data-bs-toggle="collapse"
-                            data-bs-target="#saves" aria-expanded="false" aria-controls="saves" aria-pressed="true">
+                           data-bs-target="#saves" aria-expanded="false" aria-controls="saves" aria-pressed="true">
                     <label class="btn btn-outline-primary" for="saveToggle">Saves</label>
                 </div>
                 <div class="btn-group me-2" role="group">
                     <input type="checkbox" class="btn-check" role="button" id="skillToggle" data-bs-toggle="collapse"
-                            data-bs-target="#skills" aria-expanded="false" aria-controls="skills" aria-pressed="true">
+                           data-bs-target="#skills" aria-expanded="false" aria-controls="skills" aria-pressed="true">
                     <label class="btn btn-outline-primary" for="skillToggle">Skills</label>
                 </div>
                 <div class="btn-group me-2" role="group">
@@ -155,35 +169,98 @@
             <div class="col-auto text-center">
                 <div class="collapse collapse-horizontal" id="saves">
                     <ul class="list-group" style="width: 12rem;">
-                        @foreach(CharacterProficiency save in Model.GetSaves()) {
-                            if(save.ProficiencyLevel == 1)
+                        @foreach (CharacterProficiency save in Model.GetSaves())
+                        {
+                            <!--Get save bonus and generate id strings-->
+                            int? modifier = save.GetRollBonus();
+                            string saveId = save.Proficiency.ProficiencyId.ToString();
+                            string saveSingleD20Message = save.Proficiency.Name.ToString();
+                            string saveAdvMessage = save.Proficiency.Name.ToString() + " at Advantage";
+                            string saveDisMessage = save.Proficiency.Name.ToString() + " at Disadvantage";
+                            string saveBtnSingleD20 = "singleD20";
+                            string saveBtnAdv = "adv";
+                            string saveBtnDis = "dis";
+                            if (modifier != 0)
                             {
-                                <li class="list-group-item">@save.GetRollBonus() @save.Proficiency.Name P</li>
+                                saveBtnSingleD20 = "singleD20_mod";
+                                saveBtnAdv = "adv_mod";
+                                saveBtnDis = "dis_mod";
+                            }
+                            <!--Populate save list item-->
+                            if (save.ProficiencyLevel == 1)
+                            {
+                                <li class="list-group-item">@modifier @save.Proficiency.Name P</li>
                             }
                             else
                             {
-                                <li class="list-group-item">@save.GetRollBonus() @save.Proficiency.Name</li>
+                                <li class="list-group-item">@modifier @save.Proficiency.Name</li>
                             }
+                            <!--Populate save roll buttons-->
+                            <li class="list-group-item">
+                                @if (modifier == 0)
+                                {
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveBtnSingleD20', '@saveSingleD20Message')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToast('@saveBtnAdv', '@saveAdvMessage')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToast('@saveBtnDis', '@saveDisMessage')">Dis</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToastMod('@saveBtnSingleD20', '@saveSingleD20Message' , '@modifier')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToastMod('@saveBtnAdv', '@saveAdvMessage', '@modifier')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToastMod('@saveBtnDis', '@saveDisMessage', '@modifier')">Dis</button>
+                                }
+                            </li>
                         }
                     </ul>
                 </div>
                 <br>
                 <div class="collapse collapse-horizontal" id="skills">
                     <ul class="list-group" style="width: 12rem;">
-                        @foreach(CharacterProficiency skill in Model.GetSkills())
+                        @foreach (CharacterProficiency skill in Model.GetSkills())
                         {
+                            <!--Get skill bonus and generate id strings-->
+                            int? modifier = skill.GetRollBonus();
+                            string skillId = skill.Proficiency.ProficiencyId.ToString();
+                            string skillSingleD20Message = skill.Proficiency.Name.ToString();
+                            string skillAdvMessage = skill.Proficiency.Name.ToString() + " at Advantage";
+                            string skillDisMessage = skill.Proficiency.Name.ToString() + " at Disadvantage";
+                            string skillBtnSingleD20 = "singleD20";
+                            string skillBtnAdv = "adv";
+                            string skillBtnDis = "dis";
+                            if (modifier != 0)
+                            {
+                                skillBtnSingleD20 = "singleD20_mod";
+                                skillBtnAdv = "adv_mod";
+                                skillBtnDis = "dis_mod";
+                            }
+                            <!--Populate skill list item-->
                             if (skill.ProficiencyLevel == 1)
                             {
-                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name P</li>
+                                <li class="list-group-item">@modifier @skill.Proficiency.Name P</li>
                             }
                             else if (skill.ProficiencyLevel == 2)
                             {
-                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name E</li>
+                                <li class="list-group-item">@modifier @skill.Proficiency.Name E</li>
                             }
                             else
                             {
-                                <li class="list-group-item">@skill.GetRollBonus() @skill.Proficiency.Name</li>
-                            }                            
+                                <li class="list-group-item">@modifier @skill.Proficiency.Name</li>
+                            }
+                            <!--Populate skill roll buttons-->
+                            <li class="list-group-item">
+                                @if (modifier == 0)
+                                {
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@skillBtnSingleD20', '@skillSingleD20Message')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToast('@skillBtnAdv', '@skillAdvMessage')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToast('@skillBtnDis', '@skillDisMessage')">Dis</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToastMod('@skillBtnSingleD20', '@skillSingleD20Message', '@modifier')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToastMod('@skillBtnAdv', '@skillAdvMessage', '@modifier')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToastMod('@skillBtnDis', '@skillDisMessage', '@modifier')">Dis</button>
+                                }
+                            </li>
                         }
                     </ul>
                 </div>
@@ -268,7 +345,7 @@
                             <div class="card text-center mb-3 h-100" style="width: 14rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Max Health</h5>
-                                    <input type="hidden" asp-for="MaxHealth"/>
+                                    <input type="hidden" asp-for="MaxHealth" />
                                     <h3>@Model.MaxHealth</h3>
                                 </div>
                                 <div class="card-body">
@@ -464,7 +541,7 @@
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                                         data-bs-target="#panelsStayOpen-@features.FeatureId" aria-expanded="false"
                                                         aria-controls="panelsStayOpen-@features.FeatureId">
-                                                    @features.Name, Level: @features.Level, @features.Source 
+                                                    @features.Name, Level: @features.Level, @features.Source
                                                 </button>
                                             </h2>
                                             <div id="panelsStayOpen-@features.FeatureId" class="accordion-collapse collapse">
@@ -474,7 +551,7 @@
                                             </div>
                                         </div>
                                     }
-								</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -515,9 +592,9 @@
                                                     <ul class="list-group list-group-flush">
                                                         @foreach (CharacterProficiency language in languageProf)
                                                         {
-															<li class="list-group-item">@language.Proficiency.Name</li>
+                                                            <li class="list-group-item">@language.Proficiency.Name</li>
                                                         }
-													</ul>
+                                                    </ul>
                                                 </div>
                                             </li>
                                         }
@@ -532,9 +609,9 @@
                                                     <ul class="list-group list-group-flush">
                                                         @foreach (CharacterProficiency tool in toolProf)
                                                         {
-															<li class="list-group-item">@tool.Proficiency.Name</li>
+                                                            <li class="list-group-item">@tool.Proficiency.Name</li>
                                                         }
-													</ul>
+                                                    </ul>
                                                 </div>
                                             </li>
                                         }
@@ -549,9 +626,9 @@
                                                     <ul class="list-group list-group-flush">
                                                         @foreach (CharacterProficiency armor in armorProf)
                                                         {
-															<li class="list-group-item">@armor.Proficiency.Name</li>
-														}
-													</ul>
+                                                            <li class="list-group-item">@armor.Proficiency.Name</li>
+                                                        }
+                                                    </ul>
                                                 </div>
                                             </li>
                                         }
@@ -566,26 +643,26 @@
                                                     <ul class="list-group list-group-flush">
                                                         @foreach (CharacterProficiency weapon in weaponProf)
                                                         {
-															<li class="list-group-item">@weapon.Proficiency.Name</li>
-														}
-													</ul>
+                                                            <li class="list-group-item">@weapon.Proficiency.Name</li>
+                                                        }
+                                                    </ul>
                                                 </div>
                                             </li>
                                         }
                                     }
                                     @{
                                         List<CharacterProficiency> instrumentProf = Model.GetProficienciesByType("instrument");
-                                        if (instrumentProf.Count > 0) 
+                                        if (instrumentProf.Count > 0)
                                         {
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                                 <div class="ms-2 me-auto">
                                                     <div class="fw-bold">Instrument</div>
                                                     <ul class="list-group list-group-flush">
-											            @foreach (CharacterProficiency instrument in instrumentProf)
-											            {
-															<li class="list-group-item">@instrument.Proficiency.Name</li>
-														}
-													</ul>
+                                                        @foreach (CharacterProficiency instrument in instrumentProf)
+                                                        {
+                                                            <li class="list-group-item">@instrument.Proficiency.Name</li>
+                                                        }
+                                                    </ul>
                                                 </div>
                                             </li>
                                         }
@@ -609,14 +686,13 @@
                             </div>
                         </div>
                     </div>
-                </div>        
+                </div>
             </div>
         </div>
         <!--Flex div close-->
 
     </div>
     <!--End of Character Sheet Layout-->
-
     <!--Hidden Storage Start-->
     <input type="hidden" asp-for="CharacterId" />
     <input type="hidden" asp-for="Name" />
@@ -640,7 +716,7 @@
     <input type="hidden" asp-for="Inventory.InventoryId" />
     <input type="hidden" asp-for="Features" />
     <!--Hidden Storage End-->
-    <!--
+    <!-- Left over from generated code (possible later implementation)
     <div class="form-group">
         <label asp-for="Resistances" class="control-label"></label>
         <input asp-for="Resistances" class="form-control" />
@@ -657,12 +733,15 @@
         <span asp-validation-for="Vulnerabilities" class="text-danger"></span>
     </div>
     -->
+
     <br>
+
+    <!--Exit Character Sheet Button Bar-->
     <div class="form-group btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups" role="toolbar">
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group me-2" role="group">
                 <input type="submit" value="Save and exit" class="btn btn-primary" />
-			</div>
+            </div>
             <div class="btn-group me-2" role="group">
                 <input type="button" value="Exit w/o Saving" class="btn btn-danger" onclick="location.href='@Url.Action("Index", "Characters")'" />
             </div>
@@ -673,4 +752,6 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="/js/dice.js"></script>
 }

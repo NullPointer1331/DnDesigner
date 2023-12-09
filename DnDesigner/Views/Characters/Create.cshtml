@@ -1,4 +1,5 @@
 ﻿@model CreateCharacterViewModel
+@inject IDBHelper DBHelper
 
 @{
     ViewData["Title"] = "Create a Character";
@@ -76,7 +77,6 @@
                     </div>
                 </div>
             </div>
-
             @* Accordion for Race selection *@
             <div class="form-group accordion" id="accordionRaces">
                 <div class="accordion-item">

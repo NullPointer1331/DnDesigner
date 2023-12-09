@@ -1,25 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DnDesigner.Data;
 using DnDesigner.Models;
+using System.Security.Claims;
 
 namespace DnDesigner.Controllers
 {
     public class CharactersController : Controller
     {
         private readonly DnDesignerDbContext _context;
+        private readonly IDBHelper _dbHelper;
 
-        public CharactersController(DnDesignerDbContext context)
+        public CharactersController(DnDesignerDbContext context, IDBHelper dBHelper)
         {
             _context = context;
+            _dbHelper = dBHelper;
         }
 
         // GET: Characters
         public async Task<IActionResult> Index()
         {
-              return _context.Characters != null ? 
-                          View(await _context.Characters.ToListAsync()) :
-                          Problem("Entity set 'DnDesignerDbContext.Characters'  is null.");
+            // checks if the user is logged in, if not redirects to login page
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            } else
+            {
+                return View
+                    (
+                        await _dbHelper.GetAllCharacters(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    );
+            }
         }
 
         // GET: Characters/Details/5
@@ -43,11 +59,16 @@ namespace DnDesigner.Controllers
         // GET: Characters/Create
         public async Task<IActionResult> Create()
         {
+            // checks if the user is logged in, if not redirects to login page
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
             CreateCharacterViewModel characterViewModel = new()
             {
-                AvailableClasses = await _context.Classes.ToListAsync(),
-                AvailableBackgrounds = await _context.Backgrounds.ToListAsync(),
-                AvailableRaces = await _context.Races.ToListAsync()
+                AvailableClasses = await _dbHelper.GetAllClasses(),
+                AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
+                AvailableRaces = await _dbHelper.GetAllRaces()
             };
             return View(characterViewModel);
         }
@@ -61,45 +82,10 @@ namespace DnDesigner.Controllers
         {
             if (ModelState.IsValid || true)
             {
-                Class @class = await _context.Classes
-                    .Where(c => c.ClassId == character.ClassId)
-                    .Include(c => c.Spellcasting)
-                    .Include(c => c.Features)
-                    .ThenInclude(cf => cf.Effects)
-                    .FirstOrDefaultAsync();
-                Background background = await _context.Backgrounds
-                    .Where(b => b.BackgroundId == character.BackgroundId)
-                    .Include(b => b.Features)
-                    .ThenInclude(bf => bf.Effects)
-                    .FirstOrDefaultAsync();
-                Race race = await _context.Races
-                    .Where(r => r.RaceId == character.RaceId)
-                    .Include(r => r.Features)
-                    .ThenInclude(rf => rf.Effects)
-                    .FirstOrDefaultAsync();
+                Class @class = await _dbHelper.GetClass(character.ClassId);
+                Background background = await _dbHelper.GetBackground(character.BackgroundId);
+                Race race = await _dbHelper.GetRace(character.RaceId);
 
-                //A temporary measure to load everything we need, this will be replaced once we have the dbhelper
-                foreach (Feature feature in @class.Features)
-                {
-                    foreach (Effect effect in feature.Effects)
-                    {
-                        await PopulateEffect(effect);
-                    }
-                }
-                foreach (Feature feature in background.Features)
-                {
-                    foreach (Effect effect in feature.Effects)
-                    {
-                        await PopulateEffect(effect);
-                    }
-                }
-                foreach (Feature feature in race.Features)
-                {
-                    foreach (Effect effect in feature.Effects)
-                    {
-                        await PopulateEffect(effect);
-                    }
-                }
                 // This is to make sure all characters have all saving throws and skills even if they aren't proficient in them
                 // There's probably a better way to do this
                 List<Proficiency> defaultProficiencies = await _context.Proficiencies
@@ -107,7 +93,7 @@ namespace DnDesigner.Controllers
                     .ToListAsync(); 
                 
                 character.MaxHealth = @class.HitDie + (character.Constitution - 10) / 2;
-                Character newCharacter = new Character(character, @class, race, background, defaultProficiencies);
+                Character newCharacter = new Character(character, @class, race, background, defaultProficiencies, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 _context.Add(newCharacter);
                 await _context.SaveChangesAsync();
@@ -117,6 +103,7 @@ namespace DnDesigner.Controllers
             character.AvailableBackgrounds = await _context.Backgrounds.ToListAsync();
             character.AvailableRaces = await _context.Races.ToListAsync();
             return View(character);
+            
         }
 
         // GET: Characters/Edit/5
@@ -127,25 +114,7 @@ namespace DnDesigner.Controllers
                 return NotFound();
             }
 
-            Character character = await _context.Characters
-                .Where(c => c.CharacterId == id)
-                .Include(c => c.Race)
-                .Include(c => c.Background)
-                .Include(c => c.Classes)
-                .ThenInclude(cc => cc.Class)
-                .Include(c => c.Classes)
-                .ThenInclude(cc => cc.Subclass)
-                .Include(c => c.Proficiencies)
-                .ThenInclude(cp => cp.Proficiency)
-                .Include(c => c.Features)
-                .Include(c => c.Inventory)
-                .Include(c => c.CharacterEffects)
-                .FirstOrDefaultAsync();
-
-            foreach (CharacterEffect characterEffect in character.CharacterEffects)
-            {
-                await PopulateEffect(characterEffect.Effect);
-            }
+            Character character = await _dbHelper.GetCharacter((int)id);
             
             if (character == null)
             {
@@ -228,38 +197,6 @@ namespace DnDesigner.Controllers
         private bool CharacterExists(int id)
         {
           return (_context.Characters?.Any(e => e.CharacterId == id)).GetValueOrDefault();
-        }
-
-        /// <summary>
-        /// Loads all the data for an effect
-        /// Will be replaced once we have the dbhelper
-        /// </summary>
-        /// <param name="effect"></param>
-        /// <returns></returns>
-        private async Task PopulateEffect(Effect effect)
-        {
-            if (effect is GrantProficiencies grantProficiencies)
-            {
-                await _context.Entry(grantProficiencies)
-                    .Collection(gp => gp.Proficiencies)
-                    .LoadAsync();
-            }
-            else if (effect is GrantAction grantAction)
-            {
-                await _context.Entry(grantAction)
-                    .Reference(ga => ga.Action)
-                    .LoadAsync();
-            }
-            else if (effect is EffectChoice effectChoice)
-            {
-                await _context.Entry(effectChoice)
-                    .Collection(ec => ec.Effects)
-                    .LoadAsync();
-                foreach (Effect effectChoiceEffect in effectChoice.Effects)
-                {
-                    await PopulateEffect(effectChoiceEffect);
-                }
-            }
         }
     }
 }

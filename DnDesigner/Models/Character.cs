@@ -190,6 +190,11 @@ namespace DnDesigner.Models
         /// Contains the character's inventory information
         /// </summary>
         public Inventory Inventory { get; set; }
+
+        /// <summary>
+        /// Contains the Id of the user who created the character
+        /// </summary>
+        public string UserId { get; set; }
         #endregion
 
         public Character()
@@ -208,8 +213,9 @@ namespace DnDesigner.Models
             PlayerNotes = "";
         }
         public Character(CreateCharacterViewModel character, Class @class, 
-            Race race, Background background, List<Proficiency> defaultProficiencies)
+            Race race, Background background, List<Proficiency> defaultProficiencies, string userId)
         {
+            UserId = userId;
             Name = character.Name;
             Classes = new List<CharacterClass>();
             Proficiencies = new List<CharacterProficiency>();

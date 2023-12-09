@@ -4,6 +4,7 @@ using DnDesigner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Data.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231107043115_AddedUserIdToCharacters")]
+    partial class AddedUserIdToCharacters
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,83 +24,6 @@ namespace DnDesigner.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CharacterFeatureEffect", b =>
-                {
-                    b.Property<int>("CharacterFeatureFeatureId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EffectsEffectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CharacterFeatureFeatureId", "EffectsEffectId");
-
-                    b.HasIndex("EffectsEffectId");
-
-                    b.ToTable("CharacterFeatureEffect", (string)null);
-                });
-
-            modelBuilder.Entity("CharacterSpellcastingSpell", b =>
-                {
-                    b.Property<int>("PreparedSpellsSpellId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CharacterSpellcastingCharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CharacterSpellcastingSpellcastingId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PreparedSpellsSpellId", "CharacterSpellcastingCharacterId", "CharacterSpellcastingSpellcastingId");
-
-                    b.HasIndex("CharacterSpellcastingCharacterId", "CharacterSpellcastingSpellcastingId");
-
-                    b.ToTable("CharacterSpellcastingSpell", (string)null);
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.Action", b =>
-                {
-                    b.Property<int>("ActionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActionId"));
-
-                    b.Property<string>("ActionTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AttackBonusCalculation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Damage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DamageType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Range")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SaveAttribute")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SaveDCCalculation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ActionId");
-
-                    b.ToTable("Actions", (string)null);
-                });
 
             modelBuilder.Entity("DnDesigner.Models.Background", b =>
                 {
@@ -124,7 +50,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("BackgroundId");
 
-                    b.ToTable("Backgrounds", (string)null);
+                    b.ToTable("Backgrounds");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.BackgroundFeature", b =>
@@ -157,7 +83,24 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("BackgroundId");
 
-                    b.ToTable("BackgroundFeatures", (string)null);
+                    b.ToTable("BackgroundFeatures");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.BackgroundProficiency", b =>
+                {
+                    b.Property<int>("BackgroundId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("ProficiencyId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("BackgroundId", "ProficiencyId");
+
+                    b.HasIndex("ProficiencyId");
+
+                    b.ToTable("BackgroundProficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Character", b =>
@@ -200,10 +143,6 @@ namespace DnDesigner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PlayerNotes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("RaceId")
                         .HasColumnType("int");
 
@@ -237,22 +176,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("RaceId");
 
-                    b.ToTable("Characters", (string)null);
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.CharacterAction", b =>
-                {
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ActionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CharacterId", "ActionId");
-
-                    b.HasIndex("ActionId");
-
-                    b.ToTable("CharacterActions", (string)null);
+                    b.ToTable("Characters");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.CharacterClass", b =>
@@ -262,9 +186,6 @@ namespace DnDesigner.Data.Migrations
 
                     b.Property<int>("ClassId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("InitialClass")
-                        .HasColumnType("bit");
 
                     b.Property<int>("Level")
                         .HasColumnType("int");
@@ -278,70 +199,18 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("SubclassId");
 
-                    b.ToTable("CharacterClasses", (string)null);
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.CharacterEffect", b =>
-                {
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EffectId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsApplied")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("Value")
-                        .HasColumnType("int");
-
-                    b.HasKey("CharacterId", "EffectId");
-
-                    b.HasIndex("EffectId");
-
-                    b.ToTable("CharacterEffects", (string)null);
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.CharacterFeature", b =>
-                {
-                    b.Property<int>("FeatureId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeatureId"));
-
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Source")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("FeatureId");
-
-                    b.HasIndex("CharacterId");
-
-                    b.ToTable("CharacterFeatures", (string)null);
+                    b.ToTable("CharacterClasses");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.CharacterProficiency", b =>
                 {
                     b.Property<int>("CharacterId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.Property<int>("ProficiencyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
 
                     b.Property<int>("CheckBonus")
                         .HasColumnType("int");
@@ -353,7 +222,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("ProficiencyId");
 
-                    b.ToTable("CharacterProficiencies", (string)null);
+                    b.ToTable("CharacterProficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.CharacterSpellcasting", b =>
@@ -368,7 +237,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("SpellcastingId");
 
-                    b.ToTable("CharacterSpellcasting", (string)null);
+                    b.ToTable("CharacterSpellcasting");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Class", b =>
@@ -393,14 +262,11 @@ namespace DnDesigner.Data.Migrations
                     b.Property<int?>("SpellcastingId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubclassLevel")
-                        .HasColumnType("int");
-
                     b.HasKey("ClassId");
 
                     b.HasIndex("SpellcastingId");
 
-                    b.ToTable("Classes", (string)null);
+                    b.ToTable("Classes");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.ClassFeature", b =>
@@ -433,58 +299,22 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("ClassId");
 
-                    b.ToTable("ClassFeatures", (string)null);
+                    b.ToTable("ClassFeatures");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.Effect", b =>
+            modelBuilder.Entity("DnDesigner.Models.ClassProficiency", b =>
                 {
-                    b.Property<int>("EffectId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ClassId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EffectId"));
-
-                    b.Property<int?>("BackgroundFeatureFeatureId")
+                    b.Property<int>("ProficiencyId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ClassFeatureFeatureId")
-                        .HasColumnType("int");
+                    b.HasKey("ClassId", "ProficiencyId");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("ProficiencyId");
 
-                    b.Property<int?>("EffectChoiceEffectId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RaceFeatureFeatureId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SubclassFeatureFeatureId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EffectId");
-
-                    b.HasIndex("BackgroundFeatureFeatureId");
-
-                    b.HasIndex("ClassFeatureFeatureId");
-
-                    b.HasIndex("EffectChoiceEffectId");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("RaceFeatureFeatureId");
-
-                    b.HasIndex("SubclassFeatureFeatureId");
-
-                    b.ToTable("Effects", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Effect");
-
-                    b.UseTphMappingStrategy();
+                    b.ToTable("ClassProficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Inventory", b =>
@@ -521,7 +351,7 @@ namespace DnDesigner.Data.Migrations
                     b.HasIndex("CharacterId")
                         .IsUnique();
 
-                    b.ToTable("Inventory", (string)null);
+                    b.ToTable("Inventory");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.InventoryItem", b =>
@@ -545,7 +375,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("InventoryId");
 
-                    b.ToTable("InventoryItems", (string)null);
+                    b.ToTable("InventoryItems");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Item", b =>
@@ -573,9 +403,6 @@ namespace DnDesigner.Data.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("Rarity")
-                        .HasColumnType("int");
-
                     b.Property<string>("Sourcebook")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -589,7 +416,42 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("ItemId");
 
-                    b.ToTable("Items", (string)null);
+                    b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.KnownSpell", b =>
+                {
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpellId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpellcastingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CharacterId", "SpellId");
+
+                    b.HasIndex("SpellId");
+
+                    b.HasIndex("CharacterId", "SpellcastingId");
+
+                    b.ToTable("KnownSpells");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.LearnableSpell", b =>
+                {
+                    b.Property<int>("SpellId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpellcastingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SpellId", "SpellcastingId");
+
+                    b.HasIndex("SpellcastingId");
+
+                    b.ToTable("LearnableSpells");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Proficiency", b =>
@@ -613,7 +475,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("ProficiencyId");
 
-                    b.ToTable("Proficiencies", (string)null);
+                    b.ToTable("Proficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Race", b =>
@@ -649,7 +511,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("RaceId");
 
-                    b.ToTable("Races", (string)null);
+                    b.ToTable("Races");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.RaceFeature", b =>
@@ -682,7 +544,22 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("RaceId");
 
-                    b.ToTable("RaceFeatures", (string)null);
+                    b.ToTable("RaceFeatures");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.RaceProficiency", b =>
+                {
+                    b.Property<int>("RaceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProficiencyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RaceId", "ProficiencyId");
+
+                    b.HasIndex("ProficiencyId");
+
+                    b.ToTable("RaceProficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Spell", b =>
@@ -736,7 +613,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("SpellId");
 
-                    b.ToTable("Spells", (string)null);
+                    b.ToTable("Spells");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Spellcasting", b =>
@@ -770,7 +647,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasKey("SpellcastingId");
 
-                    b.ToTable("Spellcasting", (string)null);
+                    b.ToTable("Spellcasting");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Subclass", b =>
@@ -801,7 +678,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("SpellcastingId");
 
-                    b.ToTable("Subclasses", (string)null);
+                    b.ToTable("Subclasses");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.SubclassFeature", b =>
@@ -834,22 +711,7 @@ namespace DnDesigner.Data.Migrations
 
                     b.HasIndex("SubclassId");
 
-                    b.ToTable("SubclassFeatures", (string)null);
-                });
-
-            modelBuilder.Entity("GrantProficienciesProficiency", b =>
-                {
-                    b.Property<int>("GrantProficienciesEffectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProficienciesProficiencyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GrantProficienciesEffectId", "ProficienciesProficiencyId");
-
-                    b.HasIndex("ProficienciesProficiencyId");
-
-                    b.ToTable("GrantProficienciesProficiency", (string)null);
+                    b.ToTable("SubclassFeatures");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1054,94 +916,6 @@ namespace DnDesigner.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SpellSpellcasting", b =>
-                {
-                    b.Property<int>("LearnableSpellsSpellId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LearnedBySpellcastingId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LearnableSpellsSpellId", "LearnedBySpellcastingId");
-
-                    b.HasIndex("LearnedBySpellcastingId");
-
-                    b.ToTable("SpellSpellcasting", (string)null);
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.EffectChoice", b =>
-                {
-                    b.HasBaseType("DnDesigner.Models.Effect");
-
-                    b.HasDiscriminator().HasValue("EffectChoice");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.GrantAction", b =>
-                {
-                    b.HasBaseType("DnDesigner.Models.Effect");
-
-                    b.Property<int>("ActionId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ActionId");
-
-                    b.HasDiscriminator().HasValue("GrantAction");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.GrantProficiencies", b =>
-                {
-                    b.HasBaseType("DnDesigner.Models.Effect");
-
-                    b.Property<bool>("Expertise")
-                        .HasColumnType("bit");
-
-                    b.HasDiscriminator().HasValue("GrantProficiencies");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.ModifyAttribute", b =>
-                {
-                    b.HasBaseType("DnDesigner.Models.Effect");
-
-                    b.Property<string>("Attribute")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("ModifyAttribute");
-                });
-
-            modelBuilder.Entity("CharacterFeatureEffect", b =>
-                {
-                    b.HasOne("DnDesigner.Models.CharacterFeature", null)
-                        .WithMany()
-                        .HasForeignKey("CharacterFeatureFeatureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Effect", null)
-                        .WithMany()
-                        .HasForeignKey("EffectsEffectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CharacterSpellcastingSpell", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Spell", null)
-                        .WithMany()
-                        .HasForeignKey("PreparedSpellsSpellId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.CharacterSpellcasting", null)
-                        .WithMany()
-                        .HasForeignKey("CharacterSpellcastingCharacterId", "CharacterSpellcastingSpellcastingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("DnDesigner.Models.BackgroundFeature", b =>
                 {
                     b.HasOne("DnDesigner.Models.Background", "Background")
@@ -1151,6 +925,25 @@ namespace DnDesigner.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Background");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.BackgroundProficiency", b =>
+                {
+                    b.HasOne("DnDesigner.Models.Background", "Background")
+                        .WithMany("Proficiencies")
+                        .HasForeignKey("BackgroundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DnDesigner.Models.Proficiency", "Proficiency")
+                        .WithMany()
+                        .HasForeignKey("ProficiencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Background");
+
+                    b.Navigation("Proficiency");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Character", b =>
@@ -1170,25 +963,6 @@ namespace DnDesigner.Data.Migrations
                     b.Navigation("Background");
 
                     b.Navigation("Race");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.CharacterAction", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Action", "Action")
-                        .WithMany()
-                        .HasForeignKey("ActionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Character", "Character")
-                        .WithMany("Actions")
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Action");
-
-                    b.Navigation("Character");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.CharacterClass", b =>
@@ -1214,36 +988,6 @@ namespace DnDesigner.Data.Migrations
                     b.Navigation("Class");
 
                     b.Navigation("Subclass");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.CharacterEffect", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Character", "Character")
-                        .WithMany("CharacterEffects")
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Effect", "Effect")
-                        .WithMany()
-                        .HasForeignKey("EffectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character");
-
-                    b.Navigation("Effect");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.CharacterFeature", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Character", "Character")
-                        .WithMany("Features")
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.CharacterProficiency", b =>
@@ -1304,31 +1048,23 @@ namespace DnDesigner.Data.Migrations
                     b.Navigation("Class");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.Effect", b =>
+            modelBuilder.Entity("DnDesigner.Models.ClassProficiency", b =>
                 {
-                    b.HasOne("DnDesigner.Models.BackgroundFeature", null)
-                        .WithMany("Effects")
-                        .HasForeignKey("BackgroundFeatureFeatureId");
+                    b.HasOne("DnDesigner.Models.Class", "Class")
+                        .WithMany("Proficiencies")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("DnDesigner.Models.ClassFeature", null)
-                        .WithMany("Effects")
-                        .HasForeignKey("ClassFeatureFeatureId");
+                    b.HasOne("DnDesigner.Models.Proficiency", "Proficiency")
+                        .WithMany()
+                        .HasForeignKey("ProficiencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("DnDesigner.Models.EffectChoice", null)
-                        .WithMany("Effects")
-                        .HasForeignKey("EffectChoiceEffectId");
+                    b.Navigation("Class");
 
-                    b.HasOne("DnDesigner.Models.Item", null)
-                        .WithMany("Effects")
-                        .HasForeignKey("ItemId");
-
-                    b.HasOne("DnDesigner.Models.RaceFeature", null)
-                        .WithMany("Effects")
-                        .HasForeignKey("RaceFeatureFeatureId");
-
-                    b.HasOne("DnDesigner.Models.SubclassFeature", null)
-                        .WithMany("Effects")
-                        .HasForeignKey("SubclassFeatureFeatureId");
+                    b.Navigation("Proficiency");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Inventory", b =>
@@ -1361,6 +1097,44 @@ namespace DnDesigner.Data.Migrations
                     b.Navigation("Item");
                 });
 
+            modelBuilder.Entity("DnDesigner.Models.KnownSpell", b =>
+                {
+                    b.HasOne("DnDesigner.Models.Spell", "Spell")
+                        .WithMany()
+                        .HasForeignKey("SpellId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DnDesigner.Models.CharacterSpellcasting", "Character")
+                        .WithMany("PreparedSpells")
+                        .HasForeignKey("CharacterId", "SpellcastingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+
+                    b.Navigation("Spell");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.LearnableSpell", b =>
+                {
+                    b.HasOne("DnDesigner.Models.Spell", "Spell")
+                        .WithMany("LearnedBy")
+                        .HasForeignKey("SpellId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DnDesigner.Models.Spellcasting", "Spellcasting")
+                        .WithMany("LearnableSpells")
+                        .HasForeignKey("SpellcastingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Spell");
+
+                    b.Navigation("Spellcasting");
+                });
+
             modelBuilder.Entity("DnDesigner.Models.RaceFeature", b =>
                 {
                     b.HasOne("DnDesigner.Models.Race", "Race")
@@ -1368,6 +1142,25 @@ namespace DnDesigner.Data.Migrations
                         .HasForeignKey("RaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Race");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.RaceProficiency", b =>
+                {
+                    b.HasOne("DnDesigner.Models.Proficiency", "Proficiency")
+                        .WithMany()
+                        .HasForeignKey("ProficiencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DnDesigner.Models.Race", "Race")
+                        .WithMany("Proficiencies")
+                        .HasForeignKey("RaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Proficiency");
 
                     b.Navigation("Race");
                 });
@@ -1398,21 +1191,6 @@ namespace DnDesigner.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Subclass");
-                });
-
-            modelBuilder.Entity("GrantProficienciesProficiency", b =>
-                {
-                    b.HasOne("DnDesigner.Models.GrantProficiencies", null)
-                        .WithMany()
-                        .HasForeignKey("GrantProficienciesEffectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Proficiency", null)
-                        .WithMany()
-                        .HasForeignKey("ProficienciesProficiencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1466,51 +1244,16 @@ namespace DnDesigner.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SpellSpellcasting", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Spell", null)
-                        .WithMany()
-                        .HasForeignKey("LearnableSpellsSpellId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Spellcasting", null)
-                        .WithMany()
-                        .HasForeignKey("LearnedBySpellcastingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.GrantAction", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Action", "Action")
-                        .WithMany()
-                        .HasForeignKey("ActionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Action");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.Background", b =>
                 {
                     b.Navigation("Features");
-                });
 
-            modelBuilder.Entity("DnDesigner.Models.BackgroundFeature", b =>
-                {
-                    b.Navigation("Effects");
+                    b.Navigation("Proficiencies");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Character", b =>
                 {
-                    b.Navigation("Actions");
-
-                    b.Navigation("CharacterEffects");
-
                     b.Navigation("Classes");
-
-                    b.Navigation("Features");
 
                     b.Navigation("Inventory")
                         .IsRequired();
@@ -1520,16 +1263,18 @@ namespace DnDesigner.Data.Migrations
                     b.Navigation("Spellcasting");
                 });
 
+            modelBuilder.Entity("DnDesigner.Models.CharacterSpellcasting", b =>
+                {
+                    b.Navigation("PreparedSpells");
+                });
+
             modelBuilder.Entity("DnDesigner.Models.Class", b =>
                 {
                     b.Navigation("Features");
 
-                    b.Navigation("Subclasses");
-                });
+                    b.Navigation("Proficiencies");
 
-            modelBuilder.Entity("DnDesigner.Models.ClassFeature", b =>
-                {
-                    b.Navigation("Effects");
+                    b.Navigation("Subclasses");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Inventory", b =>
@@ -1537,34 +1282,26 @@ namespace DnDesigner.Data.Migrations
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.Item", b =>
-                {
-                    b.Navigation("Effects");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.Race", b =>
                 {
                     b.Navigation("Features");
+
+                    b.Navigation("Proficiencies");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.RaceFeature", b =>
+            modelBuilder.Entity("DnDesigner.Models.Spell", b =>
                 {
-                    b.Navigation("Effects");
+                    b.Navigation("LearnedBy");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.Spellcasting", b =>
+                {
+                    b.Navigation("LearnableSpells");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Subclass", b =>
                 {
                     b.Navigation("Features");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.SubclassFeature", b =>
-                {
-                    b.Navigation("Effects");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.EffectChoice", b =>
-                {
-                    b.Navigation("Effects");
                 });
 #pragma warning restore 612, 618
         }

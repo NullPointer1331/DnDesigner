@@ -1,4 +1,5 @@
 ﻿@model CreateCharacterViewModel
+@inject IDBHelper DBHelper
 
 @{
     ViewData["Title"] = "Create a Character";
@@ -39,7 +40,7 @@
                         <div class="accordion-body">
                             <input asp-for="AvailableClasses" type="hidden" value="@Model.AvailableClasses" />
                             <select asp-for="ClassId">
-                                @foreach(Class characterClass in Model.AvailableClasses)
+                                @foreach(Class characterClass in await DBHelper.GetAllClasses())
 								{
 									<option value="@characterClass.ClassId">@characterClass.Name</option>
 								}
@@ -62,7 +63,7 @@
                         <div class="accordion-body">
                             <input asp-for="AvailableBackgrounds" type="hidden" value="@Model.AvailableBackgrounds" />
                             <select asp-for="BackgroundId">
-                                @foreach(Background characterBackground in Model.AvailableBackgrounds)
+                                @foreach(Background characterBackground in await DBHelper.GetAllBackgrounds())
                                 {
                                     <option value="@characterBackground.BackgroundId">@characterBackground.Name (@characterBackground.Sourcebook)</option>
                                 }
@@ -84,11 +85,10 @@
                     <div id="collapseProficiencies" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <select>
-                                @* pseudocode *@
-                                @* @foreach(var characterProficiencies in GetDBProficiencies())
+                                @foreach (var characterProficiencies in await DBHelper.GetAllProficiencies())
                                 {
-                                <option value="@characterProficiencies.ProficiencyId">@characterProficiencies.Name</option>
-                                }) *@
+                                    <option value="@characterProficiencies.ProficiencyId">@characterProficiencies.Name</option>
+                                })
                             </select>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                         <div class="accordion-body">
                             <input asp-for="AvailableRaces" type="hidden" value="@Model.AvailableRaces" />
                             <select asp-for="RaceId" >
-                                @foreach(Race race in Model.AvailableRaces)
+                                @foreach(Race race in await DBHelper.GetAllRaces())
                                 {
                                     <option value=@race.RaceId>@race.Name (@race.Sourcebook)</option>
                                 }

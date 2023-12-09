@@ -14,7 +14,15 @@ namespace DnDesigner.Models
         [ForeignKey("CharacterId")]
         public Character Character { get; set; }
 
+        /// <summary>
+        /// Has this effect been applied to the character?
+        /// </summary>
         public bool IsApplied { get; set; }
+
+        /// <summary>
+        /// An int to store any optional values to pass into the effect
+        /// </summary>
+        public int? Value { get; set; }
 
         public CharacterEffect(Character character, Effect effect)
         {
@@ -28,7 +36,14 @@ namespace DnDesigner.Models
         {
             if (!IsApplied)
             {
-                Effect.ApplyEffect(Character);
+                if (Value != null && Effect is EffectChoice effectChoice)
+                {
+                    effectChoice.ApplyEffect(Character, (int)Value);
+                }
+                else
+                {
+                    Effect.ApplyEffect(Character);
+                }
                 IsApplied = true;
             }
         }
@@ -67,18 +82,11 @@ namespace DnDesigner.Models
     /// </summary>
     public class EffectChoice : Effect
     {
-        public int ChosenIndex { get; set; }
         public List<Effect> Effects { get; private set; }
 
         public EffectChoice(List<Effect> effects)
         {
             Effects = effects;
-        }
-
-        public EffectChoice(List<Effect> effects, int chosenIndex)
-        {
-            Effects = effects;
-            ChosenIndex = chosenIndex;
         }
 
         private EffectChoice() { }
@@ -121,10 +129,15 @@ namespace DnDesigner.Models
 
         public override void ApplyEffect(Character character)
         {
+            ApplyEffect(character, 0);
+        }
+
+        public void ApplyEffect(Character character, int chosenIndex)
+        {
             RemoveEffect(character);
-            if (ChosenIndex < Effects.Count && ChosenIndex >= 0)
+            if (chosenIndex < Effects.Count && chosenIndex >= 0)
             {
-                CharacterEffect characterEffect = new CharacterEffect(character, Effects[ChosenIndex]);
+                CharacterEffect characterEffect = new CharacterEffect(character, Effects[chosenIndex]);
                 character.CharacterEffects.Add(characterEffect);
                 characterEffect.ApplyEffect();
             }

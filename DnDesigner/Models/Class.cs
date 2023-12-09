@@ -28,6 +28,11 @@ namespace DnDesigner.Models
         /// </summary>
         public int HitDie { get; set; }
 
+		/// <summary>
+		/// The level at which the class gets its subclass
+		/// </summary>
+		public int SubclassLevel { get; set; }
+
         /// <summary>
         /// The features of the class
         /// </summary>

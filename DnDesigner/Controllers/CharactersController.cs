@@ -80,7 +80,7 @@ namespace DnDesigner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateCharacterViewModel character)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid || true)
             {
                 Class @class = await _dbHelper.GetClass(character.ClassId);
                 Background background = await _dbHelper.GetBackground(character.BackgroundId);

@@ -53,7 +53,7 @@ namespace DnDesigner.Controllers
         {
             if (User.FindFirstValue(ClaimTypes.NameIdentifier) == null)
             {
-                return RedirectToAction("Login, Accounts");
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
             CreateCharacterViewModel characterViewModel = new()
             {

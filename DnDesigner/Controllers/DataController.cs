@@ -5,13 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DnDesigner.Controllers
 {
+
     public class DataController : Controller
     {
         private readonly DnDesignerDbContext _context;
+        private readonly IDBHelper _dbHelper;
 
-        public DataController(DnDesignerDbContext context)
+        public DataController(DnDesignerDbContext context, IDBHelper dbHelper)
         {
             _context = context;
+            _dbHelper = dbHelper;
         }
         public IActionResult Index()
         {
@@ -19,31 +22,31 @@ namespace DnDesigner.Controllers
         }
         public async Task<IActionResult> ViewProficiencies()
         {
-            return View(await _context.Proficiencies.ToListAsync());
+            return View(await _dbHelper.GetAllProficiencies());
         }
         public async Task<IActionResult> ViewItems()
         {
-            return View(await _context.Items.ToListAsync());
+            return View(await _dbHelper.GetAllItems());
         }
         public async Task<IActionResult> ViewSpells()
         {
-            return View(await _context.Spells.ToListAsync());
+            return View(await _dbHelper.GetAllSpells());
         }
         public async Task<IActionResult> ViewBackgrounds()
         {
-            return View(await _context.Backgrounds.ToListAsync());
+            return View(await _dbHelper.GetAllBackgrounds());
         }
         public async Task<IActionResult> ViewRaces()
         {
-            return View(await _context.Races.ToListAsync());
+            return View(await _dbHelper.GetAllRaces());
         }
         public async Task<IActionResult> ViewClasses()
         {
-            return View(await _context.Classes.ToListAsync());
+            return View(await _dbHelper.GetAllClasses());
         }
         public async Task<IActionResult> DisplayClass(int id)
         {
-            Class? @class = await _context.Classes.FindAsync(id);
+            Class? @class = await _dbHelper.GetClass(id);
             if(@class == null)
             {
                 return NotFound();
@@ -52,7 +55,7 @@ namespace DnDesigner.Controllers
         }
         public async Task<IActionResult> ViewSubclasses()
         {
-            return View(await _context.Subclasses.ToListAsync());
+            return View(await _dbHelper.GetAllSubclasses());
         }
         public async Task<IActionResult> ViewFeatures()
         {

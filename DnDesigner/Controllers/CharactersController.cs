@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using DnDesigner.Data;
 using DnDesigner.Models;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace DnDesigner.Controllers
 {
@@ -78,14 +77,24 @@ namespace DnDesigner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateCharacterViewModel character)
         {
-            /*
-            var options = new JsonSerializerOptions
+            int totalLevel = 0;
+            for(int i = 0; i < character.Classes.Count - 1; i++)
             {
-                PropertyNameCaseInsensitive = true,
-            };
-            CreateCharacterViewModel character = JsonSerializer.Deserialize<CreateCharacterViewModel>(characterJson, options);
-            */
-            if (ModelState.IsValid || true)
+                totalLevel += character.Classes[i][2];
+                for(int j = i + 1; j < character.Classes.Count; j++)
+                {
+                    if (character.Classes[i][0] == character.Classes[j][0] && character.Classes[i][2] != 0 && character.Classes[j][2] != 0)
+                    {
+                        ModelState.AddModelError("Classes", "You cannot have multiple instances of the same class.");
+                    }
+                }
+            }
+            if (totalLevel > 20)
+            {
+                ModelState.AddModelError("Classes", "You cannot have more than 20 levels.");
+            }
+
+            if (ModelState.IsValid)
             {
                 Background background = await _dbHelper.GetBackground(character.BackgroundId);
                 Race race = await _dbHelper.GetRace(character.RaceId);
@@ -98,7 +107,7 @@ namespace DnDesigner.Controllers
                 
                 Character newCharacter = new Character(character, race, background, defaultProficiencies, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                for(int i = 0; i < character.Classes.Count - 1; i++)
+                for(int i = 0; i < character.Classes.Count; i++)
                 {
                     if (character.Classes[i][2] > 0)
                     {
@@ -126,9 +135,9 @@ namespace DnDesigner.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            character.AvailableClasses = await _context.Classes.ToListAsync();
-            character.AvailableBackgrounds = await _context.Backgrounds.ToListAsync();
-            character.AvailableRaces = await _context.Races.ToListAsync();
+            character.AvailableClasses = await _dbHelper.GetAllClasses();
+            character.AvailableBackgrounds = await _dbHelper.GetAllBackgrounds();
+            character.AvailableRaces = await _dbHelper.GetAllRaces();
             return View(character);
             
         }
@@ -181,6 +190,7 @@ namespace DnDesigner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            character = await _dbHelper.GetCharacter(id);
             return View(character);
         }
 

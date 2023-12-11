@@ -588,11 +588,6 @@ namespace DnDesigner.Models
         /// </summary>
         public List<Class> AvailableClasses { get; set; }
 
-        /// <summary>
-        /// The list of available subclasses
-        /// </summary>
-        public List<Subclass> AvailableSubclasses { get; set; }
-
 		/// <summary>
 		/// The list of available races
 		/// </summary>

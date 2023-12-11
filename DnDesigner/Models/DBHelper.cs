@@ -77,7 +77,10 @@ namespace DnDesigner.Models
                     .ThenInclude(cp => cp.Proficiency)
                     .Include(c => c.Features)
                     .Include(c => c.Inventory)
+                    .ThenInclude(ci => ci.Items)
+                    .ThenInclude(cii => cii.Item)
                     .Include(c => c.CharacterEffects)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync();
             foreach (CharacterEffect characterEffect in character.CharacterEffects)
             {
@@ -134,6 +137,7 @@ namespace DnDesigner.Models
         {
             return await _context.Classes
                 .Include(c => c.Spellcasting)
+                .Include(c => c.Subclasses)
                 .Include(c => c.Features)
                 .ToListAsync();
         }
@@ -293,7 +297,7 @@ namespace DnDesigner.Models
         public async Task<Subclass> GetSubclass(int id)
         {
             Subclass subclass = await _context.Subclasses.Where(s => s.SubclassId == id)
-                    .Include(sf => sf.Features)
+                    .Include(s => s.Features)
                     .ThenInclude(se => se.Effects)
                     .FirstOrDefaultAsync();
             foreach (Feature feature in subclass.Features)
@@ -310,7 +314,8 @@ namespace DnDesigner.Models
         public async Task<List<Subclass>> GetAllSubclasses()
         {
             return await _context.Subclasses
-                    .Include(sf => sf.Features)
+                    .Include(s => s.Class)
+                    .Include(s => s.Features)
                     .ToListAsync();
         }
 

@@ -43,11 +43,13 @@
             <td>
                 @foreach (CharacterClass Class in item.Classes)
                 {
-                    @Html.DisplayFor(modelItem => Class.Class.Name)
+                    string classString = "";
                     if (Class.Subclass != null)
                     {
-                        @Html.DisplayFor(modelItem => Class.Subclass.Name)
+                        classString = Class.Subclass.Name + " ";
                     }
+                    classString += Class.Class.Name + " ";
+                    @Html.DisplayFor(modelItem => classString)
                 }
             </td>
             <td>

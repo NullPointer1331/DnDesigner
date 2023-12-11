@@ -40,6 +40,7 @@
                         <div class="accordion-body">
                             <input asp-for="AvailableClasses" type="hidden" value="@Model.AvailableClasses" />
                             <div id="selectClasses">
+                                <span asp-validation-for="@Model.Classes" class="text-danger"></span>
                                 <div id="Class0">
                                     <label asp-for="@Model.Classes[0][2]" >Level</label>
                                     <input asp-for="@Model.Classes[0][2]" class="w-auto" max="20" min="0" value="1" />
@@ -50,6 +51,7 @@
 								        }
                                     </select>
                                     <input hidden asp-for="@Model.Classes[0][1]" value="0" />
+                                    <span asp-validation-for="@Model.Classes[0][2]" class="text-danger"></span>
                                 </div>
                                 @for (int i = 1; i < Model.AvailableClasses.Count; i++)
                                 {
@@ -63,7 +65,9 @@
                                                 <option value="@characterClass.ClassId">@characterClass.Name</option>
                                             }
                                         </select>
+                                        <input type="button" value="Remove" class="btn btn-danger" onclick="hideClassSelector(@i)" />
                                         <input hidden asp-for="@Model.Classes[i][1]" value="0" />
+                                        <span asp-validation-for="@Model.Classes[i][2]" class="text-danger"></span>
                                     </div>
                                 }
                             </div>
@@ -90,7 +94,7 @@
                                     <option value="@characterBackground.BackgroundId">@characterBackground.Name (@characterBackground.Sourcebook)</option>
                                 }
                             </select>
-                            <p id="descriptionBackground">@Model.AvailableBackgrounds[Model.BackgroundId].Description</p>
+                            <p id="descriptionBackground">@Model.AvailableBackgrounds[0].Description</p>
                         </div>
                     </div>
                 </div>
@@ -112,7 +116,7 @@
                                     <option value=@race.RaceId>@race.Name (@race.Sourcebook)</option>
                                 }
                             </select>
-                            <p id="descriptionRace">@Model.AvailableRaces[Model.RaceId].Description</p>
+                            <p id="descriptionRace">@Model.AvailableRaces[0].Description</p>
                         </div>
                     </div>
                 </div>
@@ -183,45 +187,20 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
+        const Model = @Html.Raw(Json.Serialize(Model));
         var numClasses = 1;
         function addClassSelector() {
-            if(numClasses < Model.availableClasses.length - 1) {
+            if(numClasses < Model.availableClasses.length) {
                 numClasses++;
                 var classDiv = document.getElementById("Class" + (numClasses - 1));
                 classDiv.hidden = false;
-                /*
-                var selectClasses = document.getElementById("selectClasses");
-
-                selectClasses.appendChild(document.createElement("br"));
-
-                var levelLabel = document.createElement("label");
-                levelLabel.setAttribute("for", "class" + numClasses + "Level");
-                levelLabel.innerHTML = "Level";
-                selectClasses.appendChild(levelLabel);
-
-                var levelInput = document.createElement("input");
-                levelInput.setAttribute("asp-for", "ClassLevel");
-                levelInput.setAttribute("id", "class" + numClasses + "Level");
-                levelInput.setAttribute("name", "ClassLevel");
-                levelInput.setAttribute("class", "w-auto");
-                levelInput.setAttribute("type", "number");
-                levelInput.setAttribute("min", "0");
-                levelInput.setAttribute("max", "20");
-                levelInput.setAttribute("value", "1");
-                selectClasses.appendChild(levelInput);
-
-                var newSelect = document.createElement("select");
-                newSelect.setAttribute("id", "class" + numClasses + "Id");
-                newSelect.setAttribute("name", "ClassId");
-                for (var i = 0; i < Model.availableClasses.length; i++) {
-                    var newOption = document.createElement("option");
-                    newOption.setAttribute("value", Model.availableClasses[i].classId);
-                    newOption.innerHTML = Model.availableClasses[i].name;
-                    newSelect.appendChild(newOption);
-                }
-                selectClasses.appendChild(newSelect);
-                */
             }
+        }
+        function hideClassSelector(classNumber) {
+            var classDiv = document.getElementById("Class" + classNumber);
+            classDiv.hidden = true;
+            numClasses--;
+            document.getElementById("Classes_" + classNumber + "__2_").value = 0;
         }
         function updateBackgroundDescription() {
             var backgroundSelector = document.getElementById("BackgroundId");
@@ -243,33 +222,5 @@
                 }
             }
         }
-        /*
-        function submitForm() {
-            Model.name = document.getElementById("Name").value;
-            Model.classId = parseInt(document.getElementById("ClassId").value);
-            Model.backgroundId = parseInt(document.getElementById("BackgroundId").value);
-            Model.raceId = parseInt(document.getElementById("RaceId").value);
-            Model.strength = parseInt(document.getElementById("Strength").value);
-            Model.dexterity = parseInt(document.getElementById("Dexterity").value);
-            Model.constitution = parseInt(document.getElementById("Constitution").value);
-            Model.intelligence = parseInt(document.getElementById("Intelligence").value);
-            Model.wisdom = parseInt(document.getElementById("Wisdom").value);
-            Model.charisma = parseInt(document.getElementById("Charisma").value);
-            var characterJson = "test";
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("Create")',
-                data: characterJson,
-                dataType: 'text',
-                success: function () {
-                    alert("Success");
-                },
-                error: function () {
-                    alert(JSON.stringify(Model));
-                }
-            })
-        }
-        */
-        const Model = @Html.Raw(Json.Serialize(Model));
     </script>
 }

@@ -7,14 +7,20 @@
 
 <h2>@Model.Name</h2>
 <h3>
-    @Model.Level
+    Level @Model.Level
     @foreach (CharacterClass Class in Model.Classes)
     {
-        @Html.DisplayFor(Model => Class.Class.Name)
+        string classString = "";
         if (Class.Subclass != null)
         {
-            @Html.DisplayFor(Model => Class.Subclass.Name)
+            classString = Class.Subclass.Name + " ";
         }
+        classString += Class.Class.Name + " ";
+        if(Model.Classes.Count > 1)
+        {
+            classString += Class.Level + " ";
+        }
+        @Html.DisplayFor(modelItem => classString);
     }
 </h3>
 <h4>@Model.Race.Name @Model.Background.Name</h4>

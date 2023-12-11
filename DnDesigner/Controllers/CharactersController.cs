@@ -46,8 +46,7 @@ namespace DnDesigner.Controllers
                 return NotFound();
             }
 
-            var character = await _context.Characters
-                .FirstOrDefaultAsync(m => m.CharacterId == id);
+            var character = await _dbHelper.GetCharacter((int)id);
             if (character == null)
             {
                 return NotFound();
@@ -165,8 +164,7 @@ namespace DnDesigner.Controllers
                 return NotFound();
             }
 
-            var character = await _context.Characters
-                .FirstOrDefaultAsync(m => m.CharacterId == id);
+            var character = await _dbHelper.GetCharacter((int) id);
             if (character == null)
             {
                 return NotFound();
@@ -180,11 +178,11 @@ namespace DnDesigner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Characters == null)
+            if (id == null || _context.Characters == null)
             {
                 return Problem("Entity set 'DnDesignerDbContext.Characters'  is null.");
             }
-            var character = await _context.Characters.FindAsync(id);
+            var character = await _dbHelper.GetCharacter((int) id);
             if (character != null)
             {
                 _context.Characters.Remove(character);

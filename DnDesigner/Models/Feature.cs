@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace DnDesigner.Models
 {
@@ -83,6 +84,7 @@ namespace DnDesigner.Models
         /// The character that has the feature
         /// </summary>
         [ForeignKey("CharacterId")]
+        [JsonIgnore]
         public Character Character { get; set; }
 
         /// <summary>
@@ -136,6 +138,7 @@ namespace DnDesigner.Models
         /// The subclass that has this feature
         /// </summary>
         [ForeignKey("ClassId")]
+        [JsonIgnore]
         public Class Class { get; set; }
 
         /// <summary>
@@ -158,6 +161,7 @@ namespace DnDesigner.Models
         /// The subclass that has this feature
         /// </summary>
         [ForeignKey("SubclassId")]
+        [JsonIgnore]
         public Subclass Subclass { get; set; }
 
         /// <summary>
@@ -180,6 +184,7 @@ namespace DnDesigner.Models
         /// The race that has this feature
         /// </summary>
         [ForeignKey("RaceId")]
+        [JsonIgnore]
         public Race Race { get; set; }
 
         /// <summary>
@@ -202,6 +207,7 @@ namespace DnDesigner.Models
         /// The background that has this feature
         /// </summary>
         [ForeignKey("BackgroundId")]
+        [JsonIgnore]
         public Background Background { get; set; }
 
         /// <summary>

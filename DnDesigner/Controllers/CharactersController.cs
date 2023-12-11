@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DnDesigner.Data;
 using DnDesigner.Models;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace DnDesigner.Controllers
 {
@@ -29,7 +25,8 @@ namespace DnDesigner.Controllers
             if (User.FindFirstValue(ClaimTypes.NameIdentifier) == null)
             {
                 return RedirectToPage("/Account/Login", new { area = "Identity" });
-            } else
+            } 
+            else 
             {
                 return View
                     (
@@ -57,6 +54,7 @@ namespace DnDesigner.Controllers
         }
 
         // GET: Characters/Create
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             // checks if the user is logged in, if not redirects to login page
@@ -68,7 +66,7 @@ namespace DnDesigner.Controllers
             {
                 AvailableClasses = await _dbHelper.GetAllClasses(),
                 AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
-                AvailableRaces = await _dbHelper.GetAllRaces()
+                AvailableRaces = await _dbHelper.GetAllRaces(),
             };
             return View(characterViewModel);
         }
@@ -80,9 +78,15 @@ namespace DnDesigner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateCharacterViewModel character)
         {
+            /*
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            CreateCharacterViewModel character = JsonSerializer.Deserialize<CreateCharacterViewModel>(characterJson, options);
+            */
             if (ModelState.IsValid || true)
             {
-                Class @class = await _dbHelper.GetClass(character.ClassId);
                 Background background = await _dbHelper.GetBackground(character.BackgroundId);
                 Race race = await _dbHelper.GetRace(character.RaceId);
 
@@ -92,8 +96,31 @@ namespace DnDesigner.Controllers
                     .Where(p => p.Type == "saving throw" || p.Type == "skill")
                     .ToListAsync(); 
                 
-                character.MaxHealth = @class.HitDie + (character.Constitution - 10) / 2;
-                Character newCharacter = new Character(character, @class, race, background, defaultProficiencies, User.FindFirstValue(ClaimTypes.NameIdentifier));
+                Character newCharacter = new Character(character, race, background, defaultProficiencies, User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                for(int i = 0; i < character.Classes.Count - 1; i++)
+                {
+                    if (character.Classes[i][2] > 0)
+                    {
+                        Class newClass = await _dbHelper.GetClass(character.Classes[i][0]);
+                        /*
+                        if (character.Classes[i][2] >= newClass.SubclassLevel)
+                        {
+                            Subclass subclass = await _dbHelper.GetSubclass(character.Classes[i][1]);
+                            newCharacter.Classes.Add(new CharacterClass(newCharacter, newClass, subclass, character.Classes[i][2]));
+                        }
+                        else
+                        {
+                            newCharacter.Classes.Add(new CharacterClass(newCharacter, newClass, character.Classes[i][2]));
+                        }
+                        */
+                        newCharacter.Classes.Add(new CharacterClass(newCharacter, newClass, character.Classes[i][2]));
+                    }
+                }
+                newCharacter.Classes[0].InitialClass = true;
+                newCharacter.MaxHealth = newCharacter.GetAverageHealth();
+                newCharacter.CurrentHealth = newCharacter.MaxHealth;
+                newCharacter.SetActiveFeatures();
 
                 _context.Add(newCharacter);
                 await _context.SaveChangesAsync();

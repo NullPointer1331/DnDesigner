@@ -212,7 +212,7 @@ namespace DnDesigner.Models
             Vulnerabilities = "";
             PlayerNotes = "";
         }
-        public Character(CreateCharacterViewModel character, Class @class, 
+        public Character(CreateCharacterViewModel character, 
             Race race, Background background, List<Proficiency> defaultProficiencies, string userId)
         {
             UserId = userId;
@@ -234,27 +234,32 @@ namespace DnDesigner.Models
             Wisdom = character.Wisdom;
             Charisma = character.Charisma;
             WalkingSpeed = race.Speed;
-            MaxHealth = character.MaxHealth;
-            CurrentHealth = character.MaxHealth;
             Resistances = "";
             Immunities = "";
             Vulnerabilities = "";
             PlayerNotes = "";
 
-            Classes.Add(new CharacterClass(this, @class, 1));
-            Classes[0].InitialClass = true;
-            if(@class.Spellcasting != null)
-            {
-                Spellcasting.Add(new CharacterSpellcasting(this, @class.Spellcasting));
-            }
             foreach (Proficiency proficiency in defaultProficiencies)
             {
                 Proficiencies.Add(new CharacterProficiency(this, proficiency));
             }
-            SetActiveFeatures();
+            
         }
 
         #region methods
+        /// <summary>
+        /// Calculates the average maximum health of the character
+        /// </summary>
+        /// <returns>The average maximum health of the character</returns>
+        public int GetAverageHealth()
+        {
+            int averageHealth = MaxHitDice[0] * (4 + GetModifier("con")) 
+                + MaxHitDice[1] * (5 + GetModifier("con")) 
+                + MaxHitDice[2] * (6 + GetModifier("con")) 
+                + MaxHitDice[3] * (7 + GetModifier("con"));
+            return averageHealth;
+        }
+
         /// <summary>
         /// Calculates a value based on a formula
         /// </summary>
@@ -563,15 +568,10 @@ namespace DnDesigner.Models
         [DefaultValue("Unnamed Character")]
         public string Name { get; set; }
 
-        /// <summary> TODO: Remove this
-        /// The id of selected class
-        /// </summary>
-        public int ClassId { get; set; }
-
         /// <summary>
-        /// A list containing arrays of class id, level and subclass id
+        /// A list containing arrays of class id, subclass id, and level
         /// </summary>
-        List<int[]> Classes { get; set; }
+        public List<int[]> Classes { get; set; }
 
         /// <summary>
         /// The id of background of the character.
@@ -602,11 +602,6 @@ namespace DnDesigner.Models
 		/// The list of available backgrounds
 		/// </summary>
 		public List<Background> AvailableBackgrounds { get; set; }
-
-		/// <summary> TODO: Remove this
-		/// The character's maximum health points.
-		/// </summary>
-		public int MaxHealth { get; set; }
 
         /// <summary>
         /// The character's strength stat. 

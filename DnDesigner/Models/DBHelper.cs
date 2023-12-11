@@ -34,6 +34,19 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
+        /// Gets the <see cref="Background"/> from the database with the given id, 
+        /// loads everything directly in the background object, but not objects nested further
+        /// </summary>
+        /// <param name="id">An id of a <see cref="Background"/> in the database</param>
+        /// <returns>The <see cref="Background"/> with the specified id</returns>
+        public async Task<Background> GetMinBackground(int id)
+        {
+            return await _context.Backgrounds.Where(b => b.BackgroundId == id)
+                    .Include(b => b.Features)
+                    .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
         /// Gets all <see cref="Background"/>s from the database
         /// </summary>
         /// <returns>
@@ -43,7 +56,6 @@ namespace DnDesigner.Models
         {
             return  await _context.Backgrounds
                     .Include(b => b.Features)
-                    .ThenInclude(be => be.Effects)
                     .ToListAsync();
         }
 
@@ -123,7 +135,6 @@ namespace DnDesigner.Models
             return await _context.Classes
                 .Include(c => c.Spellcasting)
                 .Include(c => c.Features)
-                .ThenInclude(cf => cf.Effects)
                 .ToListAsync();
         }
 
@@ -219,7 +230,6 @@ namespace DnDesigner.Models
         {
             return await _context.Races
                     .Include (r => r.Features)
-                    .ThenInclude(re => re.Effects)
                     .ToListAsync();
         }
 
@@ -301,7 +311,6 @@ namespace DnDesigner.Models
         {
             return await _context.Subclasses
                     .Include(sf => sf.Features)
-                    .ThenInclude(se => se.Effects)
                     .ToListAsync();
         }
 

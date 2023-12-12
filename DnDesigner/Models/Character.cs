@@ -569,7 +569,7 @@ namespace DnDesigner.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// A list containing arrays of class id, subclass id, and level
+        /// A list containing arrays of level, class id, and subclass id
         /// </summary>
         public List<int[]> Classes { get; set; }
 

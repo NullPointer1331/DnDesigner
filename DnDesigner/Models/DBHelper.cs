@@ -107,6 +107,9 @@ namespace DnDesigner.Models
                 .Include(r => r.Background)
                 .Include(r => r.Classes)
                 .ThenInclude(cc => cc.Class)
+                .Include(r => r.Classes)
+                .ThenInclude(cc => cc.Subclass)
+                .AsSplitQuery()
                 .ToListAsync();
         }
 

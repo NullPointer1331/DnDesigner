@@ -78,12 +78,12 @@ namespace DnDesigner.Controllers
         public async Task<IActionResult> Create(CreateCharacterViewModel character)
         {
             int totalLevel = 0;
-            for(int i = 0; i < character.Classes.Count - 1; i++)
+            for(int i = 0; i < character.Classes.Count; i++)
             {
-                totalLevel += character.Classes[i][2];
+                totalLevel += character.Classes[i][0];
                 for(int j = i + 1; j < character.Classes.Count; j++)
                 {
-                    if (character.Classes[i][0] == character.Classes[j][0] && character.Classes[i][2] != 0 && character.Classes[j][2] != 0)
+                    if (character.Classes[i][1] == character.Classes[j][1] && character.Classes[i][0] != 0 && character.Classes[j][0] != 0)
                     {
                         ModelState.AddModelError("Classes", "You cannot have multiple instances of the same class.");
                     }
@@ -109,21 +109,18 @@ namespace DnDesigner.Controllers
 
                 for(int i = 0; i < character.Classes.Count; i++)
                 {
-                    if (character.Classes[i][2] > 0)
+                    if (character.Classes[i][0] > 0)
                     {
-                        Class newClass = await _dbHelper.GetClass(character.Classes[i][0]);
-                        /*
-                        if (character.Classes[i][2] >= newClass.SubclassLevel)
+                        Class newClass = await _dbHelper.GetClass(character.Classes[i][1]);
+                        if (character.Classes[i][0] >= newClass.SubclassLevel)
                         {
-                            Subclass subclass = await _dbHelper.GetSubclass(character.Classes[i][1]);
-                            newCharacter.Classes.Add(new CharacterClass(newCharacter, newClass, subclass, character.Classes[i][2]));
+                            Subclass subclass = await _dbHelper.GetSubclass(character.Classes[i][2]);
+                            newCharacter.Classes.Add(new CharacterClass(newCharacter, newClass, subclass, character.Classes[i][0]));
                         }
                         else
                         {
-                            newCharacter.Classes.Add(new CharacterClass(newCharacter, newClass, character.Classes[i][2]));
+                            newCharacter.Classes.Add(new CharacterClass(newCharacter, newClass, character.Classes[i][0]));
                         }
-                        */
-                        newCharacter.Classes.Add(new CharacterClass(newCharacter, newClass, character.Classes[i][2]));
                     }
                 }
                 newCharacter.Classes[0].InitialClass = true;

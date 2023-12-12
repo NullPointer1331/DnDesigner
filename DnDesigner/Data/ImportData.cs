@@ -53,7 +53,8 @@ namespace DnDesigner.Data
                         {
                             Class @class = classes.Where(c => c.Name == subclass5E.className).FirstOrDefault();
                             List<SubclassFeature5ETools> subclassFeatures = classRoot.subclassFeature
-                                .Where(f => f.subclassShortName == subclass5E.shortName).ToList();
+                                .Where(f => f.subclassShortName == subclass5E.shortName && !f.source.Contains("UA"))
+                                .ToList();
                             if (@class != null)
                             {
                                 subclasses.Add(ConvertSubclass(subclass5E, @class, subclassFeatures));

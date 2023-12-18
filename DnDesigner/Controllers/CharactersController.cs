@@ -130,7 +130,7 @@ namespace DnDesigner.Controllers
 
                 _context.Add(newCharacter);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("FeatureChoices", new { id = newCharacter.CharacterId });
             }
             character.AvailableClasses = await _dbHelper.GetAllClasses();
             character.AvailableBackgrounds = await _dbHelper.GetAllBackgrounds();
@@ -139,19 +139,63 @@ namespace DnDesigner.Controllers
             
         }
 
-        // GET: Characters/Edit/5
-        public async Task<IActionResult> CharacterSheet(int? id)
+        public async Task<IActionResult> FeatureChoices(int id)
         {
-            if (id == null || _context.Characters == null)
+            Character character = await _dbHelper.GetCharacter(id);
+            if (character == null)
             {
                 return NotFound();
             }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return Unauthorized();
+            }
+            return View(character);
+        }
 
-            Character character = await _dbHelper.GetCharacter((int)id);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FeatureChoices(Character character)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    character.ApplyEffects();
+                    character.CurrentHealth = character.MaxHealth;
+                    _context.Update(character);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CharacterExists(character.CharacterId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("CharacterSheet", new {id = character.CharacterId});
+            }
+            return View(character);
+        }
+
+        
+
+        // GET: Characters/Edit/5
+        public async Task<IActionResult> CharacterSheet(int id)
+        {
+            Character character = await _dbHelper.GetCharacter(id);
             
             if (character == null)
             {
                 return NotFound();
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return Unauthorized();
             }
             return View(character);
         }

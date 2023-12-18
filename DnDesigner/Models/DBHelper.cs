@@ -76,6 +76,7 @@ namespace DnDesigner.Models
                     .Include(c => c.Proficiencies)
                     .ThenInclude(cp => cp.Proficiency)
                     .Include(c => c.Features)
+                    .ThenInclude(cf => cf.Effects)
                     .Include(c => c.Inventory)
                     .ThenInclude(ci => ci.Items)
                     .ThenInclude(cii => cii.Item)

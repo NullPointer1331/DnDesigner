@@ -75,6 +75,8 @@ namespace DnDesigner.Models
         /// </summary>
         /// <param name="character">The character to be modified</param>
         public abstract void RemoveEffect(Character character);
+
+        public abstract override string ToString();
     }
 
     /// <summary>
@@ -155,6 +157,16 @@ namespace DnDesigner.Models
                 }
             }
         }
+
+        public override string ToString()
+        {
+            string str = "Choose one of the following: ";
+            foreach (Effect effect in Effects)
+            {
+                str += effect.ToString() + ", ";
+            }
+            return str.Substring(0, str.Length - 2);
+        }
     }
 
     /// <summary>
@@ -181,6 +193,11 @@ namespace DnDesigner.Models
         public override void RemoveEffect(Character character)
         {
             character.ModifyAttribute(Attribute, -Value);
+        }
+
+        public override string ToString()
+        {
+            return $"Increase {Attribute} by {Value}";
         }
     }
 
@@ -224,6 +241,24 @@ namespace DnDesigner.Models
                 character.RemoveProficiency(proficiency);
             }
         }
+
+        public override string ToString()
+        {
+            string str = "Grant ";
+            if (Expertise)
+            {
+                str += "expertise in ";
+            }
+            else
+            {
+                str += "proficiency in ";
+            }
+            foreach (Proficiency proficiency in Proficiencies)
+            {
+                str += proficiency.Name + ", ";
+            }
+            return str.Substring(0, str.Length - 2);
+        }
     }
 
     /// <summary>
@@ -252,6 +287,11 @@ namespace DnDesigner.Models
             {
                 character.Actions.Remove(characterAction);
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Grant action: {Action.Name}";
         }
     }
 }

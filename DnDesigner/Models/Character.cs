@@ -257,6 +257,29 @@ namespace DnDesigner.Models
                 + MaxHitDice[1] * (5 + GetModifier("con")) 
                 + MaxHitDice[2] * (6 + GetModifier("con")) 
                 + MaxHitDice[3] * (7 + GetModifier("con"));
+            foreach(CharacterClass characterClass in Classes)
+            {
+                if(characterClass.InitialClass)
+                {
+                    if(characterClass.Class.HitDie == 6)
+                    {
+                        averageHealth += 2;
+                    }
+                    else if (characterClass.Class.HitDie == 8)
+                    {
+                        averageHealth += 3;
+                    }
+                    else if (characterClass.Class.HitDie == 10)
+                    {
+                        averageHealth += 4;
+                    }
+                    else if (characterClass.Class.HitDie == 12)
+                    {
+                        averageHealth += 5;
+                    }
+                    break;
+                }
+            }
             return averageHealth;
         }
 
@@ -555,7 +578,13 @@ namespace DnDesigner.Models
                     characterFeature.ApplyEffect();
                 }
             }
-
+        }
+        public void ApplyEffects()
+        {
+            foreach (CharacterEffect characterEffect in CharacterEffects)
+            {
+                characterEffect.ApplyEffect();
+            }
         }
         #endregion
     }

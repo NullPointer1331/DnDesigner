@@ -77,6 +77,17 @@ namespace DnDesigner.Models
             return Name == other.Name && Source == other.Source 
                 && Description == other.Description && Level == other.Level;
         }
+
+        public override string ToString()
+        {
+            string str = Name;
+            if(Level > 0)
+            {
+                str += $", Level {Level}";
+            }
+            str += ", " + Source;
+            return str;
+        }
     }
     public class CharacterFeature : Feature
     {

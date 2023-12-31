@@ -583,13 +583,17 @@ namespace DnDesigner.Models
         }
         public void ApplyEffects()
         {
-            for (int i = 0; i < CharacterEffects.Count; i++)
-            {
-                CharacterEffects[i].RemoveEffect();
-            }
+            RemoveEffects();
             for (int i = 0; i < CharacterEffects.Count; i++)
             {
                 CharacterEffects[i].ApplyEffect();
+            }
+        }
+        public void RemoveEffects()
+        {
+            for (int i = 0; i < CharacterEffects.Count; i++)
+            {
+                CharacterEffects[i].RemoveEffect();
             }
         }
         #endregion
@@ -699,6 +703,11 @@ namespace DnDesigner.Models
         /// The list of available backgrounds
         /// </summary>
         public List<Background> AvailableBackgrounds { get; set; }
+
+        /// <summary>
+        /// A list containing arrays of level, class id, and subclass id
+        /// </summary>
+        public List<int[]> Classes { get; set; } //I'm reusing these, since I suspect using CharacterClasses would cause problems
     }
 
     public class FeatureChoiceViewModel

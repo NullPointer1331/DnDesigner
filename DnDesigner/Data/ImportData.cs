@@ -554,7 +554,7 @@ namespace DnDesigner.Data
             }
             if(race.StatBonuses == "")
             {
-                race.StatBonuses = "+2 +1, or 3 +1s to any stats of your choice.";
+                race.StatBonuses = "+2 +1, or 3 +1s to different stats.";
                 statBonuses.Effects.Add(new EffectChoice("ASI"));
                 statBonuses.Effects.Add(new EffectChoice("ASI"));
                 statBonuses.Effects.Add(new EffectChoice("ASI"));

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace DnDesigner.Models
 {
@@ -11,6 +12,7 @@ namespace DnDesigner.Models
         public Effect Effect { get; set; }
 
         [ForeignKey("CharacterId")]
+        [JsonIgnore]
         public Character Character { get; set; }
 
         /// <summary>

@@ -212,8 +212,18 @@ namespace DnDesigner.Controllers
                 Character = character,
                 AvailableClasses = await _dbHelper.GetAllClasses(),
                 AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
-                AvailableRaces = await _dbHelper.GetAllRaces()
+                AvailableRaces = await _dbHelper.GetAllRaces(),
+                Classes = new List<int[]>()
             };
+            character.RemoveEffects();
+            foreach (CharacterClass characterClass in character.Classes)
+            {
+                levelViewModel.Classes.Add(new int[] { characterClass.Level, characterClass.Class.ClassId, characterClass.Subclass?.SubclassId ?? 0 });
+            }
+            while (levelViewModel.Classes.Count < levelViewModel.AvailableClasses.Count)
+            {
+                levelViewModel.Classes.Add(new int[] { 0, 0, 0 });
+            }
             if (character == null)
             {
                 return NotFound();
@@ -227,14 +237,79 @@ namespace DnDesigner.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Character character)
+        public async Task<IActionResult> Edit(int id, LevelCharacterViewModel characterViewModel)
         {
+            Character character = await _dbHelper.GetCharacter(id);
             if (id != character.CharacterId)
             {
                 return NotFound();
             }
+            int totalLevel = 0;
+            for (int i = 0; i < characterViewModel.Classes.Count; i++)
+            {
+                totalLevel += characterViewModel.Classes[i][0];
+                for (int j = i + 1; j < characterViewModel.Classes.Count; j++)
+                {
+                    if (characterViewModel.Classes[i][1] == characterViewModel.Classes[j][1] 
+                        && characterViewModel.Classes[i][0] != 0 && characterViewModel.Classes[j][0] != 0)
+                    {
+                        ModelState.AddModelError("Classes", "You cannot have multiple instances of the same class.");
+                    }
+                }
+            }
+            if (totalLevel > 20)
+            {
+                ModelState.AddModelError("Classes", "You cannot have more than 20 levels.");
+            }
             if (ModelState.IsValid)
             {
+                Background background = await _dbHelper.GetBackground(characterViewModel.Character.Background.BackgroundId);
+                Race race = await _dbHelper.GetRace(characterViewModel.Character.Race.RaceId);
+                List<CharacterClass> classes = new List<CharacterClass>();
+                for (int i = 0; i < characterViewModel.Classes.Count; i++)
+                {
+                    if (characterViewModel.Classes[i][0] > 0)
+                    {
+                        Class newClass = await _dbHelper.GetClass(characterViewModel.Classes[i][1]);
+                        if (characterViewModel.Classes[i][0] >= newClass.SubclassLevel)
+                        {
+                            Subclass subclass = await _dbHelper.GetSubclass(characterViewModel.Classes[i][2]);
+                            classes.Add(new CharacterClass(character, newClass, subclass, characterViewModel.Classes[i][0]));
+                        }
+                        else
+                        {
+                            classes.Add(new CharacterClass(character, newClass, characterViewModel.Classes[i][0]));
+                        }
+                    }
+                }
+                if (character.Race.RaceId != race.RaceId)
+                {
+                    foreach(Feature feature in race.Features)
+                    {
+                        CharacterFeature? existingFeature = character.Features.Where(f => f.Equals(feature)).FirstOrDefault();
+                        if (existingFeature != null)
+                        {
+                            existingFeature.RemoveEffect();
+                            character.Features.Remove(existingFeature);
+                        }
+                    }
+                    character.Race = race;
+                }
+                if (character.Background.BackgroundId != background.BackgroundId)
+                {
+                    foreach (Feature feature in background.Features)
+                    {
+                        CharacterFeature? existingFeature = character.Features.Where(f => f.Equals(feature)).FirstOrDefault();
+                        if (existingFeature != null)
+                        {
+                            existingFeature.RemoveEffect();
+                            character.Features.Remove(existingFeature);
+                        }
+                    }
+                    character.Background = background;
+                }
+                character.Classes = classes;
+                character.SetActiveFeatures();
                 try
                 {
                     _context.Update(character);
@@ -251,10 +326,14 @@ namespace DnDesigner.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("CharacterSheet", new { id = character.CharacterId });
+                return RedirectToAction("FeatureChoices", new { id = character.CharacterId });
             }
-            character = await _dbHelper.GetCharacter(id);
-            return View(character);
+            characterViewModel.Character.Background = await _dbHelper.GetBackground(characterViewModel.Character.Background.BackgroundId);
+            characterViewModel.Character.Race = await _dbHelper.GetRace(characterViewModel.Character.Race.RaceId);
+            characterViewModel.AvailableClasses = await _dbHelper.GetAllClasses();
+            characterViewModel.AvailableBackgrounds = await _dbHelper.GetAllBackgrounds();
+            characterViewModel.AvailableRaces = await _dbHelper.GetAllRaces();
+            return View(characterViewModel);
         }
 
         // GET: Characters/Edit/5

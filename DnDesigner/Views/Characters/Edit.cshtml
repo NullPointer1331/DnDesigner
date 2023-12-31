@@ -1,4 +1,4 @@
-﻿@model CreateCharacterViewModel
+﻿@model LevelCharacterViewModel
 @inject IDBHelper DBHelper
 
 @{
@@ -8,29 +8,29 @@
 <h1>Create a Character</h1>
 
 <hr />
-<div >
-    <form asp-action="Create">
+<div>
+    <form asp-action="Edit">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-			<label asp-for="Name" class="control-label"></label>
-            <input asp-for="Name" class="form-control" value="Unnamed Character" />
-			<span asp-validation-for="Name" class="text-danger"></span>
+            <label asp-for="Character.Name" class="control-label"></label>
+            <input asp-for="Character.Name" class="form-control" value="Unnamed Character" />
+            <span asp-validation-for="Character.Name" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="MaxHealth" class="control-label"></label>
-            <input asp-for="MaxHealth" class="form-control" value="7" />
-            <span asp-validation-for="MaxHealth" class="text-danger"></span>
+            <label asp-for="Character.MaxHealth" class="control-label"></label>
+            <input asp-for="Character.MaxHealth" class="form-control" value="@Model.Character.MaxHealth" />
+            <span asp-validation-for="Character.MaxHealth" class="text-danger"></span>
             <input id="averageMaxHealthButton" type="button" value="Average Max Health" class="btn btn-primary" onclick="averageMaxHealth()" />
         </div>
         @*
-            In order to have multiple accordions on the same page,
-            each accordion must have a unique id.
+        In order to have multiple accordions on the same page,
+        each accordion must have a unique id.
 
-            The id of the accordion is used as the data-bs-parent
-            attribute of the accordion-body div.
+        The id of the accordion is used as the data-bs-parent
+        attribute of the accordion-body div.
 
-            Id naming convention: accordion section + property name
-            i.e. accordionClasses, headingClasses, collapseClasses
+        Id naming convention: accordion section + property name
+        i.e. accordionClasses, headingClasses, collapseClasses
         *@
 
         @* Accordion for Class selection *@
@@ -48,7 +48,7 @@
                             <span asp-validation-for="@Model.Classes" class="text-danger"></span>
                             <div id="Class0">
                                 <label asp-for="@Model.Classes[0][0]">Level</label>
-                                <input asp-for="@Model.Classes[0][0]" class="w-auto" max="20" min="1" value="1" onchange="displaySubclasses(0)" />
+                                <input asp-for="@Model.Classes[0][0]" class="w-auto" max="20" min="1" value="@Model.Classes[0][0]" onchange="displaySubclasses(0)" />
                                 <select asp-for="@Model.Classes[0][1]" onchange="updateSubclasses(0)">
                                     @foreach (Class characterClass in Model.AvailableClasses)
                                     {
@@ -68,17 +68,31 @@
                                 string classId = "Class" + i;
                                 <div hidden id="@classId">
                                     <label asp-for="@Model.Classes[i][0]">Level</label>
-                                    <input asp-for="@Model.Classes[i][0]" class="w-auto" max="20" min="0" value="0" onchange="displaySubclasses(@i)" />
+                                    <input asp-for="@Model.Classes[i][0]" class="w-auto" max="20" min="0" value="@Model.Classes[i][0]" onchange="displaySubclasses(@i)" />
                                     <select asp-for="@Model.Classes[i][1]" onchange="updateSubclasses(@i)">
                                         @foreach (Class characterClass in Model.AvailableClasses)
                                         {
-                                            <option value="@characterClass.ClassId">@characterClass.Name</option>
+                                            if (characterClass.ClassId == Model.Classes[i][1])
+                                            {
+                                                <option value="@characterClass.ClassId" selected>@characterClass.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@characterClass.ClassId">@characterClass.Name</option>
+                                            }
                                         }
                                     </select>
                                     <select hidden asp-for="@Model.Classes[i][2]">
                                         @foreach (Subclass subclass in Model.AvailableClasses[0].Subclasses)
                                         {
-                                            <option value="@subclass.SubclassId">@subclass.Name</option>
+                                            if (subclass.SubclassId == Model.Classes[i][2])
+                                            {
+                                                <option value="@subclass.SubclassId" selected>@subclass.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@subclass.SubclassId">@subclass.Name</option>
+                                            }
                                         }
                                     </select>
                                     <input type="button" value="Remove" class="btn btn-danger" onclick="hideClassSelector(@i)" />
@@ -103,13 +117,20 @@
                 <div id="collapseBackground" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <input asp-for="AvailableBackgrounds" type="hidden" value="@Model.AvailableBackgrounds" />
-                        <select asp-for="BackgroundId" onchange="updateBackgroundDescription()">
-                            @foreach(Background characterBackground in Model.AvailableBackgrounds)
+                        <select asp-for="Character.Background.BackgroundId" onchange="updateBackgroundDescription()" >
+                            @foreach (Background characterBackground in Model.AvailableBackgrounds)
                             {
-                                <option value="@characterBackground.BackgroundId">@characterBackground.Name (@characterBackground.Sourcebook)</option>
+                                if (characterBackground.BackgroundId == Model.Character.Background.BackgroundId)
+                                {
+                                    <option selected value="@characterBackground.BackgroundId">@characterBackground.Name (@characterBackground.Sourcebook)</option>
+                                }
+                                else
+                                {
+                                    <option value="@characterBackground.BackgroundId">@characterBackground.Name (@characterBackground.Sourcebook)</option>
+                                }
                             }
                         </select>
-                        <p id="descriptionBackground">@Model.AvailableBackgrounds[0].Description</p>
+                        <p id="descriptionBackground">@Model.Character.Background.Description</p>
                     </div>
                 </div>
             </div>
@@ -125,13 +146,20 @@
                 <div id="collapseRaces" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <input asp-for="AvailableRaces" type="hidden" value="@Model.AvailableRaces" />
-                        <select asp-for="RaceId" onchange="updateRaceDescription()">
-                            @foreach(Race race in Model.AvailableRaces)
+                        <select asp-for="Character.Race.RaceId" onchange="updateRaceDescription()">
+                            @foreach (Race race in Model.AvailableRaces)
                             {
-                                <option value=@race.RaceId>@race.Name (@race.Sourcebook)</option>
+                                if (race.RaceId == Model.Character.Race.RaceId)
+                                {
+                                    <option selected value=@race.RaceId>@race.Name (@race.Sourcebook)</option>
+                                }
+                                else
+                                {
+                                    <option value=@race.RaceId>@race.Name (@race.Sourcebook)</option>
+                                }
                             }
                         </select>
-                        <p id="descriptionRace">@Model.AvailableRaces[0].Description</p>
+                        <p id="descriptionRace">@Model.Character.Race.Description</p>
                     </div>
                 </div>
             </div>
@@ -142,46 +170,46 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingStats">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStats" aria-expanded="true" aria-controls="collapseOne">
-                        Ability Scores
+                        Base Ability Scores
                     </button>
                 </h2>
                 <div id="collapseStats" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <div class="row ">
                             <div class="col">
-                            <label asp-for="Strength" class="control-label"></label>
-                            <input asp-for="Strength" class="form-control" value="8"/>
-                            <span asp-validation-for="Strength" class="text-danger"></span><br />
+                                <label asp-for="Character.Strength" class="control-label"></label>
+                                <input asp-for="Character.Strength" class="form-control" value="@Model.Character.Strength" />
+                                <span asp-validation-for="Character.Strength" class="text-danger"></span><br />
                             </div>
 
                             <div class="col">
-                            <label asp-for="Dexterity" class="control-label"></label>
-                            <input asp-for="Dexterity" class="form-control" value="8"/>
-                            <span asp-validation-for="Dexterity" class="text-danger"></span><br />
+                                <label asp-for="Character.Dexterity" class="control-label"></label>
+                                <input asp-for="Character.Dexterity" class="form-control" value="@Model.Character.Dexterity" />
+                                <span asp-validation-for="Character.Dexterity" class="text-danger"></span><br />
                             </div>
 
                             <div class="col">
-                            <label asp-for="Constitution" class="control-label"></label>
-                            <input asp-for="Constitution" class="form-control" value="8"/>
-                            <span asp-validation-for="Constitution" class="text-danger"></span><br />
+                                <label asp-for="Character.Constitution" class="control-label"></label>
+                                <input asp-for="Character.Constitution" class="form-control" value="@Model.Character.Constitution" />
+                                <span asp-validation-for="Character.Constitution" class="text-danger"></span><br />
                             </div>
 
                             <div class="col">
-                            <label asp-for="Intelligence" class="control-label"></label>
-                            <input asp-for="Intelligence" class="form-control" value="8"/>
-                            <span asp-validation-for="Intelligence" class="text-danger"></span><br />
+                                <label asp-for="Character.Intelligence" class="control-label"></label>
+                                <input asp-for="Character.Intelligence" class="form-control" value="@Model.Character.Intelligence" />
+                                <span asp-validation-for="Character.Intelligence" class="text-danger"></span><br />
                             </div>
 
                             <div class="col">
-                            <label asp-for="Wisdom" class="control-label"></label>
-                            <input asp-for="Wisdom" class="form-control" value="8"/>
-                            <span asp-validation-for="Wisdom" class="text-danger"></span><br />
+                                <label asp-for="Character.Wisdom" class="control-label"></label>
+                                <input asp-for="Character.Wisdom" class="form-control" value="@Model.Character.Wisdom" />
+                                <span asp-validation-for="Character.Wisdom" class="text-danger"></span><br />
                             </div>
 
                             <div class="col">
-                            <label asp-for="Charisma" class="control-label"></label>
-                            <input asp-for="Charisma" class="form-control" value="8"/>
-                            <span asp-validation-for="Charisma" class="text-danger"></span>
+                                <label asp-for="Character.Charisma" class="control-label"></label>
+                                <input asp-for="Character.Charisma" class="form-control" value="@Model.Character.Charisma" />
+                                <span asp-validation-for="Character.Charisma" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -191,6 +219,10 @@
         <div class="form-group">
             <input type="submit" value="Next" class="btn btn-primary" />
         </div>
+        <!--Hidden Storage Start-->
+        <input type="hidden" asp-for="Character.CharacterId" />
+        <input type="hidden" asp-for="Character.UserId" />
+        <!--Hidden Storage End-->
     </form>
 </div>
 
@@ -200,10 +232,17 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script type="text/javascript">
         const Model = @Html.Raw(Json.Serialize(Model));
-        var numClasses = 1;
+        var numClasses = @Model.Character.Classes.Count;
+        for (var i = 0; i < @Model.Character.Classes.Count; i++) {
+            var classDiv = document.getElementById("Class" + i);
+            classDiv.hidden = false;
+            displaySubclasses(i);
+        }
         function updateSubclasses(classNumber) {
             var levelSelector = document.getElementById("Classes_" + classNumber + "__0_");
             var classSelector = document.getElementById("Classes_" + classNumber + "__1_");
@@ -249,7 +288,7 @@
             }
         }
         function addClassSelector() {
-            if(numClasses < Model.availableClasses.length) {
+            if (numClasses < Model.availableClasses.length) {
                 numClasses++;
                 for (var i = 1; i < Model.availableClasses.length; i++) {
                     var classDiv = document.getElementById("Class" + i);
@@ -268,7 +307,7 @@
             document.getElementById("Classes_" + classNumber + "__0_").value = 0;
         }
         function updateBackgroundDescription() {
-            var backgroundSelector = document.getElementById("BackgroundId");
+            var backgroundSelector = document.getElementById("Character_Background_BackgroundId");
             var backgroundId = parseInt(backgroundSelector.value);
             for (var i = 0; i < Model.availableBackgrounds.length; i++) {
                 if (Model.availableBackgrounds[i].backgroundId == backgroundId) {
@@ -278,7 +317,7 @@
             }
         }
         function updateRaceDescription() {
-            var raceSelector = document.getElementById("RaceId");
+            var raceSelector = document.getElementById("Character_Race_RaceId");
             var raceId = parseInt(raceSelector.value);
             for (var i = 0; i < Model.availableRaces.length; i++) {
                 if (Model.availableRaces[i].raceId == raceId) {
@@ -289,7 +328,7 @@
         }
         function averageMaxHealth() {
             var maxHealth = 0;
-            var constitutionSelector = document.getElementById("Constitution");
+            var constitutionSelector = document.getElementById("Character_Constitution");
             var constitution = parseInt(constitutionSelector.value);
             var conMod = Math.floor((constitution - 10) / 2);
             for (var i = 0; i < Model.availableClasses.length; i++) {
@@ -314,7 +353,7 @@
                     }
                 }
             }
-            document.getElementById("MaxHealth").value = maxHealth;
+            document.getElementById("Character_MaxHealth").value = maxHealth;
         }
     </script>
 }

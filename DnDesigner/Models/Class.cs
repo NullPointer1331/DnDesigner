@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace DnDesigner.Models
 {
@@ -87,6 +88,7 @@ namespace DnDesigner.Models
 		/// The character the class belongs to
 		/// </summary>
 		[ForeignKey("CharacterId")]
+		[JsonIgnore]
 		public Character Character { get; set; }
 
 		/// <summary>

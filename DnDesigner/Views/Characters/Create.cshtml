@@ -16,6 +16,12 @@
             <input asp-for="Name" class="form-control" value="Unnamed Character" />
 			<span asp-validation-for="Name" class="text-danger"></span>
         </div>
+        <div class="form-group">
+            <label asp-for="MaxHealth" class="control-label"></label>
+            <input asp-for="MaxHealth" class="form-control" value="7" />
+            <span asp-validation-for="MaxHealth" class="text-danger"></span>
+            <input id="averageMaxHealthButton" type="button" value="Average Max Health" class="btn btn-primary" onclick="averageMaxHealth()" />
+        </div>
         @*
             In order to have multiple accordions on the same page,
             each accordion must have a unique id.
@@ -42,7 +48,7 @@
                             <span asp-validation-for="@Model.Classes" class="text-danger"></span>
                             <div id="Class0">
                                 <label asp-for="@Model.Classes[0][0]">Level</label>
-                                <input asp-for="@Model.Classes[0][0]" class="w-auto" max="20" min="1" value="0" onchange="displaySubclasses(0)" />
+                                <input asp-for="@Model.Classes[0][0]" class="w-auto" max="20" min="1" value="1" onchange="displaySubclasses(0)" />
                                 <select asp-for="@Model.Classes[0][1]" onchange="updateSubclasses(0)">
                                     @foreach (Class characterClass in Model.AvailableClasses)
                                     {
@@ -198,8 +204,6 @@
     <script type="text/javascript">
         const Model = @Html.Raw(Json.Serialize(Model));
         var numClasses = 1;
-        document.getElementById("Class0").hidden = false;
-        document.getElementById("Classes_0__0_").value = 1;
         function updateSubclasses(classNumber) {
             var levelSelector = document.getElementById("Classes_" + classNumber + "__0_");
             var classSelector = document.getElementById("Classes_" + classNumber + "__1_");
@@ -282,6 +286,35 @@
                     break;
                 }
             }
+        }
+        function averageMaxHealth() {
+            var maxHealth = 0;
+            var constitutionSelector = document.getElementById("Constitution");
+            var constitution = parseInt(constitutionSelector.value);
+            var conMod = Math.floor((constitution - 10) / 2);
+            for (var i = 0; i < Model.availableClasses.length; i++) {
+                var levelSelector = document.getElementById("Classes_" + i + "__0_");
+                var level = parseInt(levelSelector.value);
+                if (level > 0) {
+                    var classSelector = document.getElementById("Classes_" + i + "__1_");
+                    var classId = parseInt(classSelector.value);
+                    var hitDie = 0;
+                    for (var j = 0; j < Model.availableClasses.length; j++) {
+                        if (Model.availableClasses[j].classId == classId) {
+                            hitDie = Model.availableClasses[j].hitDie;
+                            break;
+                        }
+                    }
+                    if (i == 0) {
+                        maxHealth += hitDie + conMod;
+                        maxHealth += ((hitDie / 2) + 1 + conMod) * (level - 1);
+                    }
+                    else {
+                        maxHealth += ((hitDie / 2) + 1 + conMod) * level;
+                    }
+                }
+            }
+            document.getElementById("MaxHealth").value = maxHealth;
         }
     </script>
 }

@@ -1,4 +1,4 @@
-﻿@model Character
+﻿@model FeatureChoiceViewModel
 @{
     ViewData["Title"] = "Feature Choices";
 }
@@ -7,78 +7,61 @@
 <hr />
 
 <form asp-action="FeatureChoices">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="@Model.MaxHealth">Max Health (Doesn't automatically update)</label>
-        <input asp-for="@Model.MaxHealth" />
-        <span asp-validation-for="@Model.MaxHealth" class="text-danger"></span>
-    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <div class="accordion" id="Features">
-        @foreach(Feature feature in Model.Features)
-        {
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#panelsStayOpen-@feature.FeatureId" aria-expanded="true"
-                            aria-controls="panelsStayOpen-@feature.FeatureId">
-                        @feature.ToString()
-                    </button>
-                </h2>
-                <div id="panelsStayOpen-@feature.FeatureId" class="accordion-collapse collapse show">
-                    <div class="accordion-body">
-                        <strong>@feature.Description</strong>
-                        <br />
-                        @foreach (Effect featureEffect in feature.Effects)
-                        {
-                            if (featureEffect is EffectChoice choice)
+            @foreach(Feature feature in Model.Character.Features)
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-@feature.FeatureId" aria-expanded="true"
+                                aria-controls="panelsStayOpen-@feature.FeatureId">
+                            @feature.ToString()
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-@feature.FeatureId" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <strong>@feature.Description</strong>
+                            <br />
+                            @foreach (Effect featureEffect in feature.Effects)
                             {
-                                CharacterEffect characterEffect = Model.CharacterEffects.FirstOrDefault(ce => ce.Effect.EffectId == choice.EffectId);
-                                <select asp-for="@characterEffect.Value">
-                                    @foreach (Effect effect in ((EffectChoice)characterEffect.Effect).Effects)
-                                    {
-                                        <option value="@effect.EffectId">@effect.ToString()</option>
-                                    }
-                                </select>
+                                CharacterEffect characterEffect = Model.Character.CharacterEffects.FirstOrDefault(ce => ce.Effect.EffectId == featureEffect.EffectId);
+                                int index = Model.Character.CharacterEffects.IndexOf(characterEffect);
+                                if (featureEffect is EffectChoice choice)
+                                {
+                                    <select asp-for="@Model.ChoiceValues[index]">
+                                        @for (int i = 0; i < choice.Effects.Count; i++)
+                                        {
+                                            if ((Model.ChoiceValues[index] ?? 0) == i)
+                                            {
+                                                <option value="@i" selected>@choice.Effects[i].ToString()</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@i">@choice.Effects[i].ToString()</option>
+                                            }
+                                        }
+                                    </select>
+                                }
                             }
-                        }
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+            @for (int i = 0; i < Model.ChoiceValues.Count; i++)
+            {
+                <input hidden asp-for="@Model.ChoiceValues[i]" value="@Model.ChoiceValues[i]" />
+            }
         </div>
     </div>
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />
     </div>
     <!--Hidden Storage Start-->
-    <input type="hidden" asp-for="CharacterId" />
-    <input type="hidden" asp-for="Name" />
-    <input type="hidden" asp-for="Race" />
-    <input type="hidden" asp-for="Race.RaceId" />
-    <input type="hidden" asp-for="Race.Name" />
-    <input type="hidden" asp-for="Background" />
-    <input type="hidden" asp-for="Background.BackgroundId" />
-    <input type="hidden" asp-for="Background.Name" />
-    <input type="hidden" asp-for="Level" />
-    <input type="hidden" asp-for="Classes" />
-    <input type="hidden" asp-for="Features" />
-    <input type="hidden" asp-for="AvailableHitDice" />
-    <input type="hidden" asp-for="Strength" />
-    <input type="hidden" asp-for="Dexterity" />
-    <input type="hidden" asp-for="Constitution" />
-    <input type="hidden" asp-for="Intelligence" />
-    <input type="hidden" asp-for="Wisdom" />
-    <input type="hidden" asp-for="Charisma" />
-    <input type="hidden" asp-for="Inventory" />
-    <input type="hidden" asp-for="Inventory.InventoryId" />
-    <input type="hidden" asp-for="Features" />
-    @foreach(CharacterEffect characterEffect in Model.CharacterEffects)
-    {
-        <input type="hidden" asp-for="@characterEffect" />
-    }
-    <input type="hidden" asp-for="CharacterEffects" />
-    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="Character" />
+    <input type="hidden" asp-for="Character.CharacterId" />
+    <input type="hidden" asp-for="Character.UserId" />
     <!--Hidden Storage End-->
 </form>
 

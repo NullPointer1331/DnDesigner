@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace DnDesigner.Models
 {
@@ -147,14 +146,19 @@ namespace DnDesigner.Models
 
         public override void RemoveEffect(Character character)
         {
+            List<CharacterEffect> toRemove = new List<CharacterEffect>();
             foreach (Effect effect in Effects)
             {
                 CharacterEffect? existingEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
                 if (existingEffect != null)
                 {
                     existingEffect.RemoveEffect();
-                    character.CharacterEffects.Remove(existingEffect);
+                    toRemove.Add(existingEffect);
                 }
+            }
+            foreach (CharacterEffect characterEffect in toRemove)
+            {
+                character.CharacterEffects.Remove(characterEffect);
             }
         }
 

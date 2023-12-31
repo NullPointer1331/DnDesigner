@@ -226,6 +226,8 @@ namespace DnDesigner.Models
             Inventory = new Inventory(this);
             Background = background;
             Race = race;
+            MaxHealth = character.MaxHealth;
+            CurrentHealth = MaxHealth;
             TempHealth = 0;
             Strength = character.Strength;
             Dexterity = character.Dexterity;
@@ -581,9 +583,13 @@ namespace DnDesigner.Models
         }
         public void ApplyEffects()
         {
-            foreach (CharacterEffect characterEffect in CharacterEffects)
+            for (int i = 0; i < CharacterEffects.Count; i++)
             {
-                characterEffect.ApplyEffect();
+                CharacterEffects[i].RemoveEffect();
+            }
+            for (int i = 0; i < CharacterEffects.Count; i++)
+            {
+                CharacterEffects[i].ApplyEffect();
             }
         }
         #endregion
@@ -626,6 +632,11 @@ namespace DnDesigner.Models
 		/// The list of available backgrounds
 		/// </summary>
 		public List<Background> AvailableBackgrounds { get; set; }
+
+        /// <summary>
+        /// The character's maximum health.
+        /// </summary>
+        public int MaxHealth { get; set; }
 
         /// <summary>
         /// The character's strength stat. 
@@ -680,11 +691,6 @@ namespace DnDesigner.Models
         public List<Class> AvailableClasses { get; set; }
 
         /// <summary>
-        /// The list of available subclasses
-        /// </summary>
-        public List<Subclass> AvailableSubclasses { get; set; }
-
-        /// <summary>
         /// The list of available races
         /// </summary>
         public List<Race> AvailableRaces { get; set; }
@@ -693,5 +699,15 @@ namespace DnDesigner.Models
         /// The list of available backgrounds
         /// </summary>
         public List<Background> AvailableBackgrounds { get; set; }
+    }
+
+    public class FeatureChoiceViewModel
+    {
+        public Character Character { get; set; }
+
+        // Normally I would handle this inside the CharacterFeature class, 
+        // but the view simply isn't passing it back to the controller and I don't know why
+        // So this is a hopefully temporary workaround
+        public List<int?> ChoiceValues { get; set; }
     }
 }

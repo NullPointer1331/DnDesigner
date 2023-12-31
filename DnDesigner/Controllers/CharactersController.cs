@@ -124,8 +124,6 @@ namespace DnDesigner.Controllers
                     }
                 }
                 newCharacter.Classes[0].InitialClass = true;
-                newCharacter.MaxHealth = newCharacter.GetAverageHealth();
-                newCharacter.CurrentHealth = newCharacter.MaxHealth;
                 newCharacter.SetActiveFeatures();
 
                 _context.Add(newCharacter);
@@ -150,19 +148,43 @@ namespace DnDesigner.Controllers
             {
                 return Unauthorized();
             }
-            return View(character);
+            FeatureChoiceViewModel featureChoiceViewModel = new FeatureChoiceViewModel()
+            {
+                Character = character,
+                ChoiceValues = new List<int?>()
+            };
+            foreach (CharacterEffect effect in character.CharacterEffects)
+            {
+                featureChoiceViewModel.ChoiceValues.Add(effect.Value);
+            }
+            return View(featureChoiceViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> FeatureChoices(Character character)
+        public async Task<IActionResult> FeatureChoices(int id, FeatureChoiceViewModel featureChoiceViewModel)
         {
+            Character character = await _dbHelper.GetCharacter(id);
+            if (character == null)
+            {
+                return NotFound();
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return Unauthorized();
+            }
+            featureChoiceViewModel.Character = character;
+            for (int i = 0; i < featureChoiceViewModel.ChoiceValues.Count; i++)
+            {
+                character.CharacterEffects[i].Value = featureChoiceViewModel.ChoiceValues[i];
+            }
+            character.ApplyEffects();
+            ModelState.Remove("Character.Background");
+            ModelState.Remove("Character.Race");
             if (ModelState.IsValid)
             {
                 try
                 {
-                    character.ApplyEffects();
-                    character.CurrentHealth = character.MaxHealth;
                     _context.Update(character);
                     await _context.SaveChangesAsync();
                 }
@@ -179,10 +201,61 @@ namespace DnDesigner.Controllers
                 }
                 return RedirectToAction("CharacterSheet", new {id = character.CharacterId});
             }
-            return View(character);
+            return View(featureChoiceViewModel);
         }
 
-        
+        public async Task<IActionResult> Edit(int id)
+        {
+            Character character = await _dbHelper.GetCharacter(id);
+            LevelCharacterViewModel levelViewModel = new LevelCharacterViewModel()
+            {
+                Character = character,
+                AvailableClasses = await _dbHelper.GetAllClasses(),
+                AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
+                AvailableRaces = await _dbHelper.GetAllRaces()
+            };
+            if (character == null)
+            {
+                return NotFound();
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return Unauthorized();
+            }
+            return View(levelViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Character character)
+        {
+            if (id != character.CharacterId)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(character);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CharacterExists(character.CharacterId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("CharacterSheet", new { id = character.CharacterId });
+            }
+            character = await _dbHelper.GetCharacter(id);
+            return View(character);
+        }
 
         // GET: Characters/Edit/5
         public async Task<IActionResult> CharacterSheet(int id)

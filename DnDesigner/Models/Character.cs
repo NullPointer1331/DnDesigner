@@ -580,6 +580,7 @@ namespace DnDesigner.Models
                     characterFeature.ApplyEffect();
                 }
             }
+            ApplyEffects();
         }
         public void ApplyEffects()
         {
@@ -604,6 +605,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The name of the character
         /// </summary>
+        [DefaultValue("Unnamed Character")]
         public string Name { get; set; } = "Unnamed Character";
 
         /// <summary>
@@ -684,29 +686,9 @@ namespace DnDesigner.Models
         public int Charisma { get; set; } = 8;
     }
 
-    public class LevelCharacterViewModel
+    public class LevelCharacterViewModel : CreateCharacterViewModel
     {
         public Character Character { get; set; }
-
-        /// <summary>
-        /// The list of available classes
-        /// </summary>
-        public List<Class> AvailableClasses { get; set; }
-
-        /// <summary>
-        /// The list of available races
-        /// </summary>
-        public List<Race> AvailableRaces { get; set; }
-
-        /// <summary>
-        /// The list of available backgrounds
-        /// </summary>
-        public List<Background> AvailableBackgrounds { get; set; }
-
-        /// <summary>
-        /// A list containing arrays of level, class id, and subclass id
-        /// </summary>
-        public List<int[]> Classes { get; set; } //I'm reusing these, since I suspect using CharacterClasses would cause problems
     }
 
     public class FeatureChoiceViewModel

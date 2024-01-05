@@ -66,7 +66,15 @@ namespace DnDesigner.Controllers
                 AvailableClasses = await _dbHelper.GetAllClasses(),
                 AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
                 AvailableRaces = await _dbHelper.GetAllRaces(),
+                Classes = new List<int[]>()
             };
+            while (characterViewModel.Classes.Count < characterViewModel.AvailableClasses.Count)
+            {
+                characterViewModel.Classes.Add(new int[] { 0, 
+                    characterViewModel.AvailableClasses[0].ClassId, 
+                    characterViewModel.AvailableClasses[0].Subclasses[0].SubclassId });
+            }
+            characterViewModel.Classes[0][0] = 1;
             return View(characterViewModel);
         }
 
@@ -157,6 +165,7 @@ namespace DnDesigner.Controllers
             {
                 featureChoiceViewModel.ChoiceValues.Add(effect.Value);
             }
+            character.RemoveEffects();
             return View(featureChoiceViewModel);
         }
 
@@ -178,11 +187,11 @@ namespace DnDesigner.Controllers
             {
                 character.CharacterEffects[i].Value = featureChoiceViewModel.ChoiceValues[i];
             }
-            character.ApplyEffects();
             ModelState.Remove("Character.Background");
             ModelState.Remove("Character.Race");
             if (ModelState.IsValid)
             {
+                character.ApplyEffects();
                 try
                 {
                     _context.Update(character);
@@ -207,23 +216,6 @@ namespace DnDesigner.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             Character character = await _dbHelper.GetCharacter(id);
-            LevelCharacterViewModel levelViewModel = new LevelCharacterViewModel()
-            {
-                Character = character,
-                AvailableClasses = await _dbHelper.GetAllClasses(),
-                AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
-                AvailableRaces = await _dbHelper.GetAllRaces(),
-                Classes = new List<int[]>()
-            };
-            character.RemoveEffects();
-            foreach (CharacterClass characterClass in character.Classes)
-            {
-                levelViewModel.Classes.Add(new int[] { characterClass.Level, characterClass.Class.ClassId, characterClass.Subclass?.SubclassId ?? 0 });
-            }
-            while (levelViewModel.Classes.Count < levelViewModel.AvailableClasses.Count)
-            {
-                levelViewModel.Classes.Add(new int[] { 0, 0, 0 });
-            }
             if (character == null)
             {
                 return NotFound();
@@ -231,6 +223,33 @@ namespace DnDesigner.Controllers
             if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
             {
                 return Unauthorized();
+            }
+            character.RemoveEffects();
+            LevelCharacterViewModel levelViewModel = new LevelCharacterViewModel()
+            {
+                Character = character,
+                AvailableClasses = await _dbHelper.GetAllClasses(),
+                AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
+                AvailableRaces = await _dbHelper.GetAllRaces(),
+                Classes = new List<int[]>(),
+                RaceId = character.Race.RaceId,
+                BackgroundId = character.Background.BackgroundId,
+                Name = character.Name,
+                MaxHealth = character.MaxHealth,
+                Strength = character.Strength,
+                Dexterity = character.Dexterity,
+                Constitution = character.Constitution,
+                Intelligence = character.Intelligence,
+                Wisdom = character.Wisdom,
+                Charisma = character.Charisma
+            };
+            foreach (CharacterClass characterClass in character.Classes)
+            {
+                levelViewModel.Classes.Add(new int[] { characterClass.Level, characterClass.Class.ClassId, characterClass.Subclass?.SubclassId ?? 0 });
+            }
+            while (levelViewModel.Classes.Count < levelViewModel.AvailableClasses.Count)
+            {
+                levelViewModel.Classes.Add(new int[] { 0, 0, 0 });
             }
             return View(levelViewModel);
         }
@@ -261,10 +280,12 @@ namespace DnDesigner.Controllers
             {
                 ModelState.AddModelError("Classes", "You cannot have more than 20 levels.");
             }
+            ModelState.Remove("Character.Background");
+            ModelState.Remove("Character.Race");
             if (ModelState.IsValid)
             {
-                Background background = await _dbHelper.GetBackground(characterViewModel.Character.Background.BackgroundId);
-                Race race = await _dbHelper.GetRace(characterViewModel.Character.Race.RaceId);
+                Background background = await _dbHelper.GetBackground(characterViewModel.BackgroundId);
+                Race race = await _dbHelper.GetRace(characterViewModel.RaceId);
                 List<CharacterClass> classes = new List<CharacterClass>();
                 for (int i = 0; i < characterViewModel.Classes.Count; i++)
                 {
@@ -309,6 +330,15 @@ namespace DnDesigner.Controllers
                     character.Background = background;
                 }
                 character.Classes = classes;
+                character.Name = characterViewModel.Name;
+                character.MaxHealth = characterViewModel.MaxHealth;
+                character.Strength = characterViewModel.Strength;
+                character.Dexterity = characterViewModel.Dexterity;
+                character.Constitution = characterViewModel.Constitution;
+                character.Intelligence = characterViewModel.Intelligence;
+                character.Wisdom = characterViewModel.Wisdom;
+                character.Charisma = characterViewModel.Charisma;
+
                 character.SetActiveFeatures();
                 try
                 {
@@ -328,8 +358,8 @@ namespace DnDesigner.Controllers
                 }
                 return RedirectToAction("FeatureChoices", new { id = character.CharacterId });
             }
-            characterViewModel.Character.Background = await _dbHelper.GetBackground(characterViewModel.Character.Background.BackgroundId);
-            characterViewModel.Character.Race = await _dbHelper.GetRace(characterViewModel.Character.Race.RaceId);
+            characterViewModel.Character.Background = await _dbHelper.GetBackground(characterViewModel.BackgroundId);
+            characterViewModel.Character.Race = await _dbHelper.GetRace(characterViewModel.RaceId);
             characterViewModel.AvailableClasses = await _dbHelper.GetAllClasses();
             characterViewModel.AvailableBackgrounds = await _dbHelper.GetAllBackgrounds();
             characterViewModel.AvailableRaces = await _dbHelper.GetAllRaces();

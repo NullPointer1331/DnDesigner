@@ -26,32 +26,31 @@
                             <br />
                             @foreach (Effect featureEffect in feature.Effects)
                             {
-                                CharacterEffect characterEffect = Model.Character.CharacterEffects.FirstOrDefault(ce => ce.Effect.EffectId == featureEffect.EffectId);
-                                int index = Model.Character.CharacterEffects.IndexOf(characterEffect);
-                                if (featureEffect is EffectChoice choice)
+                                if (featureEffect is EffectWithParam effect)
                                 {
-                                    <select asp-for="@Model.ChoiceValues[index]">
-                                        @for (int i = 0; i < choice.Effects.Count; i++)
-                                        {
-                                            if ((Model.ChoiceValues[index] ?? 0) == i)
+                                    CharacterEffect characterEffect = Model.Character.CharacterEffects.FirstOrDefault(ce => ce.Effect.EffectId == featureEffect.EffectId);
+                                    int index = Model.Character.CharacterEffects.IndexOf(characterEffect);
+                                    if (featureEffect is EffectChoice choice)
+                                    {
+                                        <select asp-for="@Model.ChoiceValues[index]">
+                                            @for (int i = 0; i < choice.Effects.Count; i++)
                                             {
-                                                <option value="@i" selected>@choice.Effects[i].ToString()</option>
+                                                if ((Model.ChoiceValues[index] ?? 0) == i)
+                                                {
+                                                    <option value="@i" selected>@choice.Effects[i].ToString()</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@i">@choice.Effects[i].ToString()</option>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <option value="@i">@choice.Effects[i].ToString()</option>
-                                            }
-                                        }
-                                    </select>
+                                        </select>
+                                    }
                                 }
                             }
                         </div>
                     </div>
                 </div>
-            }
-            @for (int i = 0; i < Model.ChoiceValues.Count; i++)
-            {
-                <input hidden asp-for="@Model.ChoiceValues[i]" value="@Model.ChoiceValues[i]" />
             }
         </div>
     </div>
@@ -59,6 +58,10 @@
         <input type="submit" value="Save" class="btn btn-primary" />
     </div>
     <!--Hidden Storage Start-->
+    @for (int i = 0; i < Model.ChoiceValues.Count; i++) //Hidden storage for Effects that don't have choices
+    { //Even though they are null, if they aren't here, it won't return all of the values in the list
+        <input hidden asp-for="@Model.ChoiceValues[i]" value="@Model.ChoiceValues[i]" />
+    }
     <input type="hidden" asp-for="Character" />
     <input type="hidden" asp-for="Character.CharacterId" />
     <input type="hidden" asp-for="Character.UserId" />

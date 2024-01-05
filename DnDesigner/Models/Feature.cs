@@ -234,5 +234,4 @@ namespace DnDesigner.Models
         }
         private BackgroundFeature() : base("", "", 0) { }
     }
-
 }

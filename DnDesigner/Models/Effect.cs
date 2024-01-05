@@ -37,9 +37,9 @@ namespace DnDesigner.Models
         {
             if (!IsApplied)
             {
-                if (Value != null && Effect is EffectChoice effectChoice)
+                if (Value != null && Effect is EffectWithParam effect)
                 {
-                    effectChoice.ApplyEffect(Character, (int)Value);
+                    effect.ApplyEffect(Character, (int)Value);
                 }
                 else
                 {
@@ -81,9 +81,29 @@ namespace DnDesigner.Models
     }
 
     /// <summary>
+    /// An abstract super class for classes that modify a character, using a parameter.
+    /// Meant to be used for Effects that can change their behavior after being created.
+    /// </summary>
+    public abstract class EffectWithParam : Effect
+    {
+        /// <summary>
+        /// Apply this effect to the character, using a default parameter
+        /// </summary>
+        /// <param name="character">The character to be modified</param>
+        public override abstract void ApplyEffect(Character character);
+
+        /// <summary>
+        /// Apply this effect to the character, using the given parameter
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="param"></param>
+        public abstract void ApplyEffect(Character character, int param);
+    }
+
+    /// <summary>
     /// A choice between multiple effects
     /// </summary>
-    public class EffectChoice : Effect
+    public class EffectChoice : EffectWithParam
     {
         public List<Effect> Effects { get; private set; }
 
@@ -135,12 +155,17 @@ namespace DnDesigner.Models
             ApplyEffect(character, 0);
         }
 
-        public void ApplyEffect(Character character, int chosenIndex)
+        /// <summary>
+        /// Apply the chosen effect to the character
+        /// </summary>
+        /// <param name="character">The character to be modified</param>
+        /// <param name="param">The index of the chosen effect</param>
+        public override void ApplyEffect(Character character, int param)
         {
             RemoveEffect(character);
-            if (chosenIndex < Effects.Count && chosenIndex >= 0)
+            if (param < Effects.Count && param >= 0)
             {
-                CharacterEffect characterEffect = new CharacterEffect(character, Effects[chosenIndex]);
+                CharacterEffect characterEffect = new CharacterEffect(character, Effects[param]);
                 character.CharacterEffects.Add(characterEffect);
                 characterEffect.ApplyEffect();
             }

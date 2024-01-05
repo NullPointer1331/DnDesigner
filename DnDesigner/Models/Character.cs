@@ -604,8 +604,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The name of the character
         /// </summary>
-        [DefaultValue("Unnamed Character")]
-        public string Name { get; set; }
+        public string Name { get; set; } = "Unnamed Character";
 
         /// <summary>
         /// A list containing arrays of level, class id, and subclass id
@@ -640,49 +639,49 @@ namespace DnDesigner.Models
         /// <summary>
         /// The character's maximum health.
         /// </summary>
-        public int MaxHealth { get; set; }
+        public int MaxHealth { get; set; } = 7;
 
         /// <summary>
         /// The character's strength stat. 
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Strength { get; set; }
+        public int Strength { get; set; } = 8;
 
         /// <summary>
         /// The character's dexterity stat.
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Dexterity { get; set; }
+        public int Dexterity { get; set; } = 8;
 
         /// <summary>
         /// The character's constitution stat.
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Constitution { get; set; }
+        public int Constitution { get; set; } = 8;
 
         /// <summary>
         /// The character's intelligence stat.
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Intelligence { get; set; }
+        public int Intelligence { get; set; } = 8;
 
         /// <summary>
         /// The character's wisdom stat.
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Wisdom { get; set; }
+        public int Wisdom { get; set; } = 8;
 
         /// <summary>
         /// The character's charisma stat.
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Charisma { get; set;}
+        public int Charisma { get; set; } = 8;
     }
 
     public class LevelCharacterViewModel

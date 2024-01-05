@@ -2,10 +2,10 @@
 @inject IDBHelper DBHelper
 
 @{
-    ViewData["Title"] = "Create a Character";
+    ViewData["Title"] = "Edit " + Model.Character.Name;
 }
 
-<h1>Create a Character</h1>
+<h1>Edit @Model.Character.Name</h1>
 
 <hr />
 <div>
@@ -13,12 +13,12 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Character.Name" class="control-label"></label>
-            <input asp-for="Character.Name" class="form-control" value="Unnamed Character" />
+            <input asp-for="Character.Name" class="form-control" />
             <span asp-validation-for="Character.Name" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Character.MaxHealth" class="control-label"></label>
-            <input asp-for="Character.MaxHealth" class="form-control" value="@Model.Character.MaxHealth" />
+            <input asp-for="Character.MaxHealth" class="form-control" />
             <span asp-validation-for="Character.MaxHealth" class="text-danger"></span>
             <input id="averageMaxHealthButton" type="button" value="Average Max Health" class="btn btn-primary" onclick="averageMaxHealth()" />
         </div>
@@ -178,37 +178,37 @@
                         <div class="row ">
                             <div class="col">
                                 <label asp-for="Character.Strength" class="control-label"></label>
-                                <input asp-for="Character.Strength" class="form-control" value="@Model.Character.Strength" />
+                                <input asp-for="Character.Strength" class="form-control" />
                                 <span asp-validation-for="Character.Strength" class="text-danger"></span><br />
                             </div>
 
                             <div class="col">
                                 <label asp-for="Character.Dexterity" class="control-label"></label>
-                                <input asp-for="Character.Dexterity" class="form-control" value="@Model.Character.Dexterity" />
+                                <input asp-for="Character.Dexterity" class="form-control" />
                                 <span asp-validation-for="Character.Dexterity" class="text-danger"></span><br />
                             </div>
 
                             <div class="col">
                                 <label asp-for="Character.Constitution" class="control-label"></label>
-                                <input asp-for="Character.Constitution" class="form-control" value="@Model.Character.Constitution" />
+                                <input asp-for="Character.Constitution" class="form-control" />
                                 <span asp-validation-for="Character.Constitution" class="text-danger"></span><br />
                             </div>
 
                             <div class="col">
                                 <label asp-for="Character.Intelligence" class="control-label"></label>
-                                <input asp-for="Character.Intelligence" class="form-control" value="@Model.Character.Intelligence" />
+                                <input asp-for="Character.Intelligence" class="form-control" />
                                 <span asp-validation-for="Character.Intelligence" class="text-danger"></span><br />
                             </div>
 
                             <div class="col">
                                 <label asp-for="Character.Wisdom" class="control-label"></label>
-                                <input asp-for="Character.Wisdom" class="form-control" value="@Model.Character.Wisdom" />
+                                <input asp-for="Character.Wisdom" class="form-control" />
                                 <span asp-validation-for="Character.Wisdom" class="text-danger"></span><br />
                             </div>
 
                             <div class="col">
                                 <label asp-for="Character.Charisma" class="control-label"></label>
-                                <input asp-for="Character.Charisma" class="form-control" value="@Model.Character.Charisma" />
+                                <input asp-for="Character.Charisma" class="form-control" />
                                 <span asp-validation-for="Character.Charisma" class="text-danger"></span>
                             </div>
                         </div>

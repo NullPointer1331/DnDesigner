@@ -136,6 +136,7 @@ namespace DnDesigner.Controllers
 
                 _context.Add(newCharacter);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction("FeatureChoices", new { id = newCharacter.CharacterId });
             }
             character.AvailableClasses = await _dbHelper.GetAllClasses();

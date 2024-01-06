@@ -11,6 +11,10 @@
 <div>
     <form asp-action="Edit">
         @{await Html.RenderPartialAsync("_CharacterCreationPartial", Model);}
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <input type="button" value="Cancel" class="btn btn-danger" onclick="location.href='@Url.Action("CharacterSheet", "Characters", new {id = Model.Character.CharacterId})'" />
+        </div>
         <!--Hidden Storage Start-->
         <input type="hidden" asp-for="Character.CharacterId" />
         <input type="hidden" asp-for="Character.UserId" />

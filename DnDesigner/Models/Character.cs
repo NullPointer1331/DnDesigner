@@ -686,11 +686,6 @@ namespace DnDesigner.Models
         public int Charisma { get; set; } = 8;
     }
 
-    public class LevelCharacterViewModel : CreateCharacterViewModel
-    {
-        public Character Character { get; set; }
-    }
-
     public class FeatureChoiceViewModel
     {
         public Character Character { get; set; }

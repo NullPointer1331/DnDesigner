@@ -1,11 +1,11 @@
-﻿@model LevelCharacterViewModel
+﻿@model CreateCharacterViewModel
 @inject IDBHelper DBHelper
 
 @{
-    ViewData["Title"] = "Edit " + Model.Character.Name;
+    ViewData["Title"] = "Edit " + Model.Name;
 }
 
-<h1>Edit @Model.Character.Name</h1>
+<h1>Edit @Model.Name</h1>
 
 <hr />
 <div>
@@ -13,14 +13,8 @@
         @{await Html.RenderPartialAsync("_CharacterCreationPartial", Model);}
         <div class="form-group">
             <input type="submit" value="Save" class="btn btn-primary" />
-            <input type="button" value="Cancel" class="btn btn-danger" onclick="location.href='@Url.Action("CharacterSheet", "Characters", new {id = Model.Character.CharacterId})'" />
+            <input type="button" value="Cancel" class="btn btn-danger" onclick="location.href='@Url.Action("Index", "Characters")'" />
         </div>
-        <!--Hidden Storage Start-->
-        <input type="hidden" asp-for="Character.CharacterId" />
-        <input type="hidden" asp-for="Character.UserId" />
-        <input type="hidden" asp-for="Character.Race" />
-        <input type="hidden" asp-for="Character.Background" />
-        <!--Hidden Storage End-->
     </form>
 </div>
 
@@ -36,13 +30,13 @@
     <script src="~/js/characterCreate.js"></script>
     <script type="text/javascript">
         const Model = @Html.Raw(Json.Serialize(Model));
-        var numClasses = @Model.Character.Classes.Count;
+        var numClasses = 0;
         for (var i = 0; i < @Model.Classes.Count; i++) {
             if (Model.classes[i][0] > 0) {
                 var classDiv = document.getElementById("Class" + i);
                 classDiv.hidden = false;
                 updateSubclasses(i);
-                displaySubclasses(i);
+                numClasses++;
             }
         }
     </script>

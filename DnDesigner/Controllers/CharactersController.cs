@@ -253,9 +253,8 @@ namespace DnDesigner.Controllers
                 return Unauthorized();
             }
             character.RemoveEffects();
-            LevelCharacterViewModel levelViewModel = new LevelCharacterViewModel()
+            CreateCharacterViewModel levelViewModel = new CreateCharacterViewModel()
             {
-                Character = character,
                 AvailableClasses = await _dbHelper.GetAllClasses(),
                 AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
                 AvailableRaces = await _dbHelper.GetAllRaces(),
@@ -284,7 +283,7 @@ namespace DnDesigner.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, LevelCharacterViewModel characterViewModel)
+        public async Task<IActionResult> Edit(int id, CreateCharacterViewModel characterViewModel)
         {
             Character character = await _dbHelper.GetCharacter(id);
             if (id != character.CharacterId)
@@ -308,10 +307,9 @@ namespace DnDesigner.Controllers
             {
                 ModelState.AddModelError("Classes", "You cannot have more than 20 levels.");
             }
-            ModelState.Remove("Character.Background");
-            ModelState.Remove("Character.Race");
             if (ModelState.IsValid)
             {
+                character.RemoveEffects();
                 Background background = await _dbHelper.GetBackground(characterViewModel.BackgroundId);
                 Race race = await _dbHelper.GetRace(characterViewModel.RaceId);
                 List<CharacterClass> classes = new List<CharacterClass>();
@@ -384,10 +382,8 @@ namespace DnDesigner.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("FeatureChoices", new { id = character.CharacterId });
+                return RedirectToAction("FeatureChoices", new { id });
             }
-            characterViewModel.Character.Background = await _dbHelper.GetBackground(characterViewModel.BackgroundId);
-            characterViewModel.Character.Race = await _dbHelper.GetRace(characterViewModel.RaceId);
             characterViewModel.AvailableClasses = await _dbHelper.GetAllClasses();
             characterViewModel.AvailableBackgrounds = await _dbHelper.GetAllBackgrounds();
             characterViewModel.AvailableRaces = await _dbHelper.GetAllRaces();

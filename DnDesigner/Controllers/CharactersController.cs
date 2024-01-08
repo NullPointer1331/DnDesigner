@@ -193,23 +193,50 @@ namespace DnDesigner.Controllers
             if (ModelState.IsValid)
             {
                 character.ApplyEffects();
-                try
+                if (character.Strength < 1 || character.Strength > 20)
                 {
-                    _context.Update(character);
-                    await _context.SaveChangesAsync();
+                    ModelState.AddModelError("Character.Strength", $"A Strength score of {character.Strength} is invalid. Strength must be between 1 and 20.");
                 }
-                catch (DbUpdateConcurrencyException)
+                else if (character.Dexterity < 1 || character.Dexterity > 20)
                 {
-                    if (!CharacterExists(character.CharacterId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    ModelState.AddModelError("Character.Dexterity", $"A Dexterity score of {character.Dexterity} is invalid. Dexterity must be between 1 and 20.");
                 }
-                return RedirectToAction("CharacterSheet", new {id = character.CharacterId});
+                else if (character.Constitution < 1 || character.Constitution > 20)
+                {
+                    ModelState.AddModelError("Character.Constitution", $"A Constitution score of {character.Constitution} is invalid. Constitution must be between 1 and 20.");
+                }
+                else if (character.Intelligence < 1 || character.Intelligence > 20)
+                {
+                    ModelState.AddModelError("Character.Intelligence", $"An Intelligence score of {character.Intelligence} is invalid. Intelligence must be between 1 and 20.");
+                }
+                else if (character.Wisdom < 1 || character.Wisdom > 20)
+                {
+                    ModelState.AddModelError("Character.Wisdom", $"A Wisdom score of {character.Wisdom} is invalid. Wisdom must be between 1 and 20.");
+                }
+                else if (character.Charisma < 1 || character.Charisma > 20)
+                {
+                    ModelState.AddModelError("Character.Charisma", $"A Charisma score of {character.Charisma} is invalid. Charisma must be between 1 and 20.");
+                }
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.Update(character);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!CharacterExists(character.CharacterId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction("CharacterSheet", new { id = character.CharacterId });
+                }
             }
             return View(featureChoiceViewModel);
         }

@@ -698,6 +698,8 @@ namespace DnDesigner.Models
         // Normally I would handle this inside the CharacterFeature class, 
         // but the view simply isn't passing it back to the controller and I don't know why
         // So this is a hopefully temporary workaround
+        // As is, it won't work with choices in choices
+        // We don't have any of those yet, but we will if we implement Feats
         public List<int?> ChoiceValues { get; set; }
     }
 }

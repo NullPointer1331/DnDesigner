@@ -147,6 +147,11 @@ namespace DnDesigner.Models
         public string PlayerNotes { get; set; }
 
         /// <summary>
+        /// The alignment of the character
+        /// </summary>
+        public string Alignment { get; set; }
+
+        /// <summary>
         /// The characters race
         /// </summary>
         public Race Race { get; set; }
@@ -211,9 +216,11 @@ namespace DnDesigner.Models
             Immunities = "";
             Vulnerabilities = "";
             PlayerNotes = "";
+            Alignment = "";
         }
         public Character(CreateCharacterViewModel character, Class @class, 
-            Race race, Background background, List<Proficiency> defaultProficiencies, string userId)
+            Race race, Background background, List<Proficiency> defaultProficiencies,
+            string alignment, string userId)
         {
             UserId = userId;
             Name = character.Name;
@@ -225,6 +232,7 @@ namespace DnDesigner.Models
             Actions = new List<CharacterAction>();
             Inventory = new Inventory(this);
             Background = background;
+            Alignment = alignment;
             Race = race;
             TempHealth = 0;
             Strength = character.Strength;

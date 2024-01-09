@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace DnDesigner.Models
 {
@@ -27,6 +28,11 @@ namespace DnDesigner.Models
         /// The hit die type of the class
         /// </summary>
         public int HitDie { get; set; }
+
+		/// <summary>
+		/// The level at which the class gets its subclass
+		/// </summary>
+		public int SubclassLevel { get; set; }
 
         /// <summary>
         /// The features of the class
@@ -82,6 +88,7 @@ namespace DnDesigner.Models
 		/// The character the class belongs to
 		/// </summary>
 		[ForeignKey("CharacterId")]
+		[JsonIgnore]
 		public Character Character { get; set; }
 
 		/// <summary>

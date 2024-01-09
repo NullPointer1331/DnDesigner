@@ -53,7 +53,8 @@ namespace DnDesigner.Data
                         {
                             Class @class = classes.Where(c => c.Name == subclass5E.className).FirstOrDefault();
                             List<SubclassFeature5ETools> subclassFeatures = classRoot.subclassFeature
-                                .Where(f => f.subclassShortName == subclass5E.shortName).ToList();
+                                .Where(f => f.subclassShortName == subclass5E.shortName && !f.source.Contains("UA"))
+                                .ToList();
                             if (@class != null)
                             {
                                 subclasses.Add(ConvertSubclass(subclass5E, @class, subclassFeatures));
@@ -553,7 +554,7 @@ namespace DnDesigner.Data
             }
             if(race.StatBonuses == "")
             {
-                race.StatBonuses = "+2 +1, or 3 +1s to any stats of your choice.";
+                race.StatBonuses = "+2 +1, or 3 +1s to different stats.";
                 statBonuses.Effects.Add(new EffectChoice("ASI"));
                 statBonuses.Effects.Add(new EffectChoice("ASI"));
                 statBonuses.Effects.Add(new EffectChoice("ASI"));
@@ -889,6 +890,10 @@ namespace DnDesigner.Data
                 description = CleanText(description);
                 SubclassFeature feature = new SubclassFeature(subclass, feature5E.name, description, feature5E.level);
                 subclass.Features.Add(feature);
+                if(@class.SubclassLevel == 0 || feature.Level <= @class.SubclassLevel)
+                {
+                    @class.SubclassLevel = feature.Level;
+                }
             }
             @class.Subclasses.Add(subclass);
             return subclass;

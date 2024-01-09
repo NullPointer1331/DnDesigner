@@ -1,0 +1,74 @@
+﻿@model FeatureChoiceViewModel
+@{
+    ViewData["Title"] = "Feature Choices";
+}
+
+<h1>View Features</h1>
+<hr />
+
+<form asp-action="FeatureChoices">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <div class="accordion" id="Features">
+            @foreach(Feature feature in Model.Character.Features)
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-@feature.FeatureId" aria-expanded="true"
+                                aria-controls="panelsStayOpen-@feature.FeatureId">
+                            @feature.ToString()
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-@feature.FeatureId" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <strong>@feature.Description</strong>
+                            <br />
+                            @foreach (Effect featureEffect in feature.Effects)
+                            {
+                                if (featureEffect is EffectWithParam effect)
+                                {
+                                    CharacterEffect characterEffect = Model.Character.CharacterEffects.FirstOrDefault(ce => ce.Effect.EffectId == featureEffect.EffectId);
+                                    int index = Model.Character.CharacterEffects.IndexOf(characterEffect);
+                                    if (featureEffect is EffectChoice choice)
+                                    {
+                                        <select asp-for="@Model.ChoiceValues[index]">
+                                            @for (int i = 0; i < choice.Effects.Count; i++)
+                                            {
+                                                if ((Model.ChoiceValues[index] ?? 0) == i)
+                                                {
+                                                    <option value="@i" selected>@choice.Effects[i].ToString()</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@i">@choice.Effects[i].ToString()</option>
+                                                }
+                                            }
+                                        </select>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <input type="button" value="Back" class="btn btn-danger" onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.Character.CharacterId})'" />
+    </div>
+    <!--Hidden Storage Start-->
+    @for (int i = 0; i < Model.ChoiceValues.Count; i++) //Hidden storage for Effects that don't have choices
+    { //Even though they are null, if they aren't here, it won't return all of the values in the list
+        <input hidden asp-for="@Model.ChoiceValues[i]" value="@Model.ChoiceValues[i]" />
+    }
+    <input type="hidden" asp-for="Character" />
+    <input type="hidden" asp-for="Character.CharacterId" />
+    <input type="hidden" asp-for="Character.UserId" />
+    <!--Hidden Storage End-->
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

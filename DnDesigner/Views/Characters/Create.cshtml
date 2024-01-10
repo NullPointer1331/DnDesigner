@@ -16,7 +16,7 @@
 				<label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" value="Unnamed Character" />
 				<span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+            </div><br />
             @*
                 In order to have multiple accordions on the same page,
                 each accordion must have a unique id.
@@ -45,11 +45,10 @@
 									<option value="@characterClass.ClassId">@characterClass.Name</option>
 								}
                             </select>
-                            <p id="descriptionClass">lorem ipsum</p>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div><br />
 
             @* Accordion for Background selection *@
             <div class="form-group accordion" id="accordionBackground">
@@ -72,7 +71,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div><br />
 
             @* Accordion for Proficiencies selection *@
             <div class="form-group accordion" id="accordionProficiencies">
@@ -93,7 +92,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div><br />
 
             @* Accordion for Race selection *@
             <div class="form-group accordion" id="accordionRaces">
@@ -116,7 +115,14 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div><br />
+
+            @* Input for the Alignment entry *@
+            <div class="form-group">
+                <label asp-for="Alignment" class="control-label"></label>
+                <input asp-for="Alignment" class="form-control" value="True Neutral" />
+                <span asp-validation-for="Alignment" class="text-danger"></span>
+            </div><br />
 
             @* Accordion for Stat entry *@
             <div class="form-group accordion" id="accordionStats">
@@ -154,7 +160,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div><br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

@@ -92,7 +92,7 @@ namespace DnDesigner.Controllers
                     .ToListAsync(); 
                 
                 character.MaxHealth = @class.HitDie + (character.Constitution - 10) / 2;
-                Character newCharacter = new Character(character, @class, race, background, defaultProficiencies, User.FindFirstValue(ClaimTypes.NameIdentifier));
+                Character newCharacter = new Character(character, @class, race, background, defaultProficiencies, character.Alignment, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 _context.Add(newCharacter);
                 await _context.SaveChangesAsync();

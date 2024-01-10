@@ -672,5 +672,10 @@ namespace DnDesigner.Models
         /// </summary>
         [Range(1, 20)]
         public int Charisma { get; set;}
+
+        /// <summary>
+        /// The character's alignment
+        /// </summary>
+        public string Alignment { get; set; }
     }
 }

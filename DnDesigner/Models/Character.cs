@@ -676,6 +676,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The character's alignment
         /// </summary>
+        [DefaultValue("True Neutral")]
         public string Alignment { get; set; }
     }
 }

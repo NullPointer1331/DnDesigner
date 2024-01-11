@@ -5,7 +5,7 @@ This will ideally be a D&D 5E character builder and manager, similar to [D&D Bey
 [Evan Pendergrass](https://github.com/NullPointer1331), [John Bartholomew](https://github.com/JohnnyBee86), and [Elias McKee](https://github.com/ScarlandianProgrammer)
 
 ## See the Live Site
-[DnDsigner](https://dndesigner.azurewebsites.net/)
+[DnDesigner](https://dndesigner.azurewebsites.net/)
 
 ### Current Features
 

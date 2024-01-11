@@ -551,6 +551,66 @@ namespace DnDesigner.Models
 
         public void SetActiveFeatures()
         {
+            //Remove features that shouldn't be active
+            foreach (CharacterFeature characterFeature in Features)
+            {
+                Feature feature = characterFeature.Feature;
+                bool valid = true;
+                if (feature.Level > Level)
+                {
+                    valid = false;
+                }
+                else if (feature is BackgroundFeature backgroundFeature && 
+                    backgroundFeature.Background.BackgroundId != Background.BackgroundId)
+                {
+                    valid = false;
+                }
+                else if (feature is RaceFeature raceFeature &&
+                    raceFeature.Race.RaceId != Race.RaceId)
+                {
+                    valid = false;
+                }
+                else if (feature is ClassFeature classFeature)
+                {
+                    CharacterClass? sourceClass = Classes
+                        .Where(c => c.Class.ClassId == classFeature.Class.ClassId).FirstOrDefault();
+                    if (sourceClass == null)
+                    {
+                        valid = false;
+                    }
+                    else if (classFeature.InitialClassOnly && !sourceClass.InitialClass)
+                    {
+                        valid = false;
+                    }
+                    else if (classFeature.MulticlassOnly && sourceClass.InitialClass)
+                    {
+                        valid = false;
+                    }
+                    else if (classFeature.Level > sourceClass.Level)
+                    {
+                        valid = false;
+                    }
+                }
+                else if (feature is SubclassFeature subclassFeature)
+                {
+                    CharacterClass? sourceSublass = Classes
+                        .Where(c => c.Subclass?.SubclassId == subclassFeature.Subclass?.SubclassId).FirstOrDefault();
+                    if (sourceSublass == null)
+                    {
+                        valid = false;
+                    }
+                    else if (subclassFeature.Level > sourceSublass.Level)
+                    {
+                        valid = false;
+                    }
+                }
+                if (!valid)
+                {
+                    characterFeature.RemoveEffect();
+                    Features.Remove(characterFeature);
+                }
+            }
+
             List<Feature> features = new List<Feature>();
             foreach (CharacterClass @class in Classes)
             {
@@ -562,14 +622,7 @@ namespace DnDesigner.Models
             }
             features.AddRange(Background.Features.Where(f => f.Level <= Level));
             features.AddRange(Race.Features.Where(f => f.Level <= Level));
-
-            //Remove features that shouldn't be active
-            foreach (CharacterFeature feature in Features.Where(f => f.Level > Level))
-            {
-                feature.RemoveEffect();
-                Features.Remove(feature);
-            }
-
+            
             //Add features that haven't been added yet
             foreach (Feature feature in features)
             {

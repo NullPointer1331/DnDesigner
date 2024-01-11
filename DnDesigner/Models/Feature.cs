@@ -89,57 +89,7 @@ namespace DnDesigner.Models
             return str;
         }
     }
-    public class CharacterFeature : Feature
-    {
-        /// <summary>
-        /// The character that has the feature
-        /// </summary>
-        [ForeignKey("CharacterId")]
-        [JsonIgnore]
-        public Character Character { get; set; }
-
-        /// <summary>
-        /// Constructor converting an existing feature to a character feature
-        /// </summary>
-        /// <param name="character">The character that has the feature</param>
-        /// <param name="feature">The feature given to the character</param>
-        public CharacterFeature(Character character, Feature feature) : base(feature.Name, feature.Description, feature.Level, feature.Source)
-        {
-            Character = character;
-            Effects = feature.Effects;
-        }
-
-        private CharacterFeature() : base("", "", 0) { }
-
-        public void ApplyEffect() {             
-            foreach (Effect effect in Effects)
-            {
-                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
-                if(existingEffect != null)
-                {
-                    existingEffect.ApplyEffect();
-                }
-                else
-                {
-                    CharacterEffect characterEffect = new CharacterEffect(Character, effect);
-                    Character.CharacterEffects.Add(characterEffect);
-                    characterEffect.ApplyEffect();
-                }
-            }
-        }
-        public void RemoveEffect()
-        {
-            foreach (Effect effect in Effects)
-            {
-                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
-                if (existingEffect != null)
-                {
-                    existingEffect.RemoveEffect();
-                    Character.CharacterEffects.Remove(existingEffect);
-                }
-            }
-        }
-    }
+    
     /// <summary>
     /// Represents a feature for a class
     /// </summary>
@@ -153,6 +103,16 @@ namespace DnDesigner.Models
         public Class Class { get; set; }
 
         /// <summary>
+        /// Whether or not this feature is only available to the initial class
+        /// </summary>
+        public bool InitialClassOnly { get; set; }
+
+        /// <summary>
+        /// Whether or not this feature is only available to classes other than the initial class
+        /// </summary>
+        public bool MulticlassOnly { get; set; }
+
+        /// <summary>
         /// Full constructor, sets all properties
         /// </summary>
         /// <param name="class">The subclass that has this feature</param>
@@ -163,6 +123,8 @@ namespace DnDesigner.Models
         {
             Class = @class;
             Source = $"{Class.Sourcebook}, Class, {Class.Name}";
+            InitialClassOnly = false;
+            MulticlassOnly = false;
         }
         private ClassFeature() : base("", "", 0) { }
     }
@@ -233,5 +195,100 @@ namespace DnDesigner.Models
             Source = $"{Background.Sourcebook}, Background, {Background.Name}";
         }
         private BackgroundFeature() : base("", "", 0) { }
+    }
+
+    public class Feat : Feature
+    {
+        public bool Repeatable { get; set; }
+
+        public string Prerequisites { get; set; }
+
+        public Feat(string name, string description, int level, string source, bool repeatable, string prerequisites) : base(name, description, level, source)
+        {
+            Repeatable = repeatable;
+            Prerequisites = prerequisites;
+        }
+
+        private Feat() : base("", "", 0) { }
+    }
+
+    public class CharacterFeature
+    {
+        public int CharacterFeatureId { get; private set; }
+
+        /// <summary>
+        /// The character that has the feature
+        /// </summary>
+        [ForeignKey("CharacterId")]
+        [JsonIgnore]
+        public Character Character { get; set; }
+
+        /// <summary>
+        /// The feature given to the character
+        /// </summary>
+        public Feature Feature { get; set; }
+
+        public CharacterFeature(Character character, Feature feature)
+        {
+            Character = character;
+            Feature = feature;
+        }
+
+        private CharacterFeature() { }
+
+        public void ApplyEffect()
+        {
+            foreach (Effect effect in Feature.Effects)
+            {
+                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
+                if (existingEffect != null)
+                {
+                    existingEffect.ApplyEffect();
+                }
+                else
+                {
+                    CharacterEffect characterEffect = new CharacterEffect(Character, effect);
+                    Character.CharacterEffects.Add(characterEffect);
+                    characterEffect.ApplyEffect();
+                }
+            }
+        }
+        public void RemoveEffect()
+        {
+            foreach (Effect effect in Feature.Effects)
+            {
+                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
+                if (existingEffect != null)
+                {
+                    existingEffect.RemoveEffect();
+                    Character.CharacterEffects.Remove(existingEffect);
+                }
+            }
+        }
+    }
+
+    public class CharacterFeat
+    {
+        public int CharacterFeatId { get; private set; }
+
+        /// <summary>
+        /// The character that has the feat
+        /// </summary>
+        [ForeignKey("CharacterId")]
+        [JsonIgnore]
+        public Character Character { get; set; }
+
+        /// <summary>
+        /// The feat given to the character
+        /// </summary>
+        public Feat Feat { get; set; }
+
+        public CharacterFeat(Character character, Feat feat)
+        {
+            Character = character;
+            Feat = feat;
+        }
+
+        private CharacterFeat() { }
     }
 }

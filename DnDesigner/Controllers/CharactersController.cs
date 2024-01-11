@@ -328,32 +328,6 @@ namespace DnDesigner.Controllers
                         }
                     }
                 }
-                if (character.Race.RaceId != race.RaceId)
-                {
-                    foreach(Feature feature in race.Features)
-                    {
-                        CharacterFeature? existingFeature = character.Features.Where(f => f.Equals(feature)).FirstOrDefault();
-                        if (existingFeature != null)
-                        {
-                            existingFeature.RemoveEffect();
-                            character.Features.Remove(existingFeature);
-                        }
-                    }
-                    character.Race = race;
-                }
-                if (character.Background.BackgroundId != background.BackgroundId)
-                {
-                    foreach (Feature feature in background.Features)
-                    {
-                        CharacterFeature? existingFeature = character.Features.Where(f => f.Equals(feature)).FirstOrDefault();
-                        if (existingFeature != null)
-                        {
-                            existingFeature.RemoveEffect();
-                            character.Features.Remove(existingFeature);
-                        }
-                    }
-                    character.Background = background;
-                }
                 character.Classes = classes;
                 character.Name = characterViewModel.Name;
                 character.MaxHealth = characterViewModel.MaxHealth;

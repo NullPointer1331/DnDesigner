@@ -19,9 +19,6 @@ namespace DnDesigner.Data
             builder.Entity<BackgroundFeature>()
                 .HasMany(e => e.Effects)
                 .WithOne();
-            builder.Entity<CharacterFeature>()
-                .HasMany(e => e.Effects)
-                .WithMany();
             builder.Entity<ClassFeature>()
                 .HasMany(e => e.Effects)
                 .WithOne();
@@ -49,6 +46,8 @@ namespace DnDesigner.Data
                 .WithMany();
             base.OnModelCreating(builder);
         }
+        public DbSet<Feat> Feats { get; set; }
+        public DbSet<Feature> Features { get; set; }
         public DbSet<Effect> Effects { get; set; }
         public DbSet<CharacterEffect> CharacterEffects { get; set; }
         public DbSet<Proficiency> Proficiencies { get; set; }

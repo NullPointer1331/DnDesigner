@@ -217,10 +217,6 @@ namespace DnDesigner.Data.Migrations
                     b.Property<int>("TempHealth")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Vulnerabilities")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

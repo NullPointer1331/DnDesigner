@@ -10,8 +10,9 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <div class="accordion" id="Features">
-            @foreach(Feature feature in Model.Character.Features)
+            @foreach(CharacterFeature characterFeature in Model.Character.Features)
             {
+                Feature feature = characterFeature.Feature;
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"

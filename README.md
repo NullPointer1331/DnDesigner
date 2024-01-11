@@ -7,13 +7,12 @@ This will ideally be a D&D 5E character builder and manager, similar to [D&D Bey
 ### Current Features
 
   - [User Profiles](#user-profiles)
-  - [Level 1 Character Creation](#character-creation) 
+  - [Character Creation](#character-creation) 
   - [User's Character Index](#character-index)   
   - [Character Sheet](#character-sheet)
 
 ### Planned Features
 
-  - Character Leveling
   - Character Inventory
   - Item interaction with Character: This would include things like adding a bonus to the Characters defense from any worn armor.
   - Character Spells: Populating the Spells section of the Character Sheet with all the Spells the character has.

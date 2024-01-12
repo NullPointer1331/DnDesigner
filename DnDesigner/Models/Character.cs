@@ -147,6 +147,11 @@ namespace DnDesigner.Models
         public string PlayerNotes { get; set; }
 
         /// <summary>
+        /// The alignment of the character
+        /// </summary>
+        public string Alignment { get; set; }
+
+        /// <summary>
         /// The characters race
         /// </summary>
         public Race Race { get; set; }
@@ -211,9 +216,11 @@ namespace DnDesigner.Models
             Immunities = "";
             Vulnerabilities = "";
             PlayerNotes = "";
+            Alignment = "";
         }
         public Character(CreateCharacterViewModel character, 
-            Race race, Background background, List<Proficiency> defaultProficiencies, string userId)
+            Race race, Background background, List<Proficiency> defaultProficiencies, string alignment,
+            string userId)
         {
             UserId = userId;
             Name = character.Name;
@@ -225,6 +232,7 @@ namespace DnDesigner.Models
             Actions = new List<CharacterAction>();
             Inventory = new Inventory(this);
             Background = background;
+            Alignment = alignment;
             Race = race;
             MaxHealth = character.MaxHealth;
             CurrentHealth = MaxHealth;
@@ -665,6 +673,12 @@ namespace DnDesigner.Models
         /// A list containing arrays of level, class id, and subclass id
         /// </summary>
         public List<int[]> Classes { get; set; }
+
+        /// <summary>
+        /// The alignment of the character
+        /// </summary>
+        [DefaultValue("True Neutral")]
+        public string Alignment { get; set; }
 
         /// <summary>
         /// The id of background of the character.

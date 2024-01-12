@@ -70,15 +70,15 @@ function DieRoller()
     let dieCount = document.getElementById('dieCount').value;
     let dieSize = document.getElementById('dieSize').value;
 
-    if (dieCount > 0)
+    if (100 > dieCount && dieCount > 0)
     {
         toastBox.firstElementChild.firstElementChild.innerHTML = dieCount + "d" + dieSize;
         toastBox.lastElementChild.innerHTML = RollString(dieSize, dieCount);
     }
     else
     {
-        toastBox.firstElementChild.firstElementChild.innerHTML = "No dice were rolled.";
-        toastBox.lastElementChild.innerHTML = "You must roll at least 1 die.";
+        toastBox.firstElementChild.firstElementChild.innerHTML = "How many dice?";
+        toastBox.lastElementChild.innerHTML = "You must roll at least 1 die (99 max).";
     }
     toastBootstrap.show()
 }

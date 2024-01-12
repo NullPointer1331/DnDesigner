@@ -26,8 +26,12 @@
 <h4>@Model.Race.Name @Model.Background.Name</h4>
 <h5>@Model.Alignment</h5>
 
+<!--Edit / Level Up Button-->
+<input type="button" value="Edit/Level Up" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.CharacterId})'" />
+<hr />
+
 <!--Roll Toast Box-->
-<div class="toast-container w-50 position-fixed top-1 start-50 translate-middle">
+<div class="toast-container w-50 top-1 start-50 translate-middle">
     <div id="rollToast" class="toast w-100" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             <h3 class="me-auto">
@@ -38,10 +42,6 @@
         </h2>
     </div>
 </div>
-
-<!--Edit / Level Up Button-->
-<input type="button" value="Edit/Level Up" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.CharacterId})'" />
-<hr />
 
 <form asp-action="CharacterSheet">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -79,7 +79,7 @@
                 </div>
                 <div class="input-group me-2">
                     <label class="input-group-text">Die Roller</label>
-                    <input id="dieCount" type="number" class="form-control" placeholder="Die Count" min="1" aria-label="Die roller">
+                    <input id="dieCount" type="number" class="form-control" placeholder="0" min="1" max="99" aria-label="Die roller">
                     <select class="form-select" id="dieSize">
                         <option value="4" >d4</option>
                         <option value="6" >d6</option>

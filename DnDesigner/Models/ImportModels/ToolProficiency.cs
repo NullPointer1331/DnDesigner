@@ -33,5 +33,11 @@ namespace DnDesigner.Models.ImportModels
 
         [JsonProperty("musical instrument")]
         public bool? musicalinstrument { get; set; }
+
+        [JsonProperty("alchemist's supplies")]
+        public bool? alchemistssupplies { get; set; }
+
+        [JsonProperty("cook's utensils")]
+        public bool? cooksutensils { get; set; }
     }
 }

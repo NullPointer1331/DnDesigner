@@ -79,6 +79,7 @@ namespace DnDesigner.Controllers
             _context.Classes.RemoveRange(_context.Classes);
             _context.Subclasses.RemoveRange(_context.Subclasses);
             _context.Actions.RemoveRange(_context.Actions);
+            _context.Features.RemoveRange(_context.Features);
 
             List<Item> items = ImportData.ExtractItems();
             List<Proficiency> proficiencies = ImportData.ExtractProficiencies(items);
@@ -87,7 +88,9 @@ namespace DnDesigner.Controllers
             List<Race> races = ImportData.ExtractRaces(proficiencies);
             List<Class> classes = ImportData.ExtractClasses(proficiencies); 
             List<Subclass> subclasses = ImportData.ExtractSubclasses(classes); 
+            List<Feat> feats = ImportData.ExtractFeats();
 
+            _context.Feats.AddRange(feats);
             _context.Proficiencies.AddRange(proficiencies);
             _context.Items.AddRange(items);
             _context.Spells.AddRange(spells);

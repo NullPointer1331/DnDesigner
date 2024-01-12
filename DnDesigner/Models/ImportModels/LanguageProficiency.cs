@@ -4,6 +4,7 @@ namespace DnDesigner.Models.ImportModels
     public class LanguageProficiency
     {
         public int anyStandard { get; set; }
+        public int any { get; set; }
         public bool? primordial { get; set; }
         public Choose choose { get; set; }
         public bool? dwarvish { get; set; }

@@ -11,10 +11,6 @@ namespace DnDesigner.Models.ImportModels
         public List<SubclassFeature5ETools> subclassFeature { get; set; }
     }
 
-    public class AdditionalSpell
-    {
-        public Prepared prepared { get; set; }
-    }
     public class B
     {
         public string equipmentType { get; set; }

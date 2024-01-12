@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace DnDesigner.Models
 {
@@ -31,6 +32,7 @@ namespace DnDesigner.Models
 		/// The class the subclass is a subclass of
 		/// </summary>
 		[ForeignKey("ClassId")]
+		[JsonIgnore]
 		public Class Class { get; set; } = null!;
 
 		/// <summary>

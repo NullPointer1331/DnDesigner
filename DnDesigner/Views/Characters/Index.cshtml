@@ -43,16 +43,18 @@
             <td>
                 @foreach (CharacterClass Class in item.Classes)
                 {
-                    @Html.DisplayFor(modelItem => Class.Class.Name)
+                    string classString = "";
                     if (Class.Subclass != null)
                     {
-                        @Html.DisplayFor(modelItem => Class.Subclass.Name)
+                        classString = Class.Subclass.Name + " ";
                     }
+                    classString += Class.Class.Name + " ";
+                    @Html.DisplayFor(modelItem => classString)
                 }
             </td>
             <td>
                 <a asp-action="CharacterSheet" asp-route-id="@item.CharacterId">Character Sheet</a> |
-                <a asp-action="Details" asp-route-id="@item.CharacterId">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.CharacterId">Edit</a> |
                 <a asp-action="Delete" asp-route-id="@item.CharacterId">Delete</a>
             </td>
         </tr>

@@ -2,17 +2,17 @@
 @inject IDBHelper DBHelper
 
 @{
-    ViewData["Title"] = "Create a Character";
+    ViewData["Title"] = "Edit " + Model.Name;
 }
 
-<h1>Create a Character</h1>
+<h1>Edit @Model.Name</h1>
 
 <hr />
-<div >
-    <form asp-action="Create">
+<div>
+    <form asp-action="Edit">
         @{await Html.RenderPartialAsync("_CharacterCreationPartial", Model);}
         <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="submit" value="Save" class="btn btn-primary" />
             <input type="button" value="Cancel" class="btn btn-danger" onclick="location.href='@Url.Action("Index", "Characters")'" />
         </div>
     </form>
@@ -30,6 +30,14 @@
     <script src="~/js/characterCreate.js"></script>
     <script type="text/javascript">
         const Model = @Html.Raw(Json.Serialize(Model));
-        var numClasses = 1;
+        var numClasses = 0;
+        for (var i = 0; i < @Model.Classes.Count; i++) {
+            if (Model.classes[i][0] > 0) {
+                var classDiv = document.getElementById("Class" + i);
+                classDiv.hidden = false;
+                updateSubclasses(i);
+                numClasses++;
+            }
+        }
     </script>
 }

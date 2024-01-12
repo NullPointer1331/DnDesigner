@@ -218,9 +218,8 @@ namespace DnDesigner.Models
             PlayerNotes = "";
             Alignment = "";
         }
-        public Character(CreateCharacterViewModel character, Class @class, 
-            Race race, Background background, List<Proficiency> defaultProficiencies,
-            string alignment, string userId)
+        public Character(CreateCharacterViewModel character, 
+            Race race, Background background, List<Proficiency> defaultProficiencies, string userId)
         {
             UserId = userId;
             Name = character.Name;
@@ -234,6 +233,8 @@ namespace DnDesigner.Models
             Background = background;
             Alignment = alignment;
             Race = race;
+            MaxHealth = character.MaxHealth;
+            CurrentHealth = MaxHealth;
             TempHealth = 0;
             Strength = character.Strength;
             Dexterity = character.Dexterity;
@@ -242,27 +243,55 @@ namespace DnDesigner.Models
             Wisdom = character.Wisdom;
             Charisma = character.Charisma;
             WalkingSpeed = race.Speed;
-            MaxHealth = character.MaxHealth;
-            CurrentHealth = character.MaxHealth;
             Resistances = "";
             Immunities = "";
             Vulnerabilities = "";
             PlayerNotes = "";
 
-            Classes.Add(new CharacterClass(this, @class, 1));
-            Classes[0].InitialClass = true;
-            if(@class.Spellcasting != null)
-            {
-                Spellcasting.Add(new CharacterSpellcasting(this, @class.Spellcasting));
-            }
             foreach (Proficiency proficiency in defaultProficiencies)
             {
                 Proficiencies.Add(new CharacterProficiency(this, proficiency));
             }
-            SetActiveFeatures();
+            
         }
 
         #region methods
+        /// <summary>
+        /// Calculates the average maximum health of the character
+        /// </summary>
+        /// <returns>The average maximum health of the character</returns>
+        public int GetAverageHealth()
+        {
+            int averageHealth = MaxHitDice[0] * (4 + GetModifier("con")) 
+                + MaxHitDice[1] * (5 + GetModifier("con")) 
+                + MaxHitDice[2] * (6 + GetModifier("con")) 
+                + MaxHitDice[3] * (7 + GetModifier("con"));
+            foreach(CharacterClass characterClass in Classes)
+            {
+                if(characterClass.InitialClass)
+                {
+                    if(characterClass.Class.HitDie == 6)
+                    {
+                        averageHealth += 2;
+                    }
+                    else if (characterClass.Class.HitDie == 8)
+                    {
+                        averageHealth += 3;
+                    }
+                    else if (characterClass.Class.HitDie == 10)
+                    {
+                        averageHealth += 4;
+                    }
+                    else if (characterClass.Class.HitDie == 12)
+                    {
+                        averageHealth += 5;
+                    }
+                    break;
+                }
+            }
+            return averageHealth;
+        }
+
         /// <summary>
         /// Calculates a value based on a formula
         /// </summary>
@@ -558,7 +587,22 @@ namespace DnDesigner.Models
                     characterFeature.ApplyEffect();
                 }
             }
-
+            ApplyEffects();
+        }
+        public void ApplyEffects()
+        {
+            RemoveEffects();
+            for (int i = 0; i < CharacterEffects.Count; i++)
+            {
+                CharacterEffects[i].ApplyEffect();
+            }
+        }
+        public void RemoveEffects()
+        {
+            for (int i = 0; i < CharacterEffects.Count; i++)
+            {
+                CharacterEffects[i].RemoveEffect();
+            }
         }
         #endregion
     }
@@ -569,42 +613,17 @@ namespace DnDesigner.Models
         /// The name of the character
         /// </summary>
         [DefaultValue("Unnamed Character")]
-        public string Name { get; set; }
-
-        /*
-        /// <summary>
-        /// The level of the character.
-        /// Cannot be more than 20, or less than 1.
-        /// </summary>
-        [Range(1, 20)]
-        public int Level { get; set; }*/
+        public string Name { get; set; } = "Unnamed Character";
 
         /// <summary>
-        /// The classes the character has.
+        /// A list containing arrays of level, class id, and subclass id
         /// </summary>
-        //public List<CharacterClass> Classes { get; set; }
-
-        /// <summary>
-        /// The id of selected class
-        /// </summary>
-        public int ClassId { get; set; }
+        public List<int[]> Classes { get; set; }
 
         /// <summary>
         /// The id of background of the character.
         /// </summary>
         public int BackgroundId { get; set; }
-
-        /*
-        /// <summary>
-        /// The proficiencies the character has.
-        /// </summary>
-        public List<CharacterProficiency> Proficiencies { get; set; }*/
-
-        /*
-        /// <summary>
-        /// The spellcasting ability of the character, if they have one.
-        /// </summary>
-        public List<CharacterSpellcasting> Spellcasting { get; set; }*/
 
         /// <summary>
         /// The Id of characters race
@@ -626,57 +645,63 @@ namespace DnDesigner.Models
 		/// </summary>
 		public List<Background> AvailableBackgrounds { get; set; }
 
-		/// <summary>
-		/// The character's maximum health points.
-		/// </summary>
-		public int MaxHealth { get; set; }
+        /// <summary>
+        /// The character's maximum health.
+        /// </summary>
+        public int MaxHealth { get; set; } = 7;
 
         /// <summary>
         /// The character's strength stat. 
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Strength { get; set; }
+        public int Strength { get; set; } = 8;
 
         /// <summary>
         /// The character's dexterity stat.
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Dexterity { get; set; }
+        public int Dexterity { get; set; } = 8;
 
         /// <summary>
         /// The character's constitution stat.
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Constitution { get; set; }
+        public int Constitution { get; set; } = 8;
 
         /// <summary>
         /// The character's intelligence stat.
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Intelligence { get; set; }
+        public int Intelligence { get; set; } = 8;
 
         /// <summary>
         /// The character's wisdom stat.
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Wisdom { get; set; }
+        public int Wisdom { get; set; } = 8;
 
         /// <summary>
         /// The character's charisma stat.
         /// Cannot be higher than 20, or lower than 1.
         /// </summary>
         [Range(1, 20)]
-        public int Charisma { get; set;}
+        public int Charisma { get; set; } = 8;
+    }
 
-        /// <summary>
-        /// The character's alignment
-        /// </summary>
-        [DefaultValue("True Neutral")]
-        public string Alignment { get; set; }
+    public class FeatureChoiceViewModel
+    {
+        public Character Character { get; set; }
+
+        // Normally I would handle this inside the CharacterFeature class, 
+        // but the view simply isn't passing it back to the controller and I don't know why
+        // So this is a hopefully temporary workaround
+        // As is, it won't work with choices in choices
+        // We don't have any of those yet, but we will if we implement Feats
+        public List<int?> ChoiceValues { get; set; }
     }
 }

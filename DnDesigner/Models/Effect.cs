@@ -12,9 +12,18 @@ namespace DnDesigner.Models
         public Effect Effect { get; set; }
 
         [ForeignKey("CharacterId")]
+        [JsonIgnore]
         public Character Character { get; set; }
 
+        /// <summary>
+        /// Has this effect been applied to the character?
+        /// </summary>
         public bool IsApplied { get; set; }
+
+        /// <summary>
+        /// An int to store any optional values to pass into the effect
+        /// </summary>
+        public int? Value { get; set; }
 
         public CharacterEffect(Character character, Effect effect)
         {
@@ -28,7 +37,14 @@ namespace DnDesigner.Models
         {
             if (!IsApplied)
             {
-                Effect.ApplyEffect(Character);
+                if (Value != null && Effect is EffectWithParam effect)
+                {
+                    effect.ApplyEffect(Character, (int)Value);
+                }
+                else
+                {
+                    Effect.ApplyEffect(Character);
+                }
                 IsApplied = true;
             }
         }
@@ -60,25 +76,40 @@ namespace DnDesigner.Models
         /// </summary>
         /// <param name="character">The character to be modified</param>
         public abstract void RemoveEffect(Character character);
+
+        public abstract override string ToString();
+    }
+
+    /// <summary>
+    /// An abstract super class for classes that modify a character, using a parameter.
+    /// Meant to be used for Effects that can change their behavior after being created.
+    /// </summary>
+    public abstract class EffectWithParam : Effect
+    {
+        /// <summary>
+        /// Apply this effect to the character, using a default parameter
+        /// </summary>
+        /// <param name="character">The character to be modified</param>
+        public override abstract void ApplyEffect(Character character);
+
+        /// <summary>
+        /// Apply this effect to the character, using the given parameter
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="param"></param>
+        public abstract void ApplyEffect(Character character, int param);
     }
 
     /// <summary>
     /// A choice between multiple effects
     /// </summary>
-    public class EffectChoice : Effect
+    public class EffectChoice : EffectWithParam
     {
-        public int ChosenIndex { get; set; }
         public List<Effect> Effects { get; private set; }
 
         public EffectChoice(List<Effect> effects)
         {
             Effects = effects;
-        }
-
-        public EffectChoice(List<Effect> effects, int chosenIndex)
-        {
-            Effects = effects;
-            ChosenIndex = chosenIndex;
         }
 
         private EffectChoice() { }
@@ -121,10 +152,20 @@ namespace DnDesigner.Models
 
         public override void ApplyEffect(Character character)
         {
+            ApplyEffect(character, 0);
+        }
+
+        /// <summary>
+        /// Apply the chosen effect to the character
+        /// </summary>
+        /// <param name="character">The character to be modified</param>
+        /// <param name="param">The index of the chosen effect</param>
+        public override void ApplyEffect(Character character, int param)
+        {
             RemoveEffect(character);
-            if (ChosenIndex < Effects.Count && ChosenIndex >= 0)
+            if (param < Effects.Count && param >= 0)
             {
-                CharacterEffect characterEffect = new CharacterEffect(character, Effects[ChosenIndex]);
+                CharacterEffect characterEffect = new CharacterEffect(character, Effects[param]);
                 character.CharacterEffects.Add(characterEffect);
                 characterEffect.ApplyEffect();
             }
@@ -132,15 +173,30 @@ namespace DnDesigner.Models
 
         public override void RemoveEffect(Character character)
         {
+            List<CharacterEffect> toRemove = new List<CharacterEffect>();
             foreach (Effect effect in Effects)
             {
                 CharacterEffect? existingEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
                 if (existingEffect != null)
                 {
                     existingEffect.RemoveEffect();
-                    character.CharacterEffects.Remove(existingEffect);
+                    toRemove.Add(existingEffect);
                 }
             }
+            foreach (CharacterEffect characterEffect in toRemove)
+            {
+                character.CharacterEffects.Remove(characterEffect);
+            }
+        }
+
+        public override string ToString()
+        {
+            string str = "Choose one of the following: ";
+            foreach (Effect effect in Effects)
+            {
+                str += effect.ToString() + ", ";
+            }
+            return str.Substring(0, str.Length - 2);
         }
     }
 
@@ -168,6 +224,11 @@ namespace DnDesigner.Models
         public override void RemoveEffect(Character character)
         {
             character.ModifyAttribute(Attribute, -Value);
+        }
+
+        public override string ToString()
+        {
+            return $"Increase {Attribute} by {Value}";
         }
     }
 
@@ -211,6 +272,24 @@ namespace DnDesigner.Models
                 character.RemoveProficiency(proficiency);
             }
         }
+
+        public override string ToString()
+        {
+            string str = "Grant ";
+            if (Expertise)
+            {
+                str += "expertise in ";
+            }
+            else
+            {
+                str += "proficiency in ";
+            }
+            foreach (Proficiency proficiency in Proficiencies)
+            {
+                str += proficiency.Name + ", ";
+            }
+            return str.Substring(0, str.Length - 2);
+        }
     }
 
     /// <summary>
@@ -239,6 +318,11 @@ namespace DnDesigner.Models
             {
                 character.Actions.Remove(characterAction);
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Grant action: {Action.Name}";
         }
     }
 }

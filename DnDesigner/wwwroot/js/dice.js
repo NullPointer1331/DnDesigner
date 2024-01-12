@@ -59,6 +59,31 @@ function generateRandomValue(minValue, maxValue)
 }
 
 /// <summary>
+/// Handles basic dice rolls from the character sheet.
+/// Takes die size and die count from page and displays
+/// an appropriate message.
+/// </summary>
+function DieRoller()
+{
+    let toastBox = document.getElementById('rollToast');
+    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
+    let dieCount = document.getElementById('dieCount').value;
+    let dieSize = document.getElementById('dieSize').value;
+
+    if (100 > dieCount && dieCount > 0)
+    {
+        toastBox.firstElementChild.firstElementChild.innerHTML = dieCount + "d" + dieSize;
+        toastBox.lastElementChild.innerHTML = RollString(dieSize, dieCount);
+    }
+    else
+    {
+        toastBox.firstElementChild.firstElementChild.innerHTML = "How many dice?";
+        toastBox.lastElementChild.innerHTML = "You must roll at least 1 die (99 max).";
+    }
+    toastBootstrap.show()
+}
+
+/// <summary>
 /// Rolls a given size die a given number of times
 /// </summary>
 /// <param name="dieSize">The maximum number on the die</param>
@@ -99,17 +124,15 @@ function RollString(dieSize, dieCount)
     var rollTotal = generateRandomValue(1, dieSize);
     var resultString = rollTotal.toString();
 
-    for (var i = 1; i < dieCount; i++)
-    {
+    for (var i = 1; i < dieCount; i++) {
         var currRoll = generateRandomValue(1, dieSize);
         rollTotal += currRoll;
         resultString += " + " + currRoll.toString();
     }
-    if (dieCount > 1)
-    {
+    if (dieCount > 1) {
         resultString += " = " + rollTotal.toString();
     }
-    return resultString;
+    return resultString;    
 }
 
 /// <summary>

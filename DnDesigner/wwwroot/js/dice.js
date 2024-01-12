@@ -78,7 +78,7 @@ function DieRoller()
     else
     {
         toastBox.firstElementChild.firstElementChild.innerHTML = "No dice were rolled.";
-        toastBox.lastElementChild.innerHTML = "Please enter how many dice you wish to roll.";
+        toastBox.lastElementChild.innerHTML = "You must roll at least 1 die.";
     }
     toastBootstrap.show()
 }

@@ -144,7 +144,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The notes a player wants to keep with this character
         /// </summary>
-        public string PlayerNotes { get; set; }
+        public string? PlayerNotes { get; set; }
 
         /// <summary>
         /// The alignment of the character
@@ -215,7 +215,6 @@ namespace DnDesigner.Models
             Resistances = "";
             Immunities = "";
             Vulnerabilities = "";
-            PlayerNotes = "";
             Alignment = "";
         }
         public Character(CreateCharacterViewModel character, 
@@ -678,7 +677,7 @@ namespace DnDesigner.Models
         /// The alignment of the character
         /// </summary>
         [DefaultValue("True Neutral")]
-        public string Alignment { get; set; }
+        public string Alignment { get; set; } = "True Neutral";
 
         /// <summary>
         /// The id of background of the character.

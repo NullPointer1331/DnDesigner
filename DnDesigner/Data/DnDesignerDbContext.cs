@@ -13,19 +13,18 @@ namespace DnDesigner.Data
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Item>()
-                .HasMany(e => e.Effects)
-                .WithOne();
-            builder.Entity<BackgroundFeature>()
-                .HasMany(e => e.Effects)
-                .WithOne();
-            builder.Entity<ClassFeature>()
+            builder.Entity<Feature>()
                 .HasMany(e => e.Effects)
                 .WithOne();
             builder.Entity<SubclassFeature>()
-                .HasMany(e => e.Effects)
-                .WithOne();
-            builder.Entity<RaceFeature>()
+                .HasOne(f => f.Subclass)
+                .WithMany(s => s.Features)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Entity<CharacterFeature>()
+                .HasOne(f => f.Feature)
+                .WithMany()
+                .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Entity<Item>()
                 .HasMany(e => e.Effects)
                 .WithOne();
             builder.Entity<EffectChoice>()

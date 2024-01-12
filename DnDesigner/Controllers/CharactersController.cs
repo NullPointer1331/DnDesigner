@@ -252,7 +252,7 @@ namespace DnDesigner.Controllers
                 return Unauthorized();
             }
             character.RemoveEffects();
-            CreateCharacterViewModel levelViewModel = new CreateCharacterViewModel()
+            CreateCharacterViewModel characterViewModel = new CreateCharacterViewModel()
             {
                 AvailableClasses = await _dbHelper.GetAllClasses(),
                 AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
@@ -267,17 +267,18 @@ namespace DnDesigner.Controllers
                 Constitution = character.Constitution,
                 Intelligence = character.Intelligence,
                 Wisdom = character.Wisdom,
-                Charisma = character.Charisma
+                Charisma = character.Charisma,
+                Alignment = character.Alignment
             };
             foreach (CharacterClass characterClass in character.Classes)
             {
-                levelViewModel.Classes.Add(new int[] { characterClass.Level, characterClass.Class.ClassId, characterClass.Subclass?.SubclassId ?? 0 });
+                characterViewModel.Classes.Add(new int[] { characterClass.Level, characterClass.Class.ClassId, characterClass.Subclass?.SubclassId ?? 0 });
             }
-            while (levelViewModel.Classes.Count < levelViewModel.AvailableClasses.Count)
+            while (characterViewModel.Classes.Count < characterViewModel.AvailableClasses.Count)
             {
-                levelViewModel.Classes.Add(new int[] { 0, 0, 0 });
+                characterViewModel.Classes.Add(new int[] { 0, 0, 0 });
             }
-            return View(levelViewModel);
+            return View(characterViewModel);
         }
 
         [HttpPost]

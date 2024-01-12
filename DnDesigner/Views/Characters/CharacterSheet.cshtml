@@ -78,19 +78,18 @@
                     </button>
                 </div>
                 <div class="input-group me-2">
-                    <input type="number" class="form-control" placeholder="Die Count" aria-label="Die roller">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Die Size</button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">d4</a></li>
-                        <li><a class="dropdown-item" href="#">d6</a></li>
-                        <li><a class="dropdown-item" href="#">d8</a></li>
-                        <li><a class="dropdown-item" href="#">d10</a></li>
-                        <li><a class="dropdown-item" href="#">d12</a></li>
-                        <li><a class="dropdown-item" href="#">d20</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">d100</a></li>
-                    </ul>
-                    <button class="btn btn-primary" type="button" onclick="">Roll</button>
+                    <label class="input-group-text">Die Roller</label>
+                    <input id="dieCount" type="number" class="form-control" placeholder="Die Count" min="1" aria-label="Die roller">
+                    <select class="form-select" id="dieSize">
+                        <option value="4" >d4</option>
+                        <option value="6" >d6</option>
+                        <option value="8" >d8</option>
+                        <option value="10" >d10</option>
+                        <option value="12" >d12</option>
+                        <option value="20" >d20</option>
+                        <option value="100" >d100</option>
+                    </select>
+                    <button class="btn btn-primary" type="button" onclick="DieRoller()">Roll</button>
                 </div>
             </div>
             <div class="btn-toolbar" role="toolbar">

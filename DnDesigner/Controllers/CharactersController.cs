@@ -112,7 +112,7 @@ namespace DnDesigner.Controllers
                     .Where(p => p.Type == "saving throw" || p.Type == "skill")
                     .ToListAsync(); 
                 
-                Character newCharacter = new Character(character, race, background, defaultProficiencies, User.FindFirstValue(ClaimTypes.NameIdentifier));
+                Character newCharacter = new Character(character, race, background, defaultProficiencies, character.Alignment, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 for(int i = 0; i < character.Classes.Count; i++)
                 {

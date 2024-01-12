@@ -219,7 +219,8 @@ namespace DnDesigner.Models
             Alignment = "";
         }
         public Character(CreateCharacterViewModel character, 
-            Race race, Background background, List<Proficiency> defaultProficiencies, string userId)
+            Race race, Background background, List<Proficiency> defaultProficiencies, string alignment,
+            string userId)
         {
             UserId = userId;
             Name = character.Name;
@@ -619,6 +620,12 @@ namespace DnDesigner.Models
         /// A list containing arrays of level, class id, and subclass id
         /// </summary>
         public List<int[]> Classes { get; set; }
+
+        /// <summary>
+        /// The alignment of the character
+        /// </summary>
+        [DefaultValue("True Neutral")]
+        public string Alignment { get; set; }
 
         /// <summary>
         /// The id of background of the character.

@@ -38,8 +38,11 @@
         </h2>
     </div>
 </div>
+
+<!--Edit / Level Up Button-->
 <input type="button" value="Edit/Level Up" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.CharacterId})'" />
 <hr />
+
 <form asp-action="CharacterSheet">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 

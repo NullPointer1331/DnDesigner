@@ -558,16 +558,47 @@ namespace DnDesigner.Models
 
         public void SetActiveFeatures()
         {
-            //Remove features that shouldn't be active
-            foreach (CharacterFeature characterFeature in Features)
+            RemoveInvalidFeatures();
+
+            List<Feature> features = new List<Feature>();
+            foreach (CharacterClass @class in Classes)
             {
-                Feature feature = characterFeature.Feature;
+                features.AddRange(@class.Class.GetAvailableFeatures(@class.Level));
+                if (@class.Subclass != null)
+                {
+                    features.AddRange(@class.Subclass.GetAvailableFeatures(@class.Level));
+                }
+            }
+            features.AddRange(Background.Features.Where(f => f.Level <= Level));
+            features.AddRange(Race.Features.Where(f => f.Level <= Level));
+            
+            //Add features that haven't been added yet
+            foreach (Feature feature in features)
+            {
+                if (!Features.Where(f => f.Feature.FeatureId == feature.FeatureId).Any())
+                {
+                    CharacterFeature characterFeature = new CharacterFeature(this, feature);
+                    Features.Add(characterFeature);
+                    characterFeature.ApplyEffect();
+                }
+            }
+            ApplyEffects();
+        }
+
+        /// <summary>
+        /// Removes features that the character no longer qualifies for
+        /// </summary>
+        public void RemoveInvalidFeatures()
+        {
+            for (int i = Features.Count - 1; i >= 0; i--)
+            {
+                Feature feature = Features[i].Feature;
                 bool valid = true;
                 if (feature.Level > Level)
                 {
                     valid = false;
                 }
-                else if (feature is BackgroundFeature backgroundFeature && 
+                else if (feature is BackgroundFeature backgroundFeature &&
                     backgroundFeature.Background.BackgroundId != Background.BackgroundId)
                 {
                     valid = false;
@@ -613,35 +644,12 @@ namespace DnDesigner.Models
                 }
                 if (!valid)
                 {
-                    characterFeature.RemoveEffect();
-                    Features.Remove(characterFeature);
+                    Features[i].RemoveEffect();
+                    Features.Remove(Features[i]);
                 }
             }
-
-            List<Feature> features = new List<Feature>();
-            foreach (CharacterClass @class in Classes)
-            {
-                features.AddRange(@class.Class.GetAvailableFeatures(@class.Level));
-                if (@class.Subclass != null)
-                {
-                    features.AddRange(@class.Subclass.GetAvailableFeatures(@class.Level));
-                }
-            }
-            features.AddRange(Background.Features.Where(f => f.Level <= Level));
-            features.AddRange(Race.Features.Where(f => f.Level <= Level));
-            
-            //Add features that haven't been added yet
-            foreach (Feature feature in features)
-            {
-                if (!Features.Where(f => f.Equals(feature)).Any())
-                {
-                    CharacterFeature characterFeature = new CharacterFeature(this, feature);
-                    Features.Add(characterFeature);
-                    characterFeature.ApplyEffect();
-                }
-            }
-            ApplyEffects();
         }
+
         public void ApplyEffects()
         {
             RemoveEffects();

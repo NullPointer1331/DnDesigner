@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20240112183633_DnDesigner")]
+    [Migration("20240113201520_DnDesigner")]
     partial class DnDesigner
     {
         /// <inheritdoc />

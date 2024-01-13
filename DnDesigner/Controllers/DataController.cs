@@ -60,10 +60,7 @@ namespace DnDesigner.Controllers
         public async Task<IActionResult> ViewFeatures()
         {
             List<Feature> features = new List<Feature>();
-            features.AddRange(await _context.ClassFeatures.ToListAsync());
-            features.AddRange(await _context.SubclassFeatures.ToListAsync());
-            features.AddRange(await _context.BackgroundFeatures.ToListAsync());
-            features.AddRange(await _context.RaceFeatures.ToListAsync());
+            features.AddRange(await _context.Features.ToListAsync());
             return View(features);
         }
         public async Task<IActionResult> Import()

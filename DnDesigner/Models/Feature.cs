@@ -266,29 +266,4 @@ namespace DnDesigner.Models
             }
         }
     }
-
-    public class CharacterFeat
-    {
-        public int CharacterFeatId { get; private set; }
-
-        /// <summary>
-        /// The character that has the feat
-        /// </summary>
-        [ForeignKey("CharacterId")]
-        [JsonIgnore]
-        public Character Character { get; set; }
-
-        /// <summary>
-        /// The feat given to the character
-        /// </summary>
-        public Feat Feat { get; set; }
-
-        public CharacterFeat(Character character, Feat feat)
-        {
-            Character = character;
-            Feat = feat;
-        }
-
-        private CharacterFeat() { }
-    }
 }

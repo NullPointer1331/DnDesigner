@@ -329,6 +329,8 @@ namespace DnDesigner.Controllers
                         }
                     }
                 }
+                character.Background = background;
+                character.Race = race;
                 character.Classes = classes;
                 character.Name = characterViewModel.Name;
                 character.MaxHealth = characterViewModel.MaxHealth;

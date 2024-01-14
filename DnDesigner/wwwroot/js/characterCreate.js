@@ -110,3 +110,13 @@ function averageMaxHealth() {
     }
     document.getElementById("MaxHealth").value = maxHealth;
 }
+
+function updateContent() {
+    // Get the selected radio button value
+    var selectedValue = document.querySelector('input[name="generationMethod"]:checked').value;
+
+    console.log(selectedValue);
+}
+document.querySelectorAll('input[name="generationMethod"]').forEach(function (radioButton) {
+    radioButton.addEventListener('change', updateContent);
+});

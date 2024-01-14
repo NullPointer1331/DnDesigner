@@ -144,7 +144,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// The notes a player wants to keep with this character
         /// </summary>
-        public string PlayerNotes { get; set; }
+        public string? PlayerNotes { get; set; }
 
         /// <summary>
         /// The alignment of the character
@@ -215,7 +215,6 @@ namespace DnDesigner.Models
             Resistances = "";
             Immunities = "";
             Vulnerabilities = "";
-            PlayerNotes = "";
             Alignment = "";
         }
         public Character(CreateCharacterViewModel character, 
@@ -559,6 +558,8 @@ namespace DnDesigner.Models
 
         public void SetActiveFeatures()
         {
+            RemoveInvalidFeatures();
+
             List<Feature> features = new List<Feature>();
             foreach (CharacterClass @class in Classes)
             {
@@ -570,18 +571,11 @@ namespace DnDesigner.Models
             }
             features.AddRange(Background.Features.Where(f => f.Level <= Level));
             features.AddRange(Race.Features.Where(f => f.Level <= Level));
-
-            //Remove features that shouldn't be active
-            foreach (CharacterFeature feature in Features.Where(f => f.Level > Level))
-            {
-                feature.RemoveEffect();
-                Features.Remove(feature);
-            }
-
+            
             //Add features that haven't been added yet
             foreach (Feature feature in features)
             {
-                if (!Features.Where(f => f.Equals(feature)).Any())
+                if (!Features.Where(f => f.Feature.FeatureId == feature.FeatureId).Any())
                 {
                     CharacterFeature characterFeature = new CharacterFeature(this, feature);
                     Features.Add(characterFeature);
@@ -590,6 +584,72 @@ namespace DnDesigner.Models
             }
             ApplyEffects();
         }
+
+        /// <summary>
+        /// Removes features that the character no longer qualifies for
+        /// </summary>
+        public void RemoveInvalidFeatures()
+        {
+            for (int i = Features.Count - 1; i >= 0; i--)
+            {
+                Feature feature = Features[i].Feature;
+                bool valid = true;
+                if (feature.Level > Level)
+                {
+                    valid = false;
+                }
+                else if (feature is BackgroundFeature backgroundFeature &&
+                    backgroundFeature.Background.BackgroundId != Background.BackgroundId)
+                {
+                    valid = false;
+                }
+                else if (feature is RaceFeature raceFeature &&
+                    raceFeature.Race.RaceId != Race.RaceId)
+                {
+                    valid = false;
+                }
+                else if (feature is ClassFeature classFeature)
+                {
+                    CharacterClass? sourceClass = Classes
+                        .Where(c => c.Class.ClassId == classFeature.Class.ClassId).FirstOrDefault();
+                    if (sourceClass == null)
+                    {
+                        valid = false;
+                    }
+                    else if (classFeature.InitialClassOnly && !sourceClass.InitialClass)
+                    {
+                        valid = false;
+                    }
+                    else if (classFeature.MulticlassOnly && sourceClass.InitialClass)
+                    {
+                        valid = false;
+                    }
+                    else if (classFeature.Level > sourceClass.Level)
+                    {
+                        valid = false;
+                    }
+                }
+                else if (feature is SubclassFeature subclassFeature)
+                {
+                    CharacterClass? sourceSublass = Classes
+                        .Where(c => c.Subclass?.SubclassId == subclassFeature.Subclass?.SubclassId).FirstOrDefault();
+                    if (sourceSublass == null)
+                    {
+                        valid = false;
+                    }
+                    else if (subclassFeature.Level > sourceSublass.Level)
+                    {
+                        valid = false;
+                    }
+                }
+                if (!valid)
+                {
+                    Features[i].RemoveEffect();
+                    Features.Remove(Features[i]);
+                }
+            }
+        }
+
         public void ApplyEffects()
         {
             RemoveEffects();
@@ -625,7 +685,7 @@ namespace DnDesigner.Models
         /// The alignment of the character
         /// </summary>
         [DefaultValue("True Neutral")]
-        public string Alignment { get; set; }
+        public string Alignment { get; set; } = "True Neutral";
 
         /// <summary>
         /// The id of background of the character.

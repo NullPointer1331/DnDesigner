@@ -4,6 +4,7 @@ namespace DnDesigner.Models.ImportModels
 {
     public class SkillProficiency
     {
+
         public bool? intimidation { get; set; }
         public bool? perception { get; set; }
         public bool? stealth { get; set; }
@@ -26,5 +27,6 @@ namespace DnDesigner.Models.ImportModels
         public bool? sleightofhand { get; set; }
         public bool? persuasion { get; set; }
         public bool? investigation { get; set; }
+        public bool? arcana { get; set; }
     }
 }

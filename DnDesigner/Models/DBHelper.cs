@@ -76,7 +76,8 @@ namespace DnDesigner.Models
                     .Include(c => c.Proficiencies)
                     .ThenInclude(cp => cp.Proficiency)
                     .Include(c => c.Features)
-                    .ThenInclude(cf => cf.Effects)
+                    .ThenInclude(cf => cf.Feature)
+                    .ThenInclude(cff => cff.Effects)
                     .Include(c => c.Inventory)
                     .ThenInclude(ci => ci.Items)
                     .ThenInclude(cii => cii.Item)
@@ -87,9 +88,9 @@ namespace DnDesigner.Models
             {
                 await LoadEffect(characterEffect.Effect);
             }
-            foreach (Feature feature in character.Features)
+            foreach (CharacterFeature feature in character.Features)
             {
-                await LoadEffects(feature.Effects);
+                await LoadEffects(feature.Feature.Effects);
             }
             return character;
         }

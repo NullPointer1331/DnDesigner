@@ -115,8 +115,18 @@ function updateContent() {
     // Get the selected radio button value
     var selectedValue = document.querySelector('input[name="generationMethod"]:checked').value;
 
+    // for testing purposes
     console.log(selectedValue);
+    var generationContainer = document.getElementById("generationContainer");
+    if (selectedValue == "standardArray") {
+        console.log("displaying standard array");
+
+    } else if (selectedValue == "pointBuy") {
+        generationContainer.innerHTML = "";
+        console.log("displaying point buy");
+    }
 }
+// Add event listeners to the stat generation radio buttons
 document.querySelectorAll('input[name="generationMethod"]').forEach(function (radioButton) {
     radioButton.addEventListener('change', updateContent);
 });

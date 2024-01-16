@@ -13,22 +13,18 @@ namespace DnDesigner.Data
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Item>()
-                .HasMany(e => e.Effects)
-                .WithOne();
-            builder.Entity<BackgroundFeature>()
-                .HasMany(e => e.Effects)
-                .WithOne();
-            builder.Entity<CharacterFeature>()
-                .HasMany(e => e.Effects)
-                .WithMany();
-            builder.Entity<ClassFeature>()
+            builder.Entity<Feature>()
                 .HasMany(e => e.Effects)
                 .WithOne();
             builder.Entity<SubclassFeature>()
-                .HasMany(e => e.Effects)
-                .WithOne();
-            builder.Entity<RaceFeature>()
+                .HasOne(f => f.Subclass)
+                .WithMany(s => s.Features)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Entity<CharacterFeature>()
+                .HasOne(f => f.Feature)
+                .WithMany()
+                .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Entity<Item>()
                 .HasMany(e => e.Effects)
                 .WithOne();
             builder.Entity<EffectChoice>()
@@ -49,6 +45,8 @@ namespace DnDesigner.Data
                 .WithMany();
             base.OnModelCreating(builder);
         }
+        public DbSet<Feat> Feats { get; set; }
+        public DbSet<Feature> Features { get; set; }
         public DbSet<Effect> Effects { get; set; }
         public DbSet<CharacterEffect> CharacterEffects { get; set; }
         public DbSet<Proficiency> Proficiencies { get; set; }

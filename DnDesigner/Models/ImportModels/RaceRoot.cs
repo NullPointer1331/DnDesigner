@@ -38,11 +38,12 @@ namespace DnDesigner.Models.ImportModels
         public List<RaceToolProficiency> toolProficiencies { get; set; }
         public List<string> conditionImmune { get; set; }
         public Copy _copy { get; set; }
-        public List<Feat> feats { get; set; }
+        public List<Feat5ETools> feats { get; set; }
         public bool? srd { get; set; }
         public bool? basicRules { get; set; }
         public List<WeaponProficiency> weaponProficiencies { get; set; }
         public List<AdditionalSource> additionalSources { get; set; }
+        public string subrace { get; set; }
     }
     public class Subrace5ETools
     {
@@ -112,12 +113,10 @@ namespace DnDesigner.Models.ImportModels
     }
     public class Daily
     {
+        [JsonProperty("1e")]
+        public List<object> _1e { get; set; }
         [JsonProperty("1")]
         public List<string> _1 { get; set; }
-    }
-    public class Feat
-    {
-        public int any { get; set; }
     }
     public class HeightAndWeight
     {
@@ -133,6 +132,9 @@ namespace DnDesigner.Models.ImportModels
     }
     public class Innate
     {
+        [JsonProperty("9")]
+        public _9 _9 { get; set; }
+
         [JsonProperty("3")]
         public object _3 { get; set; }
 
@@ -144,6 +146,8 @@ namespace DnDesigner.Models.ImportModels
     }
     public class Known
     {
+        public List<object> _ { get; set; }
+
         [JsonProperty("1")]
         public object _1 { get; set; }
     }

@@ -101,6 +101,23 @@ namespace DnDesigner.Data
         }
 
         /// <summary>
+        /// Extracts Feat Data from the 5ETools JSON files and returns it as a list of Feats
+        /// </summary>
+        public static List<Feat> ExtractFeats()
+        {
+            FeatRoot featRoot = GetFeatRoot();
+            List<Feat> feats = new List<Feat>();
+            foreach (Feat5ETools feat5E in featRoot.feat)
+            {
+                if(!feat5E.source.Contains("UA"))
+                {
+                    feats.Add(ConvertFeat(feat5E));
+                }
+            }
+            return feats;
+        }
+
+        /// <summary>
         /// Extracts Item Data from the 5ETools JSON files and returns it as a list of Items
         /// </summary>
         public static List<Item> ExtractItems()
@@ -239,6 +256,30 @@ namespace DnDesigner.Data
         #endregion
 
         #region Conversion methods
+        public static FeatRoot GetFeatRoot()
+        {
+            string contents = File.ReadAllText("Data\\5EToolsData\\feats.json");
+            return JsonSerializer.Deserialize<FeatRoot>(contents);
+        }
+
+        public static Feat ConvertFeat(Feat5ETools feat5E)
+        {
+            string name = feat5E.name;
+            string source = feat5E.source;
+            string description = "";
+            if (feat5E.entries != null)
+            {
+                foreach (object entry in feat5E.entries)
+                {
+                    description += $"{entry} ";
+                }
+            }
+            description = CleanText(description);
+            int level = 0;
+            Feat feat = new Feat(name, description, level, source, false, "");
+            return feat;
+        }
+
         public static List<SpellRoot> GetSpellRoots()
         {
             List<SpellRoot> spellRoots = new List<SpellRoot>();
@@ -1045,6 +1086,10 @@ namespace DnDesigner.Data
             {
                 skills.Add(FindProficiency("Animal Handling", proficiencies));
             }
+            if (skill.arcana.HasValue && skill.arcana.Value)
+            {
+                skills.Add(FindProficiency("Arcana", proficiencies));
+            }
             if (skill.performance.HasValue && skill.performance.Value)
             {
                 skills.Add(FindProficiency("Performance", proficiencies));
@@ -1109,6 +1154,15 @@ namespace DnDesigner.Data
             {
                 tools.Add(FindProficiency("thieves' tools", proficiencies));
             }
+            if (tool.alchemistssupplies.HasValue && tool.alchemistssupplies.Value)
+            {
+                tools.Add(FindProficiency("alchemist's supplies", proficiencies));
+            }
+            if (tool.cooksutensils.HasValue && tool.cooksutensils.Value)
+            {
+                tools.Add(FindProficiency("cook's utensils", proficiencies));
+            }
+
             return tools;
         }
         public static Proficiency? FindProficiency(string proficiencyName, List<Proficiency> proficiencies)

@@ -58,7 +58,14 @@ namespace DnDesigner.Models
         /// <summary>
         /// The characters available hit dice
         /// </summary>
-        public int AvailableHitDice { get; set; }
+        public int[] AvailableHitDice { get {
+                int[] currentHitDie = new int[4];
+                for (int i = 0; i < MaxHitDice.Length; i++) 
+                {
+                    currentHitDie[i] = MaxHitDice[i];
+                }
+                return currentHitDie;
+            }}
 
         /// <summary>
         /// An array containing the character's max hit dice for each size, 

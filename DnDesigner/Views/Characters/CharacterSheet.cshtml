@@ -154,17 +154,31 @@
                     <div class="modal-body text-center">
                         <h5>Total Hit Die</h5>
                         <h3>@{
-                                int dieTotal = 0;
-                                for (int i = 0; i < Model.MaxHitDice.Length; i++)
+                                string dieTotal = "";
+                                if (Model.MaxHitDice[0] != 0)
                                 {
-                                    dieTotal += Model.MaxHitDice[i];
+                                    dieTotal += Model.MaxHitDice[0].ToString() + " d6\n";
+                                }
+                                if (Model.MaxHitDice[1] != 0)
+                                {
+                                    dieTotal += Model.MaxHitDice[1].ToString() + " d8\n";
+                                }
+                                if (Model.MaxHitDice[2] != 0)
+                                {
+                                    dieTotal += Model.MaxHitDice[2].ToString() + " d10\n";
+                                }
+                                if (Model.MaxHitDice[3] != 0)
+                                {
+                                    dieTotal += Model.MaxHitDice[3].ToString() + " d12";
                                 }
                             }
                             @dieTotal
                             </h3>
                         <br>
                         <h5>Hit Die Available</h5>
-                        <h3>@Model.AvailableHitDice</h3>
+                        <h3>@{
+
+                            }</h3>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

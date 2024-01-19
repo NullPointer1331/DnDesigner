@@ -130,7 +130,44 @@ function updateContent() {
         console.log("displaying point buy");
     }
 }
+
+function updatePointsRemaining() {
+    var totalPoints = 27;
+    var pointsUsed = 0;
+    var pointRemainingElement = document.getElementById("pointsRemaining");
+    var pointBuyInputs = document.querySelectorAll('#pointBuyContainer input.form-control');
+    pointBuyInputs.forEach(function (input) {
+        if (input.value < 8) {
+            input.value = 8;
+        } else if (input.value == 8) {
+            input.value = 8;
+        } else if (input.value == 9) {
+            pointsUsed++;
+        } else if (input.value == 10) {
+            pointsUsed += 2;
+        } else if (input.value == 11) {
+            pointsUsed += 3;
+        } else if (input.value == 12) {
+            pointsUsed += 4;
+        } else if (input.value == 13) {
+            pointsUsed += 5;
+        } else if (input.value == 14) {
+            pointsUsed += 7;
+        } else if (input.value == 15 || input.value > 15) {
+            input.value = 15;
+            pointsUsed += 9;
+        }
+    });
+    totalPoints = totalPoints - pointsUsed;
+    pointRemainingElement.innerText = totalPoints;
+}
+
 // Add event listeners to the stat generation radio buttons
 document.querySelectorAll('input[name="generationMethod"]').forEach(function (radioButton) {
     radioButton.addEventListener('change', updateContent);
+});
+
+// Add event listeners to the stat input fields
+document.querySelectorAll('#pointBuyContainer input').forEach(function (input) {
+    input.addEventListener('change', updatePointsRemaining);
 });

@@ -133,7 +133,54 @@
                     <div class="modal-body text-center">
                         <h5>Place holder for what player gets back</h5>
                         <h5>Hit Dice Available</h5>
+                        @{
+                            if (Model.AvailableHitDice[0] != 0)
+                            {
+                                <h3>@Model.AvailableHitDice[0] d6</h3>
+                            }
+                            if (Model.AvailableHitDice[1] != 0)
+                            {
+                                <h3>@Model.AvailableHitDice[1] d8</h3>
+                            }
+                            if (Model.AvailableHitDice[2] != 0)
+                            {
+                                <h3>@Model.AvailableHitDice[2] d10</h3>
+                            }
+                            if (Model.AvailableHitDice[3] != 0)
+                            {
+                                <h3>@Model.AvailableHitDice[3] d12</h3>
+                            }
+                        }
                         <h5>Spend hit dice</h5>
+                        <div class="input-group me-2">
+                            <label class="input-group-text">Hit Die Roller</label>
+                            <select class="form-select" id="spendHitDie">
+                                @{
+                                    if (Model.AvailableHitDice[0] != 0)
+                                    {
+                                        <option value="6">d6</option>
+                                    }
+                                    if (Model.AvailableHitDice[1] != 0)
+                                    {
+                                        <option value="8">d8</option>
+                                    }
+                                    if (Model.AvailableHitDice[2] != 0)
+                                    {
+                                        <option value="10">d10</option>
+                                    }
+                                    if (Model.AvailableHitDice[3] != 0)
+                                    {
+                                        <option value="12">d12</option>
+                                    }
+                                }
+                            </select>
+                            <button class="btn btn-primary" type="button" onclick="">Roll</button>
+						</div>
+                        <br />
+                        <div class="input-group me-2">
+                            <label class="input-group-text">Total Health Rolled</label>
+                            <input id="totalHitDieRoll" type="number" class="form-control" placeholder="0" min="0" aria-label="Total Health Rolled" />
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

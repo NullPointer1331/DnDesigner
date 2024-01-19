@@ -153,10 +153,18 @@
                     </div>
                     <div class="modal-body text-center">
                         <h5>Total Hit Die</h5>
-                        <h3>3</h3>
+                        <h3>@{
+                                int dieTotal = 0;
+                                for (int i = 0; i < Model.MaxHitDice.Length; i++)
+                                {
+                                    dieTotal += Model.MaxHitDice[i];
+                                }
+                            }
+                            @dieTotal
+                            </h3>
                         <br>
                         <h5>Hit Die Available</h5>
-                        <h3>3</h3>
+                        <h3>@Model.AvailableHitDice</h3>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

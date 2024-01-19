@@ -159,11 +159,14 @@ namespace DnDesigner.Controllers
             FeatureChoiceViewModel featureChoiceViewModel = new FeatureChoiceViewModel()
             {
                 Character = character,
-                ChoiceValues = new List<int?>()
+                ChoiceValues = new List<int>()
             };
-            foreach (CharacterEffect effect in character.CharacterEffects)
+            foreach (CharacterFeature feature in character.Features)
             {
-                featureChoiceViewModel.ChoiceValues.Add(effect.Value);
+                foreach (CharacterChoice choice in feature.Choices)
+                {
+                    featureChoiceViewModel.ChoiceValues.Add(choice.ChoiceValue);
+                }
             }
             character.RemoveEffects();
             return View(featureChoiceViewModel);
@@ -183,10 +186,11 @@ namespace DnDesigner.Controllers
                 return Unauthorized();
             }
             featureChoiceViewModel.Character = character;
+            /*
             for (int i = 0; i < featureChoiceViewModel.ChoiceValues.Count; i++)
             {
                 character.CharacterEffects[i].Value = featureChoiceViewModel.ChoiceValues[i];
-            }
+            } */
             ModelState.Remove("Character.Background");
             ModelState.Remove("Character.Race");
             if (ModelState.IsValid)

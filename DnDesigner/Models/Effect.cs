@@ -5,58 +5,6 @@ using System.Text.Json.Serialization;
 
 namespace DnDesigner.Models
 {
-    [PrimaryKey("CharacterId", "EffectId")]
-    public class CharacterEffect
-    {
-        [ForeignKey("EffectId")]
-        public Effect Effect { get; set; }
-
-        [ForeignKey("CharacterId")]
-        [JsonIgnore]
-        public Character Character { get; set; }
-
-        /// <summary>
-        /// Has this effect been applied to the character?
-        /// </summary>
-        public bool IsApplied { get; set; }
-
-        /// <summary>
-        /// An int to store any optional values to pass into the effect
-        /// </summary>
-        public int? Value { get; set; }
-
-        public CharacterEffect(Character character, Effect effect)
-        {
-            Effect = effect;
-            Character = character;
-            IsApplied = false;
-        }
-        private CharacterEffect() { }
-
-        public void ApplyEffect()
-        {
-            if (!IsApplied)
-            {
-                if (Value != null && Effect is EffectWithParam effect)
-                {
-                    effect.ApplyEffect(Character, (int)Value);
-                }
-                else
-                {
-                    Effect.ApplyEffect(Character);
-                }
-                IsApplied = true;
-            }
-        }
-        public void RemoveEffect()
-        {
-            if (IsApplied)
-            {
-                Effect.RemoveEffect(Character);
-                IsApplied = false;
-            }
-        }
-    }
     /// <summary>
     /// An abstract super class for classes that modify a character
     /// </summary>
@@ -80,126 +28,46 @@ namespace DnDesigner.Models
         public abstract override string ToString();
     }
 
-    /// <summary>
-    /// An abstract super class for classes that modify a character, using a parameter.
-    /// Meant to be used for Effects that can change their behavior after being created.
-    /// </summary>
-    public abstract class EffectWithParam : Effect
+    [PrimaryKey("CharacterId", "EffectId")]
+    public class CharacterEffect
     {
-        /// <summary>
-        /// Apply this effect to the character, using a default parameter
-        /// </summary>
-        /// <param name="character">The character to be modified</param>
-        public override abstract void ApplyEffect(Character character);
+        [ForeignKey("EffectId")]
+        public Effect Effect { get; set; }
+
+        [ForeignKey("CharacterId")]
+        [JsonIgnore]
+        public Character Character { get; set; }
 
         /// <summary>
-        /// Apply this effect to the character, using the given parameter
+        /// Has this effect been applied to the character?
         /// </summary>
-        /// <param name="character"></param>
-        /// <param name="param"></param>
-        public abstract void ApplyEffect(Character character, int param);
-    }
+        public bool IsApplied { get; set; }
 
-    /// <summary>
-    /// A choice between multiple effects
-    /// </summary>
-    public class EffectChoice : EffectWithParam
-    {
-        public List<Effect> Effects { get; private set; }
-
-        public EffectChoice(List<Effect> effects)
+        public CharacterEffect(Character character, Effect effect)
         {
-            Effects = effects;
+            Effect = effect;
+            Character = character;
+            IsApplied = false;
         }
+        private CharacterEffect() { }
 
-        private EffectChoice() { }
-
-        /// <summary>
-        /// Creates a new EffectChoice from a preset
-        /// </summary>
-        /// <param name="preset">The choice preset, 
-        /// Options: "ASI" - Increase an ability score by 1, (TODO, implement more presets)</param>
-        public EffectChoice(string preset)
+        public void ApplyEffect()
         {
-            Effects = new List<Effect>();
-            switch (preset)
+            if (!IsApplied)
             {
-                case "ASI":
-                    Effects.Add(new ModifyAttribute("str", 1));
-                    Effects.Add(new ModifyAttribute("dex", 1));
-                    Effects.Add(new ModifyAttribute("con", 1));
-                    Effects.Add(new ModifyAttribute("int", 1));
-                    Effects.Add(new ModifyAttribute("wis", 1));
-                    Effects.Add(new ModifyAttribute("cha", 1));
-                    break;
-                default:
-                    break;
+                Effect.ApplyEffect(Character);
+                IsApplied = true;
             }
         }
-
-        /// <summary>
-        /// Creates a new EffectChoice to choose from a list of proficiencies
-        /// </summary>
-        /// <param name="proficiencies"></param>
-        public EffectChoice(List<Proficiency> proficiencies)
+        public void RemoveEffect()
         {
-            Effects = new List<Effect>();
-            foreach (Proficiency proficiency in proficiencies)
+            if (IsApplied)
             {
-                Effects.Add(new GrantProficiencies(proficiency, false));
+                Effect.RemoveEffect(Character);
+                IsApplied = false;
             }
-        } 
-
-        public override void ApplyEffect(Character character)
-        {
-            ApplyEffect(character, 0);
-        }
-
-        /// <summary>
-        /// Apply the chosen effect to the character
-        /// </summary>
-        /// <param name="character">The character to be modified</param>
-        /// <param name="param">The index of the chosen effect</param>
-        public override void ApplyEffect(Character character, int param)
-        {
-            RemoveEffect(character);
-            if (param < Effects.Count && param >= 0)
-            {
-                CharacterEffect characterEffect = new CharacterEffect(character, Effects[param]);
-                character.CharacterEffects.Add(characterEffect);
-                characterEffect.ApplyEffect();
-            }
-        }
-
-        public override void RemoveEffect(Character character)
-        {
-            List<CharacterEffect> toRemove = new List<CharacterEffect>();
-            foreach (Effect effect in Effects)
-            {
-                CharacterEffect? existingEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
-                if (existingEffect != null)
-                {
-                    existingEffect.RemoveEffect();
-                    toRemove.Add(existingEffect);
-                }
-            }
-            foreach (CharacterEffect characterEffect in toRemove)
-            {
-                character.CharacterEffects.Remove(characterEffect);
-            }
-        }
-
-        public override string ToString()
-        {
-            string str = "Choose one of the following: ";
-            foreach (Effect effect in Effects)
-            {
-                str += effect.ToString() + ", ";
-            }
-            return str.Substring(0, str.Length - 2);
         }
     }
-
     /// <summary>
     /// When applied, this effect will modify a character's attribute
     /// </summary>

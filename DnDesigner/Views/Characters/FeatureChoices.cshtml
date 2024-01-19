@@ -25,28 +25,16 @@
                         <div class="accordion-body">
                             <strong>@feature.Description</strong>
                             <br />
-                            @foreach (Effect featureEffect in feature.Effects)
+                            @foreach (CharacterChoice choice in characterFeature.Choices)
                             {
-                                if (featureEffect is EffectWithParam effect)
+                                if (choice.Choice is EffectChoice effectChoice)
                                 {
-                                    CharacterEffect characterEffect = Model.Character.CharacterEffects.FirstOrDefault(ce => ce.Effect.EffectId == featureEffect.EffectId);
-                                    int index = Model.Character.CharacterEffects.IndexOf(characterEffect);
-                                    if (featureEffect is EffectChoice choice)
-                                    {
-                                        <select asp-for="@Model.ChoiceValues[index]">
-                                            @for (int i = 0; i < choice.Effects.Count; i++)
-                                            {
-                                                if ((Model.ChoiceValues[index] ?? 0) == i)
-                                                {
-                                                    <option value="@i" selected>@choice.Effects[i].ToString()</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@i">@choice.Effects[i].ToString()</option>
-                                                }
-                                            }
-                                        </select>
-                                    }
+                                    <select asp-for="@choice.ChoiceValue">
+                                        @for (int i = 0; i < effectChoice.Options.Count; i++)
+                                        {
+                                            <option value="@effectChoice.ChoiceId">@effectChoice.Options[i].ToString()</option>
+                                        }
+                                    </select>
                                 }
                             }
                         </div>

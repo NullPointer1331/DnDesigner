@@ -596,9 +596,9 @@ namespace DnDesigner.Data
             if(race.StatBonuses == "")
             {
                 race.StatBonuses = "+2 +1, or 3 +1s to different stats.";
-                statBonuses.Effects.Add(new EffectChoice("ASI"));
-                statBonuses.Effects.Add(new EffectChoice("ASI"));
-                statBonuses.Effects.Add(new EffectChoice("ASI"));
+                statBonuses.Choices.Add(new EffectChoice("ASI"));
+                statBonuses.Choices.Add(new EffectChoice("ASI"));
+                statBonuses.Choices.Add(new EffectChoice("ASI"));
             }
             statBonuses.Description = race.StatBonuses;
             race.Features.Add(statBonuses);
@@ -874,7 +874,7 @@ namespace DnDesigner.Data
                         for (int i = 0; i < skill.choose.count; i++)
                         {
                             EffectChoice choice = new EffectChoice(skills);
-                            startingProficiencies.Effects.Add(choice);
+                            startingProficiencies.Choices.Add(choice);
                         }
                         
                         foreach (Proficiency proficiency in skills)
@@ -902,8 +902,8 @@ namespace DnDesigner.Data
                 feature.Source = $"{feature5E.source}, Class, {@class.Name}";
                 if (feature.Name == "Ability Score Improvement")
                 {
-                    feature.Effects.Add(new EffectChoice("ASI"));
-                    feature.Effects.Add(new EffectChoice("ASI"));
+                    feature.Choices.Add(new EffectChoice("ASI"));
+                    feature.Choices.Add(new EffectChoice("ASI"));
                 }
                 @class.Features.Add(feature);
             }

@@ -252,7 +252,6 @@ namespace DnDesigner.Models
             {
                 Proficiencies.Add(new CharacterProficiency(this, proficiency));
             }
-            
         }
 
         #region methods
@@ -769,6 +768,6 @@ namespace DnDesigner.Models
         // So this is a hopefully temporary workaround
         // As is, it won't work with choices in choices
         // We don't have any of those yet, but we will if we implement Feats
-        public List<int?> ChoiceValues { get; set; }
+        public List<int> ChoiceValues { get; set; }
     }
 }

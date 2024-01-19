@@ -43,6 +43,11 @@ namespace DnDesigner.Models
         public List<Effect> Effects { get; set; }
 
         /// <summary>
+        /// A list of choices for this feature
+        /// </summary>
+        public List<Choice> Choices { get; set; }
+
+        /// <summary>
         /// Full constructor, sets all properties
         /// </summary>
         /// <param name="name">The name of the feature</param>
@@ -56,6 +61,7 @@ namespace DnDesigner.Models
             Description = description;
             Level = level;
             Effects = new List<Effect>();
+            Choices = new List<Choice>();
         }
 
         /// <summary>
@@ -70,6 +76,7 @@ namespace DnDesigner.Models
             Description = description;
             Level = level;
             Effects = new List<Effect>();
+            Choices = new List<Choice>();
         }
 
         public bool Equals(Feature other)
@@ -228,10 +235,17 @@ namespace DnDesigner.Models
         /// </summary>
         public Feature Feature { get; set; }
 
+        public List<CharacterChoice> Choices { get; set; }
+
         public CharacterFeature(Character character, Feature feature)
         {
             Character = character;
             Feature = feature;
+            Choices = new List<CharacterChoice>();
+            foreach (Choice choice in feature.Choices)
+            {
+                Choices.Add(new CharacterChoice(this, choice));
+            }
         }
 
         private CharacterFeature() { }

@@ -117,12 +117,16 @@ function updateContent() {
 
     // for testing purposes
     console.log(selectedValue);
-    var generationContainer = document.getElementById("generationContainer");
+    var standardArrayContainer = document.getElementById("standardArrayContainer");
+    var pointBuyContainer = document.getElementById("pointBuyContainer");
     if (selectedValue == "standardArray") {
+        standardArrayContainer.removeAttribute("hidden");
+        pointBuyContainer.setAttribute("hidden", "true");
         console.log("displaying standard array");
 
     } else if (selectedValue == "pointBuy") {
-        generationContainer.innerHTML = "";
+        pointBuyContainer.removeAttribute("hidden");
+        standardArrayContainer.setAttribute("hidden", "true");
         console.log("displaying point buy");
     }
 }

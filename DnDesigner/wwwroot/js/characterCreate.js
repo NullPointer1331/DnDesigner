@@ -115,49 +115,41 @@ function updateContent() {
     // Get the selected radio button value
     var selectedValue = document.querySelector('input[name="generationMethod"]:checked').value;
 
-    // for testing purposes
-    console.log(selectedValue);
+    // Get the containers for the two stat generation methods
     var standardArrayContainer = document.getElementById("standardArrayContainer");
     var pointBuyContainer = document.getElementById("pointBuyContainer");
+
+    // Display the selected container and hide the others
     if (selectedValue == "standardArray") {
         standardArrayContainer.removeAttribute("hidden");
         pointBuyContainer.setAttribute("hidden", "true");
-        console.log("displaying standard array");
 
     } else if (selectedValue == "pointBuy") {
         pointBuyContainer.removeAttribute("hidden");
         standardArrayContainer.setAttribute("hidden", "true");
-        console.log("displaying point buy");
     }
 }
 
 function updatePointsRemaining() {
+    // making the total points and points used
     var totalPoints = 27;
     var pointsUsed = 0;
+
+    // gets the element that displays the points remaining
     var pointRemainingElement = document.getElementById("pointsRemaining");
+
+    // gets all the inputs for the point buy system
     var pointBuyInputs = document.querySelectorAll('#pointBuyContainer input.form-control');
+
+    // itterates through the inputs and adds the points used to the total points
     pointBuyInputs.forEach(function (input) {
-        if (input.value < 8) {
-            input.value = 8;
-        } else if (input.value == 8) {
-            input.value = 8;
-        } else if (input.value == 9) {
-            pointsUsed++;
-        } else if (input.value == 10) {
-            pointsUsed += 2;
-        } else if (input.value == 11) {
-            pointsUsed += 3;
-        } else if (input.value == 12) {
-            pointsUsed += 4;
-        } else if (input.value == 13) {
-            pointsUsed += 5;
-        } else if (input.value == 14) {
-            pointsUsed += 7;
-        } else if (input.value == 15 || input.value > 15) {
-            input.value = 15;
-            pointsUsed += 9;
+        pointsUsed += parseInt(input.value) - 8;
+        if (input.value > 13) {
+            pointsUsed += parseInt(input.value) - 13;
         }
     });
+
+    // solves for points remaining and updates the display
     totalPoints = totalPoints - pointsUsed;
     pointRemainingElement.innerText = totalPoints;
 }

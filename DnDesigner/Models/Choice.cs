@@ -16,10 +16,19 @@ namespace DnDesigner.Models
         {
             CharacterFeature = characterFeature;
             Choice = choice;
-            ChoiceValue = choice.DefaultChoice;
+            ChoiceValue = Choice.DefaultChoice;
         }
 
         private CharacterChoice() { }
+
+        public void ApplyChoice()
+        {
+            Choice.ApplyChoice(CharacterFeature.Character, ChoiceValue);
+        }
+        public void RemoveChoice()
+        {
+            Choice.RemoveChoice(CharacterFeature.Character);
+        }
     }
 
     public abstract class Choice
@@ -99,9 +108,10 @@ namespace DnDesigner.Models
         public override void ApplyChoice(Character character, int choiceValue)
         {
             RemoveChoice(character);
-            if (choiceValue < Options.Count && choiceValue >= 0)
+            Effect? effect = Options.Find(e => e.EffectId == choiceValue);
+            if (effect != null)
             {
-                CharacterEffect characterEffect = new CharacterEffect(character, Options[choiceValue]);
+                CharacterEffect characterEffect = new CharacterEffect(character, effect);
                 character.CharacterEffects.Add(characterEffect);
                 characterEffect.ApplyEffect();
             }

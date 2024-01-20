@@ -158,17 +158,18 @@ namespace DnDesigner.Controllers
             }
             FeatureChoiceViewModel featureChoiceViewModel = new FeatureChoiceViewModel()
             {
-                Character = character,
-                ChoiceValues = new List<int>()
+                CharacterId = character.CharacterId,
+                CharacterFeatures = character.Features,
+                ChoiceValues = new Dictionary<int, int>()
             };
             foreach (CharacterFeature feature in character.Features)
             {
                 foreach (CharacterChoice choice in feature.Choices)
                 {
-                    featureChoiceViewModel.ChoiceValues.Add(choice.ChoiceValue);
+                    featureChoiceViewModel.ChoiceValues.Add(choice.CharacterChoiceId, choice.ChoiceValue);
                 }
             }
-            character.RemoveEffects();
+            character.RemoveFeatureEffects();
             return View(featureChoiceViewModel);
         }
 
@@ -185,17 +186,20 @@ namespace DnDesigner.Controllers
             {
                 return Unauthorized();
             }
-            featureChoiceViewModel.Character = character;
-            /*
-            for (int i = 0; i < featureChoiceViewModel.ChoiceValues.Count; i++)
+            foreach(KeyValuePair<int, int> choice in featureChoiceViewModel.ChoiceValues)
             {
-                character.CharacterEffects[i].Value = featureChoiceViewModel.ChoiceValues[i];
-            } */
+                CharacterChoice? characterChoice = character.GetCharacterChoice(choice.Key);
+                if (characterChoice != null)
+                {
+                    characterChoice.ChoiceValue = choice.Value;
+                }
+            }
             ModelState.Remove("Character.Background");
             ModelState.Remove("Character.Race");
             if (ModelState.IsValid)
             {
-                character.ApplyEffects();
+                character.RemoveFeatureEffects();
+                character.ApplyFeatures();
                 if (character.Strength < 1 || character.Strength > 20)
                 {
                     ModelState.AddModelError("Character.Strength", $"A Strength score of {character.Strength} is invalid. Strength must be between 1 and 20.");
@@ -313,7 +317,7 @@ namespace DnDesigner.Controllers
             }
             if (ModelState.IsValid)
             {
-                character.RemoveEffects();
+                character.RemoveFeatureEffects();
                 Background background = await _dbHelper.GetBackground(characterViewModel.BackgroundId);
                 Race race = await _dbHelper.GetRace(characterViewModel.RaceId);
                 List<CharacterClass> classes = new List<CharacterClass>();
@@ -401,6 +405,8 @@ namespace DnDesigner.Controllers
             {
                 try
                 {
+                    character.Background = await _dbHelper.GetBackground(character.Background.BackgroundId);
+                    character.Race = await _dbHelper.GetRace(character.Race.RaceId);
                     _context.Update(character);
                     await _context.SaveChangesAsync();
                 }

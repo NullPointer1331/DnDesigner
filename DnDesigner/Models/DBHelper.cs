@@ -389,6 +389,7 @@ namespace DnDesigner.Models
                     .Collection(ec => ec.Options)
                     .LoadAsync();
                 await LoadEffects(effectChoice.Options);
+                choice.DefaultChoice = effectChoice.Options[0].EffectId;
             }
         }
     }

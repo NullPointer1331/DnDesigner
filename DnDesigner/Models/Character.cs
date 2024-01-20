@@ -451,9 +451,24 @@ namespace DnDesigner.Models
             SetAttribute(name, value + GetAttribute(name));
         }
 
+        /// <summary>
+        /// Gets a CharacterAction with a given name
+        /// </summary>
+        /// <param name="name">The name of the action</param>
+        /// <returns>The CharacterAction if it exists, null if it doesn't</returns>
         public CharacterAction? GetAction(string name)
         {
             return Actions.Where(a => a.Action.Name == name).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets a CharacterChoice with a given id
+        /// </summary>
+        /// <param name="characterChoiceId">The id of the CharacterChoice you want</param>
+        /// <returns>The CharacterChoice if it exists, null if it doesn't</returns>
+        public CharacterChoice? GetCharacterChoice(int characterChoiceId)
+        {
+            return Features.SelectMany(f => f.Choices).Where(c => c.CharacterChoiceId == characterChoiceId).FirstOrDefault();
         }
 
         /// <summary>
@@ -581,7 +596,7 @@ namespace DnDesigner.Models
                     characterFeature.ApplyEffect();
                 }
             }
-            ApplyEffects();
+            ApplyFeatures();
         }
 
         /// <summary>
@@ -662,6 +677,20 @@ namespace DnDesigner.Models
             for (int i = 0; i < CharacterEffects.Count; i++)
             {
                 CharacterEffects[i].RemoveEffect();
+            }
+        }
+        public void ApplyFeatures()
+        {
+            for (int i = 0; i < Features.Count; i++)
+            {
+                Features[i].ApplyEffect();
+            }
+        }
+        public void RemoveFeatureEffects()
+        {
+            for (int i = 0; i < Features.Count; i++)
+            {
+                Features[i].RemoveEffect();
             }
         }
         #endregion
@@ -761,13 +790,18 @@ namespace DnDesigner.Models
 
     public class FeatureChoiceViewModel
     {
-        public Character Character { get; set; }
+        public int CharacterId { get; set; }
+
+        public List<CharacterFeature> CharacterFeatures { get; set; }
 
         // Normally I would handle this inside the CharacterFeature class, 
         // but the view simply isn't passing it back to the controller and I don't know why
         // So this is a hopefully temporary workaround
         // As is, it won't work with choices in choices
         // We don't have any of those yet, but we will if we implement Feats
-        public List<int> ChoiceValues { get; set; }
+        /// <summary>
+        /// A dictionary containing the characterchoiceid and the choice the user made
+        /// </summary>
+        public Dictionary<int, int> ChoiceValues { get; set; }
     }
 }

@@ -252,6 +252,10 @@ namespace DnDesigner.Models
 
         public void ApplyEffect()
         {
+            foreach (CharacterChoice choice in Choices)
+            {
+                choice.ApplyChoice();
+            }
             foreach (Effect effect in Feature.Effects)
             {
                 CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
@@ -269,6 +273,10 @@ namespace DnDesigner.Models
         }
         public void RemoveEffect()
         {
+            foreach (CharacterChoice choice in Choices)
+            {
+                choice.RemoveChoice();
+            }
             foreach (Effect effect in Feature.Effects)
             {
                 CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);

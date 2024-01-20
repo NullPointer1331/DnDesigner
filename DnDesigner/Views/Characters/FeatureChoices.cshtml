@@ -10,7 +10,7 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <div class="accordion" id="Features">
-            @foreach(CharacterFeature characterFeature in Model.Character.Features)
+            @foreach(CharacterFeature characterFeature in Model.CharacterFeatures)
             {
                 Feature feature = characterFeature.Feature;
                 <div class="accordion-item">
@@ -27,15 +27,15 @@
                             <br />
                             @foreach (CharacterChoice choice in characterFeature.Choices)
                             {
-                                if (choice.Choice is EffectChoice effectChoice)
-                                {
-                                    <select asp-for="@choice.ChoiceValue">
+                                <select asp-for="@Model.ChoiceValues[choice.CharacterChoiceId]">
+                                    @if (choice.Choice is EffectChoice effectChoice)
+                                    {
                                         @for (int i = 0; i < effectChoice.Options.Count; i++)
                                         {
-                                            <option value="@effectChoice.ChoiceId">@effectChoice.Options[i].ToString()</option>
+                                            <option value="@effectChoice.Options[i].EffectId">@effectChoice.Options[i].ToString()</option>
                                         }
-                                    </select>
-                                }
+                                    }
+                                </select>
                             }
                         </div>
                     </div>
@@ -45,16 +45,11 @@
     </div>
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />
-        <input type="button" value="Back" class="btn btn-danger" onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.Character.CharacterId})'" />
+        <input type="button" value="Back" class="btn btn-danger" onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.CharacterId})'" />
     </div>
     <!--Hidden Storage Start-->
-    @for (int i = 0; i < Model.ChoiceValues.Count; i++) //Hidden storage for Effects that don't have choices
-    { //Even though they are null, if they aren't here, it won't return all of the values in the list
-        <input hidden asp-for="@Model.ChoiceValues[i]" value="@Model.ChoiceValues[i]" />
-    }
-    <input type="hidden" asp-for="Character" />
-    <input type="hidden" asp-for="Character.CharacterId" />
-    <input type="hidden" asp-for="Character.UserId" />
+    <input type="hidden" asp-for="CharacterFeatures" />
+    <input type="hidden" asp-for="CharacterId" />
     <!--Hidden Storage End-->
 </form>
 

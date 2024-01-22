@@ -575,6 +575,8 @@ namespace DnDesigner.Models
             RemoveInvalidFeatures();
 
             List<Feature> features = new List<Feature>();
+            features.AddRange(Background.Features.Where(f => f.Level <= Level));
+            features.AddRange(Race.Features.Where(f => f.Level <= Level));
             foreach (CharacterClass @class in Classes)
             {
                 features.AddRange(@class.Class.GetAvailableFeatures(@class.Level));
@@ -583,8 +585,6 @@ namespace DnDesigner.Models
                     features.AddRange(@class.Subclass.GetAvailableFeatures(@class.Level));
                 }
             }
-            features.AddRange(Background.Features.Where(f => f.Level <= Level));
-            features.AddRange(Race.Features.Where(f => f.Level <= Level));
             
             //Add features that haven't been added yet
             foreach (Feature feature in features)
@@ -794,13 +794,11 @@ namespace DnDesigner.Models
 
         public List<CharacterFeature> CharacterFeatures { get; set; }
 
-        // Normally I would handle this inside the CharacterFeature class, 
+        // Normally I would handle this inside the CharacterChoice class, 
         // but the view simply isn't passing it back to the controller and I don't know why
-        // So this is a hopefully temporary workaround
-        // As is, it won't work with choices in choices
-        // We don't have any of those yet, but we will if we implement Feats
+        // So this is a workaround, not quite as elegant, but it works
         /// <summary>
-        /// A dictionary containing the characterchoiceid and the choice the user made
+        /// A dictionary containing the CharacterChoiceId and the choice the user made
         /// </summary>
         public Dictionary<int, int> ChoiceValues { get; set; }
     }

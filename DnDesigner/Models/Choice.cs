@@ -6,10 +6,20 @@ namespace DnDesigner.Models
     {
         [Key]
         public int CharacterChoiceId { get; set; }
+
+        /// <summary>
+        /// The character feature that this choice is for
+        /// </summary>
         public CharacterFeature CharacterFeature { get; set; }
 
+        /// <summary>
+        /// The choice that this references
+        /// </summary>
         public Choice Choice { get; set; }
 
+        /// <summary>
+        /// What the player chose
+        /// </summary>
         public int ChoiceValue { get; set; }
 
         public CharacterChoice(CharacterFeature characterFeature, Choice choice)
@@ -21,13 +31,25 @@ namespace DnDesigner.Models
 
         private CharacterChoice() { }
 
+        /// <summary>
+        /// Applies the choice to the character
+        /// </summary>
         public void ApplyChoice()
         {
             Choice.ApplyChoice(CharacterFeature.Character, ChoiceValue);
         }
+
+        /// <summary>
+        /// Removes the choice from the character
+        /// </summary>
         public void RemoveChoice()
         {
             Choice.RemoveChoice(CharacterFeature.Character);
+        }
+
+        public override string ToString()
+        {
+            return Choice.GetOptionDescription(ChoiceValue);
         }
     }
 
@@ -35,11 +57,44 @@ namespace DnDesigner.Models
     {
         [Key]
         public int ChoiceId { get; set; }
+
+        /// <summary>
+        /// The default choice value
+        /// </summary>
         public int DefaultChoice { get; set; }
+
+        /// <summary>
+        /// Applies the default choice to the character
+        /// </summary>
+        /// <param name="character"></param>
         public abstract void ApplyChoice(Character character);
+
+        /// <summary>
+        /// Applies the choice to the character
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="choice"></param>
         public abstract void ApplyChoice(Character character, int choice);
+
+        /// <summary>
+        /// Removes the choice from the character
+        /// </summary>
+        /// <param name="character"></param>
         public abstract void RemoveChoice(Character character);
+
+        /// <summary>
+        /// Removes the choice from the character
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="choice"></param>
         public abstract void RemoveChoice(Character character, int choice);
+
+        /// <summary>
+        /// Gets the description of the specified option
+        /// </summary>
+        /// <param name="choice"></param>
+        /// <returns></returns>
+        public abstract string GetOptionDescription(int choice);
     }
 
     /// <summary>
@@ -153,6 +208,19 @@ namespace DnDesigner.Models
                 str += effect.ToString() + ", ";
             }
             return str.Substring(0, str.Length - 2);
+        }
+
+        public override string GetOptionDescription(int effectId)
+        {
+            Effect? effect = Options.Find(e => e.EffectId == effectId);
+            if (effect != null)
+            {
+                return effect.ToString();
+            }
+            else
+            {
+                return "Effect not found";
+            }
         }
     }
 }

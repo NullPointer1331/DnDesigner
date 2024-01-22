@@ -235,6 +235,9 @@ namespace DnDesigner.Models
         /// </summary>
         public Feature Feature { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public List<CharacterChoice> Choices { get; set; }
 
         public CharacterFeature(Character character, Feature feature)
@@ -250,6 +253,9 @@ namespace DnDesigner.Models
 
         private CharacterFeature() { }
 
+        /// <summary>
+        /// Applies the feature to the character, including all effects and choices
+        /// </summary>
         public void ApplyEffect()
         {
             foreach (CharacterChoice choice in Choices)
@@ -271,6 +277,10 @@ namespace DnDesigner.Models
                 }
             }
         }
+
+        /// <summary>
+        /// Removes the effects and choices of the feature from the character
+        /// </summary>
         public void RemoveEffect()
         {
             foreach (CharacterChoice choice in Choices)

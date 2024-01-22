@@ -572,7 +572,21 @@
                                             </h2>
                                             <div id="panelsStayOpen-@feature.FeatureId" class="accordion-collapse collapse">
                                                 <div class="accordion-body">
-                                                    <strong>@feature.Description</strong>
+                                                    <strong>
+                                                        @feature.Description
+                                                    </strong>
+                                                    @if (characterFeature.Choices.Any())
+                                                    {
+                                                        <p>
+                                                            You chose the following options:
+                                                            <br />
+                                                            @foreach (CharacterChoice characterChoice in characterFeature.Choices)
+                                                            {
+                                                                @characterChoice.ToString() 
+                                                                <br />
+                                                            }
+                                                        </p>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

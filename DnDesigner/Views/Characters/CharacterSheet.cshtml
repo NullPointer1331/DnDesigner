@@ -174,12 +174,12 @@
                                     }
                                 }
                             </select>
-                            <button class="btn btn-primary" type="button" onclick="">Roll</button>
+                            <button class="btn btn-primary" type="button" onclick="RollHitDice(@Model.GetModifier("Constitution"))">Roll</button>
 						</div>
                         <br />
                         <div class="input-group me-2">
                             <label class="input-group-text">Total Health Rolled (Includes Constitution Modifier)</label>
-                            <input id="totalHitDieRoll" type="number" class="form-control" placeholder="0" min="0" disabled="disabled" aria-label="Total Health Rolled" />
+                            <input id="totalHitDieRoll" type="number" class="form-control" value="0" placeholder="0" min="0" disabled="disabled" aria-label="Total Health Rolled" />
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -43,6 +43,11 @@ namespace DnDesigner.Models
         public List<Effect> Effects { get; set; }
 
         /// <summary>
+        /// A list of choices for this feature
+        /// </summary>
+        public List<Choice> Choices { get; set; }
+
+        /// <summary>
         /// Full constructor, sets all properties
         /// </summary>
         /// <param name="name">The name of the feature</param>
@@ -56,6 +61,7 @@ namespace DnDesigner.Models
             Description = description;
             Level = level;
             Effects = new List<Effect>();
+            Choices = new List<Choice>();
         }
 
         /// <summary>
@@ -70,6 +76,7 @@ namespace DnDesigner.Models
             Description = description;
             Level = level;
             Effects = new List<Effect>();
+            Choices = new List<Choice>();
         }
 
         public bool Equals(Feature other)
@@ -228,40 +235,55 @@ namespace DnDesigner.Models
         /// </summary>
         public Feature Feature { get; set; }
 
+        /// <summary>
+        /// The choices made for the feature
+        /// </summary>
+        public List<CharacterChoice> Choices { get; set; }
+
         public CharacterFeature(Character character, Feature feature)
         {
             Character = character;
             Feature = feature;
+            Choices = new List<CharacterChoice>();
+            foreach (Choice choice in feature.Choices)
+            {
+                Choices.Add(new CharacterChoice(this, choice));
+            }
         }
 
         private CharacterFeature() { }
 
-        public void ApplyEffect()
+        /// <summary>
+        /// Applies the feature to the character, including all effects and choices
+        /// </summary>
+        public void ApplyEffects()
         {
+            foreach (CharacterChoice choice in Choices)
+            {
+                choice.ApplyChoice();
+            }
             foreach (Effect effect in Feature.Effects)
             {
-                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
-                if (existingEffect != null)
-                {
-                    existingEffect.ApplyEffect();
-                }
-                else
-                {
-                    CharacterEffect characterEffect = new CharacterEffect(Character, effect);
-                    Character.CharacterEffects.Add(characterEffect);
-                    characterEffect.ApplyEffect();
-                }
+                CharacterEffect characterEffect = new CharacterEffect(Character, effect);
+                Character.CharacterEffects.Add(characterEffect);
             }
         }
-        public void RemoveEffect()
+
+        /// <summary>
+        /// Removes the effects and choices of the feature from the character
+        /// </summary>
+        public void RemoveEffects()
         {
+            foreach (CharacterChoice choice in Choices)
+            {
+                choice.RemoveChoice();
+            }
             foreach (Effect effect in Feature.Effects)
             {
                 CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
                 if (existingEffect != null)
                 {
                     existingEffect.RemoveEffect();
-                    Character.CharacterEffects.Remove(existingEffect);
                 }
             }
         }

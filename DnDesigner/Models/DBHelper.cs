@@ -29,6 +29,7 @@ namespace DnDesigner.Models
             foreach (BackgroundFeature feature in background.Features)
             {
                 await LoadEffects(feature.Effects);
+                await LoadChoices(feature.Choices);
             }
             return background;
         }
@@ -77,7 +78,10 @@ namespace DnDesigner.Models
                     .ThenInclude(cp => cp.Proficiency)
                     .Include(c => c.Features)
                     .ThenInclude(cf => cf.Feature)
-                    .ThenInclude(cff => cff.Effects)
+                    .ThenInclude(f => f.Effects)
+                    .Include(c => c.Features)
+                    .ThenInclude(cf => cf.Choices)
+                    .ThenInclude(cfc => cfc.Choice)
                     .Include(c => c.Inventory)
                     .ThenInclude(ci => ci.Items)
                     .ThenInclude(cii => cii.Item)
@@ -91,6 +95,10 @@ namespace DnDesigner.Models
             foreach (CharacterFeature feature in character.Features)
             {
                 await LoadEffects(feature.Feature.Effects);
+                foreach (Choice choice in feature.Feature.Choices)
+                {
+                    await LoadChoice(choice);
+                }
             }
             return character;
         }
@@ -126,10 +134,13 @@ namespace DnDesigner.Models
                     .Include(c => c.Spellcasting)
                     .Include(c => c.Features)
                     .ThenInclude(cf => cf.Effects)
+                    .Include(c => c.Features)
+                    .ThenInclude(cf => cf.Choices)
                     .FirstOrDefaultAsync();
             foreach (Feature feature in @class.Features)
             {
                 await LoadEffects(feature.Effects);
+                await LoadChoices(feature.Choices);
             }
             return @class;
         }
@@ -223,10 +234,13 @@ namespace DnDesigner.Models
             Race race = await _context.Races.Where(r => r.RaceId == id)
                     .Include(r => r.Features)
                     .ThenInclude(re => re.Effects)
+                    .Include(r => r.Features)
+                    .ThenInclude(rf => rf.Choices)
                     .FirstOrDefaultAsync();
             foreach (Feature feature in race.Features)
             {
                 await LoadEffects(feature.Effects);
+                await LoadChoices(feature.Choices);
             }
             return race;
         }
@@ -304,10 +318,13 @@ namespace DnDesigner.Models
             Subclass subclass = await _context.Subclasses.Where(s => s.SubclassId == id)
                     .Include(s => s.Features)
                     .ThenInclude(se => se.Effects)
+                    .Include(s => s.Features)
+                    .ThenInclude(sf => sf.Choices)
                     .FirstOrDefaultAsync();
             foreach (Feature feature in subclass.Features)
             {
                 await LoadEffects(feature.Effects);
+                await LoadChoices(feature.Choices);
             }
             return subclass;
         }
@@ -354,12 +371,25 @@ namespace DnDesigner.Models
                     .Reference(ga => ga.Action)
                     .LoadAsync();
             }
-            else if (effect is EffectChoice effectChoice)
+        }
+
+        private async Task LoadChoices(List<Choice> choices)
+        {
+            foreach (Choice choice in choices)
+            {
+                await LoadChoice(choice);
+            }
+        }
+
+        private async Task LoadChoice(Choice choice)
+        {
+            if (choice is EffectChoice effectChoice)
             {
                 await _context.Entry(effectChoice)
-                    .Collection(ec => ec.Effects)
+                    .Collection(ec => ec.Options)
                     .LoadAsync();
-                await LoadEffects(effectChoice.Effects);
+                await LoadEffects(effectChoice.Options);
+                choice.DefaultChoice = effectChoice.Options[0].EffectId;
             }
         }
     }

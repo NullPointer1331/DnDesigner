@@ -572,7 +572,21 @@
                                             </h2>
                                             <div id="panelsStayOpen-@feature.FeatureId" class="accordion-collapse collapse">
                                                 <div class="accordion-body">
-                                                    <strong>@feature.Description</strong>
+                                                    <strong>
+                                                        @feature.Description
+                                                    </strong>
+                                                    @if (characterFeature.Choices.Any())
+                                                    {
+                                                        <p>
+                                                            You chose the following options:
+                                                            <br />
+                                                            @foreach (CharacterChoice characterChoice in characterFeature.Choices)
+                                                            {
+                                                                @characterChoice.ToString() 
+                                                                <br />
+                                                            }
+                                                        </p>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -722,6 +736,7 @@
     <!--Hidden Storage Start-->
     <input type="hidden" asp-for="CharacterId" />
     <input type="hidden" asp-for="Name" />
+    <input type="hidden" asp-for="Alignment" />
     <input type="hidden" asp-for="Race" />
     <input type="hidden" asp-for="Race.RaceId" />
     <input type="hidden" asp-for="Race.Name" />

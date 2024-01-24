@@ -138,17 +138,8 @@ namespace DnDesigner.Models
         {
             foreach (Effect effect in Item.Effects)
             {
-                CharacterEffect? existingEffect = Inventory.Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
-                if (existingEffect != null)
-                {
-                    existingEffect.ApplyEffect();
-                }
-                else
-                {
-                    CharacterEffect characterEffect = new CharacterEffect(Inventory.Character, effect);
-                    Inventory.Character.CharacterEffects.Add(characterEffect);
-                    characterEffect.ApplyEffect();
-                }
+                CharacterEffect characterEffect = new CharacterEffect(Inventory.Character, effect);
+                Inventory.Character.CharacterEffects.Add(characterEffect);
             }
         }
         public void RemoveEffect()

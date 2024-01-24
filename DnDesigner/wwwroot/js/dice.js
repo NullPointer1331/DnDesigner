@@ -3,6 +3,10 @@
 
 // Write your JavaScript code.
 
+///<summary>
+/// Handles assigning the toast box and rolling d20s for
+/// all skills and saves without a modifier
+/// </summary>
 function assignToast(button, rollType)
 {
     let toastBox = document.getElementById('rollToast');
@@ -27,6 +31,10 @@ function assignToast(button, rollType)
     toastBootstrap.show()
 }
 
+///<summary>
+/// Handles assigning the toast box and rolling d20s for
+/// all skills and saves with a modifier
+/// </summary>
 function assignToastMod(button, rollType, modifier)
 {
     let toastBox = document.getElementById('rollToast');
@@ -51,7 +59,9 @@ function assignToastMod(button, rollType, modifier)
     toastBootstrap.show()
 }
 
-
+/// <summary>
+/// Generates a random number, simulates a die roll
+/// </summary>
 function generateRandomValue(minValue, maxValue)
 {
     var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;

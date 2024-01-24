@@ -130,6 +130,10 @@ namespace DnDesigner.Controllers
                         }
                     }
                 }
+                newCharacter.d6HitDiceAvailable = newCharacter.MaxHitDice[0];
+                newCharacter.d8HitDiceAvailable = newCharacter.MaxHitDice[1];
+                newCharacter.d10HitDiceAvailable = newCharacter.MaxHitDice[2];
+                newCharacter.d12HitDiceAvailable = newCharacter.MaxHitDice[3];
                 newCharacter.Classes[0].InitialClass = true;
                 newCharacter.SetActiveFeatures();
 
@@ -340,6 +344,10 @@ namespace DnDesigner.Controllers
                 character.Intelligence = characterViewModel.Intelligence;
                 character.Wisdom = characterViewModel.Wisdom;
                 character.Charisma = characterViewModel.Charisma;
+                character.d6HitDiceAvailable = character.MaxHitDice[0];
+                character.d8HitDiceAvailable = character.MaxHitDice[1];
+                character.d10HitDiceAvailable = character.MaxHitDice[2];
+                character.d12HitDiceAvailable = character.MaxHitDice[3];
 
                 character.SetActiveFeatures();
                 try

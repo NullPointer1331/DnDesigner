@@ -14,6 +14,14 @@ namespace DnDesigner.Migrations
                 name: "FK_Effects_Effects_EffectChoiceEffectId",
                 table: "Effects");
 
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_CharacterEffects",
+                table: "CharacterEffects");
+
+            migrationBuilder.DropColumn(
+                name: "IsApplied",
+                table: "CharacterEffects");
+
             migrationBuilder.DropColumn(
                 name: "Value",
                 table: "CharacterEffects");
@@ -27,6 +35,19 @@ namespace DnDesigner.Migrations
                 name: "IX_Effects_EffectChoiceEffectId",
                 table: "Effects",
                 newName: "IX_Effects_EffectChoiceChoiceId");
+
+            migrationBuilder.AddColumn<int>(
+                name: "CharacterEffectId",
+                table: "CharacterEffects",
+                type: "int",
+                nullable: false,
+                defaultValue: 0)
+                .Annotation("SqlServer:Identity", "1, 1");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_CharacterEffects",
+                table: "CharacterEffects",
+                column: "CharacterEffectId");
 
             migrationBuilder.CreateTable(
                 name: "Choices",
@@ -76,6 +97,11 @@ namespace DnDesigner.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CharacterEffects_CharacterId",
+                table: "CharacterEffects",
+                column: "CharacterId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CharacterChoice_CharacterFeatureId",
                 table: "CharacterChoice",
                 column: "CharacterFeatureId");
@@ -111,6 +137,18 @@ namespace DnDesigner.Migrations
             migrationBuilder.DropTable(
                 name: "Choices");
 
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_CharacterEffects",
+                table: "CharacterEffects");
+
+            migrationBuilder.DropIndex(
+                name: "IX_CharacterEffects_CharacterId",
+                table: "CharacterEffects");
+
+            migrationBuilder.DropColumn(
+                name: "CharacterEffectId",
+                table: "CharacterEffects");
+
             migrationBuilder.RenameColumn(
                 name: "EffectChoiceChoiceId",
                 table: "Effects",
@@ -121,11 +159,23 @@ namespace DnDesigner.Migrations
                 table: "Effects",
                 newName: "IX_Effects_EffectChoiceEffectId");
 
+            migrationBuilder.AddColumn<bool>(
+                name: "IsApplied",
+                table: "CharacterEffects",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
+
             migrationBuilder.AddColumn<int>(
                 name: "Value",
                 table: "CharacterEffects",
                 type: "int",
                 nullable: true);
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_CharacterEffects",
+                table: "CharacterEffects",
+                columns: new[] { "CharacterId", "EffectId" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Effects_Effects_EffectChoiceEffectId",

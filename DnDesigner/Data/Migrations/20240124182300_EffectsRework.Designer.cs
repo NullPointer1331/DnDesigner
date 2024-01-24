@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20240119200241_EffectsRework")]
+    [Migration("20240124182300_EffectsRework")]
     partial class EffectsRework
     {
         /// <inheritdoc />
@@ -267,16 +267,21 @@ namespace DnDesigner.Migrations
 
             modelBuilder.Entity("DnDesigner.Models.CharacterEffect", b =>
                 {
+                    b.Property<int>("CharacterEffectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CharacterEffectId"));
+
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
                     b.Property<int>("EffectId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsApplied")
-                        .HasColumnType("bit");
+                    b.HasKey("CharacterEffectId");
 
-                    b.HasKey("CharacterId", "EffectId");
+                    b.HasIndex("CharacterId");
 
                     b.HasIndex("EffectId");
 

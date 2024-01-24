@@ -236,7 +236,7 @@ namespace DnDesigner.Models
         public Feature Feature { get; set; }
 
         /// <summary>
-        /// 
+        /// The choices made for the feature
         /// </summary>
         public List<CharacterChoice> Choices { get; set; }
 
@@ -256,7 +256,7 @@ namespace DnDesigner.Models
         /// <summary>
         /// Applies the feature to the character, including all effects and choices
         /// </summary>
-        public void ApplyEffect()
+        public void ApplyEffects()
         {
             foreach (CharacterChoice choice in Choices)
             {
@@ -264,24 +264,15 @@ namespace DnDesigner.Models
             }
             foreach (Effect effect in Feature.Effects)
             {
-                CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
-                if (existingEffect != null)
-                {
-                    existingEffect.ApplyEffect();
-                }
-                else
-                {
-                    CharacterEffect characterEffect = new CharacterEffect(Character, effect);
-                    Character.CharacterEffects.Add(characterEffect);
-                    characterEffect.ApplyEffect();
-                }
+                CharacterEffect characterEffect = new CharacterEffect(Character, effect);
+                Character.CharacterEffects.Add(characterEffect);
             }
         }
 
         /// <summary>
         /// Removes the effects and choices of the feature from the character
         /// </summary>
-        public void RemoveEffect()
+        public void RemoveEffects()
         {
             foreach (CharacterChoice choice in Choices)
             {
@@ -293,7 +284,6 @@ namespace DnDesigner.Models
                 if (existingEffect != null)
                 {
                     existingEffect.RemoveEffect();
-                    Character.CharacterEffects.Remove(existingEffect);
                 }
             }
         }

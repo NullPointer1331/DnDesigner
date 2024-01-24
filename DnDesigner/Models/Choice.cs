@@ -168,7 +168,6 @@ namespace DnDesigner.Models
             {
                 CharacterEffect characterEffect = new CharacterEffect(character, effect);
                 character.CharacterEffects.Add(characterEffect);
-                characterEffect.ApplyEffect();
             }
         }
 

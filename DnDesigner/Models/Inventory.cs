@@ -364,6 +364,20 @@ namespace DnDesigner.Models
         {
             RemoveItem(item, 1);
         }
+
+        /// <summary>
+        /// Applies the effects of equipped and attuned items to the character
+        /// </summary>
+        public void ApplyEffects()
+        {
+            foreach (InventoryItem item in Items)
+            {
+                if(item.Equipped || item.Attuned)
+                {
+                    item.ApplyEffect();
+                }
+            }
+        }
         #endregion
     }
 }

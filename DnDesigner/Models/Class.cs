@@ -59,14 +59,22 @@ namespace DnDesigner.Models
 			Sourcebook = "";
 		}
 
-		/// <summary>
-		/// Gets the features available to the class at a given level
-		/// </summary>
-		/// <param name="level">The level </param>
-		/// <returns>a list of the features available at that level</returns>
-		public List<ClassFeature> GetAvailableFeatures(int level)
+        /// <summary>
+        /// Gets the features available to the class at a given level
+        /// </summary>
+        /// <param name="level">The level </param>
+        /// <param name="initialClass">Was this the first class a character took</param>
+        /// <returns>a list of the features available at that level</returns>
+        public List<ClassFeature> GetAvailableFeatures(int level, bool initialClass)
 		{
-			return Features.Where(Features => Features.Level <= level).ToList();
+			if (initialClass)
+			{
+                return Features.Where(Features => Features.Level <= level && !Features.MulticlassOnly).ToList();
+            }
+            else
+			{
+                return Features.Where(Features => Features.Level <= level && !Features.InitialClassOnly).ToList();
+            }
 		}
 	}
 
@@ -131,5 +139,16 @@ namespace DnDesigner.Models
         }
 
 		private CharacterClass() { }
+
+		public List<Feature> GetAvailableFeatures()
+		{
+			List<Feature> features = new List<Feature>();
+			features.AddRange(Class.GetAvailableFeatures(Level, InitialClass));
+			if (Subclass != null)
+			{
+                features.AddRange(Subclass.GetAvailableFeatures(Level));
+            }
+			return features;
+		}
     }
 }

@@ -28,9 +28,11 @@ namespace DnDesigner.Models
         public abstract override string ToString();
     }
 
-    [PrimaryKey("CharacterId", "EffectId")]
     public class CharacterEffect
     {
+        [Key]
+        public int CharacterEffectId { get; set; }
+
         [ForeignKey("EffectId")]
         public Effect Effect { get; set; }
 
@@ -38,34 +40,19 @@ namespace DnDesigner.Models
         [JsonIgnore]
         public Character Character { get; set; }
 
-        /// <summary>
-        /// Has this effect been applied to the character?
-        /// </summary>
-        public bool IsApplied { get; set; }
-
         public CharacterEffect(Character character, Effect effect)
         {
             Effect = effect;
             Character = character;
-            IsApplied = false;
+            Effect.ApplyEffect(Character);
         }
+
         private CharacterEffect() { }
 
-        public void ApplyEffect()
-        {
-            if (!IsApplied)
-            {
-                Effect.ApplyEffect(Character);
-                IsApplied = true;
-            }
-        }
         public void RemoveEffect()
         {
-            if (IsApplied)
-            {
-                Effect.RemoveEffect(Character);
-                IsApplied = false;
-            }
+            Effect.RemoveEffect(Character);
+            Character.CharacterEffects.Remove(this);
         }
     }
     /// <summary>

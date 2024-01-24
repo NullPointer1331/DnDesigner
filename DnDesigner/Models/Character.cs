@@ -569,7 +569,9 @@ namespace DnDesigner.Models
             return saves;
         }
 
-
+        /// <summary>
+        /// Gives the character all features they qualify for
+        /// </summary>
         public void SetActiveFeatures()
         {
             RemoveInvalidFeatures();
@@ -579,11 +581,7 @@ namespace DnDesigner.Models
             features.AddRange(Race.Features.Where(f => f.Level <= Level));
             foreach (CharacterClass @class in Classes)
             {
-                features.AddRange(@class.Class.GetAvailableFeatures(@class.Level));
-                if (@class.Subclass != null)
-                {
-                    features.AddRange(@class.Subclass.GetAvailableFeatures(@class.Level));
-                }
+                features.AddRange(@class.GetAvailableFeatures());
             }
             
             //Add features that haven't been added yet
@@ -593,10 +591,12 @@ namespace DnDesigner.Models
                 {
                     CharacterFeature characterFeature = new CharacterFeature(this, feature);
                     Features.Add(characterFeature);
-                    characterFeature.ApplyEffect();
+                    characterFeature.ApplyEffects();
                 }
             }
-            ApplyFeatures();
+            Features.OrderBy(f => f.Feature.Level);
+
+            ApplyEffects();
         }
 
         /// <summary>
@@ -658,7 +658,7 @@ namespace DnDesigner.Models
                 }
                 if (!valid)
                 {
-                    Features[i].RemoveEffect();
+                    Features[i].RemoveEffects();
                     Features.Remove(Features[i]);
                 }
             }
@@ -667,30 +667,29 @@ namespace DnDesigner.Models
         public void ApplyEffects()
         {
             RemoveEffects();
-            for (int i = 0; i < CharacterEffects.Count; i++)
-            {
-                CharacterEffects[i].ApplyEffect();
-            }
+            ApplyFeatures();
+            Inventory.ApplyEffects();
         }
         public void RemoveEffects()
         {
-            for (int i = 0; i < CharacterEffects.Count; i++)
+            while (CharacterEffects.Count > 0)
             {
-                CharacterEffects[i].RemoveEffect();
+                CharacterEffects[0].RemoveEffect();
             }
         }
         public void ApplyFeatures()
         {
+            RemoveFeatureEffects();
             for (int i = 0; i < Features.Count; i++)
             {
-                Features[i].ApplyEffect();
+                Features[i].ApplyEffects();
             }
         }
         public void RemoveFeatureEffects()
         {
             for (int i = 0; i < Features.Count; i++)
             {
-                Features[i].RemoveEffect();
+                Features[i].RemoveEffects();
             }
         }
         #endregion

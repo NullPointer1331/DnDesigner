@@ -136,19 +136,19 @@
                         @{
                             if (Model.AvailableHitDice[0] != 0)
                             {
-                                <h3>@Model.AvailableHitDice[0] d6</h3>
+                                <h3 id="d6HitDiceAvailable">@Model.AvailableHitDice[0] d6</h3>
                             }
                             if (Model.AvailableHitDice[1] != 0)
                             {
-                                <h3>@Model.AvailableHitDice[1] d8</h3>
+                                <h3 id="d8HitDiceAvailable">@Model.AvailableHitDice[1] d8</h3>
                             }
                             if (Model.AvailableHitDice[2] != 0)
                             {
-                                <h3>@Model.AvailableHitDice[2] d10</h3>
+                                <h3 id="d10HitDiceAvailable">@Model.AvailableHitDice[2] d10</h3>
                             }
                             if (Model.AvailableHitDice[3] != 0)
                             {
-                                <h3>@Model.AvailableHitDice[3] d12</h3>
+                                <h3 id="d12HitDiceAvailable">@Model.AvailableHitDice[3] d12</h3>
                             }
                         }
                         <h5>Spend hit dice</h5>
@@ -178,8 +178,8 @@
 						</div>
                         <br />
                         <div class="input-group me-2">
-                            <label class="input-group-text">Total Health Rolled</label>
-                            <input id="totalHitDieRoll" type="number" class="form-control" placeholder="0" min="0" aria-label="Total Health Rolled" />
+                            <label class="input-group-text">Total Health Rolled (Includes Constitution Modifier)</label>
+                            <input id="totalHitDieRoll" type="number" class="form-control" placeholder="0" min="0" disabled="disabled" aria-label="Total Health Rolled" />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -223,19 +223,19 @@
                         @{
                             if (Model.AvailableHitDice[0] != 0)
                             {
-                                <h3>@Model.AvailableHitDice[0] d6</h3>
+                                <h3 id="d6HitDiceAvailable">@Model.AvailableHitDice[0] d6</h3>
                             }
                             if (Model.AvailableHitDice[1] != 0)
                             {
-                                <h3>@Model.AvailableHitDice[1] d8</h3>
+                                <h3 id="d8HitDiceAvailable">@Model.AvailableHitDice[1] d8</h3>
                             }
                             if (Model.AvailableHitDice[2] != 0)
                             {
-                                <h3>@Model.AvailableHitDice[2] d10</h3>
+                                <h3 id="d10HitDiceAvailable">@Model.AvailableHitDice[2] d10</h3>
                             }
                             if (Model.AvailableHitDice[3] != 0)
                             {
-                                <h3>@Model.AvailableHitDice[3] d12</h3>
+                                <h3 id="d12HitDiceAvailable">@Model.AvailableHitDice[3] d12</h3>
                             }
                         }
                     </div>

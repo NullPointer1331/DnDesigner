@@ -133,27 +133,53 @@
                     <div class="modal-body text-center">
                         <h5>Place holder for what player gets back</h5>
                         <h5>Hit Dice Available</h5>
-                        @{
-                            if (Model.d6HitDiceAvailable != 0)
-                            {
-                                <h3 id="d6HitDiceAvailable">@Model.d6HitDiceAvailable d6</h3>
+                        <div class="d-flex flex-column">
+                            @{
+                                if (Model.d6HitDiceAvailable != 0)
+                                {
+                                    <div class="input-group mx-auto w-25">
+                                        <input id="d6HitDiceAvailable" type="number" class="form-control"
+                                               value="@Model.d6HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                               aria-label="d6 Hit Dice Available" />
+                                        <label class="input-group-text">d6</label>
+                                    </div>
+                                    <br />
+                                }
+                                if (Model.d8HitDiceAvailable != 0)
+                                {
+                                    <div class="input-group mx-auto w-25">
+                                        <input id="d8HitDiceAvailable" type="number" class="form-control"
+                                               value="@Model.d8HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                               aria-label="d8 Hit Dice Available" />
+                                        <label class="input-group-text">d8</label>
+                                    </div>
+                                    <br />
+                                }
+                                if (Model.d10HitDiceAvailable != 0)
+                                {
+                                    <div class="input-group mx-auto w-25">
+                                        <input id="d10HitDiceAvailable" type="number" class="form-control"
+                                               value="@Model.d10HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                               aria-label="d10 Hit Dice Available" />
+                                        <label class="input-group-text">d10</label>
+                                    </div>
+                                    <br />
+                                }
+                                if (Model.d12HitDiceAvailable != 0)
+                                {
+                                    <div class="input-group mx-auto w-25">
+                                        <input id="d12HitDiceAvailable" type="number" class="form-control"
+                                               value="@Model.d12HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                               aria-label="d12 Hit Dice Available" />
+                                        <label class="input-group-text">d12</label>
+                                    </div>
+                                    <br />
+                                }
                             }
-                            if (Model.d8HitDiceAvailable != 0)
-                            {
-                                <h3 id="d8HitDiceAvailable">@Model.d8HitDiceAvailable d8</h3>
-                            }
-                            if (Model.d10HitDiceAvailable != 0)
-                            {
-                                <h3 id="d10HitDiceAvailable">@Model.d10HitDiceAvailable d10</h3>
-                            }
-                            if (Model.d12HitDiceAvailable != 0)
-                            {
-                                <h3 id="d12HitDiceAvailable">@Model.d12HitDiceAvailable d12</h3>
-                            }
-                        }
+                        </div>
                         <h5>Spend hit dice</h5>
-                        <div class="input-group me-2">
-                            <label class="input-group-text">Hit Die Roller</label>
+                        <div class="input-group mx-auto w-50">
+                            <label class="input-group-text">Hit Die</label>
                             <select class="form-select" id="spendHitDie">
                                 @{
                                     if (Model.d6HitDiceAvailable != 0)
@@ -220,24 +246,49 @@
                         }                            
                         <br>
                         <h5>Hit Dice Available</h5>
+                        <div class="d-flex flex-column">
                         @{
                             if (Model.d6HitDiceAvailable != 0)
                             {
-                                <h3 id="d6HitDiceAvailable">@Model.d6HitDiceAvailable d6</h3>
+                                <div class="input-group mx-auto w-25">
+                                    <input id="d6HitDiceAvailable" type="number" class="form-control" 
+                                        value="@Model.d6HitDiceAvailable" min="0" max="20" disabled="disabled" 
+                                        aria-label="d6 Hit Dice Available" />
+                                    <label class="input-group-text">d6</label>
+                                </div>
+                                <br />
                             }
                             if (Model.d8HitDiceAvailable != 0)
                             {
-                                <h3 id="d8HitDiceAvailable">@Model.d8HitDiceAvailable d8</h3>
+                                <div class="input-group mx-auto w-25">
+                                    <input id="d8HitDiceAvailable" type="number" class="form-control"
+                                        value="@Model.d8HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                        aria-label="d8 Hit Dice Available" />
+                                    <label class="input-group-text">d8</label>
+                                    </div>
+                                    <br />
                             }
                             if (Model.d10HitDiceAvailable != 0)
                             {
-                                <h3 id="d10HitDiceAvailable">@Model.d10HitDiceAvailable d10</h3>
+                                <div class="input-group mx-auto w-25">
+                                    <input id="d10HitDiceAvailable" type="number" class="form-control"
+                                        value="@Model.d10HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                        aria-label="d10 Hit Dice Available" />
+                                    <label class="input-group-text">d10</label>
+                                    </div>
+                                    <br />
                             }
                             if (Model.d12HitDiceAvailable != 0)
                             {
-                                <h3 id="d12HitDiceAvailable">@Model.d12HitDiceAvailable d12</h3>
+                                <div class="input-group mx-auto w-25">
+                                    <input id="d12HitDiceAvailable" type="number" class="form-control"
+                                        value="@Model.d12HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                        aria-label="d12 Hit Dice Available" />
+                                    <label class="input-group-text">d12</label>
+                                </div>
                             }
                         }
+						</div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

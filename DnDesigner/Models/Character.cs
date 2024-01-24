@@ -56,9 +56,24 @@ namespace DnDesigner.Models
         public int TempHealth { get; set; }
 
         /// <summary>
-        /// The characters available hit dice
+        /// The characters available d6 hit dice
         /// </summary>
-        public int AvailableHitDice { get; set; }
+        public int d6HitDiceAvailable { get; set; }
+
+        /// <summary>
+        /// The characters available d8 hit dice
+        /// </summary>
+        public int d8HitDiceAvailable { get; set; }
+
+        /// <summary>
+        /// The characters available d10 hit dice
+        /// </summary>
+        public int d10HitDiceAvailable { get; set; }
+
+        /// <summary>
+        /// The characters available d12 hit dice
+        /// </summary>
+        public int d12HitDiceAvailable { get; set; }
 
         /// <summary>
         /// An array containing the character's max hit dice for each size, 

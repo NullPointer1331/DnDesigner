@@ -130,6 +130,7 @@ namespace DnDesigner.Controllers
                         }
                     }
                 }
+                newCharacter.AvailableHitDice = newCharacter.MaxHitDice;
                 newCharacter.Classes[0].InitialClass = true;
                 newCharacter.SetActiveFeatures();
 
@@ -340,6 +341,7 @@ namespace DnDesigner.Controllers
                 character.Intelligence = characterViewModel.Intelligence;
                 character.Wisdom = characterViewModel.Wisdom;
                 character.Charisma = characterViewModel.Charisma;
+                character.AvailableHitDice = character.MaxHitDice;
 
                 character.SetActiveFeatures();
                 try

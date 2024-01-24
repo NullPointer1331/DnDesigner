@@ -3,6 +3,8 @@
 /// Handles assigning the toast box and rolling d20s for
 /// all skills and saves without a modifier
 /// </summary>
+/// <param name="button">The button that was clicked to call this function</param>
+/// <param name="rollType">The type of roll to be made</param>
 function assignToast(button, rollType)
 {
     let toastBox = document.getElementById('rollToast');
@@ -31,6 +33,9 @@ function assignToast(button, rollType)
 /// Handles assigning the toast box and rolling d20s for
 /// all skills and saves with a modifier
 /// </summary>
+/// <param name="button">The button that was clicked to call this function</param>
+/// <param name="rollType">The type of roll to be made</param>
+/// <param name="modifier">The character's modifier for this roll</param>
 function assignToastMod(button, rollType, modifier)
 {
     let toastBox = document.getElementById('rollToast');
@@ -58,6 +63,9 @@ function assignToastMod(button, rollType, modifier)
 /// <summary>
 /// Generates a random number, simulates a die roll
 /// </summary>
+/// <param name="minValue">The minimum number on the die</param>
+/// <param name="maxValue">How maximum number on the die</param>
+/// <returns>A random roll of the given die</returns>
 function generateRandomValue(minValue, maxValue)
 {
     var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
@@ -281,5 +289,39 @@ function RollAdvOrDisMod(rollType, modifier) {
             " - " + Math.abs(modifier) +
             " = " + (Math.min(parseInt(roll1), parseInt(roll2)) + parseInt(modifier)).toString() +
             "<br/>Higher Roll: " + CheckNat20Or1(Math.max(parseInt(roll1), parseInt(roll2)));
+    }
+}
+
+///<summary>
+/// Rolls a given hit die and adds the characters 
+/// constitution modifier to the result.
+///</summary>
+///<param name="button">The button that was clicked to call this function</param>
+function RollHitDice(conMod) {
+    let healthRolled = document.getElementById('totalHitDieRoll');
+    let totalHealthRolled = parseInt(healthRolled.value);
+    let hitDieSize = document.getElementById('spendHitDie').value;
+
+    totalHealthRolled += RollMod(hitDieSize, 1, conMod);
+    healthRolled.value = totalHealthRolled;
+
+    switch (hitDieSize) {
+        case "6":
+            let hitDieUsed = document.querySelectorAll('d6HitDiceAvailable');
+            let dieCount = hitDieUsed[0].charAt(0);
+            dieCount--;
+            hitDieUsed.forEach(charAt[0] = dieCount);
+            break;
+
+        case "8":
+            ;
+            break;
+
+        case "10":
+            ;
+            break;
+        case "12":
+            ;
+            break;
     }
 }

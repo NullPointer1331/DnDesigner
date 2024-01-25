@@ -286,7 +286,7 @@ function DieRoller() {
         toastBox.firstElementChild.firstElementChild.innerHTML = "How many dice?";
         toastBox.lastElementChild.innerHTML = "You must roll at least 1 die (99 max).";
     }
-    toastBootstrap.show()
+    toastBootstrap.show();
 }
 
 ///<summary>
@@ -295,13 +295,7 @@ function DieRoller() {
 ///</summary>
 ///<param name="button">The button that was clicked to call this function</param>
 function RollHitDice(conMod) {
-    let healthRolled = document.getElementById('totalHitDieRoll');
-    let totalHealthRolled = parseInt(healthRolled.value);
     let hitDieSize = document.getElementById('spendHitDie').value;
-
-    totalHealthRolled += RollMod(hitDieSize, 1, conMod);
-    healthRolled.value = totalHealthRolled;
-
     let hitDieUsed;
     let dieCount;
     switch (hitDieSize) {
@@ -322,8 +316,23 @@ function RollHitDice(conMod) {
             dieCount = parseInt(hitDieUsed[0].value);
             break;
     }
-    dieCount--;
-    for (let i = 0; i < hitDieUsed.length; i++) {
-        hitDieUsed[i].value = dieCount;
+    if (dieCount > 0) {
+        dieCount--;
+        for (let i = 0; i < hitDieUsed.length; i++) {
+            hitDieUsed[i].value = dieCount;
+        }
+
+        let healthRolled = document.getElementById('totalHitDieRoll');
+        let totalHealthRolled = parseInt(healthRolled.value);
+
+        totalHealthRolled += RollMod(hitDieSize, 1, conMod);
+        healthRolled.value = totalHealthRolled;
+    }
+    else {
+        let toastBox = document.getElementById('rollToast');
+        let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
+        toastBox.firstElementChild.firstElementChild.innerHTML = "No Remaining Hit Dice";
+        toastBox.lastElementChild.innerHTML = "You can't roll hit dice that aren't available.";
+        toastBootstrap.show();
     }
 }

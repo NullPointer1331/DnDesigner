@@ -331,7 +331,7 @@ function RollHitDice(conMod) {
     else {
         let toastBox = document.getElementById('rollToast');
         let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
-        toastBox.firstElementChild.firstElementChild.innerHTML = "No Remaining Hit Dice";
+        toastBox.firstElementChild.firstElementChild.innerHTML = "No d" + hitDieSize + " hit dice remaining.";
         toastBox.lastElementChild.innerHTML = "You can't roll hit dice that aren't available.";
         toastBootstrap.show();
     }

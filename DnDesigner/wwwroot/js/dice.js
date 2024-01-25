@@ -73,31 +73,6 @@ function generateRandomValue(minValue, maxValue)
 }
 
 /// <summary>
-/// Handles basic dice rolls from the character sheet.
-/// Takes die size and die count from page and displays
-/// an appropriate message.
-/// </summary>
-function DieRoller()
-{
-    let toastBox = document.getElementById('rollToast');
-    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
-    let dieCount = document.getElementById('dieCount').value;
-    let dieSize = document.getElementById('dieSize').value;
-
-    if (100 > dieCount && dieCount > 0)
-    {
-        toastBox.firstElementChild.firstElementChild.innerHTML = dieCount + "d" + dieSize;
-        toastBox.lastElementChild.innerHTML = RollString(dieSize, dieCount);
-    }
-    else
-    {
-        toastBox.firstElementChild.firstElementChild.innerHTML = "How many dice?";
-        toastBox.lastElementChild.innerHTML = "You must roll at least 1 die (99 max).";
-    }
-    toastBootstrap.show()
-}
-
-/// <summary>
 /// Rolls a given size die a given number of times
 /// </summary>
 /// <param name="dieSize">The maximum number on the die</param>
@@ -292,6 +267,28 @@ function RollAdvOrDisMod(rollType, modifier) {
     }
 }
 
+/// <summary>
+/// Handles basic dice rolls from the character sheet.
+/// Takes die size and die count from page and displays
+/// an appropriate message.
+/// </summary>
+function DieRoller() {
+    let toastBox = document.getElementById('rollToast');
+    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
+    let dieCount = document.getElementById('dieCount').value;
+    let dieSize = document.getElementById('dieSize').value;
+
+    if (100 > dieCount && dieCount > 0) {
+        toastBox.firstElementChild.firstElementChild.innerHTML = dieCount + "d" + dieSize;
+        toastBox.lastElementChild.innerHTML = RollString(dieSize, dieCount);
+    }
+    else {
+        toastBox.firstElementChild.firstElementChild.innerHTML = "How many dice?";
+        toastBox.lastElementChild.innerHTML = "You must roll at least 1 die (99 max).";
+    }
+    toastBootstrap.show()
+}
+
 ///<summary>
 /// Rolls a given hit die and adds the characters 
 /// constitution modifier to the result.
@@ -305,23 +302,28 @@ function RollHitDice(conMod) {
     totalHealthRolled += RollMod(hitDieSize, 1, conMod);
     healthRolled.value = totalHealthRolled;
 
+    let hitDieUsed;
+    let dieCount;
     switch (hitDieSize) {
         case "6":
-            let hitDieUsed = document.querySelectorAll('d6HitDiceAvailable');
-            let dieCount = hitDieUsed[0].charAt(0);
-            dieCount--;
-            hitDieUsed.forEach(charAt[0] = dieCount);
+            hitDieUsed = document.querySelectorAll("[id='d6HitDiceAvailable']");
+            dieCount = parseInt(hitDieUsed[0].value);
             break;
-
         case "8":
-            ;
+            hitDieUsed = document.querySelectorAll("[id='d8HitDiceAvailable']");
+            dieCount = parseInt(hitDieUsed[0].value);
             break;
-
         case "10":
-            ;
+            hitDieUsed = document.querySelectorAll("[id='d10HitDiceAvailable']");
+            dieCount = parseInt(hitDieUsed[0].value);
             break;
         case "12":
-            ;
+            hitDieUsed = document.querySelectorAll("[id='d12HitDiceAvailable']");
+            dieCount = parseInt(hitDieUsed[0].value);
             break;
+    }
+    dieCount--;
+    for (let i = 0; i < hitDieUsed.length; i++) {
+        hitDieUsed[i].value = dieCount;
     }
 }

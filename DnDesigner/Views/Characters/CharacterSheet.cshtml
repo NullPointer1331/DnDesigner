@@ -133,7 +133,7 @@
                     <div class="modal-body text-center">
                         <h5>Place holder for what player gets back</h5>
                         <h5>Hit Dice Available</h5>
-                        <div class="d-flex flex-column">
+                        <div id="lockedHitDice" class="d-flex flex-column">
                             @{
                                 if (Model.MaxHitDice[0] != 0)
                                 {
@@ -246,12 +246,12 @@
                         }                            
                         <br>
                         <h5>Hit Dice Available</h5>
-                        <div class="d-flex flex-column">
+                        <div id="unlockedHitDice" class="d-flex flex-column">
                         @{
                             if (Model.MaxHitDice[0] != 0)
                             {
                                 <div class="input-group mx-auto w-25">
-                                    <input id="d6HitDiceAvailable" type="number" class="form-control" 
+                                    <input asp-for="d6HitDiceAvailable" id="d6HitDiceAvailable" type="number" class="form-control" 
                                         value="@Model.d6HitDiceAvailable" min="0" max="@Model.MaxHitDice[0]" 
                                         aria-label="d6 Hit Dice Available" />
                                     <label class="input-group-text">d6</label>
@@ -261,7 +261,7 @@
                             if (Model.MaxHitDice[1] != 0)
                             {
                                 <div class="input-group mx-auto w-25">
-                                    <input id="d8HitDiceAvailable" type="number" class="form-control"
+                                    <input asp-for="d8HitDiceAvailable" id="d8HitDiceAvailable" type="number" class="form-control"
                                         value="@Model.d8HitDiceAvailable" min="0" max="@Model.MaxHitDice[1]"
                                         aria-label="d8 Hit Dice Available" />
                                     <label class="input-group-text">d8</label>
@@ -271,7 +271,7 @@
                             if (Model.MaxHitDice[2] != 0)
                             {
                                 <div class="input-group mx-auto w-25">
-                                    <input id="d10HitDiceAvailable" type="number" class="form-control"
+                                    <input asp-for="d10HitDiceAvailable" id="d10HitDiceAvailable" type="number" class="form-control"
                                         value="@Model.d10HitDiceAvailable" min="0" max="@Model.MaxHitDice[2]"
                                         aria-label="d10 Hit Dice Available" />
                                     <label class="input-group-text">d10</label>
@@ -281,7 +281,7 @@
                             if (Model.MaxHitDice[3] != 0)
                             {
                                 <div class="input-group mx-auto w-25">
-                                    <input id="d12HitDiceAvailable" type="number" class="form-control"
+                                    <input asp-for ="d12HitDiceAvailable" id="d12HitDiceAvailable" type="number" class="form-control"
                                         value="@Model.d12HitDiceAvailable" min="0" max="@Model.MaxHitDice[3]"
                                         aria-label="d12 Hit Dice Available" />
                                     <label class="input-group-text">d12</label>
@@ -292,7 +292,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success">Update Hit Dice</button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="UpdateHitDice()">Update Hit Dice</button>
                     </div>
                 </div>
             </div>

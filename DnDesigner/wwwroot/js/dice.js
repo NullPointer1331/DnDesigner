@@ -336,3 +336,17 @@ function RollHitDice(conMod) {
         toastBootstrap.show();
     }
 }
+
+///<summary>
+/// Updates the amount of hit dice available
+///</summary>
+function UpdateHitDice() {
+    let lockedHitDice = document.getElementById('lockedHitDice');
+    let lockedInputs = lockedHitDice.getElementsByTagName('input');
+    let unlockedHitDice = document.getElementById('unlockedHitDice');
+    let unlockedInputs = unlockedHitDice.getElementsByTagName('input');
+
+    for (let i = 0; i < lockedInputs.length; i++) {
+        lockedInputs[i].value = unlockedInputs[i].value;
+    }
+}

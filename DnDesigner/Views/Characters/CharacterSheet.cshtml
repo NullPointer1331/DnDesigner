@@ -357,15 +357,15 @@
                             <li class="list-group-item">
                                 @if (modifier == 0)
                                 {
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToast('@saveBtnDis', '@saveDisMessage')">Dis</button>
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@saveBtnSingleD20', '@saveSingleD20Message')">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToast('@saveBtnAdv', '@saveAdvMessage')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="SkillOrSaveRoll('@saveBtnDis', '@saveDisMessage')">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="SkillOrSaveRoll('@saveBtnSingleD20', '@saveSingleD20Message')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="SkillOrSaveRoll('@saveBtnAdv', '@saveAdvMessage')">Adv</button>
                                 }
                                 else
                                 {
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToastMod('@saveBtnDis', '@saveDisMessage', '@modifier')">Dis</button>
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToastMod('@saveBtnSingleD20', '@saveSingleD20Message' , '@modifier')">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToastMod('@saveBtnAdv', '@saveAdvMessage', '@modifier')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="SkillOrSaveModRoll('@saveBtnDis', '@saveDisMessage', '@modifier')">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="SkillOrSaveModRoll('@saveBtnSingleD20', '@saveSingleD20Message' , '@modifier')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="SkillOrSaveModRoll('@saveBtnAdv', '@saveAdvMessage', '@modifier')">Adv</button>
                                 }
                             </li>
                         }
@@ -408,15 +408,15 @@
                             <li class="list-group-item">
                                 @if (modifier == 0)
                                 {
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToast('@skillBtnDis', '@skillDisMessage')">Dis</button>
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToast('@skillBtnSingleD20', '@skillSingleD20Message')">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToast('@skillBtnAdv', '@skillAdvMessage')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="SkillOrSaveRoll('@skillBtnDis', '@skillDisMessage')">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="SkillOrSaveRoll('@skillBtnSingleD20', '@skillSingleD20Message')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="SkillOrSaveRoll('@skillBtnAdv', '@skillAdvMessage')">Adv</button>
                                 }
                                 else
                                 {
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="assignToastMod('@skillBtnDis', '@skillDisMessage', '@modifier')">Dis</button>
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="assignToastMod('@skillBtnSingleD20', '@skillSingleD20Message', '@modifier')">D20</button>
-                                    <button type="button" class="btn btn-sm btn-success" onclick="assignToastMod('@skillBtnAdv', '@skillAdvMessage', '@modifier')">Adv</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="SkillOrSaveModRoll('@skillBtnDis', '@skillDisMessage', '@modifier')">Dis</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="SkillOrSaveModRoll('@skillBtnSingleD20', '@skillSingleD20Message', '@modifier')">D20</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="SkillOrSaveModRoll('@skillBtnAdv', '@skillAdvMessage', '@modifier')">Adv</button>
                                 }
                             </li>
                         }

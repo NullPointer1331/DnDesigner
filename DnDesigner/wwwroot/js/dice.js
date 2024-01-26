@@ -1,63 +1,68 @@
 ﻿
 ///<summary>
-/// Handles assigning the toast box and rolling d20s for
-/// all skills and saves without a modifier
-/// </summary>
-/// <param name="button">The button that was clicked to call this function</param>
-/// <param name="rollType">The type of roll to be made</param>
-function assignToast(button, rollType)
-{
+/// Assigns and displays the toast box on screen
+///</summary>
+///<param name="header">The text to be displayed in the toast's header</param>
+///<param name="body">The text to be displayed in the toast's body</param>
+function AssignToast(header, body) {
     let toastBox = document.getElementById('rollToast');
     let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
 
-    toastBox.firstElementChild.firstElementChild.innerHTML = rollType;
-    
-    switch (button)
-    {
-        case "singleD20":
-            toastBox.lastElementChild.innerHTML = RollD20();
-            break;
+    toastBox.firstElementChild.firstElementChild.innerHTML = header;
+    toastBox.lastElementChild.innerHTML = body;
 
-        case "adv":
-            toastBox.lastElementChild.innerHTML = RollAdvOrDis(true);
-            break;
-
-        case "dis":
-            toastBox.lastElementChild.innerHTML = RollAdvOrDis(false);
-            break;
-    }
-    toastBootstrap.show()
+    toastBootstrap.show();
 }
 
 ///<summary>
-/// Handles assigning the toast box and rolling d20s for
-/// all skills and saves with a modifier
+/// Handles all skills and saves without a modifier
+/// </summary>
+/// <param name="button">The button that was clicked to call this function</param>
+/// <param name="rollType">The type of roll to be made</param>
+function SkillOrSaveRoll(button, rollType)
+{
+    let roll;
+    switch (button)
+    {
+        case "singleD20":
+            roll = RollD20();
+            break;
+
+        case "adv":
+            roll = RollAdvOrDis(true);
+            break;
+
+        case "dis":
+            roll = RollAdvOrDis(false);
+            break;
+    }
+    AssignToast(rollType, roll);
+}
+
+///<summary>
+/// Handles all skills and saves with a modifier
 /// </summary>
 /// <param name="button">The button that was clicked to call this function</param>
 /// <param name="rollType">The type of roll to be made</param>
 /// <param name="modifier">The character's modifier for this roll</param>
-function assignToastMod(button, rollType, modifier)
+function SkillOrSaveModRoll(button, rollType, modifier)
 {
-    let toastBox = document.getElementById('rollToast');
-    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
-
-    toastBox.firstElementChild.firstElementChild.innerHTML = rollType;
-
+    let roll;
     switch (button)
     {
         case "singleD20_mod":
-            toastBox.lastElementChild.innerHTML = RollD20Mod(modifier);
+            roll = RollD20Mod(modifier);
             break;
 
         case "adv_mod":
-            toastBox.lastElementChild.innerHTML = RollAdvOrDisMod(true, modifier);
+            roll = RollAdvOrDisMod(true, modifier);
             break;
 
         case "dis_mod":
-            toastBox.lastElementChild.innerHTML = RollAdvOrDisMod(false, modifier);
+            roll = RollAdvOrDisMod(false, modifier);
             break;
     }
-    toastBootstrap.show()
+    AssignToast(rollType, roll);
 }
 
 /// <summary>
@@ -66,7 +71,7 @@ function assignToastMod(button, rollType, modifier)
 /// <param name="minValue">The minimum number on the die</param>
 /// <param name="maxValue">How maximum number on the die</param>
 /// <returns>A random roll of the given die</returns>
-function generateRandomValue(minValue, maxValue)
+function GenerateRandomValue(minValue, maxValue)
 {
     var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
     return random;
@@ -80,12 +85,12 @@ function generateRandomValue(minValue, maxValue)
 /// <returns>The sum of the rolls as an int</returns>
 function Roll(dieSize, dieCount)
 {
-    var rollTotal = generateRandomValue(1, dieSize);
+    var rollTotal = GenerateRandomValue(1, dieSize);
 
     // if die count is greater than 1, roll and add to total
     for (var i = 1; i < dieCount; i++)
     {
-        rollTotal += generateRandomValue(1, dieSize);
+        rollTotal += GenerateRandomValue(1, dieSize);
     }
     return rollTotal;
 }
@@ -110,11 +115,11 @@ function RollMod(dieSize, dieCount, modifier)
 /// <returns>The sum of the rolls as a string</returns>
 function RollString(dieSize, dieCount)
 {
-    var rollTotal = generateRandomValue(1, dieSize);
+    var rollTotal = GenerateRandomValue(1, dieSize);
     var resultString = rollTotal.toString();
 
     for (var i = 1; i < dieCount; i++) {
-        var currRoll = generateRandomValue(1, dieSize);
+        var currRoll = GenerateRandomValue(1, dieSize);
         rollTotal += currRoll;
         resultString += " + " + currRoll.toString();
     }
@@ -133,12 +138,12 @@ function RollString(dieSize, dieCount)
 /// <returns>The sum of the rolls as a string</returns>
 function RollStringMod(dieSize, dieCount, modifier)
 {
-    var rollTotal = generateRandomValue(1, dieSize);
+    var rollTotal = GenerateRandomValue(1, dieSize);
     var resultString = rollTotal.toString();
 
     for (var i = 1; i < dieCount; i++)
     {
-        var currRoll = generateRandomValue(1, dieSize);
+        var currRoll = GenerateRandomValue(1, dieSize);
         rollTotal += currRoll;
         resultString += " + " + currRoll.toString();
     }
@@ -178,7 +183,7 @@ function CheckNat20Or1(roll)
 /// <returns>The result of the roll</returns>
 function RollD20()
 {
-    var singleRoll = generateRandomValue(1, 20);
+    var singleRoll = GenerateRandomValue(1, 20);
     return CheckNat20Or1(singleRoll);
 }
 
@@ -190,7 +195,7 @@ function RollD20()
 /// <returns>The result of the roll</returns>
 function RollD20Mod(modifier)
 {
-    var singleRoll = generateRandomValue(1, 20);
+    var singleRoll = GenerateRandomValue(1, 20);
     var total = parseInt(singleRoll) + parseInt(modifier);
 
     if (modifier > 0)
@@ -211,8 +216,8 @@ function RollD20Mod(modifier)
 /// <returns>The result of the roll</returns>
 function RollAdvOrDis(rollType)
 {
-    var roll1 = generateRandomValue(1, 20);
-    var roll2 = generateRandomValue(1, 20);
+    var roll1 = GenerateRandomValue(1, 20);
+    var roll2 = GenerateRandomValue(1, 20);
 
     // Advantage, take the higher roll
     if (rollType)
@@ -234,8 +239,8 @@ function RollAdvOrDis(rollType)
 /// <param name="modifier">The characters modifier for this roll</param>
 /// <returns>The result of the roll</returns>
 function RollAdvOrDisMod(rollType, modifier) {
-    var roll1 = generateRandomValue(1, 20);
-    var roll2 = generateRandomValue(1, 20);
+    var roll1 = GenerateRandomValue(1, 20);
+    var roll2 = GenerateRandomValue(1, 20);
 
     // Advantage, take the higher roll
     if (rollType) {
@@ -269,31 +274,29 @@ function RollAdvOrDisMod(rollType, modifier) {
 
 /// <summary>
 /// Handles basic dice rolls from the character sheet.
-/// Takes die size and die count from page and displays
-/// an appropriate message.
 /// </summary>
 function DieRoller() {
-    let toastBox = document.getElementById('rollToast');
-    let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
     let dieCount = document.getElementById('dieCount').value;
     let dieSize = document.getElementById('dieSize').value;
 
+    let dice;
+    let roll;
     if (100 > dieCount && dieCount > 0) {
-        toastBox.firstElementChild.firstElementChild.innerHTML = dieCount + "d" + dieSize;
-        toastBox.lastElementChild.innerHTML = RollString(dieSize, dieCount);
+        dice = dieCount + "d" + dieSize;
+        roll = RollString(dieSize, dieCount);
     }
     else {
-        toastBox.firstElementChild.firstElementChild.innerHTML = "How many dice?";
-        toastBox.lastElementChild.innerHTML = "You must roll at least 1 die (99 max).";
+        dice = "How many dice?";
+        roll = "You must roll at least 1 die (99 max).";
     }
-    toastBootstrap.show();
+    AssignToast(dice, roll);
 }
 
 ///<summary>
 /// Rolls a given hit die and adds the characters 
 /// constitution modifier to the result.
 ///</summary>
-///<param name="button">The button that was clicked to call this function</param>
+///<param name="conMod">The character's constitution modifier to be added to the roll</param>
 function RollHitDice(conMod) {
     let hitDieSize = document.getElementById('spendHitDie').value;
     let hitDieUsed;
@@ -329,11 +332,9 @@ function RollHitDice(conMod) {
         healthRolled.value = totalHealthRolled;
     }
     else {
-        let toastBox = document.getElementById('rollToast');
-        let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
-        toastBox.firstElementChild.firstElementChild.innerHTML = "No d" + hitDieSize + " hit dice remaining.";
-        toastBox.lastElementChild.innerHTML = "You can't roll hit dice that aren't available.";
-        toastBootstrap.show();
+        let header = "No d" + hitDieSize + " hit dice remaining.";
+        let body = "You can't roll hit dice that aren't available.";
+        AssignToast(header, body);
     }
 }
 

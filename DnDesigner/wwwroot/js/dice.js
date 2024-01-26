@@ -350,3 +350,24 @@ function UpdateHitDice() {
         lockedInputs[i].value = unlockedInputs[i].value;
     }
 }
+
+///<summary>
+/// Adds the total of health rolled from hit dice to
+/// the character's current health.
+/// Then sets the total health rolled to 0.
+///</summary>
+function AddRolledHealth() {
+    let totalHitDieRoll = document.getElementById('totalHitDieRoll');
+    let healthRolled = parseInt(totalHitDieRoll.value);
+    let currentHealth = document.getElementById('currentHealth');
+    let actualCurrentHealth = parseInt(currentHealth.value);
+    let maxHealth = parseInt(document.getElementById('currentHealth').max);
+    let newTotal = healthRolled + actualCurrentHealth;
+    if (newTotal < maxHealth) {
+        currentHealth.value = newTotal;
+    }
+    else {
+        currentHealth.value = maxHealth;
+    }
+    totalHitDieRoll.value = 0;
+}

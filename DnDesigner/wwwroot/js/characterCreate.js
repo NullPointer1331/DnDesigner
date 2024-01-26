@@ -130,28 +130,101 @@ function updateContent() {
     }
 }
 
-function updatePointsRemaining() {
-    // making the total points and points used
-    var totalPoints = 27;
-    var pointsUsed = 0;
-
+function updatePointsRemaining(pointsRemaining) {
     // gets the element that displays the points remaining
     var pointRemainingElement = document.getElementById("pointsRemaining");
+    pointRemainingElement.innerText = pointsRemaining;
+}
 
-    // gets all the inputs for the point buy system
-    var pointBuyInputs = document.querySelectorAll('#pointBuyContainer input.form-control');
+function increaseStat() {
+    console.log("stat increasing");
+    var incrementButton = this;
+    var buttonClasses = incrementButton.classList;
+    var statElement;
 
-    // itterates through the inputs and adds the points used to the total points
-    pointBuyInputs.forEach(function (input) {
-        pointsUsed += parseInt(input.value) - 8;
-        if (input.value > 13) {
-            pointsUsed += parseInt(input.value) - 13;
-        }
-    });
+    if (buttonClasses.contains("strength")) {
+        statElement = document.querySelector("input.strength");
+        console.log("strength");
+    } else if (buttonClasses.contains("dexterity")) {
+        statElement = document.querySelector("input.dexterity");
+        console.log("dexterity");
+    } else if (buttonClasses.contains("constitution")) {
+        statElement = document.querySelector("input.constitution");
+        console.log("constitution");
+    } else if (buttonClasses.contains("intelligence")) {
+        statElement = document.querySelector("input.intelligence");
+        console.log("intelligence");
+    } else if (buttonClasses.contains("wisdom")) {
+        statElement = document.querySelector("input.wisdom");
+        console.log("wisdom");
+    } else if (buttonClasses.contains("charisma")) {
+        statElement = document.querySelector("input.charisma");
+        console.log("charisma");
+    } else {
+        console.log("Error: no stat element found");
+        return;
+    }
+    
+    var pointsRemaining = parseInt(document.getElementById("pointsRemaining").innerText);
 
-    // solves for points remaining and updates the display
-    totalPoints = totalPoints - pointsUsed;
-    pointRemainingElement.innerText = totalPoints;
+    // if the value is less than 15, it increases the value
+    if (statElement.value < 13 && pointsRemaining > 0) {
+        statElement.value = parseInt(statElement.value) + 1;
+        pointsRemaining--;
+    } else if (statElement.value < 15 && pointsRemaining > 1) {
+        statElement.value = parseInt(statElement.value) + 1;
+        pointsRemaining -= 2;
+    }
+
+    // updates the points remaining
+    updatePointsRemaining(pointsRemaining);
+    console.log("stat increased");
+}
+
+function decreaseStat() {
+    console.log("stat decreasing");
+    // gets the value of the input
+    var incrementButton = this;
+    var buttonClasses = incrementButton.classList;
+    var statElement;
+
+    if (buttonClasses.contains("strength")) {
+        statElement = document.querySelector("input.strength");
+        console.log("strength");
+    } else if (buttonClasses.contains("dexterity")) {
+        statElement = document.querySelector("input.dexterity");
+        console.log("dexterity");
+    } else if (buttonClasses.contains("constitution")) {
+        statElement = document.querySelector("input.constitution");
+        console.log("constitution");
+    } else if (buttonClasses.contains("intelligence")) {
+        statElement = document.querySelector("input.intelligence");
+        console.log("intelligence");
+    } else if (buttonClasses.contains("wisdom")) {
+        statElement = document.querySelector("input.wisdom");
+        console.log("wisdom");
+    } else if (buttonClasses.contains("charisma")) {
+        statElement = document.querySelector("input.charisma");
+        console.log("charisma");
+    } else {
+        console.log("Error: no stat element found");
+        return;
+    }
+
+    var pointsRemaining = parseInt(document.getElementById("pointsRemaining").innerText);
+
+    // if the value is greater than 8, it decreases the value
+    if (statElement.value > 13) {
+        statElement.value = parseInt(statElement.value) - 1;
+        pointsRemaining += 2;
+    } else if (statElement.value > 8) {
+        statElement.value = parseInt(statElement.value) - 1;
+        pointsRemaining++;
+    }
+
+    // updates the points remaining
+    updatePointsRemaining(pointsRemaining);
+    console.log("stat decreased");
 }
 
 // Add event listeners to the stat generation radio buttons
@@ -160,6 +233,10 @@ document.querySelectorAll('input[name="generationMethod"]').forEach(function (ra
 });
 
 // Add event listeners to the stat input fields
-document.querySelectorAll('#pointBuyContainer input').forEach(function (input) {
-    input.addEventListener('change', updatePointsRemaining);
+document.querySelectorAll('.increment').forEach(function (input) {
+    input.addEventListener('click', increaseStat);
+});
+
+document.querySelectorAll('.decrement').forEach(function (input) {
+    input.addEventListener('click', decreaseStat);
 });

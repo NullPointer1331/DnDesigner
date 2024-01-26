@@ -328,8 +328,16 @@ function RollHitDice(conMod) {
         let healthRolled = document.getElementById('totalHitDieRoll');
         let totalHealthRolled = parseInt(healthRolled.value);
 
-        totalHealthRolled += RollMod(hitDieSize, 1, conMod);
-        healthRolled.value = totalHealthRolled;
+        let roll = RollMod(hitDieSize, 1, conMod);
+        if (roll <= 0) {
+            let header = "Bad Luck";
+            let body = "You didn't get any health from this die.";
+            AssignToast(header, body);
+        }
+        else {
+            totalHealthRolled += roll;
+            healthRolled.value = totalHealthRolled;
+        }
     }
     else {
         let header = "No d" + hitDieSize + " hit dice remaining.";

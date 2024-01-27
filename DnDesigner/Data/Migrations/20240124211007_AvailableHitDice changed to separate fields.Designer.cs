@@ -4,6 +4,7 @@ using DnDesigner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    partial class DnDesignerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240124211007_AvailableHitDice changed to separate fields")]
+    partial class AvailableHitDicechangedtoseparatefields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,32 +222,6 @@ namespace DnDesigner.Migrations
                     b.ToTable("CharacterActions");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.CharacterChoice", b =>
-                {
-                    b.Property<int>("CharacterChoiceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CharacterChoiceId"));
-
-                    b.Property<int>("CharacterFeatureId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChoiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChoiceValue")
-                        .HasColumnType("int");
-
-                    b.HasKey("CharacterChoiceId");
-
-                    b.HasIndex("CharacterFeatureId");
-
-                    b.HasIndex("ChoiceId");
-
-                    b.ToTable("CharacterChoice");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.CharacterClass", b =>
                 {
                     b.Property<int>("CharacterId")
@@ -273,21 +250,19 @@ namespace DnDesigner.Migrations
 
             modelBuilder.Entity("DnDesigner.Models.CharacterEffect", b =>
                 {
-                    b.Property<int>("CharacterEffectId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CharacterEffectId"));
-
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
                     b.Property<int>("EffectId")
                         .HasColumnType("int");
 
-                    b.HasKey("CharacterEffectId");
+                    b.Property<bool>("IsApplied")
+                        .HasColumnType("bit");
 
-                    b.HasIndex("CharacterId");
+                    b.Property<int?>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("CharacterId", "EffectId");
 
                     b.HasIndex("EffectId");
 
@@ -353,35 +328,6 @@ namespace DnDesigner.Migrations
                     b.ToTable("CharacterSpellcasting");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.Choice", b =>
-                {
-                    b.Property<int>("ChoiceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChoiceId"));
-
-                    b.Property<int>("DefaultChoice")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("FeatureId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ChoiceId");
-
-                    b.HasIndex("FeatureId");
-
-                    b.ToTable("Choices");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Choice");
-
-                    b.UseTphMappingStrategy();
-                });
-
             modelBuilder.Entity("DnDesigner.Models.Class", b =>
                 {
                     b.Property<int>("ClassId")
@@ -426,7 +372,7 @@ namespace DnDesigner.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EffectChoiceChoiceId")
+                    b.Property<int?>("EffectChoiceEffectId")
                         .HasColumnType("int");
 
                     b.Property<int?>("FeatureId")
@@ -437,7 +383,7 @@ namespace DnDesigner.Migrations
 
                     b.HasKey("EffectId");
 
-                    b.HasIndex("EffectChoiceChoiceId");
+                    b.HasIndex("EffectChoiceEffectId");
 
                     b.HasIndex("FeatureId");
 
@@ -1004,7 +950,7 @@ namespace DnDesigner.Migrations
 
             modelBuilder.Entity("DnDesigner.Models.EffectChoice", b =>
                 {
-                    b.HasBaseType("DnDesigner.Models.Choice");
+                    b.HasBaseType("DnDesigner.Models.Effect");
 
                     b.HasDiscriminator().HasValue("EffectChoice");
                 });
@@ -1166,25 +1112,6 @@ namespace DnDesigner.Migrations
                     b.Navigation("Character");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.CharacterChoice", b =>
-                {
-                    b.HasOne("DnDesigner.Models.CharacterFeature", "CharacterFeature")
-                        .WithMany("Choices")
-                        .HasForeignKey("CharacterFeatureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Choice", "Choice")
-                        .WithMany()
-                        .HasForeignKey("ChoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CharacterFeature");
-
-                    b.Navigation("Choice");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.CharacterClass", b =>
                 {
                     b.HasOne("DnDesigner.Models.Character", "Character")
@@ -1285,13 +1212,6 @@ namespace DnDesigner.Migrations
                     b.Navigation("Spellcasting");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.Choice", b =>
-                {
-                    b.HasOne("DnDesigner.Models.Feature", null)
-                        .WithMany("Choices")
-                        .HasForeignKey("FeatureId");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.Class", b =>
                 {
                     b.HasOne("DnDesigner.Models.Spellcasting", "Spellcasting")
@@ -1304,8 +1224,8 @@ namespace DnDesigner.Migrations
             modelBuilder.Entity("DnDesigner.Models.Effect", b =>
                 {
                     b.HasOne("DnDesigner.Models.EffectChoice", null)
-                        .WithMany("Options")
-                        .HasForeignKey("EffectChoiceChoiceId");
+                        .WithMany("Effects")
+                        .HasForeignKey("EffectChoiceEffectId");
 
                     b.HasOne("DnDesigner.Models.Feature", null)
                         .WithMany("Effects")
@@ -1521,11 +1441,6 @@ namespace DnDesigner.Migrations
                     b.Navigation("Spellcasting");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.CharacterFeature", b =>
-                {
-                    b.Navigation("Choices");
-                });
-
             modelBuilder.Entity("DnDesigner.Models.Class", b =>
                 {
                     b.Navigation("Features");
@@ -1535,8 +1450,6 @@ namespace DnDesigner.Migrations
 
             modelBuilder.Entity("DnDesigner.Models.Feature", b =>
                 {
-                    b.Navigation("Choices");
-
                     b.Navigation("Effects");
                 });
 
@@ -1562,7 +1475,7 @@ namespace DnDesigner.Migrations
 
             modelBuilder.Entity("DnDesigner.Models.EffectChoice", b =>
                 {
-                    b.Navigation("Options");
+                    b.Navigation("Effects");
                 });
 #pragma warning restore 612, 618
         }

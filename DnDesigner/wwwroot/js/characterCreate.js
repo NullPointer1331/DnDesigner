@@ -116,17 +116,17 @@ function updateContent() {
     var selectedValue = document.querySelector('input[name="generationMethod"]:checked').value;
 
     // Get the containers for the two stat generation methods
-    var standardArrayContainer = document.getElementById("standardArrayContainer");
+    var manualEntryContainer = document.getElementById("manualEntryContainer");
     var pointBuyContainer = document.getElementById("pointBuyContainer");
 
     // Display the selected container and hide the others
-    if (selectedValue == "standardArray") {
-        standardArrayContainer.removeAttribute("hidden");
+    if (selectedValue == "manual") {
+        manualEntryContainer.removeAttribute("hidden");
         pointBuyContainer.setAttribute("hidden", "true");
 
     } else if (selectedValue == "pointBuy") {
         pointBuyContainer.removeAttribute("hidden");
-        standardArrayContainer.setAttribute("hidden", "true");
+        manualEntryContainer.setAttribute("hidden", "true");
     }
 }
 

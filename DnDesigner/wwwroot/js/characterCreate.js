@@ -115,7 +115,36 @@ function updateContent() {
     // Get the selected radio button value
     var selectedValue = document.querySelector('input[name="generationMethod"]:checked').value;
 
-    // Get the containers for the two stat generation methods
+    // get a list of the children of the stat container
+    var pointBuyElements = document.querySelectorAll(".point-buy");
+
+    // check what the selected value is
+    if (selectedValue == "manual") {
+        // iterate trough the list of children
+        pointBuyElements.forEach(function (element) {
+            if (element.classList.contains("point-buy")) {
+                element.setAttribute("hidden", "true");
+            } else if (element.tagName == "INPUT") {
+                element.removeAttribute("readonly");
+            }
+        });
+    } else if (selectedValue == "pointBuy") {
+        // iterate trough the list of children
+        pointBuyElements.forEach(function (element) {
+            if (element.classList.contains("point-buy")) {
+                element.removeAttribute("hidden");
+            } else if (element.tagName == "INPUT") {
+                element.setAttribute("readonly", "true");
+            }
+        });
+    } else {
+        // if the selected value is neither, display an error message
+        console.log("Error: no stat generation method selected");
+    }
+
+    // Old code
+
+    /*// Get the containers for the two stat generation methods
     var manualEntryContainer = document.getElementById("manualEntryContainer");
     var pointBuyContainer = document.getElementById("pointBuyContainer");
 
@@ -127,7 +156,7 @@ function updateContent() {
     } else if (selectedValue == "pointBuy") {
         pointBuyContainer.removeAttribute("hidden");
         manualEntryContainer.setAttribute("hidden", "true");
-    }
+    }*/
 }
 
 function updatePointsRemaining(pointsRemaining) {
@@ -164,7 +193,7 @@ function increaseStat() {
         console.log("Error: no stat element found");
         return;
     }
-    
+
     var pointsRemaining = parseInt(document.getElementById("pointsRemaining").innerText);
 
     // if the value is less than 15, it increases the value

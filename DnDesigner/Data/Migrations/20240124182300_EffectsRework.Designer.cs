@@ -4,6 +4,7 @@ using DnDesigner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    partial class DnDesignerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240124182300_EffectsRework")]
+    partial class EffectsRework
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,6 +127,9 @@ namespace DnDesigner.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("AvailableHitDice")
+                        .HasColumnType("int");
+
                     b.Property<int>("BackgroundId")
                         .HasColumnType("int");
 
@@ -181,18 +187,6 @@ namespace DnDesigner.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Wisdom")
-                        .HasColumnType("int");
-
-                    b.Property<int>("d10HitDiceAvailable")
-                        .HasColumnType("int");
-
-                    b.Property<int>("d12HitDiceAvailable")
-                        .HasColumnType("int");
-
-                    b.Property<int>("d6HitDiceAvailable")
-                        .HasColumnType("int");
-
-                    b.Property<int>("d8HitDiceAvailable")
                         .HasColumnType("int");
 
                     b.HasKey("CharacterId");

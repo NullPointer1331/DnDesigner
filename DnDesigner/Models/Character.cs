@@ -56,9 +56,24 @@ namespace DnDesigner.Models
         public int TempHealth { get; set; }
 
         /// <summary>
-        /// The characters available hit dice
+        /// The characters available d6 hit dice
         /// </summary>
-        public int AvailableHitDice { get; set; }
+        public int d6HitDiceAvailable { get; set; }
+
+        /// <summary>
+        /// The characters available d8 hit dice
+        /// </summary>
+        public int d8HitDiceAvailable { get; set; }
+
+        /// <summary>
+        /// The characters available d10 hit dice
+        /// </summary>
+        public int d10HitDiceAvailable { get; set; }
+
+        /// <summary>
+        /// The characters available d12 hit dice
+        /// </summary>
+        public int d12HitDiceAvailable { get; set; }
 
         /// <summary>
         /// An array containing the character's max hit dice for each size, 
@@ -252,7 +267,6 @@ namespace DnDesigner.Models
             {
                 Proficiencies.Add(new CharacterProficiency(this, proficiency));
             }
-            
         }
 
         #region methods
@@ -452,9 +466,24 @@ namespace DnDesigner.Models
             SetAttribute(name, value + GetAttribute(name));
         }
 
+        /// <summary>
+        /// Gets a CharacterAction with a given name
+        /// </summary>
+        /// <param name="name">The name of the action</param>
+        /// <returns>The CharacterAction if it exists, null if it doesn't</returns>
         public CharacterAction? GetAction(string name)
         {
             return Actions.Where(a => a.Action.Name == name).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets a CharacterChoice with a given id
+        /// </summary>
+        /// <param name="characterChoiceId">The id of the CharacterChoice you want</param>
+        /// <returns>The CharacterChoice if it exists, null if it doesn't</returns>
+        public CharacterChoice? GetCharacterChoice(int characterChoiceId)
+        {
+            return Features.SelectMany(f => f.Choices).Where(c => c.CharacterChoiceId == characterChoiceId).FirstOrDefault();
         }
 
         /// <summary>
@@ -555,22 +584,20 @@ namespace DnDesigner.Models
             return saves;
         }
 
-
+        /// <summary>
+        /// Gives the character all features they qualify for
+        /// </summary>
         public void SetActiveFeatures()
         {
             RemoveInvalidFeatures();
 
             List<Feature> features = new List<Feature>();
-            foreach (CharacterClass @class in Classes)
-            {
-                features.AddRange(@class.Class.GetAvailableFeatures(@class.Level));
-                if (@class.Subclass != null)
-                {
-                    features.AddRange(@class.Subclass.GetAvailableFeatures(@class.Level));
-                }
-            }
             features.AddRange(Background.Features.Where(f => f.Level <= Level));
             features.AddRange(Race.Features.Where(f => f.Level <= Level));
+            foreach (CharacterClass @class in Classes)
+            {
+                features.AddRange(@class.GetAvailableFeatures());
+            }
             
             //Add features that haven't been added yet
             foreach (Feature feature in features)
@@ -579,9 +606,11 @@ namespace DnDesigner.Models
                 {
                     CharacterFeature characterFeature = new CharacterFeature(this, feature);
                     Features.Add(characterFeature);
-                    characterFeature.ApplyEffect();
+                    characterFeature.ApplyEffects();
                 }
             }
+            Features.OrderBy(f => f.Feature.Level);
+
             ApplyEffects();
         }
 
@@ -644,7 +673,7 @@ namespace DnDesigner.Models
                 }
                 if (!valid)
                 {
-                    Features[i].RemoveEffect();
+                    Features[i].RemoveEffects();
                     Features.Remove(Features[i]);
                 }
             }
@@ -653,16 +682,29 @@ namespace DnDesigner.Models
         public void ApplyEffects()
         {
             RemoveEffects();
-            for (int i = 0; i < CharacterEffects.Count; i++)
-            {
-                CharacterEffects[i].ApplyEffect();
-            }
+            ApplyFeatures();
+            Inventory.ApplyEffects();
         }
         public void RemoveEffects()
         {
-            for (int i = 0; i < CharacterEffects.Count; i++)
+            while (CharacterEffects.Count > 0)
             {
-                CharacterEffects[i].RemoveEffect();
+                CharacterEffects[0].RemoveEffect();
+            }
+        }
+        public void ApplyFeatures()
+        {
+            RemoveFeatureEffects();
+            for (int i = 0; i < Features.Count; i++)
+            {
+                Features[i].ApplyEffects();
+            }
+        }
+        public void RemoveFeatureEffects()
+        {
+            for (int i = 0; i < Features.Count; i++)
+            {
+                Features[i].RemoveEffects();
             }
         }
         #endregion
@@ -762,13 +804,16 @@ namespace DnDesigner.Models
 
     public class FeatureChoiceViewModel
     {
-        public Character Character { get; set; }
+        public int CharacterId { get; set; }
 
-        // Normally I would handle this inside the CharacterFeature class, 
+        public List<CharacterFeature> CharacterFeatures { get; set; }
+
+        // Normally I would handle this inside the CharacterChoice class, 
         // but the view simply isn't passing it back to the controller and I don't know why
-        // So this is a hopefully temporary workaround
-        // As is, it won't work with choices in choices
-        // We don't have any of those yet, but we will if we implement Feats
-        public List<int?> ChoiceValues { get; set; }
+        // So this is a workaround, not quite as elegant, but it works
+        /// <summary>
+        /// A dictionary containing the CharacterChoiceId and the choice the user made
+        /// </summary>
+        public Dictionary<int, int> ChoiceValues { get; set; }
     }
 }

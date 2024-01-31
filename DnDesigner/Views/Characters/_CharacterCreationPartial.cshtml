@@ -6,10 +6,15 @@
 	<span asp-validation-for="Name" class="text-danger"></span>
 </div>
 <div class="form-group">
-	<label asp-for="MaxHealth" class="control-label"></label>
-	<input asp-for="MaxHealth" class="form-control" />
-	<span asp-validation-for="MaxHealth" class="text-danger"></span>
-	<input id="averageMaxHealthButton" type="button" value="Average Max Health" class="btn btn-primary" onclick="averageMaxHealth()" />
+    <label asp-for="Alignment" class="control-label"></label>
+    <input asp-for="Alignment" class="form-control" />
+    <span asp-validation-for="Alignment" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="MaxHealth" class="control-label"></label>
+    <input asp-for="MaxHealth" class="form-control" />
+    <span asp-validation-for="MaxHealth" class="text-danger"></span>
+    <input id="averageMaxHealthButton" type="button" value="Average Max Health" class="btn btn-primary" onclick="averageMaxHealth()" />
 </div>
 @*
         In order to have multiple accordions on the same page,
@@ -102,11 +107,6 @@
 			</div>
 		</div>
 	</div>
-</div>
-<div class="form-group">
-	<label asp-for="Alignment" class="control-label"></label>
-	<input asp-for="Alignment" class="form-control" />
-	<span asp-validation-for="Alignment" class="text-danger"></span>
 </div>
 @* Accordion for Race selection *@
 <div class="form-group accordion" id="accordionRaces">

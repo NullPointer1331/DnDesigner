@@ -66,6 +66,8 @@ namespace DnDesigner.Controllers
         public async Task<IActionResult> Import()
         {
             _context.Effects.RemoveRange(_context.Effects);
+            _context.Choices.RemoveRange(_context.Choices);
+            _context.CharacterFeatures.RemoveRange(_context.CharacterFeatures);
             await _context.SaveChangesAsync();
 
             _context.Proficiencies.RemoveRange(_context.Proficiencies);

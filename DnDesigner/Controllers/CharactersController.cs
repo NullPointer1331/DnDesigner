@@ -130,6 +130,10 @@ namespace DnDesigner.Controllers
                         }
                     }
                 }
+                newCharacter.d6HitDiceAvailable = newCharacter.MaxHitDice[0];
+                newCharacter.d8HitDiceAvailable = newCharacter.MaxHitDice[1];
+                newCharacter.d10HitDiceAvailable = newCharacter.MaxHitDice[2];
+                newCharacter.d12HitDiceAvailable = newCharacter.MaxHitDice[3];
                 newCharacter.Classes[0].InitialClass = true;
                 newCharacter.SetActiveFeatures();
 
@@ -156,16 +160,20 @@ namespace DnDesigner.Controllers
             {
                 return Unauthorized();
             }
+            character.RemoveEffects();
             FeatureChoiceViewModel featureChoiceViewModel = new FeatureChoiceViewModel()
             {
-                Character = character,
-                ChoiceValues = new List<int?>()
+                CharacterId = character.CharacterId,
+                CharacterFeatures = character.Features,
+                ChoiceValues = new Dictionary<int, int>()
             };
-            foreach (CharacterEffect effect in character.CharacterEffects)
+            foreach (CharacterFeature feature in character.Features)
             {
-                featureChoiceViewModel.ChoiceValues.Add(effect.Value);
+                foreach (CharacterChoice choice in feature.Choices)
+                {
+                    featureChoiceViewModel.ChoiceValues.Add(choice.CharacterChoiceId, choice.ChoiceValue);
+                }
             }
-            character.RemoveEffects();
             return View(featureChoiceViewModel);
         }
 
@@ -182,10 +190,13 @@ namespace DnDesigner.Controllers
             {
                 return Unauthorized();
             }
-            featureChoiceViewModel.Character = character;
-            for (int i = 0; i < featureChoiceViewModel.ChoiceValues.Count; i++)
+            foreach(KeyValuePair<int, int> choice in featureChoiceViewModel.ChoiceValues)
             {
-                character.CharacterEffects[i].Value = featureChoiceViewModel.ChoiceValues[i];
+                CharacterChoice? characterChoice = character.GetCharacterChoice(choice.Key);
+                if (characterChoice != null)
+                {
+                    characterChoice.ChoiceValue = choice.Value;
+                }
             }
             ModelState.Remove("Character.Background");
             ModelState.Remove("Character.Race");
@@ -340,6 +351,10 @@ namespace DnDesigner.Controllers
                 character.Intelligence = characterViewModel.Intelligence;
                 character.Wisdom = characterViewModel.Wisdom;
                 character.Charisma = characterViewModel.Charisma;
+                character.d6HitDiceAvailable = character.MaxHitDice[0];
+                character.d8HitDiceAvailable = character.MaxHitDice[1];
+                character.d10HitDiceAvailable = character.MaxHitDice[2];
+                character.d12HitDiceAvailable = character.MaxHitDice[3];
 
                 character.SetActiveFeatures();
                 try
@@ -397,6 +412,8 @@ namespace DnDesigner.Controllers
             {
                 try
                 {
+                    character.Background = await _dbHelper.GetBackground(character.Background.BackgroundId);
+                    character.Race = await _dbHelper.GetRace(character.Race.RaceId);
                     _context.Update(character);
                     await _context.SaveChangesAsync();
                 }

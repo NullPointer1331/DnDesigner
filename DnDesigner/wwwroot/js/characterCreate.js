@@ -117,46 +117,29 @@ function updateContent() {
 
     // get a list of the children of the stat container
     var pointBuyElements = document.querySelectorAll(".point-buy");
+    var statInputElements = document.querySelectorAll("input.form-control");
 
     // check what the selected value is
     if (selectedValue == "manual") {
         // iterate trough the list of children
         pointBuyElements.forEach(function (element) {
-            if (element.classList.contains("point-buy")) {
-                element.setAttribute("hidden", "true");
-            } else if (element.tagName == "INPUT") {
-                element.removeAttribute("readonly");
-            }
+            element.setAttribute("hidden", "true");
+        });
+        statInputElements.forEach(function (element) {
+            element.removeAttribute("readonly");
         });
     } else if (selectedValue == "pointBuy") {
         // iterate trough the list of children
         pointBuyElements.forEach(function (element) {
-            if (element.classList.contains("point-buy")) {
-                element.removeAttribute("hidden");
-            } else if (element.tagName == "INPUT") {
-                element.setAttribute("readonly", "true");
-            }
+            element.removeAttribute("hidden");
+        });
+        statInputElements.forEach(function (element) {
+            element.setAttribute("readonly", "true");
         });
     } else {
         // if the selected value is neither, display an error message
         console.log("Error: no stat generation method selected");
     }
-
-    // Old code
-
-    /*// Get the containers for the two stat generation methods
-    var manualEntryContainer = document.getElementById("manualEntryContainer");
-    var pointBuyContainer = document.getElementById("pointBuyContainer");
-
-    // Display the selected container and hide the others
-    if (selectedValue == "manual") {
-        manualEntryContainer.removeAttribute("hidden");
-        pointBuyContainer.setAttribute("hidden", "true");
-
-    } else if (selectedValue == "pointBuy") {
-        pointBuyContainer.removeAttribute("hidden");
-        manualEntryContainer.setAttribute("hidden", "true");
-    }*/
 }
 
 function updatePointsRemaining(pointsRemaining) {

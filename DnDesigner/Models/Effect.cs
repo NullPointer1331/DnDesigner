@@ -28,6 +28,9 @@ namespace DnDesigner.Models
         public abstract override string ToString();
     }
 
+    /// <summary>
+    /// An effect applied to a character
+    /// </summary>
     public class CharacterEffect
     {
         [Key]
@@ -51,10 +54,11 @@ namespace DnDesigner.Models
 
         public void RemoveEffect()
         {
-            Effect.RemoveEffect(Character);
             Character.CharacterEffects.Remove(this);
+            Effect.RemoveEffect(Character);
         }
     }
+
     /// <summary>
     /// When applied, this effect will modify a character's attribute
     /// </summary>
@@ -234,17 +238,52 @@ namespace DnDesigner.Models
 
         public override void ApplyEffect(Character character)
         {
-            throw new NotImplementedException();
+            bool valid = true;
+            if (NoArmor && character.Inventory.Armor != null)
+            {
+                valid = false;
+            }
+            if (NoShield && character.Inventory.OffHand != null)
+            {
+                Item offHand = character.Inventory.OffHand.Item;
+                if (offHand.Traits.Contains("Shield"))
+                {
+                    valid = false;
+                }
+            }
+            if (valid)
+            {
+                int AC = 0;
+                if (!int.TryParse(ArmorClassFormula, out AC))
+                {
+                    AC = character.Calculate(ArmorClassFormula);
+                }
+                if (Override || AC > character.BaseArmorClass)
+                {
+                    character.BaseArmorClass = AC;
+                }
+            }
         }
 
         public override void RemoveEffect(Character character)
         {
-            throw new NotImplementedException();
+            // Reset the character's armor class to the default value
+            // Then if there are any other effects that modify the armor class, they will be applied
+            character.BaseArmorClass = 10 + character.GetModifier("dex");
+            foreach (CharacterEffect effect in character.CharacterEffects.Where(e => e.Effect is SetArmorClass))
+            {
+                effect.Effect.ApplyEffect(character);
+            }
         }
 
         public override string ToString()
         {
-            throw new NotImplementedException();
+            string ret = $"Set base armor class to {ArmorClassFormula}";
+            if (!Override)
+            {
+                ret += " if higher than current base armor class";
+            }
+            return ret;
         }
     }
 

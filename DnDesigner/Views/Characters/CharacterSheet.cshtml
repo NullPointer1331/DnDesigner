@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = Model.Name + " Character Sheet";
-    int armorClass = 10 + Model.GetModifier("dex");
 }
 
 <h2>@Model.Name</h2>
@@ -327,7 +326,7 @@
             <div class="col-auto text-center">
                 <div class="collapse collapse-horizontal" id="saves">
                     <ul class="list-group" style="width: 12rem;">
-                        @foreach (CharacterProficiency save in Model.GetSaves())
+                        @foreach (CharacterProficiency save in Model.GetProficienciesByType("saving throw"))
                         {
                             <!--Get save bonus and generate id strings-->
                             int? modifier = save.GetRollBonus();
@@ -374,7 +373,7 @@
                 <br>
                 <div class="collapse collapse-horizontal" id="skills">
                     <ul class="list-group" style="width: 12rem;">
-                        @foreach (CharacterProficiency skill in Model.GetSkills())
+                        @foreach (CharacterProficiency skill in Model.GetProficienciesByType("skill"))
                         {
                             <!--Get skill bonus and generate id strings-->
                             int? modifier = skill.GetRollBonus();
@@ -508,7 +507,9 @@
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">Armor Class</h5>
-                                    <h3>@armorClass</h3>
+                                    <input type="hidden" asp-for="BaseArmorClass" />
+                                    <input type="hidden" asp-for="BonusArmorClass" />
+                                    <h3>@Model.ArmorClass</h3>
                                 </div>
                             </div>
                         </div>

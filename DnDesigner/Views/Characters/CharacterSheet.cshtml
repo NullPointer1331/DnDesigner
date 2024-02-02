@@ -764,6 +764,29 @@
                         </h2>
                         <div id="panelsStayOpen-Inventory" class="accordion-collapse collapse">
                             <div class="accordion-body">
+                                <div class="input-group mx-auto">
+                                    <input asp-for="@Model.Inventory.Platinum" id="platinum" type="number" class="form-control text-center"
+                                           value="@Model.Inventory.Platinum" min="0"
+                                           aria-label="platinum" />
+                                    <label class="input-group-text">Platinum</label>
+                                    <input asp-for="@Model.Inventory.Gold" id="gold" type="number" class="form-control text-center"
+                                           value="@Model.Inventory.Gold" min="0"
+                                           aria-label="gold" />
+                                    <label class="input-group-text">Gold</label>
+                                    <input asp-for="@Model.Inventory.Electrum" id="electrum" type="number" class="form-control text-center"
+                                           value="@Model.Inventory.Electrum" min="0"
+                                           aria-label="electrum" />
+                                    <label class="input-group-text">Electrum</label>
+                                    <input asp-for="@Model.Inventory.Silver" id="silver" type="number" class="form-control text-center"
+                                           value="@Model.Inventory.Silver" min="0"
+                                           aria-label="silver" />
+                                    <label class="input-group-text">Silver</label>
+                                    <input asp-for="@Model.Inventory.Copper" id="copper" type="number" class="form-control text-center"
+                                           value="@Model.Inventory.Copper" min="0"
+                                           aria-label="copper" />
+                                    <label class="input-group-text">Copper</label>
+                                </div>
+                                <br />
                                 <div class="row">
                                     <div class="col-2 overflow-auto" style="max-height:20rem;">
                                         <div id="inventory-list" 

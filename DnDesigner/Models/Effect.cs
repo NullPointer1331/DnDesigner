@@ -83,7 +83,14 @@ namespace DnDesigner.Models
 
         public override string ToString()
         {
-            return $"Increase {Attribute} by {Value}";
+            if (Value < 0)
+            {
+                return $"Decrease {Attribute} by {Value}";
+            }
+            else
+            {
+                return $"Increase {Attribute} by {Value}";
+            }
         }
     }
 
@@ -178,6 +185,104 @@ namespace DnDesigner.Models
         public override string ToString()
         {
             return $"Grant action: {Action.Name}";
+        }
+    }
+
+    /// <summary>
+    /// When applied, this effect will set a character's armor class
+    /// </summary>
+    public class SetArmorClass : Effect
+    {
+        /// <summary>
+        /// The formula to calculate the character's armor class
+        /// </summary>
+        public string ArmorClassFormula { get; set; }
+
+        /// <summary>
+        /// If true, this effect will be applied regardless of the character's current armor class
+        /// If false, this effect will only be applied if the character's current armor class is lower than the new armor class
+        /// </summary>
+        public bool Override { get; set; }
+
+        /// <summary>
+        /// If true, this effect will only be applied if the character is not wearing armor
+        /// </summary>
+        public bool NoArmor { get; set; }
+
+        /// <summary>
+        /// If true, this effect will only be applied if the character is not using a shield
+        /// </summary>
+        public bool NoShield { get; set; }
+
+        public SetArmorClass(string armorClassFormula, bool @override, bool noArmor, bool noShield)
+        {
+            ArmorClassFormula = armorClassFormula;
+            Override = @override;
+            NoArmor = noArmor;
+            NoShield = noShield;
+        }
+
+        public SetArmorClass(int armorClass, bool @override, bool noArmor, bool noShield) 
+            : this(armorClass.ToString(), @override, noArmor, noShield) { }
+
+        public SetArmorClass(string armorClassFormula) 
+            : this(armorClassFormula, false, false, false) { }
+
+        public SetArmorClass(int armorClass) 
+            : this(armorClass.ToString(), false, false, false) { }
+
+
+        public override void ApplyEffect(Character character)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RemoveEffect(Character character)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// When applied, this effect will modify a character's bonus armor class
+    /// </summary>
+    public class ModifyArmorClass : Effect
+    {
+        /// <summary>
+        /// The amount to modify the character's armor class by
+        /// </summary>
+        public int Value { get; set; }
+
+        public ModifyArmorClass(int value)
+        {
+            Value = value;
+        }
+
+        public override void ApplyEffect(Character character)
+        {
+            character.BonusArmorClass += Value;
+        }
+
+        public override void RemoveEffect(Character character)
+        {
+            character.BonusArmorClass -= Value;
+        }
+
+        public override string ToString()
+        {
+            if (Value < 0)
+            {
+                return $"Decrease armor class by {Value}";
+            }
+            else
+            {
+                return $"Increase armor class by {Value}";
+            }
         }
     }
 }

@@ -41,6 +41,26 @@ namespace DnDesigner.Models
             }}
 
         /// <summary>
+        /// The base armor class of the character,
+        /// from armor, dexterity, and other sources
+        /// </summary>
+        public int BaseArmorClass { get; set; }
+
+        /// <summary>
+        /// Any bonus to the characters armor class,
+        /// from shields, magic items, or other sources
+        /// </summary>
+        public int BonusArmorClass { get; set; }
+
+        /// <summary>
+        /// The character's total armor class
+        /// </summary>
+        public int ArmorClass { get
+            {
+                return BaseArmorClass + BonusArmorClass;
+            }}
+
+        /// <summary>
         /// The characters maximum health points
         /// </summary>
         public int MaxHealth { get; set; }

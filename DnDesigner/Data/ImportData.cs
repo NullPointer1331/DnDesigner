@@ -409,6 +409,8 @@ namespace DnDesigner.Data
             item.Description = CleanText(item.Description);
             item.Price = item5E.value / 100 ?? 0; 
             item.Weight = item5E.weight ?? 0;
+
+            // Set rarity
             if(item5E.rarity == "none")
             {
                 item.Rarity = 0;
@@ -441,6 +443,8 @@ namespace DnDesigner.Data
             {
                 item.Rarity = -1;
             }
+
+            // Set attunement
             if (item5E.reqAttune != null && item5E.reqAttune.ToString().ToLower().Equals("true"))
             {
                 item.Attuneable = true;
@@ -449,6 +453,8 @@ namespace DnDesigner.Data
             {
                 item.Attuneable = false;
             }
+
+            // Set traits
             if(item5E.weaponCategory == "simple")
             {
                 item.Traits = "Simple ";
@@ -480,6 +486,8 @@ namespace DnDesigner.Data
                 }
             }
             item.Traits = ParseTraits(item.Traits);
+
+            // Set equipable
             item.Equipable = 0;
             if (item.Traits.Contains("Armor"))
             {
@@ -501,6 +509,8 @@ namespace DnDesigner.Data
             {
                 item.Equipable = 3;
             }
+
+            // Set effects
             if(item5E.dmg1 != null)
             {
                 Models.Action action = new Models.Action();
@@ -525,6 +535,42 @@ namespace DnDesigner.Data
                     action.Damage += "+ " + item5E.bonusWeapon;
                 }
                 item.Effects.Add(new GrantAction(action));
+            }
+            if (item5E.ac != null)
+            {
+                int ac = 0;
+                if (item5E.bonusAc != null && int.TryParse(item5E.bonusAc, out int bonus))
+                {
+                    ac = item5E.ac.Value + bonus;
+                }
+                else
+                {
+                    ac = item5E.ac.Value;
+                }
+                string acString = ac.ToString();
+                if (item.Traits.Contains("Light Armor"))
+                {
+                    acString += " + dexteritymod";
+                }
+                else if (item.Traits.Contains("Medium Armor"))
+                {
+                    acString += " + dexteritymod(2)";
+                }
+                if (item.Traits.Contains("Shield"))
+                {
+                    item.Effects.Add(new ModifyArmorClass(item5E.ac.Value));
+                }
+                else
+                {
+                    item.Effects.Add(new SetArmorClass(acString, true, false, false));
+                }
+            }
+            else if (item5E.bonusAc != null)
+            {
+                if (int.TryParse(item5E.bonusAc, out int ac))
+                {
+                    item.Effects.Add(new ModifyArmorClass(ac));
+                }
             }
             return item;
         }

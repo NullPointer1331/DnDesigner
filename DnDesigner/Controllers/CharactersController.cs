@@ -34,7 +34,7 @@ namespace DnDesigner.Controllers
             }
         }
 
-        // GET: Characters/Details/5
+        // GET: Characters/Details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Characters == null)
@@ -381,7 +381,7 @@ namespace DnDesigner.Controllers
             return View(characterViewModel);
         }
 
-        // GET: Characters/Edit/5
+        // GET: Characters/CharacterSheet
         public async Task<IActionResult> CharacterSheet(int id)
         {
             Character character = await _dbHelper.GetCharacter(id);
@@ -397,7 +397,7 @@ namespace DnDesigner.Controllers
             return View(character);
         }
 
-        // POST: Characters/Edit/5
+        // POST: Characters/CharacterSheet
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -434,7 +434,7 @@ namespace DnDesigner.Controllers
             return View(character);
         }
 
-        // GET: Characters/Delete/5
+        // GET: Characters/Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Characters == null)
@@ -451,7 +451,7 @@ namespace DnDesigner.Controllers
             return View(character);
         }
 
-        // POST: Characters/Delete/5
+        // POST: Characters/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

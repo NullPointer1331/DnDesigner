@@ -1,9 +1,9 @@
 ﻿@model CreateCharacterViewModel
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="form-group">
-    <label asp-for="Name" class="control-label"></label>
-    <input asp-for="Name" class="form-control" />
-    <span asp-validation-for="Name" class="text-danger"></span>
+	<label asp-for="Name" class="control-label"></label>
+	<input asp-for="Name" class="form-control" />
+	<span asp-validation-for="Name" class="text-danger"></span>
 </div>
 <div class="form-group">
     <label asp-for="Alignment" class="control-label"></label>
@@ -17,170 +17,220 @@
     <input id="averageMaxHealthButton" type="button" value="Average Max Health" class="btn btn-primary" onclick="averageMaxHealth()" />
 </div>
 @*
-            In order to have multiple accordions on the same page,
-            each accordion must have a unique id.
+        In order to have multiple accordions on the same page,
+        each accordion must have a unique id.
 
-            The id of the accordion is used as the data-bs-parent
-            attribute of the accordion-body div.
+		The id of the accordion is used as the data-bs-parent
+        attribute of the accordion-body div.
 
-            Id naming convention: accordion section + property name
-            i.e. accordionClasses, headingClasses, collapseClasses
-        *@
+        Id naming convention: accordion section + property name
+        i.e. accordionClasses, headingClasses, collapseClasses
+*@
 
 @* Accordion for Class selection *@
 <div class="form-group accordion" id="accordionClasses">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingClasses">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClasses" aria-expanded="true" aria-controls="collapseOne">
-                Classes
-            </button>
-        </h2>
-        <div id="collapseClasses" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-                <input asp-for="AvailableClasses" type="hidden" value="@Model.AvailableClasses" />
-                <div id="selectClasses">
-                    <span asp-validation-for="@Model.Classes" class="text-danger"></span>
-                    <div id="Class0">
-                        <label asp-for="@Model.Classes[0][0]">Level</label>
-                        <input asp-for="@Model.Classes[0][0]" class="w-auto" max="20" min="1" onchange="displaySubclasses(0)" />
-                        <select asp-for="@Model.Classes[0][1]" onchange="updateSubclasses(0)">
-                            @foreach (Class characterClass in Model.AvailableClasses)
-                            {
-                                <option value="@characterClass.ClassId">@characterClass.Name</option>
-                            }
-                        </select>
-                        <select hidden asp-for="@Model.Classes[0][2]">
-                            @foreach (Subclass subclass in Model.AvailableClasses[0].Subclasses)
-                            {
-                                <option value="@subclass.SubclassId">@subclass.Name</option>
-                            }
-                        </select>
-                        <span asp-validation-for="@Model.Classes[0][0]" class="text-danger"></span>
-                    </div>
-                    @for (int i = 1; i < Model.AvailableClasses.Count; i++)
-                    {
-                        string classId = "Class" + i;
-                        <div hidden id="@classId">
-                            <label asp-for="@Model.Classes[i][0]">Level</label>
-                            <input asp-for="@Model.Classes[i][0]" class="w-auto" max="20" min="0" onchange="displaySubclasses(@i)" />
-                            <select asp-for="@Model.Classes[i][1]" onchange="updateSubclasses(@i)">
-                                @foreach (Class characterClass in Model.AvailableClasses)
-                                {
-                                    <option value="@characterClass.ClassId">@characterClass.Name</option>
-                                }
-                            </select>
-                            <select hidden asp-for="@Model.Classes[i][2]">
-                                @foreach (Subclass subclass in Model.AvailableClasses[0].Subclasses)
-                                {
-                                    <option value="@subclass.SubclassId">@subclass.Name</option>
-                                }
-                            </select>
-                            <input type="button" value="Remove" class="btn btn-danger" onclick="hideClassSelector(@i)" />
-                            <span asp-validation-for="@Model.Classes[i][0]" class="text-danger"></span>
-                        </div>
-                    }
-                </div>
-                <button id="addClass" type="button" class="btn btn-primary" onclick="addClassSelector()">Add Class</button>
-            </div>
-        </div>
-    </div>
+	<div class="accordion-item">
+		<h2 class="accordion-header" id="headingClasses">
+			<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClasses" aria-expanded="true" aria-controls="collapseOne">
+				Classes
+			</button>
+		</h2>
+		<div id="collapseClasses" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+			<div class="accordion-body">
+				<input asp-for="AvailableClasses" type="hidden" value="@Model.AvailableClasses" />
+				<div id="selectClasses">
+					<span asp-validation-for="@Model.Classes" class="text-danger"></span>
+					<div id="Class0">
+						<label asp-for="@Model.Classes[0][0]">Level</label>
+						<input asp-for="@Model.Classes[0][0]" class="w-auto" max="20" min="1" onchange="displaySubclasses(0)" />
+						<select asp-for="@Model.Classes[0][1]" onchange="updateSubclasses(0)">
+							@foreach (Class characterClass in Model.AvailableClasses)
+							{
+								<option value="@characterClass.ClassId">@characterClass.Name</option>
+							}
+						</select>
+						<select hidden asp-for="@Model.Classes[0][2]">
+							@foreach (Subclass subclass in Model.AvailableClasses[0].Subclasses)
+							{
+								<option value="@subclass.SubclassId">@subclass.Name</option>
+							}
+						</select>
+						<span asp-validation-for="@Model.Classes[0][0]" class="text-danger"></span>
+					</div>
+					@for (int i = 1; i < Model.AvailableClasses.Count; i++)
+					{
+						string classId = "Class" + i;
+						<div hidden id="@classId">
+							<label asp-for="@Model.Classes[i][0]">Level</label>
+							<input asp-for="@Model.Classes[i][0]" class="w-auto" max="20" min="0" onchange="displaySubclasses(@i)" />
+							<select asp-for="@Model.Classes[i][1]" onchange="updateSubclasses(@i)">
+								@foreach (Class characterClass in Model.AvailableClasses)
+								{
+									<option value="@characterClass.ClassId">@characterClass.Name</option>
+								}
+							</select>
+							<select hidden asp-for="@Model.Classes[i][2]">
+								@foreach (Subclass subclass in Model.AvailableClasses[0].Subclasses)
+								{
+									<option value="@subclass.SubclassId">@subclass.Name</option>
+								}
+							</select>
+							<input type="button" value="Remove" class="btn btn-danger" onclick="hideClassSelector(@i)" />
+							<span asp-validation-for="@Model.Classes[i][0]" class="text-danger"></span>
+						</div>
+					}
+				</div>
+				<button id="addClass" type="button" class="btn btn-primary" onclick="addClassSelector()">Add Class</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 @* Accordion for Background selection *@
 <div class="form-group accordion" id="accordionBackground">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingBackground">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBackground" aria-expanded="true" aria-controls="collapseOne">
-                Background
-            </button>
-        </h2>
-        <div id="collapseBackground" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-                <input asp-for="AvailableBackgrounds" type="hidden" value="@Model.AvailableBackgrounds" />
-                <select asp-for="BackgroundId" onchange="updateBackgroundDescription()">
-                    @foreach (Background characterBackground in Model.AvailableBackgrounds)
-                    {
-                        <option value="@characterBackground.BackgroundId">@characterBackground.Name (@characterBackground.Sourcebook)</option>
-                    }
-                </select>
-                <p id="descriptionBackground">@Model.AvailableBackgrounds[0].Description</p>
-            </div>
-        </div>
-    </div>
+	<div class="accordion-item">
+		<h2 class="accordion-header" id="headingBackground">
+			<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBackground" aria-expanded="true" aria-controls="collapseOne">
+				Background
+			</button>
+		</h2>
+		<div id="collapseBackground" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+			<div class="accordion-body">
+				<input asp-for="AvailableBackgrounds" type="hidden" value="@Model.AvailableBackgrounds" />
+				<select asp-for="BackgroundId" onchange="updateBackgroundDescription()">
+					@foreach (Background characterBackground in Model.AvailableBackgrounds)
+					{
+						<option value="@characterBackground.BackgroundId">@characterBackground.Name (@characterBackground.Sourcebook)</option>
+					}
+				</select>
+				<p id="descriptionBackground">@Model.AvailableBackgrounds[0].Description</p>
+			</div>
+		</div>
+	</div>
 </div>
 @* Accordion for Race selection *@
 <div class="form-group accordion" id="accordionRaces">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingRaces">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRaces" aria-expanded="true" aria-controls="collapseOne">
-                Races
-            </button>
-        </h2>
-        <div id="collapseRaces" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-                <input asp-for="AvailableRaces" type="hidden" value="@Model.AvailableRaces" />
-                <select asp-for="RaceId" onchange="updateRaceDescription()">
-                    @foreach (Race race in Model.AvailableRaces)
-                    {
-                        <option value=@race.RaceId>@race.Name (@race.Sourcebook)</option>
-                    }
-                </select>
-                <p id="descriptionRace">@Model.AvailableRaces[0].Description</p>
-            </div>
-        </div>
-    </div>
+	<div class="accordion-item">
+		<h2 class="accordion-header" id="headingRaces">
+			<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRaces" aria-expanded="true" aria-controls="collapseOne">
+				Races
+			</button>
+		</h2>
+		<div id="collapseRaces" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+			<div class="accordion-body">
+				<input asp-for="AvailableRaces" type="hidden" value="@Model.AvailableRaces" />
+				<select asp-for="RaceId" onchange="updateRaceDescription()">
+					@foreach (Race race in Model.AvailableRaces)
+					{
+						<option value=@race.RaceId>@race.Name (@race.Sourcebook)</option>
+					}
+				</select>
+				<p id="descriptionRace">@Model.AvailableRaces[0].Description</p>
+			</div>
+		</div>
+	</div>
 </div>
 
 @* Accordion for Stat entry *@
 <div class="form-group accordion" id="accordionStats">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingStats">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStats" aria-expanded="true" aria-controls="collapseOne">
-                Base Ability Scores
-            </button>
-        </h2>
-        <div id="collapseStats" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-                <div class="row ">
-                    <div class="col">
-                        <label asp-for="Strength" class="control-label"></label>
-                        <input asp-for="Strength" class="form-control" />
-                        <span asp-validation-for="Strength" class="text-danger"></span><br />
-                    </div>
+	<div class="accordion-item">
+		<h2 class="accordion-header" id="headingStats">
+			<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStats" aria-expanded="true" aria-controls="collapseOne">
+				Base Ability Scores
+			</button>
+		</h2>
+		<div id="collapseStats" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+			<div class="accordion-body">
+				<div class="row">
+					<div class="col">
+						<label>Generation Method:</label>
+						<input type="radio" name="generationMethod" value="manual" checked="checked" />Manual Entry
+						<input type="radio" name="generationMethod" value="pointBuy" />Point Buy
+						<br />
+					</div>
+				</div><br />
 
-                    <div class="col">
-                        <label asp-for="Dexterity" class="control-label"></label>
-                        <input asp-for="Dexterity" class="form-control" />
-                        <span asp-validation-for="Dexterity" class="text-danger"></span><br />
+				<div id="statContainer">
+					<div class="row point-buy" hidden>
+                        <h5>Points Remaining: <span id="pointsRemaining">27</span></h5>
                     </div>
+					<div class="row">
+						<div class="col">
+							<label asp-for="Strength" class="control-label"></label>
+							<div class="input-group">
+								<input asp-for="Strength" class="form-control strength" />
+								<div class="input-group-append strength point-buy" hidden>
+									<button class="btn btn-outline-secondary increment strength" type="button">+</button>
+									<button class="btn btn-outline-secondary decrement strength" type="button">-</button>
+								</div>
+							</div>
+							<span asp-validation-for="Strength" class="text-danger"></span><br />
+						</div>
 
-                    <div class="col">
-                        <label asp-for="Constitution" class="control-label"></label>
-                        <input asp-for="Constitution" class="form-control" />
-                        <span asp-validation-for="Constitution" class="text-danger"></span><br />
-                    </div>
+						<div class="col">
+							<label asp-for="Dexterity" class="control-label"></label>
+							<div class="input-group">
+								<input asp-for="Dexterity" class="form-control dexterity" />
+								<div class="input-group-append dexterity point-buy" hidden>
+									<button class="btn btn-outline-secondary increment dexterity" type="button">+</button>
+									<button class="btn btn-outline-secondary decrement dexterity" type="button">-</button>
+								</div>
+							</div>
+							<span asp-validation-for="Dexterity" class="text-danger"></span><br />
+						</div>
 
-                    <div class="col">
-                        <label asp-for="Intelligence" class="control-label"></label>
-                        <input asp-for="Intelligence" class="form-control" />
-                        <span asp-validation-for="Intelligence" class="text-danger"></span><br />
-                    </div>
+						<div class="col">
+							<label asp-for="Constitution" class="control-label"></label>
+							<div class="input-group">
+								<input asp-for="Constitution" class="form-control constitution" />
+								<div class="input-group-append constitution point-buy" hidden>
+									<button class="btn btn-outline-secondary increment constitution" type="button">+</button>
+									<button class="btn btn-outline-secondary decrement constitution" type="button">-</button>
+								</div>
+							</div>
+							<span asp-validation-for="Constitution" class="text-danger"></span><br />
+						</div>
 
-                    <div class="col">
-                        <label asp-for="Wisdom" class="control-label"></label>
-                        <input asp-for="Wisdom" class="form-control" />
-                        <span asp-validation-for="Wisdom" class="text-danger"></span><br />
-                    </div>
+						<div class="col">
+							<label asp-for="Intelligence" class="control-label"></label>
+							<div class="input-group">
+								<input asp-for="Intelligence" class="form-control intelligence" />
+								<div class="input-group-append intelligence point-buy" hidden>
+									<button class="btn btn-outline-secondary increment intelligence" type="button">+</button>
+									<button class="btn btn-outline-secondary decrement intelligence" type="button">-</button>
+								</div>
+							</div>
+							<span asp-validation-for="Intelligence" class="text-danger"></span><br />
+						</div>
 
-                    <div class="col">
-                        <label asp-for="Charisma" class="control-label"></label>
-                        <input asp-for="Charisma" class="form-control" />
-                        <span asp-validation-for="Charisma" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+						<div class="col">
+							<label asp-for="Wisdom" class="control-label"></label>
+							<div class="input-group">
+								<input asp-for="Wisdom" class="form-control wisdom" />
+								<div class="input-group-append wisdom point-buy" hidden>
+									<button class="btn btn-outline-secondary increment wisdom" type="button">+</button>
+									<button class="btn btn-outline-secondary decrement wisdom" type="button">-</button>
+								</div>
+							</div>
+							<span asp-validation-for="Wisdom" class="text-danger"></span><br />
+						</div>
+
+						<div class="col">
+							<label asp-for="Charisma" class="control-label"></label>
+							<div class="input-group">
+								<input asp-for="Charisma" class="form-control charisma" />
+								<div class="input-group-append charisma point-buy" hidden>
+									<button class="btn btn-outline-secondary increment charisma" type="button">+</button>
+									<button class="btn btn-outline-secondary decrement charisma" type="button">-</button>
+								</div>
+							</div>
+							<span asp-validation-for="Charisma" class="text-danger"></span><br />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 

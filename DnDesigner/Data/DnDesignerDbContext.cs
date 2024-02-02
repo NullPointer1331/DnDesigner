@@ -34,6 +34,8 @@ namespace DnDesigner.Data
                 .HasMany(e => e.Options)
                 .WithOne();
             builder.Entity<ModifyAttribute>();
+            builder.Entity<ModifyArmorClass>();
+            builder.Entity<SetArmorClass>();
             builder.Entity<GrantProficiencies>()
                 .HasMany(e => e.Proficiencies)
                 .WithMany();

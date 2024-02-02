@@ -41,6 +41,26 @@ namespace DnDesigner.Models
             }}
 
         /// <summary>
+        /// The base armor class of the character,
+        /// from armor, dexterity, and other sources
+        /// </summary>
+        public int BaseArmorClass { get; set; }
+
+        /// <summary>
+        /// Any bonus to the characters armor class,
+        /// from shields, magic items, or other sources
+        /// </summary>
+        public int BonusArmorClass { get; set; }
+
+        /// <summary>
+        /// The character's total armor class
+        /// </summary>
+        public int ArmorClass { get
+            {
+                return BaseArmorClass + BonusArmorClass;
+            }}
+
+        /// <summary>
         /// The characters maximum health points
         /// </summary>
         public int MaxHealth { get; set; }
@@ -258,6 +278,7 @@ namespace DnDesigner.Models
             Wisdom = character.Wisdom;
             Charisma = character.Charisma;
             WalkingSpeed = race.Speed;
+            BaseArmorClass = 10 + GetModifier("dex");
             Resistances = "";
             Immunities = "";
             Vulnerabilities = "";
@@ -346,7 +367,9 @@ namespace DnDesigner.Models
 
         /// <summary>
         /// Attempts to translate a string into a number, 
-        /// either by getting the value of an attribute, attribute modifier or by parsing the string
+        /// either by getting the value of an attribute, attribute modifier or by parsing the string.
+        /// Valid strings include strength, dexterity, constitution, intelligence, wisdom, and charisma, and proficiency (for proficiency bonus)).
+        /// You can also add mod to the end of an attribute to get the modifier, or a number in parenthesis to set a max value.
         /// </summary>
         /// <param name="str">The string to parse</param>
         /// <returns>The translated value</returns>
@@ -358,18 +381,32 @@ namespace DnDesigner.Models
             }
             else
             {
-                if (str.ToLower().Contains("mod"))
+                string formatted = str.ToLower().Trim();
+                string[] attributes = { "str", "dex", "con", "int", "wis", "cha" };
+                int val = 0;
+                if (attributes.Where(formatted.Contains).Any())
                 {
-                    return GetModifier(str.Substring(0, str.Length - 3));
+                    if (formatted.Contains("mod"))
+                    {
+                        val = GetModifier(formatted.Substring(0, formatted.IndexOf("mod")));
+                    }
+                    else
+                    {
+                        val = GetAttribute(formatted);
+                    }
                 }
-                else if (str.ToLower().Contains("prof"))
+                else if (formatted.Contains("prof"))
                 {
-                    return ProficiencyBonus;
+                    val = ProficiencyBonus;
                 }
-                else
+                if (formatted.Contains("(") && formatted.Contains(")"))
                 {
-                    return GetAttribute(str);
+                    if (int.TryParse(formatted.Substring(formatted.IndexOf("(") + 1, formatted.IndexOf(")") - formatted.IndexOf("(") - 1), out int max))
+                    {
+                        val = Math.Min(val, max);
+                    }
                 }
+                return val;
             }
         }
 
@@ -565,23 +602,38 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
-        /// Gets all CharacterProficiencies tagged as skills
+        /// Checks if the character has proficiency in a given skill
         /// </summary>
-        /// <returns>A list of CharacterProficiencies</returns>
-        public List<CharacterProficiency> GetSkills()
+        /// <param name="name">The name of the proficiency</param>
+        /// <returns>True if the character is proficient, false otherwise</returns>
+        public bool HasProficiency(string name)
         {
-            List<CharacterProficiency> skills = Proficiencies.Where(p => p.Proficiency.Type == "skill").ToList();
-            return skills;
+            return Proficiencies.Where(p => p.Proficiency.Name == name && p.ProficiencyLevel > 0).Any();
         }
 
         /// <summary>
-        /// Gets all CharacterProficiencies tagged as saving throws
+        /// Sets the character's armor class
         /// </summary>
-        /// <returns>A list of CharacterProficiencies</returns>
-        public List<CharacterProficiency> GetSaves()
+        public void SetBaseArmorClass()
         {
-            List<CharacterProficiency> saves = Proficiencies.Where(p => p.Proficiency.Type == "saving throw").ToList();
-            return saves;
+            BaseArmorClass = 10 + GetModifier("dex");
+            SetArmorClass? overrideAC = null;
+            foreach (CharacterEffect effect in CharacterEffects.Where(e => e.Effect is SetArmorClass))
+            {
+                if (effect.Effect is SetArmorClass setArmorClass)
+                {
+                    if (setArmorClass.Override)
+                    {
+                        overrideAC = setArmorClass;
+                        break;
+                    }
+                }
+                effect.Effect.ApplyEffect(this);
+            }
+            if (overrideAC != null)
+            {
+                overrideAC.ApplyEffect(this);
+            }
         }
 
         /// <summary>
@@ -684,6 +736,7 @@ namespace DnDesigner.Models
             RemoveEffects();
             ApplyFeatures();
             Inventory.ApplyEffects();
+            SetBaseArmorClass();
         }
         public void RemoveEffects()
         {

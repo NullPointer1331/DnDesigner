@@ -394,7 +394,12 @@ namespace DnDesigner.Controllers
             {
                 return Unauthorized();
             }
-            return View(character);
+
+            List<Item> allItems = await _dbHelper.GetAllItems();
+            CharacterSheetViewModel characterSheetViewModel = new CharacterSheetViewModel();
+            characterSheetViewModel.Character = character;
+            characterSheetViewModel.AllItems = allItems;
+            return View(characterSheetViewModel);
         }
 
         // POST: Characters/CharacterSheet

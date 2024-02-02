@@ -52,6 +52,9 @@ namespace DnDesigner.Models
 
         private CharacterEffect() { }
 
+        /// <summary>
+        /// Remove this effect from the character
+        /// </summary>
         public void RemoveEffect()
         {
             Character.CharacterEffects.Remove(this);
@@ -267,13 +270,7 @@ namespace DnDesigner.Models
 
         public override void RemoveEffect(Character character)
         {
-            // Reset the character's armor class to the default value
-            // Then if there are any other effects that modify the armor class, they will be applied
-            character.BaseArmorClass = 10 + character.GetModifier("dex");
-            foreach (CharacterEffect effect in character.CharacterEffects.Where(e => e.Effect is SetArmorClass))
-            {
-                effect.Effect.ApplyEffect(character);
-            }
+            character.SetBaseArmorClass();
         }
 
         public override string ToString()

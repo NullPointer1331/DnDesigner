@@ -602,23 +602,38 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
-        /// Gets all CharacterProficiencies tagged as skills
+        /// Checks if the character has proficiency in a given skill
         /// </summary>
-        /// <returns>A list of CharacterProficiencies</returns>
-        public List<CharacterProficiency> GetSkills()
+        /// <param name="name">The name of the proficiency</param>
+        /// <returns>True if the character is proficient, false otherwise</returns>
+        public bool HasProficiency(string name)
         {
-            List<CharacterProficiency> skills = Proficiencies.Where(p => p.Proficiency.Type == "skill").ToList();
-            return skills;
+            return Proficiencies.Where(p => p.Proficiency.Name == name && p.ProficiencyLevel > 0).Any();
         }
 
         /// <summary>
-        /// Gets all CharacterProficiencies tagged as saving throws
+        /// Sets the character's armor class
         /// </summary>
-        /// <returns>A list of CharacterProficiencies</returns>
-        public List<CharacterProficiency> GetSaves()
+        public void SetBaseArmorClass()
         {
-            List<CharacterProficiency> saves = Proficiencies.Where(p => p.Proficiency.Type == "saving throw").ToList();
-            return saves;
+            BaseArmorClass = 10 + GetModifier("dex");
+            SetArmorClass? overrideAC = null;
+            foreach (CharacterEffect effect in CharacterEffects.Where(e => e.Effect is SetArmorClass))
+            {
+                if (effect.Effect is SetArmorClass setArmorClass)
+                {
+                    if (setArmorClass.Override)
+                    {
+                        overrideAC = setArmorClass;
+                        break;
+                    }
+                }
+                effect.Effect.ApplyEffect(this);
+            }
+            if (overrideAC != null)
+            {
+                overrideAC.ApplyEffect(this);
+            }
         }
 
         /// <summary>
@@ -721,6 +736,7 @@ namespace DnDesigner.Models
             RemoveEffects();
             ApplyFeatures();
             Inventory.ApplyEffects();
+            SetBaseArmorClass();
         }
         public void RemoveEffects()
         {

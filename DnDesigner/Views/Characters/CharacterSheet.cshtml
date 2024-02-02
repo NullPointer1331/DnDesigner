@@ -740,7 +740,57 @@
                         </h2>
                         <div id="panelsStayOpen-Inventory" class="accordion-collapse collapse">
                             <div class="accordion-body">
-                                <strong>Placeholder</strong>
+                                <div class="row">
+                                    <div class="col-2 overflow-auto" style="max-height:20rem;">
+                                        <div id="inventory-list" 
+                                        class="d-flex flex-column gap-2 simple-list-example-scrollspy text-center">
+                                            @{
+                                                int itemLinkNum = 0;
+                                                string itemLinkId = "item";
+                                                foreach (InventoryItem item in Model.Inventory.Items)
+                                                {
+                                                    string thisLinkId = itemLinkId + itemLinkNum;
+                                                    <a class="p-1 rounded" href="#@thisLinkId">@item.Item.Name</a>
+                                                    itemLinkNum++;
+                                                }
+                                            }
+                                            <a class="p-1 rounded" href="#simple-list-item-1">Item 1</a>
+                                            <a class="p-1 rounded" href="#simple-list-item-2">Item 2</a>
+                                            <a class="p-1 rounded" href="#simple-list-item-3">Item 3</a>
+                                            <a class="p-1 rounded" href="#simple-list-item-4">Item 4</a>
+                                            <a class="p-1 rounded" href="#simple-list-item-5">Item 5</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-10 overflow-auto" style="max-height:20rem;">
+                                        <div data-bs-spy="scroll" data-bs-target="#inventory-list" 
+                                        data-bs-offset="0" data-bs-smooth-scroll="true" 
+                                        class="scrollspy-example" tabindex="0">
+                                            @{
+                                                int itemListNum = 0;
+                                                string itemListId = "item";
+                                                foreach (InventoryItem item in Model.Inventory.Items)
+                                                {
+                                                    string thisListId = itemListId + itemListNum;
+                                                    <h4 id="@itemListId">@item.Item.Name</h4>
+                                                    <h5>@item.Item.Sourcebook</h5>
+                                                    <p>@item.Item.Traits</p>
+                                                    <p>@item.Item.Description</p>
+                                                    itemListNum++;
+                                                }
+                                            }
+                                            <h4 id="simple-list-item-1">Item 1</h4>
+                                            <p>...</p>
+                                            <h4 id="simple-list-item-2">Item 2</h4>
+                                            <p>...</p>
+                                            <h4 id="simple-list-item-3">Item 3</h4>
+                                            <p>...</p>
+                                            <h4 id="simple-list-item-4">Item 4</h4>
+                                            <p>...</p>
+                                            <h4 id="simple-list-item-5">Item 5</h4>
+                                            <p>...</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

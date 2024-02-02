@@ -134,7 +134,9 @@ function updateContent() {
             element.removeAttribute("hidden");
         });
         statInputElements.forEach(function (element) {
+            element.value = "8";
             element.setAttribute("readonly", "true");
+            document.getElementById("pointsRemaining").innerText = "27";
         });
     } else {
         // if the selected value is neither, display an error message

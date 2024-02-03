@@ -33,6 +33,9 @@ namespace DnDesigner.Data
             builder.Entity<EffectChoice>()
                 .HasMany(e => e.Effects)
                 .WithOne();
+            builder.Entity<GroupedEffect>()
+                .HasMany(e => e.Effects)
+                .WithOne();
             builder.Entity<ModifyAttribute>();
             builder.Entity<ModifyArmorClass>();
             builder.Entity<SetArmorClass>();

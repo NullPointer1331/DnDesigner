@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace DnDesigner.Models
 {
@@ -36,7 +37,7 @@ namespace DnDesigner.Models
         /// </summary>
         public void ApplyChoice()
         {
-            Choice.ApplyChoice(CharacterFeature.Character, ChoiceValue);
+            Choice.ApplyChoice(CharacterFeature.Character, ChoiceValue, CharacterChoiceId);
         }
 
         /// <summary>
@@ -44,12 +45,12 @@ namespace DnDesigner.Models
         /// </summary>
         public void RemoveChoice()
         {
-            Choice.RemoveChoice(CharacterFeature.Character);
+            Choice.RemoveChoice(CharacterFeature.Character, CharacterChoiceId);
         }
 
         public override string ToString()
         {
-            return Choice.GetOptionDescription(ChoiceValue);
+            return Choice.Options[ChoiceValue];
         }
     }
 
@@ -63,40 +64,25 @@ namespace DnDesigner.Models
         /// </summary>
         public int DefaultChoice { get; set; }
 
-        public abstract Dictionary<int, string> Options { get; }
-
         /// <summary>
-        /// Applies the default choice to the character
+        /// A dictionary of the options for the choice
         /// </summary>
-        /// <param name="character"></param>
-        public abstract void ApplyChoice(Character character);
+        public abstract Dictionary<int, string> Options { get; }
 
         /// <summary>
         /// Applies the choice to the character
         /// </summary>
-        /// <param name="character"></param>
-        /// <param name="choice"></param>
-        public abstract void ApplyChoice(Character character, int choice);
+        /// <param name="character">The character to apply the choice to</param>
+        /// <param name="choice">The option selected</param>
+        /// <param name="characterChoiceId">The Id of the CharacterChoice calling this</param>
+        public abstract void ApplyChoice(Character character, int choice, int characterChoiceId);
 
         /// <summary>
         /// Removes the choice from the character
         /// </summary>
         /// <param name="character"></param>
-        public abstract void RemoveChoice(Character character);
-
-        /// <summary>
-        /// Removes the choice from the character
-        /// </summary>
-        /// <param name="character"></param>
-        /// <param name="choice"></param>
-        public abstract void RemoveChoice(Character character, int choice);
-
-        /// <summary>
-        /// Gets the description of the specified option
-        /// </summary>
-        /// <param name="choice"></param>
-        /// <returns></returns>
-        public abstract string GetOptionDescription(int choice);
+        /// <param name="characterChoiceId">The Id of the CharacterChoice calling this</param>
+        public abstract void RemoveChoice(Character character, int characterChoiceId);
     }
 
     /// <summary>
@@ -165,52 +151,27 @@ namespace DnDesigner.Models
             DefaultChoice = Effects[0].EffectId;
         }
 
-        public override void ApplyChoice(Character character)
-        {
-            ApplyChoice(character, DefaultChoice);
-        }
-
         /// <summary>
         /// Apply the chosen effect to the character
         /// </summary>
-        /// <param name="character">The character to be modified</param>
         /// <param name="choiceValue">The index of the chosen effect</param>
-        public override void ApplyChoice(Character character, int choiceValue)
+        public override void ApplyChoice(Character character, int choiceValue, int characterChoiceId)
         {
-            RemoveChoice(character);
+            RemoveChoice(character, characterChoiceId);
             Effect? effect = Effects.Find(e => e.EffectId == choiceValue);
             if (effect != null)
             {
-                CharacterEffect characterEffect = new CharacterEffect(character, effect);
+                CharacterEffect characterEffect = new CharacterEffect(character, effect, characterChoiceId);
                 character.CharacterEffects.Add(characterEffect);
             }
         }
 
-        public override void RemoveChoice(Character character)
+        public override void RemoveChoice(Character character, int characterChoiceId)
         {
-            List<CharacterEffect> toRemove = new List<CharacterEffect>();
-            foreach (Effect effect in Effects)
-            {
-                CharacterEffect? existingEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
-                if (existingEffect != null)
-                {
-                    existingEffect.RemoveEffect();
-                    toRemove.Add(existingEffect);
-                }
-            }
+            List<CharacterEffect> toRemove = character.CharacterEffects.Where(c => c.SourceChoice != null && c.SourceChoice == characterChoiceId).ToList();
             foreach (CharacterEffect characterEffect in toRemove)
             {
-                character.CharacterEffects.Remove(characterEffect);
-            }
-        }
-
-        public override void RemoveChoice(Character character, int choiceValue)
-        {
-            CharacterEffect? existingEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == Effects[choiceValue].EffectId);
-            if (existingEffect != null)
-            {
-                existingEffect.RemoveEffect();
-                character.CharacterEffects.Remove(existingEffect);
+                characterEffect.RemoveEffect();
             }
         }
 
@@ -222,19 +183,6 @@ namespace DnDesigner.Models
                 str += effect.ToString() + ", ";
             }
             return str.Substring(0, str.Length - 2);
-        }
-
-        public override string GetOptionDescription(int effectId)
-        {
-            Effect? effect = Effects.Find(e => e.EffectId == effectId);
-            if (effect != null)
-            {
-                return effect.ToString();
-            }
-            else
-            {
-                return "Effect not found";
-            }
         }
     }
 }

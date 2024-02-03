@@ -63,6 +63,8 @@ namespace DnDesigner.Models
         /// </summary>
         public int DefaultChoice { get; set; }
 
+        public abstract Dictionary<int, string> Options { get; }
+
         /// <summary>
         /// Applies the default choice to the character
         /// </summary>
@@ -102,12 +104,25 @@ namespace DnDesigner.Models
     /// </summary>
     public class EffectChoice : Choice
     {
-        public List<Effect> Options { get; private set; }
+        public List<Effect> Effects { get; private set; }
+
+        public override Dictionary<int, string> Options
+        {
+            get
+            {
+                Dictionary<int, string> options = new Dictionary<int, string>();
+                foreach (Effect effect in Effects)
+                {
+                    options.Add(effect.EffectId, effect.ToString());
+                }
+                return options;
+            }
+        }
 
         public EffectChoice(List<Effect> effects)
         {
-            Options = effects;
-            DefaultChoice = Options[0].EffectId;
+            Effects = effects;
+            DefaultChoice = Effects[0].EffectId;
         }
 
         private EffectChoice() { }
@@ -119,21 +134,21 @@ namespace DnDesigner.Models
         /// Options: "ASI" - Increase an ability score by 1, (TODO, implement more presets)</param>
         public EffectChoice(string preset)
         {
-            Options = new List<Effect>();
+            Effects = new List<Effect>();
             switch (preset)
             {
                 case "ASI":
-                    Options.Add(new ModifyAttribute("str", 1));
-                    Options.Add(new ModifyAttribute("dex", 1));
-                    Options.Add(new ModifyAttribute("con", 1));
-                    Options.Add(new ModifyAttribute("int", 1));
-                    Options.Add(new ModifyAttribute("wis", 1));
-                    Options.Add(new ModifyAttribute("cha", 1));
+                    Effects.Add(new ModifyAttribute("str", 1));
+                    Effects.Add(new ModifyAttribute("dex", 1));
+                    Effects.Add(new ModifyAttribute("con", 1));
+                    Effects.Add(new ModifyAttribute("int", 1));
+                    Effects.Add(new ModifyAttribute("wis", 1));
+                    Effects.Add(new ModifyAttribute("cha", 1));
                     break;
                 default:
                     break;
             }
-            DefaultChoice = Options[0].EffectId;
+            DefaultChoice = Effects[0].EffectId;
         }
 
         /// <summary>
@@ -142,12 +157,12 @@ namespace DnDesigner.Models
         /// <param name="proficiencies"></param>
         public EffectChoice(List<Proficiency> proficiencies)
         {
-            Options = new List<Effect>();
+            Effects = new List<Effect>();
             foreach (Proficiency proficiency in proficiencies)
             {
-                Options.Add(new GrantProficiencies(proficiency, false));
+                Effects.Add(new GrantProficiencies(proficiency, false));
             }
-            DefaultChoice = Options[0].EffectId;
+            DefaultChoice = Effects[0].EffectId;
         }
 
         public override void ApplyChoice(Character character)
@@ -163,7 +178,7 @@ namespace DnDesigner.Models
         public override void ApplyChoice(Character character, int choiceValue)
         {
             RemoveChoice(character);
-            Effect? effect = Options.Find(e => e.EffectId == choiceValue);
+            Effect? effect = Effects.Find(e => e.EffectId == choiceValue);
             if (effect != null)
             {
                 CharacterEffect characterEffect = new CharacterEffect(character, effect);
@@ -174,7 +189,7 @@ namespace DnDesigner.Models
         public override void RemoveChoice(Character character)
         {
             List<CharacterEffect> toRemove = new List<CharacterEffect>();
-            foreach (Effect effect in Options)
+            foreach (Effect effect in Effects)
             {
                 CharacterEffect? existingEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
                 if (existingEffect != null)
@@ -191,7 +206,7 @@ namespace DnDesigner.Models
 
         public override void RemoveChoice(Character character, int choiceValue)
         {
-            CharacterEffect? existingEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == Options[choiceValue].EffectId);
+            CharacterEffect? existingEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == Effects[choiceValue].EffectId);
             if (existingEffect != null)
             {
                 existingEffect.RemoveEffect();
@@ -202,7 +217,7 @@ namespace DnDesigner.Models
         public override string ToString()
         {
             string str = "Choose one of the following: ";
-            foreach (Effect effect in Options)
+            foreach (Effect effect in Effects)
             {
                 str += effect.ToString() + ", ";
             }
@@ -211,7 +226,7 @@ namespace DnDesigner.Models
 
         public override string GetOptionDescription(int effectId)
         {
-            Effect? effect = Options.Find(e => e.EffectId == effectId);
+            Effect? effect = Effects.Find(e => e.EffectId == effectId);
             if (effect != null)
             {
                 return effect.ToString();

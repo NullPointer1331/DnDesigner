@@ -31,7 +31,7 @@ namespace DnDesigner.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.ClientSetNull);
             builder.Entity<EffectChoice>()
-                .HasMany(e => e.Options)
+                .HasMany(e => e.Effects)
                 .WithOne();
             builder.Entity<ModifyAttribute>();
             builder.Entity<ModifyArmorClass>();

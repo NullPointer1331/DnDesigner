@@ -386,10 +386,10 @@ namespace DnDesigner.Models
             if (choice is EffectChoice effectChoice)
             {
                 await _context.Entry(effectChoice)
-                    .Collection(ec => ec.Options)
+                    .Collection(ec => ec.Effects)
                     .LoadAsync();
-                await LoadEffects(effectChoice.Options);
-                choice.DefaultChoice = effectChoice.Options[0].EffectId;
+                await LoadEffects(effectChoice.Effects);
+                choice.DefaultChoice = effectChoice.Effects[0].EffectId;
             }
         }
     }

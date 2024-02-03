@@ -28,12 +28,9 @@
                             @foreach (CharacterChoice choice in characterFeature.Choices)
                             {
                                 <select asp-for="@Model.ChoiceValues[choice.CharacterChoiceId]">
-                                    @if (choice.Choice is EffectChoice effectChoice)
+                                    @foreach (KeyValuePair<int, string> option in choice.Choice.Options)
                                     {
-                                        @for (int i = 0; i < effectChoice.Options.Count; i++)
-                                        {
-                                            <option value="@effectChoice.Options[i].EffectId">@effectChoice.Options[i].ToString()</option>
-                                        }
+                                        <option value="@option.Key">@option.Value</option>
                                     }
                                 </select>
                             }

@@ -281,10 +281,7 @@ namespace DnDesigner.Models
             foreach (Effect effect in Feature.Effects)
             {
                 CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
-                if (existingEffect != null)
-                {
-                    existingEffect.RemoveEffect();
-                }
+                existingEffect?.RemoveEffect();
             }
         }
     }

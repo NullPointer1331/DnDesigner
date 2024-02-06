@@ -30,6 +30,9 @@ namespace DnDesigner.Data
                 .HasOne(f => f.Feature)
                 .WithMany()
                 .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Entity<FeatureChoice>()
+                .HasMany(f => f.Features)
+                .WithMany();
             builder.Entity<EffectChoice>()
                 .HasMany(e => e.Effects)
                 .WithOne();

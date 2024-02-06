@@ -118,7 +118,7 @@ namespace DnDesigner.Models
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, 30)]
+        [Range(0, int.MaxValue, ErrorMessage = "Strength must be greater than 0")]
         public int Strength { get; set; }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace DnDesigner.Models
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, 30)]
+        [Range(0, int.MaxValue, ErrorMessage = "Dexterity must be greater than 0")]
         public int Dexterity { get; set; }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace DnDesigner.Models
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, 30)]
+        [Range(0, int.MaxValue, ErrorMessage = "Constitution must be greater than 0")]
         public int Constitution { get; set; }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace DnDesigner.Models
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, 30)]
+        [Range(0, int.MaxValue, ErrorMessage = "Intelligence must be greater than 0")]
         public int Intelligence { get; set; }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace DnDesigner.Models
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, 30)]
+        [Range(0, int.MaxValue, ErrorMessage = "Wisdom must be greater than 0")]
         public int Wisdom { get; set; }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace DnDesigner.Models
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, 30)]
+        [Range(0, int.MaxValue, ErrorMessage = "Charisma must be greater than 0")]
         public int Charisma { get; set; }
 
         /// <summary>
@@ -620,20 +620,15 @@ namespace DnDesigner.Models
             SetArmorClass? overrideAC = null;
             foreach (CharacterEffect effect in CharacterEffects.Where(e => e.Effect is SetArmorClass))
             {
-                if (effect.Effect is SetArmorClass setArmorClass)
+                SetArmorClass setArmorClass = (SetArmorClass)effect.Effect;
+                if (setArmorClass.Override)
                 {
-                    if (setArmorClass.Override)
-                    {
-                        overrideAC = setArmorClass;
-                        break;
-                    }
+                    overrideAC = setArmorClass;
+                    break;
                 }
-                effect.Effect.ApplyEffect(this);
+                setArmorClass.ApplyEffect(this);
             }
-            if (overrideAC != null)
-            {
-                overrideAC.ApplyEffect(this);
-            }
+            overrideAC?.ApplyEffect(this);
         }
 
         /// <summary>

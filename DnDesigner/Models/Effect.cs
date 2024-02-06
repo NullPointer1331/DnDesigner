@@ -72,6 +72,7 @@ namespace DnDesigner.Models
 
     /// <summary>
     /// When applied, this effect will apply multiple effects as a group
+    /// This is useful for applying multiple effects from a single choice
     /// </summary>
     public class GroupedEffect : Effect
     {

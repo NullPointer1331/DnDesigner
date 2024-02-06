@@ -185,4 +185,61 @@ namespace DnDesigner.Models
             return str.Substring(0, str.Length - 2);
         }
     }
+
+    /// <summary>
+    /// A choice between multiple features
+    /// </summary>
+    public class FeatureChoice : Choice
+    {
+        public override Dictionary<int, string> Options { 
+            get { 
+                Dictionary<int, string> options = new Dictionary<int, string>();
+                foreach (Feature feature in Features)
+                {
+                    options.Add(feature.FeatureId, feature.ToString());
+                }
+                return options;
+            }}
+
+        public List<Feature> Features { get; set; }
+
+        /// <summary>
+        /// This indicates whether this choice should load a specific collection of features
+        /// 0 - No auto load
+        /// 1 - Automatically set Features to All Feats
+        /// Those are the only options for now, 
+        /// but in the future it may include fighting styles, warlock invocations, artificer infusions, etc.
+        /// </summary>
+        public int AutoLoad { get; private set; }
+
+        public FeatureChoice(List<Feature> features)
+        {
+            Features = features;
+            AutoLoad = 0;
+            DefaultChoice = Features[0].FeatureId;
+        }
+
+        /// <summary>
+        /// A constructor for a feature choice that automatically loads a specific collection of features
+        /// </summary>
+        /// <param name="autoLoad">0 - No auto load
+        /// 1 - Automatically set Features to All Feats</param>
+        public FeatureChoice(int autoLoad)
+        {
+            AutoLoad = autoLoad;
+            DefaultChoice = 0;
+        }
+
+        private FeatureChoice() { }
+
+        public override void ApplyChoice(Character character, int choice, int characterChoiceId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RemoveChoice(Character character, int characterChoiceId)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

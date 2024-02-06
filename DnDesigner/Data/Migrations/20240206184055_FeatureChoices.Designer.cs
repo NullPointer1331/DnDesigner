@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20240203022109_ChoicesRework")]
-    partial class ChoicesRework
+    [Migration("20240206184055_FeatureChoices")]
+    partial class FeatureChoices
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,6 +124,10 @@ namespace DnDesigner.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CharacterId"));
 
                     b.Property<string>("Alignment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AppliedChoiceValues")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -292,9 +296,6 @@ namespace DnDesigner.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("EffectId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SourceChoice")
                         .HasColumnType("int");
 
                     b.HasKey("CharacterEffectId");
@@ -787,6 +788,21 @@ namespace DnDesigner.Migrations
                     b.ToTable("Subclasses");
                 });
 
+            modelBuilder.Entity("FeatureFeatureChoice", b =>
+                {
+                    b.Property<int>("FeatureChoiceChoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FeaturesFeatureId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FeatureChoiceChoiceId", "FeaturesFeatureId");
+
+                    b.HasIndex("FeaturesFeatureId");
+
+                    b.ToTable("FeatureFeatureChoice");
+                });
+
             modelBuilder.Entity("GrantProficienciesProficiency", b =>
                 {
                     b.Property<int>("GrantProficienciesEffectId")
@@ -1024,6 +1040,16 @@ namespace DnDesigner.Migrations
                     b.HasBaseType("DnDesigner.Models.Choice");
 
                     b.HasDiscriminator().HasValue("EffectChoice");
+                });
+
+            modelBuilder.Entity("DnDesigner.Models.FeatureChoice", b =>
+                {
+                    b.HasBaseType("DnDesigner.Models.Choice");
+
+                    b.Property<int>("AutoLoad")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("FeatureChoice");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.GrantAction", b =>
@@ -1425,6 +1451,21 @@ namespace DnDesigner.Migrations
                     b.Navigation("Class");
 
                     b.Navigation("Spellcasting");
+                });
+
+            modelBuilder.Entity("FeatureFeatureChoice", b =>
+                {
+                    b.HasOne("DnDesigner.Models.FeatureChoice", null)
+                        .WithMany()
+                        .HasForeignKey("FeatureChoiceChoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DnDesigner.Models.Feature", null)
+                        .WithMany()
+                        .HasForeignKey("FeaturesFeatureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GrantProficienciesProficiency", b =>

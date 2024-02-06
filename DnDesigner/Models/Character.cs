@@ -232,6 +232,11 @@ namespace DnDesigner.Models
         public Inventory Inventory { get; set; }
 
         /// <summary>
+        /// A dictionary containing the CharacterChoiceId and the choice the user made
+        /// </summary>
+        public Dictionary<int, int> AppliedChoiceValues { get; set; }
+
+        /// <summary>
         /// Contains the Id of the user who created the character
         /// </summary>
         public string UserId { get; set; }
@@ -246,6 +251,7 @@ namespace DnDesigner.Models
             Actions = new List<CharacterAction>();
             CharacterEffects = new List<CharacterEffect>();
             Inventory = new Inventory(this);
+            AppliedChoiceValues = new Dictionary<int, int>();
             Name = "Unnamed Character";
             Resistances = "";
             Immunities = "";
@@ -265,6 +271,7 @@ namespace DnDesigner.Models
             CharacterEffects = new List<CharacterEffect>();
             Actions = new List<CharacterAction>();
             Inventory = new Inventory(this);
+            AppliedChoiceValues = new Dictionary<int, int>();
             Background = background;
             Alignment = alignment;
             Race = race;

@@ -42,20 +42,11 @@ namespace DnDesigner.Models
         [JsonIgnore]
         public Character Character { get; set; }
 
-        /// <summary>
-        /// The choice that added this effect to the character
-        /// </summary>
-        public int? SourceChoice { get; set; }
-
         public CharacterEffect(Character character, Effect effect)
         {
             Effect = effect;
             Character = character;
             Effect.ApplyEffect(Character);
-        }
-
-        public CharacterEffect(Character character, Effect effect, int sourceChoice) : this(character, effect) {
-            SourceChoice = sourceChoice;
         }
 
         private CharacterEffect() { }

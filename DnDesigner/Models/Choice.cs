@@ -161,17 +161,19 @@ namespace DnDesigner.Models
             Effect? effect = Effects.Find(e => e.EffectId == choiceValue);
             if (effect != null)
             {
-                CharacterEffect characterEffect = new CharacterEffect(character, effect, characterChoiceId);
+                CharacterEffect characterEffect = new CharacterEffect(character, effect);
                 character.CharacterEffects.Add(characterEffect);
+                character.AppliedChoiceValues.Add(characterChoiceId, choiceValue);
             }
         }
 
         public override void RemoveChoice(Character character, int characterChoiceId)
         {
-            List<CharacterEffect> toRemove = character.CharacterEffects.Where(c => c.SourceChoice != null && c.SourceChoice == characterChoiceId).ToList();
-            foreach (CharacterEffect characterEffect in toRemove)
+            if (character.AppliedChoiceValues.TryGetValue(characterChoiceId, out int choiceValue))
             {
-                characterEffect.RemoveEffect();
+                character.AppliedChoiceValues.Remove(characterChoiceId);
+                CharacterEffect? characterEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == choiceValue);
+                characterEffect?.RemoveEffect();
             }
         }
 

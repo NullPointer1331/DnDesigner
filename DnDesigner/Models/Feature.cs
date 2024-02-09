@@ -210,7 +210,8 @@ namespace DnDesigner.Models
 
         public string Prerequisites { get; set; }
 
-        public Feat(string name, string description, int level, string source, bool repeatable, string prerequisites) : base(name, description, level, source)
+        public Feat(string name, string description, int level, string source, bool repeatable, string prerequisites) 
+            : base(name, description, level, source)
         {
             Repeatable = repeatable;
             Prerequisites = prerequisites;

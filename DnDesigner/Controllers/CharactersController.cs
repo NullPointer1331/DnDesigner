@@ -165,10 +165,10 @@ namespace DnDesigner.Controllers
             FeatureChoiceViewModel featureChoiceViewModel = new FeatureChoiceViewModel()
             {
                 CharacterId = character.CharacterId,
-                CharacterFeatures = character.Features,
+                CharacterFeatures = character.Features.Where(f => f.Feature is not Feat).ToList(),
                 ChoiceValues = new Dictionary<int, int>()
             };
-            foreach (CharacterFeature feature in character.Features)
+            foreach (CharacterFeature feature in featureChoiceViewModel.CharacterFeatures)
             {
                 foreach (CharacterChoice choice in feature.Choices)
                 {

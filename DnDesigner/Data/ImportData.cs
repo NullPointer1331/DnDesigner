@@ -107,6 +107,10 @@ namespace DnDesigner.Data
         {
             FeatRoot featRoot = GetFeatRoot();
             List<Feat> feats = new List<Feat>();
+            Feat asi = new Feat("Ability Score Improvement", "Increase one ability score by 2, or two ability scores by 1", 0, "PHB", true, "");
+            asi.Choices.Add(new EffectChoice("ASI"));
+            asi.Choices.Add(new EffectChoice("ASI"));
+            feats.Add(asi);
             foreach (Feat5ETools feat5E in featRoot.feat)
             {
                 if(!feat5E.source.Contains("UA"))
@@ -948,8 +952,8 @@ namespace DnDesigner.Data
                 feature.Source = $"{feature5E.source}, Class, {@class.Name}";
                 if (feature.Name == "Ability Score Improvement")
                 {
-                    feature.Choices.Add(new EffectChoice("ASI"));
-                    feature.Choices.Add(new EffectChoice("ASI"));
+                    feature.Name = "Choose Feat or Ability Score Improvement";
+                    feature.Choices.Add(new FeatureChoice(1));
                 }
                 @class.Features.Add(feature);
             }

@@ -663,7 +663,7 @@ namespace DnDesigner.Models
                     characterFeature.ApplyEffects();
                 }
             }
-            Features.OrderBy(f => f.Feature.Level);
+            Features = Features.OrderBy(f => f.Feature.Level).ToList();
 
             ApplyEffects();
         }
@@ -725,6 +725,13 @@ namespace DnDesigner.Models
                         valid = false;
                     }
                 }
+                else if (feature is Feat feat)
+                {
+                    if (!feat.Repeatable && Features.Where(f => f.Feature is Feat && f.Feature.FeatureId == feat.FeatureId).Count() > 1)
+                    {
+                        valid = false;
+                    }
+                }
                 if (!valid)
                 {
                     Features[i].RemoveEffects();
@@ -749,7 +756,6 @@ namespace DnDesigner.Models
         }
         public void ApplyFeatures()
         {
-            RemoveFeatureEffects();
             for (int i = 0; i < Features.Count; i++)
             {
                 Features[i].ApplyEffects();

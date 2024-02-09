@@ -455,13 +455,30 @@ namespace DnDesigner.Models
             }
             else if (choice is FeatureChoice featureChoice)
             {
-                if (featureChoice.AutoLoad == 0)
-                {
-                    featureChoice.Features = (await GetAllFeats()).Cast<Feature>().ToList();
-                }
                 await _context.Entry(featureChoice)
                     .Collection(fc => fc.Features)
                     .LoadAsync();
+                if (featureChoice.AutoLoad == 1)
+                {
+                    featureChoice.Features = (await GetAllFeats()).Cast<Feature>().ToList();
+                    /*
+                    List<Feature> allFeats = (await GetAllFeats()).Cast<Feature>().ToList();
+                    for (int i = 0; i < featureChoice.Features.Count; i++)
+                    {
+                        if (!allFeats.Where(f => f.FeatureId == featureChoice.Features[i].FeatureId).Any())
+                        {
+                            featureChoice.Features.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                    foreach (Feature feat in allFeats)
+                    {
+                        if (!featureChoice.Features.Where(f => f.FeatureId == feat.FeatureId).Any())
+                        {
+                            featureChoice.Features.Add(feat);
+                        }
+                    } */
+                }
                 await LoadFeatures(featureChoice.Features);
                 choice.DefaultChoice = featureChoice.Features[0].FeatureId;
             }

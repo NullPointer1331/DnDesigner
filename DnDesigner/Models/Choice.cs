@@ -236,12 +236,40 @@ namespace DnDesigner.Models
 
         public override void ApplyChoice(Character character, int choice, int characterChoiceId)
         {
-            throw new NotImplementedException();
+            if (character.AppliedChoiceValues.TryGetValue(characterChoiceId, out int choiceValue))
+            {
+                if (choiceValue != choice)
+                {
+                    RemoveChoice(character, characterChoiceId);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            Feature? feature = Features.Find(f => f.FeatureId == choice);
+            if (feature != null && 
+                (!character.Features.Where(f => f.Feature.FeatureId == feature.FeatureId).Any()
+                || (feature is Feat feat && feat.Repeatable)))
+            { // Apply the feature if it is not already applied or if it is a repeatable feat
+                CharacterFeature characterFeature = new CharacterFeature(character, feature);
+                character.Features.Add(characterFeature);
+                character.AppliedChoiceValues.Add(characterChoiceId, choice);
+            }
         }
 
         public override void RemoveChoice(Character character, int characterChoiceId)
         {
-            throw new NotImplementedException();
+            if (character.AppliedChoiceValues.TryGetValue(characterChoiceId, out int choiceValue))
+            {
+                character.AppliedChoiceValues.Remove(characterChoiceId);
+                CharacterFeature? characterFeature = character.Features.Find(f => f.Feature.FeatureId == choiceValue);
+                if (characterFeature != null)
+                {
+                    characterFeature.RemoveEffects();
+                    character.Features.Remove(characterFeature);
+                }
+            }
         }
     }
 }

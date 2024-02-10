@@ -289,10 +289,10 @@
                                         value="@Model.Character.d12HitDiceAvailable" min="0" max="@Model.Character.MaxHitDice[3]"
                                         aria-label="d12 Hit Dice Available" />
                                     <label class="input-group-text">d12</label>
-                                </div>
+                                    </div>
+                                }
                             }
-                        }
-						</div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -332,8 +332,41 @@
                         <h1 class="modal-title fs-5" id="equipmentLabel">Add Items</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body text-center">
-                        <h5>Place holder for items</h5>
+                    <div class="modal-body">
+                        <div class="accordion" id="allItems">
+                            @{
+                                string accordionName = "itemAccordion";
+                                int accordionNum = 1;
+                                string accordionID;
+                                string itemCount = "itemCount";
+                                string itemID;
+                                foreach(Item currentItem in Model.AllItems)
+                                {
+                                    accordionID = accordionName + accordionNum;
+                                    itemID = itemCount + accordionNum;
+                                    <div class="accordion-item" id="allItems">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#@accordionID" 
+                                            aria-expanded="false" aria-controls="@accordionID">
+                                                @currentItem.Name
+                                            </button>
+                                        </h2>
+                                        <div id="@accordionID" class="accordion-collapse collapse">
+                                            <br/>
+                                            <div class="input-group mx-auto w-50 text-center">
+                                                <label class="input-group-text">Quantity</label>
+                                                <input id="@itemID" type="number" min="0" max="99" 
+                                                class="form-control" aria-label="Item quantity"/>
+                                                <button class="btn btn-success" onclick="AssignToast('header', 'body')">Add</button>
+                                            </div>
+                                            <div class="accordion-body">@currentItem.Description</div>
+                                        </div>
+                                    </div>
+                                    accordionNum++;
+                                }
+                            }
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -1030,5 +1063,5 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script src="/js/dice.js"></script>
-    <script src="/js/items.js"></script>
+    <!--<script src="/js/items.js"></script>-->
 }

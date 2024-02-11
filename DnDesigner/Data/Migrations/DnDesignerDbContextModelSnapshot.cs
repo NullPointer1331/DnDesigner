@@ -124,10 +124,6 @@ namespace DnDesigner.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AppliedChoiceValues")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("BackgroundId")
                         .HasColumnType("int");
 
@@ -244,6 +240,12 @@ namespace DnDesigner.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("ChoiceValue")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsApplied")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PreviousChoiceValue")
                         .HasColumnType("int");
 
                     b.HasKey("CharacterChoiceId");

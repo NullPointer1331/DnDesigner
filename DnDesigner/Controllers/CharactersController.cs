@@ -205,30 +205,7 @@ namespace DnDesigner.Controllers
             if (ModelState.IsValid)
             {
                 character.ApplyEffects();
-                if (character.Strength < 1 || character.Strength > 20)
-                {
-                    ModelState.AddModelError("Character.Strength", $"A Strength score of {character.Strength} is invalid. Strength must be between 1 and 20.");
-                }
-                else if (character.Dexterity < 1 || character.Dexterity > 20)
-                {
-                    ModelState.AddModelError("Character.Dexterity", $"A Dexterity score of {character.Dexterity} is invalid. Dexterity must be between 1 and 20.");
-                }
-                else if (character.Constitution < 1 || character.Constitution > 20)
-                {
-                    ModelState.AddModelError("Character.Constitution", $"A Constitution score of {character.Constitution} is invalid. Constitution must be between 1 and 20.");
-                }
-                else if (character.Intelligence < 1 || character.Intelligence > 20)
-                {
-                    ModelState.AddModelError("Character.Intelligence", $"An Intelligence score of {character.Intelligence} is invalid. Intelligence must be between 1 and 20.");
-                }
-                else if (character.Wisdom < 1 || character.Wisdom > 20)
-                {
-                    ModelState.AddModelError("Character.Wisdom", $"A Wisdom score of {character.Wisdom} is invalid. Wisdom must be between 1 and 20.");
-                }
-                else if (character.Charisma < 1 || character.Charisma > 20)
-                {
-                    ModelState.AddModelError("Character.Charisma", $"A Charisma score of {character.Charisma} is invalid. Charisma must be between 1 and 20.");
-                }
+                //TODO Add more validation
                 if (ModelState.IsValid)
                 {
                     try
@@ -255,6 +232,20 @@ namespace DnDesigner.Controllers
                     {
                         return RedirectToAction("CharacterSheet", new { id = character.CharacterId });
                     }
+                }
+            }
+            featureChoiceViewModel = new FeatureChoiceViewModel()
+            {
+                CharacterId = character.CharacterId,
+                CharacterFeatures = character.Features.Where(f => f.Feature is not Feat).ToList(),
+                ChoiceValues = new Dictionary<int, int>(),
+                FeatsOnly = false
+            };
+            foreach (CharacterFeature feature in featureChoiceViewModel.CharacterFeatures)
+            {
+                foreach (CharacterChoice choice in feature.Choices)
+                {
+                    featureChoiceViewModel.ChoiceValues.Add(choice.CharacterChoiceId, choice.ChoiceValue);
                 }
             }
             return View(featureChoiceViewModel);
@@ -332,6 +323,20 @@ namespace DnDesigner.Controllers
                     }
                 }
                 return RedirectToAction("CharacterSheet", new { id = character.CharacterId });
+            }
+            featureChoiceViewModel = new FeatureChoiceViewModel()
+            {
+                CharacterId = character.CharacterId,
+                CharacterFeatures = character.Features.Where(f => f.Feature is not Feat).ToList(),
+                ChoiceValues = new Dictionary<int, int>(),
+                FeatsOnly = false
+            };
+            foreach (CharacterFeature feature in featureChoiceViewModel.CharacterFeatures)
+            {
+                foreach (CharacterChoice choice in feature.Choices)
+                {
+                    featureChoiceViewModel.ChoiceValues.Add(choice.CharacterChoiceId, choice.ChoiceValue);
+                }
             }
             return View("FeatureChoices", featureChoiceViewModel);
         }

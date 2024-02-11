@@ -23,11 +23,20 @@ namespace DnDesigner.Models
         /// </summary>
         public int ChoiceValue { get; set; }
 
+        /// <summary>
+        /// The previous choice value
+        /// </summary>
+        public int PreviousChoiceValue { get; private set; }
+
+        public bool IsApplied { get; set; }
+
         public CharacterChoice(CharacterFeature characterFeature, Choice choice)
         {
             CharacterFeature = characterFeature;
             Choice = choice;
             ChoiceValue = Choice.DefaultChoice;
+            PreviousChoiceValue = ChoiceValue;
+            IsApplied = false;
         }
 
         private CharacterChoice() { }
@@ -37,7 +46,10 @@ namespace DnDesigner.Models
         /// </summary>
         public void ApplyChoice()
         {
-            Choice.ApplyChoice(CharacterFeature.Character, ChoiceValue, CharacterChoiceId);
+            CheckUnapplied();
+            Choice.ApplyChoice(CharacterFeature.Character, this);
+            IsApplied = true;
+            PreviousChoiceValue = ChoiceValue;
         }
 
         /// <summary>
@@ -45,7 +57,21 @@ namespace DnDesigner.Models
         /// </summary>
         public void RemoveChoice()
         {
-            Choice.RemoveChoice(CharacterFeature.Character, CharacterChoiceId);
+            CheckUnapplied();
+            Choice.RemoveChoice(CharacterFeature.Character, this);
+            IsApplied = false;
+        }
+
+        /// <summary>
+        /// Checks if the choice is no longer applied, and sets IsApplied to false if so.
+        /// It doesn't do the opposite because it's harder to check if a choice is applied than if it's not.
+        /// </summary>
+        public void CheckUnapplied()
+        {
+            if (IsApplied && Choice.NotApplied(CharacterFeature.Character, this))
+            {
+                IsApplied = false;
+            }
         }
 
         public override string ToString()
@@ -73,16 +99,23 @@ namespace DnDesigner.Models
         /// Applies the choice to the character
         /// </summary>
         /// <param name="character">The character to apply the choice to</param>
-        /// <param name="choice">The option selected</param>
-        /// <param name="characterChoiceId">The Id of the CharacterChoice calling this</param>
-        public abstract void ApplyChoice(Character character, int choice, int characterChoiceId);
+        /// <param name="characterChoice">The CharacterChoice calling this</param>
+        public abstract void ApplyChoice(Character character, CharacterChoice characterChoice);
 
         /// <summary>
         /// Removes the choice from the character
         /// </summary>
-        /// <param name="character"></param>
-        /// <param name="characterChoiceId">The Id of the CharacterChoice calling this</param>
-        public abstract void RemoveChoice(Character character, int characterChoiceId);
+        /// <param name="character">The character to remove the choice from</param>
+        /// <param name="characterChoice">The CharacterChoice calling this</param>
+        public abstract void RemoveChoice(Character character, CharacterChoice characterChoice);
+
+        /// <summary>
+        /// Checks if the choice is not applied to the character
+        /// </summary>
+        /// <param name="character">The character being checked</param>
+        /// <param name="characterChoice">The CharacterChoice calling this</param>
+        /// <returns>True if the choice is definitely not applied to the character, false otherwise</returns>
+        public abstract bool NotApplied(Character character, CharacterChoice characterChoice);
     }
 
     /// <summary>
@@ -154,25 +187,22 @@ namespace DnDesigner.Models
         /// <summary>
         /// Apply the chosen effect to the character
         /// </summary>
-        /// <param name="choiceValue">The index of the chosen effect</param>
-        public override void ApplyChoice(Character character, int choiceValue, int characterChoiceId)
+        public override void ApplyChoice(Character character, CharacterChoice characterChoice)
         {
-            RemoveChoice(character, characterChoiceId);
-            Effect? effect = Effects.Find(e => e.EffectId == choiceValue);
+            RemoveChoice(character, characterChoice);
+            Effect? effect = Effects.Find(e => e.EffectId == characterChoice.ChoiceValue);
             if (effect != null)
             {
                 CharacterEffect characterEffect = new CharacterEffect(character, effect);
                 character.CharacterEffects.Add(characterEffect);
-                character.AppliedChoiceValues.Add(characterChoiceId, choiceValue);
             }
         }
 
-        public override void RemoveChoice(Character character, int characterChoiceId)
+        public override void RemoveChoice(Character character, CharacterChoice characterChoice)
         {
-            if (character.AppliedChoiceValues.TryGetValue(characterChoiceId, out int choiceValue))
+            if (characterChoice.IsApplied)
             {
-                character.AppliedChoiceValues.Remove(characterChoiceId);
-                CharacterEffect? characterEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == choiceValue);
+                CharacterEffect? characterEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == characterChoice.ChoiceValue);
                 characterEffect?.RemoveEffect();
             }
         }
@@ -185,6 +215,11 @@ namespace DnDesigner.Models
                 str += effect.ToString() + ", ";
             }
             return str.Substring(0, str.Length - 2);
+        }
+
+        public override bool NotApplied(Character character, CharacterChoice characterChoice)
+        {
+            return !character.CharacterEffects.Where(e => e.Effect.EffectId == characterChoice.ChoiceValue).Any();
         }
     }
 
@@ -234,42 +269,49 @@ namespace DnDesigner.Models
 
         private FeatureChoice() { }
 
-        public override void ApplyChoice(Character character, int choice, int characterChoiceId)
+        public override void ApplyChoice(Character character, CharacterChoice characterChoice)
         {
-            if (character.AppliedChoiceValues.TryGetValue(characterChoiceId, out int choiceValue))
+            if (characterChoice.IsApplied)
             {
-                if (choiceValue != choice)
+                if (characterChoice.ChoiceValue != characterChoice.PreviousChoiceValue)
                 {
-                    RemoveChoice(character, characterChoiceId);
+                    RemoveChoice(character, characterChoice);
+                    characterChoice.IsApplied = false;
                 }
                 else
                 {
                     return;
                 }
             }
-            Feature? feature = Features.Find(f => f.FeatureId == choice);
-            if (feature != null && 
-                (!character.Features.Where(f => f.Feature.FeatureId == feature.FeatureId).Any()
-                || (feature is Feat feat && feat.Repeatable)))
-            { // Apply the feature if it is not already applied or if it is a repeatable feat
-                CharacterFeature characterFeature = new CharacterFeature(character, feature);
-                character.Features.Add(characterFeature);
-                character.AppliedChoiceValues.Add(characterChoiceId, choice);
+            if (!characterChoice.IsApplied)
+            {
+                Feature? feature = Features.Find(f => f.FeatureId == characterChoice.ChoiceValue);
+                if (feature != null &&
+                    (!character.Features.Where(f => f.Feature.FeatureId == feature.FeatureId).Any()
+                    || (feature is Feat feat && feat.Repeatable)))
+                { // Apply the feature if it is not already applied or if it is a repeatable feat
+                    CharacterFeature characterFeature = new CharacterFeature(character, feature);
+                    character.Features.Add(characterFeature);
+                }
             }
         }
 
-        public override void RemoveChoice(Character character, int characterChoiceId)
+        public override void RemoveChoice(Character character, CharacterChoice characterChoice)
         {
-            if (character.AppliedChoiceValues.TryGetValue(characterChoiceId, out int choiceValue))
+            if (characterChoice.IsApplied)
             {
-                character.AppliedChoiceValues.Remove(characterChoiceId);
-                CharacterFeature? characterFeature = character.Features.Find(f => f.Feature.FeatureId == choiceValue);
+                CharacterFeature? characterFeature = character.Features.Find(f => f.Feature.FeatureId == characterChoice.ChoiceValue);
                 if (characterFeature != null)
                 {
                     characterFeature.RemoveEffects();
                     character.Features.Remove(characterFeature);
                 }
             }
+        }
+
+        public override bool NotApplied(Character character, CharacterChoice characterChoice)
+        {
+            return !character.Features.Where(f => f.Feature.FeatureId == characterChoice.ChoiceValue).Any();
         }
     }
 }

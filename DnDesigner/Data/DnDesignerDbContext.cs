@@ -54,13 +54,6 @@ namespace DnDesigner.Data
             builder.Entity<CharacterSpellcasting>()
                 .HasMany(e => e.PreparedSpells)
                 .WithMany();
-            builder.Entity<Character>()
-                .Property(c => c.AppliedChoiceValues)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => v == null ? new Dictionary<int, int>()
-                    : JsonSerializer.Deserialize<Dictionary<int, int>>(v, (JsonSerializerOptions)null)
-                );
             base.OnModelCreating(builder);
         }
         public DbSet<Choice> Choices { get; set; }

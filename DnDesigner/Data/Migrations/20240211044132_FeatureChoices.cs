@@ -22,12 +22,19 @@ namespace DnDesigner.Migrations
                 type: "int",
                 nullable: true);
 
-            migrationBuilder.AddColumn<string>(
-                name: "AppliedChoiceValues",
-                table: "Characters",
-                type: "nvarchar(max)",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsApplied",
+                table: "CharacterChoice",
+                type: "bit",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<int>(
+                name: "PreviousChoiceValue",
+                table: "CharacterChoice",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.CreateTable(
                 name: "FeatureFeatureChoice",
@@ -94,8 +101,12 @@ namespace DnDesigner.Migrations
                 table: "Choices");
 
             migrationBuilder.DropColumn(
-                name: "AppliedChoiceValues",
-                table: "Characters");
+                name: "IsApplied",
+                table: "CharacterChoice");
+
+            migrationBuilder.DropColumn(
+                name: "PreviousChoiceValue",
+                table: "CharacterChoice");
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20240206184055_FeatureChoices")]
+    [Migration("20240211044132_FeatureChoices")]
     partial class FeatureChoices
     {
         /// <inheritdoc />
@@ -124,10 +124,6 @@ namespace DnDesigner.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CharacterId"));
 
                     b.Property<string>("Alignment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AppliedChoiceValues")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -247,6 +243,12 @@ namespace DnDesigner.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("ChoiceValue")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsApplied")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PreviousChoiceValue")
                         .HasColumnType("int");
 
                     b.HasKey("CharacterChoiceId");

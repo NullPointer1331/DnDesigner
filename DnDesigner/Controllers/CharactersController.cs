@@ -166,7 +166,8 @@ namespace DnDesigner.Controllers
             {
                 CharacterId = character.CharacterId,
                 CharacterFeatures = character.Features.Where(f => f.Feature is not Feat).ToList(),
-                ChoiceValues = new Dictionary<int, int>()
+                ChoiceValues = new Dictionary<int, int>(),
+                FeatsOnly = false
             };
             foreach (CharacterFeature feature in featureChoiceViewModel.CharacterFeatures)
             {
@@ -246,13 +247,96 @@ namespace DnDesigner.Controllers
                             throw;
                         }
                     }
-                    return RedirectToAction("CharacterSheet", new { id = character.CharacterId });
+                    if (character.Features.Where(f => f.Feature is Feat).Any())
+                    {
+                        return RedirectToAction("FeatChoices", new { id = character.CharacterId });
+                    }
+                    else
+                    {
+                        return RedirectToAction("CharacterSheet", new { id = character.CharacterId });
+                    }
                 }
             }
             return View(featureChoiceViewModel);
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> FeatChoices(int id)
+        {
+            Character character = await _dbHelper.GetCharacter(id);
+            if (character == null)
+            {
+                return NotFound();
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return Unauthorized();
+            }
+            character.RemoveEffects();
+            FeatureChoiceViewModel featureChoiceViewModel = new FeatureChoiceViewModel()
+            {
+                CharacterId = character.CharacterId,
+                CharacterFeatures = character.Features.Where(f => f.Feature is Feat).ToList(),
+                ChoiceValues = new Dictionary<int, int>(),
+                FeatsOnly = true
+            };
+            foreach (CharacterFeature feature in featureChoiceViewModel.CharacterFeatures)
+            {
+                foreach (CharacterChoice choice in feature.Choices)
+                {
+                    featureChoiceViewModel.ChoiceValues.Add(choice.CharacterChoiceId, choice.ChoiceValue);
+                }
+            }
+            return View("FeatureChoices", featureChoiceViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FeatChoices(int id, FeatureChoiceViewModel featureChoiceViewModel)
+        {
+            Character character = await _dbHelper.GetCharacter(id);
+            if (character == null)
+            {
+                return NotFound();
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return Unauthorized();
+            }
+            foreach (KeyValuePair<int, int> choice in featureChoiceViewModel.ChoiceValues)
+            {
+                CharacterChoice? characterChoice = character.GetCharacterChoice(choice.Key);
+                if (characterChoice != null)
+                {
+                    characterChoice.ChoiceValue = choice.Value;
+                }
+            }
+            ModelState.Remove("Character.Background");
+            ModelState.Remove("Character.Race");
+            if (ModelState.IsValid)
+            {
+                character.ApplyEffects();
+                try
+                {
+                    _context.Update(character);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CharacterExists(character.CharacterId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("CharacterSheet", new { id = character.CharacterId });
+            }
+            return View("FeatureChoices", featureChoiceViewModel);
+        }
+
+            public async Task<IActionResult> Edit(int id)
         {
             Character character = await _dbHelper.GetCharacter(id);
             if (character == null)

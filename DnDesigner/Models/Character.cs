@@ -660,7 +660,6 @@ namespace DnDesigner.Models
                 {
                     CharacterFeature characterFeature = new CharacterFeature(this, feature);
                     Features.Add(characterFeature);
-                    characterFeature.ApplyEffects();
                 }
             }
             Features = Features.OrderBy(f => f.Feature.Level).ToList();
@@ -866,6 +865,8 @@ namespace DnDesigner.Models
     public class FeatureChoiceViewModel
     {
         public int CharacterId { get; set; }
+
+        public bool FeatsOnly { get; set; }
 
         public List<CharacterFeature> CharacterFeatures { get; set; }
 

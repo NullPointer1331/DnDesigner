@@ -1,12 +1,13 @@
 ﻿@model FeatureChoiceViewModel
 @{
     ViewData["Title"] = "Feature Choices";
+    string action = Model.FeatsOnly ? "FeatChoices" : "FeatureChoices";
 }
 
 <h1>View Features</h1>
 <hr />
 
-<form asp-action="FeatureChoices">
+<form asp-action=@action>
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <div class="accordion" id="Features">
@@ -42,7 +43,17 @@
     </div>
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />
-        <input type="button" value="Back" class="btn btn-danger" onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.CharacterId})'" />
+        @if (Model.FeatsOnly)
+        {
+            <input type="button" value="Back" class="btn btn-danger" 
+            onclick="location.href='@Url.Action("FeatureChoices", "Characters", new {id = Model.CharacterId})'" />
+        }
+        else
+        {
+            <input type="button" value="Back" class="btn btn-danger" 
+            onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.CharacterId})'" />
+        }
+        
     </div>
     <!--Hidden Storage Start-->
     <input type="hidden" asp-for="CharacterFeatures" />

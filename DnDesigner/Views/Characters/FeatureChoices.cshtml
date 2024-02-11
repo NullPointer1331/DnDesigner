@@ -13,31 +13,50 @@
         <div class="accordion" id="Features">
             @foreach (CharacterFeature characterFeature in Model.CharacterFeatures)
             {
-                Feature feature = characterFeature.Feature;
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#panelsStayOpen-@feature.FeatureId" aria-expanded="true"
-                                aria-controls="panelsStayOpen-@feature.FeatureId">
-                            @feature.ToString()
-                        </button>
-                    </h2>
-                    <div id="panelsStayOpen-@feature.FeatureId" class="accordion-collapse collapse show">
-                        <div class="accordion-body">
-                            <strong>@feature.Description</strong>
-                            <br />
-                            @foreach (CharacterChoice choice in characterFeature.Choices)
-                            {
-                                <select asp-for="@Model.ChoiceValues[choice.CharacterChoiceId]">
-                                    @foreach (KeyValuePair<int, string> option in choice.Choice.Options)
-                                    {
-                                        <option value="@option.Key">@option.Value</option>
-                                    }
-                                </select>
-                            }
+                if (characterFeature.Choices.Any())
+                {
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-@characterFeature.CharacterFeatureId" aria-expanded="true"
+                                    aria-controls="panelsStayOpen-@characterFeature.CharacterFeatureId">
+                                @characterFeature.Feature.ToString()
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-@characterFeature.CharacterFeatureId" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                <strong>@characterFeature.Feature.Description</strong>
+                                <br />
+                                @foreach (CharacterChoice choice in characterFeature.Choices)
+                                {
+                                    <select asp-for="@Model.ChoiceValues[choice.CharacterChoiceId]">
+                                        @foreach (KeyValuePair<int, string> option in choice.Choice.Options)
+                                        {
+                                            <option value="@option.Key">@option.Value</option>
+                                        }
+                                    </select>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-@characterFeature.CharacterFeatureId" aria-expanded="flase"
+                                    aria-controls="panelsStayOpen-@characterFeature.CharacterFeatureId">
+                                @characterFeature.Feature.ToString()
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-@characterFeature.CharacterFeatureId" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <strong>@characterFeature.Feature.Description</strong>
+                            </div>
+                        </div>
+                    </div>
+                }
             }
         </div>
     </div>

@@ -202,7 +202,7 @@ namespace DnDesigner.Models
         {
             if (characterChoice.IsApplied)
             {
-                CharacterEffect? characterEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == characterChoice.ChoiceValue);
+                CharacterEffect? characterEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == characterChoice.PreviousChoiceValue);
                 characterEffect?.RemoveEffect();
             }
         }
@@ -219,7 +219,7 @@ namespace DnDesigner.Models
 
         public override bool NotApplied(Character character, CharacterChoice characterChoice)
         {
-            return !character.CharacterEffects.Where(e => e.Effect.EffectId == characterChoice.ChoiceValue).Any();
+            return !character.CharacterEffects.Where(e => e.Effect.EffectId == characterChoice.PreviousChoiceValue).Any();
         }
     }
 
@@ -300,7 +300,7 @@ namespace DnDesigner.Models
         {
             if (characterChoice.IsApplied)
             {
-                CharacterFeature? characterFeature = character.Features.Find(f => f.Feature.FeatureId == characterChoice.ChoiceValue);
+                CharacterFeature? characterFeature = character.Features.Find(f => f.Feature.FeatureId == characterChoice.PreviousChoiceValue);
                 if (characterFeature != null)
                 {
                     characterFeature.RemoveEffects();
@@ -311,7 +311,7 @@ namespace DnDesigner.Models
 
         public override bool NotApplied(Character character, CharacterChoice characterChoice)
         {
-            return !character.Features.Where(f => f.Feature.FeatureId == characterChoice.ChoiceValue).Any();
+            return !character.Features.Where(f => f.Feature.FeatureId == characterChoice.PreviousChoiceValue).Any();
         }
     }
 }

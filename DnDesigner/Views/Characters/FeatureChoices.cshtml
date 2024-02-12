@@ -1,51 +1,85 @@
 ﻿@model FeatureChoiceViewModel
 @{
     ViewData["Title"] = "Feature Choices";
+    string action = Model.FeatsOnly ? "FeatChoices" : "FeatureChoices";
 }
 
 <h1>View Features</h1>
 <hr />
 
-<form asp-action="FeatureChoices">
+<form asp-action=@action>
     <div asp-validation-summary="All" class="text-danger"></div>
+    @if (TempData.ContainsKey("MinorErrors"))
+    {
+        foreach (string error in (IEnumerable<string>)TempData["MinorErrors"])
+        {
+            <div class="text-warning">@error</div>
+        }
+    }
     <div class="form-group">
         <div class="accordion" id="Features">
-            @foreach(CharacterFeature characterFeature in Model.CharacterFeatures)
+            @foreach (CharacterFeature characterFeature in Model.CharacterFeatures)
             {
-                Feature feature = characterFeature.Feature;
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#panelsStayOpen-@feature.FeatureId" aria-expanded="true"
-                                aria-controls="panelsStayOpen-@feature.FeatureId">
-                            @feature.ToString()
-                        </button>
-                    </h2>
-                    <div id="panelsStayOpen-@feature.FeatureId" class="accordion-collapse collapse show">
-                        <div class="accordion-body">
-                            <strong>@feature.Description</strong>
-                            <br />
-                            @foreach (CharacterChoice choice in characterFeature.Choices)
-                            {
-                                <select asp-for="@Model.ChoiceValues[choice.CharacterChoiceId]">
-                                    @if (choice.Choice is EffectChoice effectChoice)
-                                    {
-                                        @for (int i = 0; i < effectChoice.Options.Count; i++)
+                if (characterFeature.Choices.Any())
+                {
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-@characterFeature.CharacterFeatureId" aria-expanded="true"
+                                    aria-controls="panelsStayOpen-@characterFeature.CharacterFeatureId">
+                                @characterFeature.Feature.ToString()
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-@characterFeature.CharacterFeatureId" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                <strong>@characterFeature.Feature.Description</strong>
+                                <br />
+                                @foreach (CharacterChoice choice in characterFeature.Choices)
+                                {
+                                    <select asp-for="@Model.ChoiceValues[choice.CharacterChoiceId]">
+                                        @foreach (KeyValuePair<int, string> option in choice.Choice.Options)
                                         {
-                                            <option value="@effectChoice.Options[i].EffectId">@effectChoice.Options[i].ToString()</option>
+                                            <option value="@option.Key">@option.Value</option>
                                         }
-                                    }
-                                </select>
-                            }
+                                    </select>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#panelsStayOpen-@characterFeature.CharacterFeatureId" aria-expanded="flase"
+                                    aria-controls="panelsStayOpen-@characterFeature.CharacterFeatureId">
+                                @characterFeature.Feature.ToString()
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-@characterFeature.CharacterFeatureId" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <strong>@characterFeature.Feature.Description</strong>
+                            </div>
+                        </div>
+                    </div>
+                }
             }
         </div>
     </div>
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />
-        <input type="button" value="Back" class="btn btn-danger" onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.CharacterId})'" />
+        @if (Model.FeatsOnly)
+        {
+            <input type="button" value="Back" class="btn btn-danger" 
+            onclick="location.href='@Url.Action("FeatureChoices", "Characters", new {id = Model.CharacterId})'" />
+        }
+        else
+        {
+            <input type="button" value="Back" class="btn btn-danger" 
+            onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.CharacterId})'" />
+        }
+        
     </div>
     <!--Hidden Storage Start-->
     <input type="hidden" asp-for="CharacterFeatures" />

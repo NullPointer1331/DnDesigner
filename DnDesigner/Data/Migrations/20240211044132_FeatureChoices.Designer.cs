@@ -4,6 +4,7 @@ using DnDesigner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    partial class DnDesignerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240211044132_FeatureChoices")]
+    partial class FeatureChoices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,74 +133,29 @@ namespace DnDesigner.Migrations
                     b.Property<int>("BaseArmorClass")
                         .HasColumnType("int");
 
-                    b.Property<int>("BaseCharisma")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BaseConstitution")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BaseDexterity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BaseIntelligence")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BaseStrength")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BaseWisdom")
-                        .HasColumnType("int");
-
                     b.Property<int>("BonusArmorClass")
                         .HasColumnType("int");
 
-                    b.Property<int>("BonusCharisma")
+                    b.Property<int>("Charisma")
                         .HasColumnType("int");
 
-                    b.Property<int>("BonusConstitution")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BonusDexterity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BonusIntelligence")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BonusStrength")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BonusWisdom")
+                    b.Property<int>("Constitution")
                         .HasColumnType("int");
 
                     b.Property<int>("CurrentHealth")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IgnoreLimits")
-                        .HasColumnType("bit");
+                    b.Property<int>("Dexterity")
+                        .HasColumnType("int");
 
                     b.Property<string>("Immunities")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MaxCharisma")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaxConstitution")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaxDexterity")
+                    b.Property<int>("Intelligence")
                         .HasColumnType("int");
 
                     b.Property<int>("MaxHealth")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaxIntelligence")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaxStrength")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaxWisdom")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -214,6 +172,9 @@ namespace DnDesigner.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Strength")
+                        .HasColumnType("int");
+
                     b.Property<int>("TempHealth")
                         .HasColumnType("int");
 
@@ -226,6 +187,9 @@ namespace DnDesigner.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("WalkingSpeed")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Wisdom")
                         .HasColumnType("int");
 
                     b.Property<int>("d10HitDiceAvailable")
@@ -826,7 +790,7 @@ namespace DnDesigner.Migrations
                     b.ToTable("Subclasses");
                 });
 
-            modelBuilder.Entity("FeatureChoiceSelectableFeature", b =>
+            modelBuilder.Entity("FeatureFeatureChoice", b =>
                 {
                     b.Property<int>("FeatureChoiceChoiceId")
                         .HasColumnType("int");
@@ -838,7 +802,7 @@ namespace DnDesigner.Migrations
 
                     b.HasIndex("FeaturesFeatureId");
 
-                    b.ToTable("FeatureChoiceSelectableFeature");
+                    b.ToTable("FeatureFeatureChoice");
                 });
 
             modelBuilder.Entity("GrantProficienciesProficiency", b =>
@@ -1199,19 +1163,7 @@ namespace DnDesigner.Migrations
                     b.HasDiscriminator().HasValue("ClassFeature");
                 });
 
-            modelBuilder.Entity("DnDesigner.Models.RaceFeature", b =>
-                {
-                    b.HasBaseType("DnDesigner.Models.Feature");
-
-                    b.Property<int>("RaceId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("RaceId");
-
-                    b.HasDiscriminator().HasValue("RaceFeature");
-                });
-
-            modelBuilder.Entity("DnDesigner.Models.SelectableFeature", b =>
+            modelBuilder.Entity("DnDesigner.Models.Feat", b =>
                 {
                     b.HasBaseType("DnDesigner.Models.Feature");
 
@@ -1222,11 +1174,19 @@ namespace DnDesigner.Migrations
                     b.Property<bool>("Repeatable")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasDiscriminator().HasValue("Feat");
+                });
 
-                    b.HasDiscriminator().HasValue("SelectableFeature");
+            modelBuilder.Entity("DnDesigner.Models.RaceFeature", b =>
+                {
+                    b.HasBaseType("DnDesigner.Models.Feature");
+
+                    b.Property<int>("RaceId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("RaceId");
+
+                    b.HasDiscriminator().HasValue("RaceFeature");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.SubclassFeature", b =>
@@ -1495,7 +1455,7 @@ namespace DnDesigner.Migrations
                     b.Navigation("Spellcasting");
                 });
 
-            modelBuilder.Entity("FeatureChoiceSelectableFeature", b =>
+            modelBuilder.Entity("FeatureFeatureChoice", b =>
                 {
                     b.HasOne("DnDesigner.Models.FeatureChoice", null)
                         .WithMany()
@@ -1503,7 +1463,7 @@ namespace DnDesigner.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DnDesigner.Models.SelectableFeature", null)
+                    b.HasOne("DnDesigner.Models.Feature", null)
                         .WithMany()
                         .HasForeignKey("FeaturesFeatureId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -4,7 +4,13 @@
     ViewData["Title"] = Model.Name + " Character Sheet";
 }
 
-<h2>@Model.Name</h2>
+<h2>
+    @Model.Name
+    @if (Model.IgnoreLimits)
+    {
+        <text>*</text>
+    }
+</h2>
 <h3>
     Level @Model.Level
     @foreach (CharacterClass Class in Model.Classes)

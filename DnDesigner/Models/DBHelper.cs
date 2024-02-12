@@ -78,7 +78,6 @@ namespace DnDesigner.Models
                     .ThenInclude(cp => cp.Proficiency)
                     .Include(c => c.Features)
                     .ThenInclude(cf => cf.Feature)
-                    .ThenInclude(f => f.Effects)
                     .Include(c => c.Features)
                     .ThenInclude(cf => cf.Choices)
                     .ThenInclude(cfc => cfc.Choice)
@@ -86,6 +85,7 @@ namespace DnDesigner.Models
                     .ThenInclude(ci => ci.Items)
                     .ThenInclude(cii => cii.Item)
                     .Include(c => c.CharacterEffects)
+                    .ThenInclude(ce => ce.Effect)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync();
             foreach (CharacterEffect characterEffect in character.CharacterEffects)
@@ -94,11 +94,7 @@ namespace DnDesigner.Models
             }
             foreach (CharacterFeature feature in character.Features)
             {
-                await LoadEffects(feature.Feature.Effects);
-                foreach (Choice choice in feature.Feature.Choices)
-                {
-                    await LoadChoice(choice);
-                }
+                await LoadFeature(feature.Feature);
             }
             return character;
         }
@@ -133,15 +129,8 @@ namespace DnDesigner.Models
             Class @class = await _context.Classes.Where(c => c.ClassId == id)
                     .Include(c => c.Spellcasting)
                     .Include(c => c.Features)
-                    .ThenInclude(cf => cf.Effects)
-                    .Include(c => c.Features)
-                    .ThenInclude(cf => cf.Choices)
                     .FirstOrDefaultAsync();
-            foreach (Feature feature in @class.Features)
-            {
-                await LoadEffects(feature.Effects);
-                await LoadChoices(feature.Choices);
-            }
+            await LoadFeatures(@class.Features.Cast<Feature>().ToList());
             return @class;
         }
 
@@ -233,15 +222,8 @@ namespace DnDesigner.Models
         {
             Race race = await _context.Races.Where(r => r.RaceId == id)
                     .Include(r => r.Features)
-                    .ThenInclude(re => re.Effects)
-                    .Include(r => r.Features)
-                    .ThenInclude(rf => rf.Choices)
                     .FirstOrDefaultAsync();
-            foreach (Feature feature in race.Features)
-            {
-                await LoadEffects(feature.Effects);
-                await LoadChoices(feature.Choices);
-            }
+            await LoadFeatures(race.Features.Cast<Feature>().ToList());
             return race;
         }
 
@@ -317,15 +299,8 @@ namespace DnDesigner.Models
         {
             Subclass subclass = await _context.Subclasses.Where(s => s.SubclassId == id)
                     .Include(s => s.Features)
-                    .ThenInclude(se => se.Effects)
-                    .Include(s => s.Features)
-                    .ThenInclude(sf => sf.Choices)
                     .FirstOrDefaultAsync();
-            foreach (Feature feature in subclass.Features)
-            {
-                await LoadEffects(feature.Effects);
-                await LoadChoices(feature.Choices);
-            }
+            await LoadFeatures(subclass.Features.Cast<Feature>().ToList());
             return subclass;
         }
 
@@ -339,6 +314,93 @@ namespace DnDesigner.Models
                     .Include(s => s.Class)
                     .Include(s => s.Features)
                     .ToListAsync();
+        }
+
+        /// <summary>
+        /// Gets a <see cref="Feature"/> from the database with the given id
+        /// </summary>
+        /// <param name="id">The id of a <see cref="Feature"/> in the database</param>
+        /// <returns>The <see cref="Feature"/> from the database with the given id</returns>
+        public async Task<Feature> GetFeature(int id)
+        {
+            Feature feature = await _context.Features.Where(f => f.FeatureId == id)
+                    .FirstOrDefaultAsync();
+            await LoadFeature(feature);
+            return feature;
+        }
+
+        /// <summary>
+        /// Gets all <see cref="Feature"/>s from the database
+        /// </summary>
+        /// <returns>a <see cref="List{Feature}"/> with all the features from the database</returns>
+        public async Task<List<Feature>> GetAllFeatures()
+        {
+            List<Feature> features = await _context.Features.ToListAsync();
+            await LoadFeatures(features);
+            return features;
+        }
+
+        /// <summary>
+        /// Gets all <see cref="SelectableFeature"/>s from the database
+        /// </summary>
+        /// <returns>a <see cref="List{Feat}"/> with all the feats from the database</returns>
+        public async Task<List<SelectableFeature>> GetAllFeats()
+        {
+            List<SelectableFeature> feats = await _context.SelectableFeatures.Where(f => f.Type == "Feat").ToListAsync();
+            await LoadFeatures(feats.Cast<Feature>().ToList());
+            return feats;
+        }
+
+        /// <summary>
+        /// Loads all the data for a list of <see cref="Feature"/>s
+        /// </summary>
+        /// <param name="features">The <see cref="Feature"/>s to load</param>
+        private async Task LoadFeatures(List<Feature> features)
+        {
+            foreach (Feature feature in features)
+            {
+                await LoadFeature(feature);
+            }
+        }
+
+        /// <summary>
+        /// Loads all the data for a <see cref="Feature"/>
+        /// </summary>
+        /// <param name="feature">The <see cref="Feature"/> to load</param>
+        private async Task LoadFeature(Feature feature)
+        {
+            await _context.Entry(feature)
+                .Collection(f => f.Effects)
+                .LoadAsync();
+            await LoadEffects(feature.Effects);
+            await _context.Entry(feature)
+                .Collection(f => f.Choices)
+                .LoadAsync();
+            await LoadChoices(feature.Choices);
+            if (feature is SubclassFeature subclassFeature)
+            {
+                await _context.Entry(subclassFeature)
+                    .Reference(sf => sf.Subclass)
+                    .LoadAsync();
+            }
+            else if (feature is ClassFeature classFeature)
+            {
+                await _context.Entry(classFeature)
+                    .Reference(cf => cf.Class)
+                    .LoadAsync();
+            }
+            else if (feature is RaceFeature raceFeature)
+            {
+                await _context.Entry(raceFeature)
+                    .Reference(rf => rf.Race)
+                    .LoadAsync();
+            }
+            else if (feature is BackgroundFeature backgroundFeature)
+            {
+                await _context.Entry(backgroundFeature)
+                    .Reference(bf => bf.Background)
+                    .LoadAsync();
+            }
         }
 
         /// <summary>
@@ -386,10 +448,22 @@ namespace DnDesigner.Models
             if (choice is EffectChoice effectChoice)
             {
                 await _context.Entry(effectChoice)
-                    .Collection(ec => ec.Options)
+                    .Collection(ec => ec.Effects)
                     .LoadAsync();
-                await LoadEffects(effectChoice.Options);
-                choice.DefaultChoice = effectChoice.Options[0].EffectId;
+                await LoadEffects(effectChoice.Effects);
+                choice.DefaultChoice = effectChoice.Effects[0].EffectId;
+            }
+            else if (choice is FeatureChoice featureChoice)
+            {
+                await _context.Entry(featureChoice)
+                    .Collection(fc => fc.Features)
+                    .LoadAsync();
+                if (featureChoice.AutoLoad == 1)
+                {
+                    featureChoice.Features = await GetAllFeats();
+                }
+                await LoadFeatures(featureChoice.Features.Cast<Feature>().ToList());
+                choice.DefaultChoice = featureChoice.Features[0].FeatureId;
             }
         }
     }

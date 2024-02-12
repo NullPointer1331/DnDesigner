@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -59,6 +58,48 @@ namespace DnDesigner.Models
         {
             Character.CharacterEffects.Remove(this);
             Effect.RemoveEffect(Character);
+        }
+    }
+
+    /// <summary>
+    /// When applied, this effect will apply multiple effects as a group
+    /// This is useful for applying multiple effects from a single choice
+    /// </summary>
+    public class GroupedEffect : Effect
+    {
+        public List<Effect> Effects { get; set; }
+
+        public GroupedEffect(List<Effect> effects)
+        {
+            Effects = effects;
+        }
+
+        private GroupedEffect() { }
+
+        public override void ApplyEffect(Character character)
+        {
+            foreach (Effect effect in Effects)
+            {
+                effect.ApplyEffect(character);
+            }
+        }
+
+        public override void RemoveEffect(Character character)
+        {
+            foreach (Effect effect in Effects)
+            {
+                effect.RemoveEffect(character);
+            }
+        }
+
+        public override string ToString()
+        {
+            string str = "This applies the following: ";
+            foreach (Effect effect in Effects)
+            {
+                str += effect.ToString() + ", ";
+            }
+            return str;
         }
     }
 

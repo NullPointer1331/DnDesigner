@@ -15,6 +15,13 @@ namespace DnDesigner.Models
         [Key]
         public int CharacterId { get; set; }
 
+        /// <summary>
+        /// Whether the character should ignore certain rules, 
+        /// such as level limits, class restrictions, and attribute limits
+        /// </summary>
+        public bool IgnoreLimits { get; set; }
+
+        /// <summary>
         /// The Characters name
         /// </summary>
         public string Name { get; set; } = null!;
@@ -114,52 +121,221 @@ namespace DnDesigner.Models
         public int WalkingSpeed { get; set; }
 
         /// <summary>
+        /// The characters base strength set in the character creation
+        /// </summary>
+        [Range(0, int.MaxValue, ErrorMessage = "Strength must be greater than 0")]
+        public int BaseStrength { get; set; }
+
+        /// <summary>
+        /// Additional strength from Effects
+        /// </summary>
+        public int BonusStrength { get; set; }
+
+        /// <summary>
+        /// The characters maximum strength
+        /// </summary>
+        public int MaxStrength { get; set; } = 20;
+
+        /// <summary>
         /// The characters Strength stat.
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, int.MaxValue, ErrorMessage = "Strength must be greater than 0")]
-        public int Strength { get; set; }
+        public int Strength { get
+            {
+                if (IgnoreLimits)
+                {
+                    return BaseStrength + BonusStrength;
+                }
+                else
+                {
+                    return Math.Min(BaseStrength + BonusStrength, MaxStrength);
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// The characters base dexterity set in the character creation
+        /// </summary>
+        [Range(0, int.MaxValue, ErrorMessage = "Dexterity must be greater than 0")]
+        public int BaseDexterity { get; set; }
+
+        /// <summary>
+        /// Additional dexterity from Effects
+        /// </summary>
+        public int BonusDexterity { get; set; }
+
+        /// <summary>
+        /// The characters maximum dexterity
+        /// </summary>
+        public int MaxDexterity { get; set; } = 20;
 
         /// <summary>
         /// The characters Dexterity stat.
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, int.MaxValue, ErrorMessage = "Dexterity must be greater than 0")]
-        public int Dexterity { get; set; }
+        public int Dexterity
+        {
+            get
+            {
+                if (IgnoreLimits)
+                {
+                    return BaseDexterity + BonusDexterity;
+                }
+                else
+                {
+                    return Math.Min(BaseDexterity + BonusDexterity, MaxDexterity);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The characters base constitution set in the character creation
+        /// </summary>
+        [Range(0, int.MaxValue, ErrorMessage = "Constitution must be greater than 0")]
+        public int BaseConstitution { get; set; }
+
+        /// <summary>
+        /// Additional constitution from Effects
+        /// </summary>
+        public int BonusConstitution { get; set; }
+
+        /// <summary>
+        /// The characters maximum constitution
+        /// </summary>
+        public int MaxConstitution { get; set; } = 20;
 
         /// <summary>
         /// The characters Constitution stat.
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, int.MaxValue, ErrorMessage = "Constitution must be greater than 0")]
-        public int Constitution { get; set; }
+        public int Constitution
+        {
+            get
+            {
+                if (IgnoreLimits)
+                {
+                    return BaseConstitution + BonusConstitution;
+                }
+                else
+                {
+                    return Math.Min(BaseConstitution + BonusConstitution, MaxConstitution);
+                }
+            }
+        }
 
+        /// <summary>
+        /// The characters intelligence constitution set in the character creation
+        /// </summary>
+        [Range(0, int.MaxValue, ErrorMessage = "Intelligence must be greater than 0")]
+        public int BaseIntelligence { get; set; }
+
+        /// <summary>
+        /// Additional intelligence from Effects
+        /// </summary>
+        public int BonusIntelligence { get; set; }
+
+        /// <summary>
+        /// The characters maximum intelligence
+        /// </summary>
+        public int MaxIntelligence { get; set; } = 20;
+        
         /// <summary>
         /// The characters Intelligence stat.
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, int.MaxValue, ErrorMessage = "Intelligence must be greater than 0")]
-        public int Intelligence { get; set; }
+        public int Intelligence
+        {
+            get
+            {
+                if (IgnoreLimits)
+                {
+                    return BaseIntelligence + BonusIntelligence;
+                }
+                else
+                {
+                    return Math.Min(BaseIntelligence + BonusIntelligence, MaxIntelligence);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The characters base wisdom set in the character creation
+        /// </summary>
+        [Range(0, int.MaxValue, ErrorMessage = "Wisdom must be greater than 0")]
+        public int BaseWisdom { get; set; }
+
+        /// <summary>
+        /// Additional wisdom from Effects
+        /// </summary>
+        public int BonusWisdom { get; set; }
+
+        /// <summary>
+        /// The characters maximum wisdom
+        /// </summary>
+        public int MaxWisdom { get; set; } = 20;
 
         /// <summary>
         /// The characters Wisdom stat.
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, int.MaxValue, ErrorMessage = "Wisdom must be greater than 0")]
-        public int Wisdom { get; set; }
+        public int Wisdom
+        {
+            get
+            {
+                if (IgnoreLimits)
+                {
+                    return BaseWisdom + BonusWisdom;
+                }
+                else
+                {
+                    return Math.Min(BaseWisdom + BonusWisdom, MaxWisdom);
+                }
+            }
+        }
 
+        /// <summary>
+        /// The characters base charisma set in the character creation
+        /// </summary>
+        [Range(0, int.MaxValue, ErrorMessage = "Charisma must be greater than 0")]
+        public int BaseCharisma { get; set; }
+
+        /// <summary>
+        /// Additional charisma from Effects
+        /// </summary>
+        public int BonusCharisma { get; set; }
+
+        /// <summary>
+        /// The characters maximum charisma
+        /// </summary>
+        public int MaxCharisma { get; set; } = 20;
+        
         /// <summary>
         /// The characters Charisma stat.
         /// Typically can't be higher than 20, or lower than 1.
         /// But there are cases where it can be higher than 20.
         /// </summary>
-        [Range(0, int.MaxValue, ErrorMessage = "Charisma must be greater than 0")]
-        public int Charisma { get; set; }
+        public int Charisma
+        {
+            get
+            {
+                if (IgnoreLimits)
+                {
+                    return BaseCharisma + BonusCharisma;
+                }
+                else
+                {
+                    return Math.Min(BaseCharisma + BonusCharisma, MaxCharisma);
+                }
+            }
+        }
+
 
         /// <summary>
         /// The characters resistances
@@ -271,12 +447,12 @@ namespace DnDesigner.Models
             MaxHealth = character.MaxHealth;
             CurrentHealth = MaxHealth;
             TempHealth = 0;
-            Strength = character.Strength;
-            Dexterity = character.Dexterity;
-            Constitution = character.Constitution;
-            Intelligence = character.Intelligence;
-            Wisdom = character.Wisdom;
-            Charisma = character.Charisma;
+            BaseStrength = character.Strength;
+            BaseDexterity = character.Dexterity;
+            BaseConstitution = character.Constitution;
+            BaseIntelligence = character.Intelligence;
+            BaseWisdom = character.Wisdom;
+            BaseCharisma = character.Charisma;
             WalkingSpeed = race.Speed;
             BaseArmorClass = 10 + GetModifier("dex");
             Resistances = "";
@@ -461,46 +637,36 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
-        /// Sets the score of the specified attribute
-        /// </summary>
-        /// <param name="name">The attribute to set</param>
-        /// <param name="value">The number to set it to</param>
-        public void SetAttribute(string name, int value)
-        {
-            if (name.ToLower().Contains("str"))
-            {
-                Strength = value;
-            }
-            else if (name.ToLower().Contains("dex"))
-            {
-                Dexterity = value;
-            }
-            else if (name.ToLower().Contains("con"))
-            {
-                Constitution = value;
-            }
-            else if (name.ToLower().Contains("int"))
-            {
-                Intelligence = value;
-            }
-            else if (name.ToLower().Contains("wis"))
-            {
-                Wisdom = value;
-            }
-            else if (name.ToLower().Contains("cha"))
-            {
-                Charisma = value;
-            }
-        }
-
-        /// <summary>
         /// Changes the score of the specified attribute by the specified amount
         /// </summary>
         /// <param name="name">The attribute to change</param>
         /// <param name="value">The amount to change it by</param>
         public void ModifyAttribute(string name, int value)
         {
-            SetAttribute(name, value + GetAttribute(name));
+            if (name.ToLower().Contains("str"))
+            {
+                BonusStrength += value;
+            }
+            else if (name.ToLower().Contains("dex"))
+            {
+                BonusDexterity += value;
+            }
+            else if (name.ToLower().Contains("con"))
+            {
+                BonusConstitution += value;
+            }
+            else if (name.ToLower().Contains("int"))
+            {
+                BonusIntelligence += value;
+            }
+            else if (name.ToLower().Contains("wis"))
+            {
+                BonusWisdom += value;
+            }
+            else if (name.ToLower().Contains("cha"))
+            {
+                BonusCharisma += value;
+            }
         }
 
         /// <summary>
@@ -717,9 +883,9 @@ namespace DnDesigner.Models
                         valid = false;
                     }
                 }
-                else if (feature is Feat feat)
+                else if (feature is SelectableFeature feat)
                 {
-                    if (!feat.Repeatable && Features.Where(f => f.Feature is Feat && f.Feature.FeatureId == feat.FeatureId).Count() > 1)
+                    if (!feat.Repeatable && Features.Where(f => f.Feature is SelectableFeature && f.Feature.FeatureId == feat.FeatureId).Count() > 1)
                     {
                         valid = false;
                     }
@@ -772,6 +938,12 @@ namespace DnDesigner.Models
 
     public class CreateCharacterViewModel
     {
+        /// <summary>
+        /// Whether the character should ignore certain rules, 
+        /// such as level limits, class restrictions, and attribute limits
+        /// </summary>
+        public bool IgnoreLimits { get; set; }
+
         /// <summary>
         /// The name of the character
         /// </summary>

@@ -26,6 +26,6 @@
         Task<List<Subclass>> GetAllSubclasses();
         Task<Feature> GetFeature(int id);
         Task<List<Feature>> GetAllFeatures();
-        Task<List<Feat>> GetAllFeats();
+        Task<List<SelectableFeature>> GetAllFeats();
     }
 }

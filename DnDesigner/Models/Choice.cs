@@ -231,14 +231,14 @@ namespace DnDesigner.Models
         public override Dictionary<int, string> Options { 
             get { 
                 Dictionary<int, string> options = new Dictionary<int, string>();
-                foreach (Feature feature in Features)
+                foreach (SelectableFeature feature in Features)
                 {
                     options.Add(feature.FeatureId, feature.ToString());
                 }
                 return options;
             }}
 
-        public List<Feature> Features { get; set; }
+        public List<SelectableFeature> Features { get; set; }
 
         /// <summary>
         /// This indicates whether this choice should load a specific collection of features
@@ -249,7 +249,7 @@ namespace DnDesigner.Models
         /// </summary>
         public int AutoLoad { get; private set; }
 
-        public FeatureChoice(List<Feature> features)
+        public FeatureChoice(List<SelectableFeature> features)
         {
             Features = features;
             AutoLoad = 0;
@@ -285,10 +285,10 @@ namespace DnDesigner.Models
             }
             if (!characterChoice.IsApplied)
             {
-                Feature? feature = Features.Find(f => f.FeatureId == characterChoice.ChoiceValue);
+                SelectableFeature? feature = Features.Find(f => f.FeatureId == characterChoice.ChoiceValue);
                 if (feature != null &&
                     (!character.Features.Where(f => f.Feature.FeatureId == feature.FeatureId).Any()
-                    || (feature is Feat feat && feat.Repeatable)))
+                    || (feature is SelectableFeature feat && feat.Repeatable)))
                 { // Apply the feature if it is not already applied or if it is a repeatable feat
                     CharacterFeature characterFeature = new CharacterFeature(character, feature);
                     character.Features.Add(characterFeature);

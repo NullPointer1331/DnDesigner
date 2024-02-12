@@ -59,7 +59,7 @@ namespace DnDesigner.Data
         public DbSet<Choice> Choices { get; set; }
         public DbSet<Effect> Effects { get; set; }
         public DbSet<Feature> Features { get; set; }
-        public DbSet<Feat> Feats { get; set; }
+        public DbSet<SelectableFeature> Feats { get; set; }
         public DbSet<CharacterEffect> CharacterEffects { get; set; }
         public DbSet<Proficiency> Proficiencies { get; set; }
         public DbSet<Background> Backgrounds { get; set; }

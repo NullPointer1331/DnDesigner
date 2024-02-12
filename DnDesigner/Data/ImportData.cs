@@ -103,11 +103,12 @@ namespace DnDesigner.Data
         /// <summary>
         /// Extracts Feat Data from the 5ETools JSON files and returns it as a list of Feats
         /// </summary>
-        public static List<Feat> ExtractFeats()
+        public static List<SelectableFeature> ExtractFeats()
         {
             FeatRoot featRoot = GetFeatRoot();
-            List<Feat> feats = new List<Feat>();
-            Feat asi = new Feat("Ability Score Improvement", "Increase one ability score by 2, or two ability scores by 1", 0, "PHB", true, "");
+            List<SelectableFeature> feats = new List<SelectableFeature>();
+            SelectableFeature asi = new SelectableFeature("Ability Score Improvement", 
+                "Increase one ability score by 2, or two ability scores by 1", 0, "PHB", true, "", "Feat");
             asi.Choices.Add(new EffectChoice("ASI"));
             asi.Choices.Add(new EffectChoice("ASI"));
             feats.Add(asi);
@@ -266,7 +267,7 @@ namespace DnDesigner.Data
             return JsonSerializer.Deserialize<FeatRoot>(contents);
         }
 
-        public static Feat ConvertFeat(Feat5ETools feat5E)
+        public static SelectableFeature ConvertFeat(Feat5ETools feat5E)
         {
             string name = feat5E.name;
             string source = feat5E.source;
@@ -280,7 +281,7 @@ namespace DnDesigner.Data
             }
             description = CleanText(description);
             int level = 0;
-            Feat feat = new Feat(name, description, level, source, false, "");
+            SelectableFeature feat = new SelectableFeature(name, description, level, source, false, "", "Feat");
             return feat;
         }
 

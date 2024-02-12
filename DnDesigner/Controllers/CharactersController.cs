@@ -165,7 +165,7 @@ namespace DnDesigner.Controllers
             FeatureChoiceViewModel featureChoiceViewModel = new FeatureChoiceViewModel()
             {
                 CharacterId = character.CharacterId,
-                CharacterFeatures = character.Features.Where(f => f.Feature is not Feat).ToList(),
+                CharacterFeatures = character.Features.Where(f => f.Feature is not SelectableFeature).ToList(),
                 ChoiceValues = new Dictionary<int, int>(),
                 FeatsOnly = false
             };
@@ -224,7 +224,7 @@ namespace DnDesigner.Controllers
                             throw;
                         }
                     }
-                    if (character.Features.Where(f => f.Feature is Feat).Any())
+                    if (character.Features.Where(f => f.Feature is SelectableFeature).Any())
                     {
                         return RedirectToAction("FeatChoices", new { id = character.CharacterId });
                     }
@@ -237,7 +237,7 @@ namespace DnDesigner.Controllers
             featureChoiceViewModel = new FeatureChoiceViewModel()
             {
                 CharacterId = character.CharacterId,
-                CharacterFeatures = character.Features.Where(f => f.Feature is not Feat).ToList(),
+                CharacterFeatures = character.Features.Where(f => f.Feature is not SelectableFeature).ToList(),
                 ChoiceValues = new Dictionary<int, int>(),
                 FeatsOnly = false
             };
@@ -266,7 +266,7 @@ namespace DnDesigner.Controllers
             FeatureChoiceViewModel featureChoiceViewModel = new FeatureChoiceViewModel()
             {
                 CharacterId = character.CharacterId,
-                CharacterFeatures = character.Features.Where(f => f.Feature is Feat).ToList(),
+                CharacterFeatures = character.Features.Where(f => f.Feature is SelectableFeature).ToList(),
                 ChoiceValues = new Dictionary<int, int>(),
                 FeatsOnly = true
             };
@@ -327,7 +327,7 @@ namespace DnDesigner.Controllers
             featureChoiceViewModel = new FeatureChoiceViewModel()
             {
                 CharacterId = character.CharacterId,
-                CharacterFeatures = character.Features.Where(f => f.Feature is not Feat).ToList(),
+                CharacterFeatures = character.Features.Where(f => f.Feature is not SelectableFeature).ToList(),
                 ChoiceValues = new Dictionary<int, int>(),
                 FeatsOnly = false
             };
@@ -435,12 +435,12 @@ namespace DnDesigner.Controllers
                 character.Classes = classes;
                 character.Name = characterViewModel.Name;
                 character.MaxHealth = characterViewModel.MaxHealth;
-                character.Strength = characterViewModel.Strength;
-                character.Dexterity = characterViewModel.Dexterity;
-                character.Constitution = characterViewModel.Constitution;
-                character.Intelligence = characterViewModel.Intelligence;
-                character.Wisdom = characterViewModel.Wisdom;
-                character.Charisma = characterViewModel.Charisma;
+                character.BaseStrength = characterViewModel.Strength;
+                character.BaseDexterity = characterViewModel.Dexterity;
+                character.BaseConstitution = characterViewModel.Constitution;
+                character.BaseIntelligence = characterViewModel.Intelligence;
+                character.BaseWisdom = characterViewModel.Wisdom;
+                character.BaseCharisma = characterViewModel.Charisma;
                 character.d6HitDiceAvailable = character.MaxHitDice[0];
                 character.d8HitDiceAvailable = character.MaxHitDice[1];
                 character.d10HitDiceAvailable = character.MaxHitDice[2];

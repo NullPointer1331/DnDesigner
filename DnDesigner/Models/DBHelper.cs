@@ -341,12 +341,12 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
-        /// Gets all <see cref="Feat"/>s from the database
+        /// Gets all <see cref="SelectableFeature"/>s from the database
         /// </summary>
         /// <returns>a <see cref="List{Feat}"/> with all the feats from the database</returns>
-        public async Task<List<Feat>> GetAllFeats()
+        public async Task<List<SelectableFeature>> GetAllFeats()
         {
-            List<Feat> feats = await _context.Feats.ToListAsync();
+            List<SelectableFeature> feats = await _context.Feats.ToListAsync();
             await LoadFeatures(feats.Cast<Feature>().ToList());
             return feats;
         }
@@ -460,26 +460,9 @@ namespace DnDesigner.Models
                     .LoadAsync();
                 if (featureChoice.AutoLoad == 1)
                 {
-                    featureChoice.Features = (await GetAllFeats()).Cast<Feature>().ToList();
-                    /*
-                    List<Feature> allFeats = (await GetAllFeats()).Cast<Feature>().ToList();
-                    for (int i = 0; i < featureChoice.Features.Count; i++)
-                    {
-                        if (!allFeats.Where(f => f.FeatureId == featureChoice.Features[i].FeatureId).Any())
-                        {
-                            featureChoice.Features.RemoveAt(i);
-                            i--;
-                        }
-                    }
-                    foreach (Feature feat in allFeats)
-                    {
-                        if (!featureChoice.Features.Where(f => f.FeatureId == feat.FeatureId).Any())
-                        {
-                            featureChoice.Features.Add(feat);
-                        }
-                    } */
+                    featureChoice.Features = await GetAllFeats();
                 }
-                await LoadFeatures(featureChoice.Features);
+                await LoadFeatures(featureChoice.Features.Cast<Feature>().ToList());
                 choice.DefaultChoice = featureChoice.Features[0].FeatureId;
             }
         }

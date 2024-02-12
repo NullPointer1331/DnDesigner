@@ -87,7 +87,7 @@ namespace DnDesigner.Controllers
             List<Race> races = ImportData.ExtractRaces(proficiencies);
             List<Class> classes = ImportData.ExtractClasses(proficiencies); 
             List<Subclass> subclasses = ImportData.ExtractSubclasses(classes); 
-            List<Feat> feats = ImportData.ExtractFeats();
+            List<SelectableFeature> feats = ImportData.ExtractFeats();
 
             _context.Feats.AddRange(feats);
             _context.Proficiencies.AddRange(proficiencies);

@@ -433,6 +433,7 @@ namespace DnDesigner.Models
             string userId)
         {
             UserId = userId;
+            IgnoreLimits = character.IgnoreLimits;
             Name = character.Name;
             Classes = new List<CharacterClass>();
             Proficiencies = new List<CharacterProficiency>();
@@ -466,7 +467,115 @@ namespace DnDesigner.Models
             }
         }
 
-        #region methods
+		#region methods
+		/// <summary>
+		/// Checks for problems with the character that would prevent it from being used
+		/// </summary>
+		/// <returns>A list of strings, with each string describing an error found. 
+		/// If the list is empty, no errors were found</returns>
+		public List<string> GetMajorErrors()
+        {
+			List<string> errors = new List<string>();
+			for (int i = 0; i < Classes.Count; i++)
+			{
+				for (int j = i + 1; j < Classes.Count; j++)
+				{
+					if (Classes[i].Class.ClassId == Classes[j].Class.ClassId)
+					{
+						errors.Add("You cannot have multiple instances of the same class.");
+					}
+				}
+			}
+            if (!IgnoreLimits)
+            {
+                if (Level > 20)
+                {
+					errors.Add("Characters cannot be higher than level 20. Check IgnoreLimits if you wish to bypass this.");
+				}
+                if (BaseStrength > MaxStrength)
+                {
+                    errors.Add($"Your base strength cannot be higher than {MaxStrength}. " +
+                        "Check Ignore Limits if you wish to bypass this.");
+                }
+                if (BaseDexterity > MaxDexterity)
+                {
+					errors.Add($"Your base dexterity cannot be higher than {MaxDexterity}. " +
+                        "Check Ignore Limits if you wish to bypass this.");
+				}
+                if (BaseConstitution > MaxConstitution)
+                {
+                    errors.Add($"Your base constitution cannot be higher than {MaxConstitution}. " +
+                        "Check Ignore Limits if you wish to bypass this.");
+                }
+                if (BaseIntelligence > MaxIntelligence)
+                {
+					errors.Add($"Your base intelligence cannot be higher than {MaxIntelligence}. " +
+                        "Check Ignore Limits if you wish to bypass this.");
+				}
+                if (BaseWisdom > MaxWisdom)
+                {
+					errors.Add($"Your base wisdom cannot be higher than {MaxWisdom}. " +
+                        "Check Ignore  Limits if you wish to bypass this.");
+				}
+				if (BaseCharisma > MaxCharisma)
+                {
+                    errors.Add($"Your base charisma cannot be higher than {MaxCharisma}. " +
+                        "Check Ignore Limits if you wish to bypass this.");
+                }
+            }
+			return errors;
+		}
+
+		/// <summary>
+		/// Checks for problems with the character that don't prevent it from being used
+		/// </summary>
+		/// <returns>A list of strings, with each string describing an error found. 
+        /// If the list is empty, no errors were found</returns>
+		public List<string> GetMinorErrors ()
+        {
+			List<string> errors = new List<string>();
+            if (!IgnoreLimits)
+            {
+                if (BaseStrength + BonusStrength > MaxStrength)
+                {
+					errors.Add($"You have bonuses that would increase your strength to {BaseStrength + BonusStrength}, " +
+                        $"above the limit of {MaxStrength}. The excess is currently being wasted, you should probably " +
+						"reallocate your stats or bonuses, or check Ignore Limits");
+				}
+                if (BaseDexterity + BonusDexterity > MaxDexterity)
+                {
+                    errors.Add($"You have bonuses that would increase your dexterity to {BaseDexterity + BonusDexterity}, " +
+                        $"above the limit of {MaxDexterity}. The excess is currently being wasted, you should probably " +
+						"reallocate your stats or bonuses, or check Ignore Limits");
+                }
+                if (BaseConstitution + BonusConstitution > MaxConstitution)
+                {
+                    errors.Add($"You have bonuses that would increase your constitution to {BaseConstitution + BonusConstitution}, " +
+                        $"above the limit of {MaxConstitution}. The excess is currently being wasted, you should probably " +
+						"reallocate your stats or bonuses, or check Ignore Limits");
+                }
+                if (BaseIntelligence + BonusIntelligence > MaxIntelligence)
+                {
+                    errors.Add($"You have bonuses that would increase your intelligence to {BaseIntelligence + BonusIntelligence}, " +
+                        $"above the limit of {MaxIntelligence}. The excess is currently being wasted, you should probably " +
+						"reallocate your stats or bonuses, or check Ignore Limits");
+                }
+                if (BaseWisdom + BonusWisdom > MaxWisdom)
+                {
+                    errors.Add($"You have bonuses that would increase your wisdom to {BaseWisdom + BonusWisdom}, " +
+                        $"above the limit of {MaxWisdom}. The excess is currently being wasted, you should probably " +
+						"reallocate your stats or bonuses, or check Ignore Limits");
+                }
+                if (BaseCharisma + BonusCharisma > MaxCharisma)
+                {
+                    errors.Add($"You have bonuses that would increase your charisma to {BaseCharisma + BonusCharisma}, " +
+                        $"above the limit of {MaxCharisma}. The excess is currently being wasted, you should probably " +
+						"reallocate your stats or bonuses, or check Ignore Limits");
+                }
+            }
+			return errors;
+		}
+
         /// <summary>
         /// Calculates the average maximum health of the character
         /// </summary>
@@ -991,47 +1100,47 @@ namespace DnDesigner.Models
         /// </summary>
         public int MaxHealth { get; set; } = 7;
 
-        /// <summary>
-        /// The character's strength stat. 
-        /// Cannot be higher than 20, or lower than 1.
-        /// </summary>
-        [Range(1, 20)]
-        public int Strength { get; set; } = 8;
+		/// <summary>
+		/// The character's strength stat. 
+		/// Cannot be higher than 20, or lower than 1.
+		/// </summary>
+		[Range(0, int.MaxValue, ErrorMessage = "Strength must be greater than 0")]
+		public int Strength { get; set; } = 8;
 
-        /// <summary>
-        /// The character's dexterity stat.
-        /// Cannot be higher than 20, or lower than 1.
-        /// </summary>
-        [Range(1, 20)]
-        public int Dexterity { get; set; } = 8;
+		/// <summary>
+		/// The character's dexterity stat.
+		/// Cannot be higher than 20, or lower than 1.
+		/// </summary>
+		[Range(0, int.MaxValue, ErrorMessage = "Dexterity must be greater than 0")]
+		public int Dexterity { get; set; } = 8;
 
-        /// <summary>
-        /// The character's constitution stat.
-        /// Cannot be higher than 20, or lower than 1.
-        /// </summary>
-        [Range(1, 20)]
-        public int Constitution { get; set; } = 8;
+		/// <summary>
+		/// The character's constitution stat.
+		/// Cannot be higher than 20, or lower than 1.
+		/// </summary>
+		[Range(0, int.MaxValue, ErrorMessage = "Constitution must be greater than 0")]
+		public int Constitution { get; set; } = 8;
 
-        /// <summary>
-        /// The character's intelligence stat.
-        /// Cannot be higher than 20, or lower than 1.
-        /// </summary>
-        [Range(1, 20)]
-        public int Intelligence { get; set; } = 8;
+		/// <summary>
+		/// The character's intelligence stat.
+		/// Cannot be higher than 20, or lower than 1.
+		/// </summary>
+		[Range(0, int.MaxValue, ErrorMessage = "Intelligence must be greater than 0")]
+		public int Intelligence { get; set; } = 8;
 
-        /// <summary>
-        /// The character's wisdom stat.
-        /// Cannot be higher than 20, or lower than 1.
-        /// </summary>
-        [Range(1, 20)]
-        public int Wisdom { get; set; } = 8;
+		/// <summary>
+		/// The character's wisdom stat.
+		/// Cannot be higher than 20, or lower than 1.
+		/// </summary>
+		[Range(0, int.MaxValue, ErrorMessage = "Wisdom must be greater than 0")]
+		public int Wisdom { get; set; } = 8;
 
-        /// <summary>
-        /// The character's charisma stat.
-        /// Cannot be higher than 20, or lower than 1.
-        /// </summary>
-        [Range(1, 20)]
-        public int Charisma { get; set; } = 8;
+		/// <summary>
+		/// The character's charisma stat.
+		/// Cannot be higher than 20, or lower than 1.
+		/// </summary>
+		[Range(0, int.MaxValue, ErrorMessage = "Charisma must be greater than 0")]
+		public int Charisma { get; set; } = 8;
     }
 
     public class FeatureChoiceViewModel

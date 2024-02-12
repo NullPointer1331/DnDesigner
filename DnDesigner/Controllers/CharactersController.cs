@@ -84,23 +84,6 @@ namespace DnDesigner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateCharacterViewModel character)
         {
-            int totalLevel = 0;
-            for(int i = 0; i < character.Classes.Count; i++)
-            {
-                totalLevel += character.Classes[i][0];
-                for(int j = i + 1; j < character.Classes.Count; j++)
-                {
-                    if (character.Classes[i][1] == character.Classes[j][1] && character.Classes[i][0] != 0 && character.Classes[j][0] != 0)
-                    {
-                        ModelState.AddModelError("Classes", "You cannot have multiple instances of the same class.");
-                    }
-                }
-            }
-            if (totalLevel > 20)
-            {
-                ModelState.AddModelError("Classes", "You cannot have more than 20 levels.");
-            }
-
             if (ModelState.IsValid)
             {
                 Background background = await _dbHelper.GetBackground(character.BackgroundId);
@@ -138,10 +121,24 @@ namespace DnDesigner.Controllers
                 newCharacter.Classes[0].InitialClass = true;
                 newCharacter.SetActiveFeatures();
 
-                _context.Add(newCharacter);
-                await _context.SaveChangesAsync();
+                foreach (string error in newCharacter.GetMajorErrors())
+                {
+					ModelState.AddModelError("Model", error);
+				}
 
-                return RedirectToAction("FeatureChoices", new { id = newCharacter.CharacterId });
+                List<string> minorErrors = newCharacter.GetMinorErrors();
+				if (minorErrors.Any())
+                {
+                    TempData["MinorErrors"] = minorErrors;
+                }
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(newCharacter);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("FeatureChoices", new { id = newCharacter.CharacterId });
+                }
             }
             character.AvailableClasses = await _dbHelper.GetAllClasses();
             character.AvailableBackgrounds = await _dbHelper.GetAllBackgrounds();
@@ -150,7 +147,137 @@ namespace DnDesigner.Controllers
             
         }
 
-        public async Task<IActionResult> FeatureChoices(int id)
+		public async Task<IActionResult> Edit(int id)
+		{
+			Character character = await _dbHelper.GetCharacter(id);
+			if (character == null)
+			{
+				return NotFound();
+			}
+			if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+			{
+				return Unauthorized();
+			}
+			character.RemoveEffects();
+			CreateCharacterViewModel characterViewModel = new CreateCharacterViewModel()
+			{
+				IgnoreLimits = character.IgnoreLimits,
+				AvailableClasses = await _dbHelper.GetAllClasses(),
+				AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
+				AvailableRaces = await _dbHelper.GetAllRaces(),
+				Classes = new List<int[]>(),
+				RaceId = character.Race.RaceId,
+				BackgroundId = character.Background.BackgroundId,
+				Name = character.Name,
+				MaxHealth = character.MaxHealth,
+				Strength = character.Strength,
+				Dexterity = character.Dexterity,
+				Constitution = character.Constitution,
+				Intelligence = character.Intelligence,
+				Wisdom = character.Wisdom,
+				Charisma = character.Charisma,
+				Alignment = character.Alignment
+			};
+			foreach (CharacterClass characterClass in character.Classes)
+			{
+				characterViewModel.Classes.Add(new int[] { characterClass.Level, characterClass.Class.ClassId, characterClass.Subclass?.SubclassId ?? 0 });
+			}
+			while (characterViewModel.Classes.Count < characterViewModel.AvailableClasses.Count)
+			{
+				characterViewModel.Classes.Add(new int[] { 0, 0, 0 });
+			}
+			return View(characterViewModel);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id, CreateCharacterViewModel characterViewModel)
+		{
+			Character character = await _dbHelper.GetCharacter(id);
+			if (id != character.CharacterId)
+			{
+				return NotFound();
+			}
+			if (ModelState.IsValid)
+			{
+				character.RemoveEffects();
+				Background background = await _dbHelper.GetBackground(characterViewModel.BackgroundId);
+				Race race = await _dbHelper.GetRace(characterViewModel.RaceId);
+				List<CharacterClass> classes = new List<CharacterClass>();
+				for (int i = 0; i < characterViewModel.Classes.Count; i++)
+				{
+					if (characterViewModel.Classes[i][0] > 0)
+					{
+						Class newClass = await _dbHelper.GetClass(characterViewModel.Classes[i][1]);
+						if (characterViewModel.Classes[i][0] >= newClass.SubclassLevel)
+						{
+							Subclass subclass = await _dbHelper.GetSubclass(characterViewModel.Classes[i][2]);
+							classes.Add(new CharacterClass(character, newClass, subclass, characterViewModel.Classes[i][0]));
+						}
+						else
+						{
+							classes.Add(new CharacterClass(character, newClass, characterViewModel.Classes[i][0]));
+						}
+					}
+				}
+				character.IgnoreLimits = characterViewModel.IgnoreLimits;
+				character.Background = background;
+				character.Race = race;
+				character.Classes = classes;
+				character.Name = characterViewModel.Name;
+				character.MaxHealth = characterViewModel.MaxHealth;
+				character.BaseStrength = characterViewModel.Strength;
+				character.BaseDexterity = characterViewModel.Dexterity;
+				character.BaseConstitution = characterViewModel.Constitution;
+				character.BaseIntelligence = characterViewModel.Intelligence;
+				character.BaseWisdom = characterViewModel.Wisdom;
+				character.BaseCharisma = characterViewModel.Charisma;
+				character.d6HitDiceAvailable = character.MaxHitDice[0];
+				character.d8HitDiceAvailable = character.MaxHitDice[1];
+				character.d10HitDiceAvailable = character.MaxHitDice[2];
+				character.d12HitDiceAvailable = character.MaxHitDice[3];
+
+				character.SetActiveFeatures();
+
+				foreach (string error in character.GetMajorErrors())
+				{
+					ModelState.AddModelError("Model", error);
+				}
+
+				List<string> minorErrors = character.GetMinorErrors();
+				if (minorErrors.Any())
+				{
+					TempData["MinorErrors"] = minorErrors;
+				}
+
+				if (ModelState.IsValid)
+				{
+					try
+					{
+						_context.Update(character);
+						await _context.SaveChangesAsync();
+					}
+					catch (DbUpdateConcurrencyException)
+					{
+						if (!CharacterExists(character.CharacterId))
+						{
+							return NotFound();
+						}
+						else
+						{
+							throw;
+						}
+					}
+					return RedirectToAction("FeatureChoices", new { id });
+				}
+			}
+			characterViewModel.AvailableClasses = await _dbHelper.GetAllClasses();
+			characterViewModel.AvailableBackgrounds = await _dbHelper.GetAllBackgrounds();
+			characterViewModel.AvailableRaces = await _dbHelper.GetAllRaces();
+			return View(characterViewModel);
+		}
+
+		public async Task<IActionResult> FeatureChoices(int id)
         {
             Character character = await _dbHelper.GetCharacter(id);
             if (character == null)
@@ -205,8 +332,19 @@ namespace DnDesigner.Controllers
             if (ModelState.IsValid)
             {
                 character.ApplyEffects();
-                //TODO Add more validation
-                if (ModelState.IsValid)
+
+				foreach (string error in character.GetMajorErrors())
+				{
+					ModelState.AddModelError("Model", error);
+				}
+
+				List<string> minorErrors = character.GetMinorErrors();
+				if (minorErrors.Any())
+				{
+					TempData["MinorErrors"] = minorErrors;
+				}
+
+				if (ModelState.IsValid)
                 {
                     try
                     {
@@ -306,23 +444,38 @@ namespace DnDesigner.Controllers
             if (ModelState.IsValid)
             {
                 character.ApplyEffects();
-                try
+
+				foreach (string error in character.GetMajorErrors())
+				{
+					ModelState.AddModelError("Model", error);
+				}
+
+				List<string> minorErrors = character.GetMinorErrors();
+				if (minorErrors.Any())
+				{
+					TempData["MinorErrors"] = minorErrors;
+				}
+
+                if (ModelState.IsValid)
                 {
-                    _context.Update(character);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CharacterExists(character.CharacterId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(character);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!CharacterExists(character.CharacterId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction("CharacterSheet", new { id = character.CharacterId });
                 }
-                return RedirectToAction("CharacterSheet", new { id = character.CharacterId });
             }
             featureChoiceViewModel = new FeatureChoiceViewModel()
             {
@@ -339,136 +492,6 @@ namespace DnDesigner.Controllers
                 }
             }
             return View("FeatureChoices", featureChoiceViewModel);
-        }
-
-            public async Task<IActionResult> Edit(int id)
-        {
-            Character character = await _dbHelper.GetCharacter(id);
-            if (character == null)
-            {
-                return NotFound();
-            }
-            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
-            {
-                return Unauthorized();
-            }
-            character.RemoveEffects();
-            CreateCharacterViewModel characterViewModel = new CreateCharacterViewModel()
-            {
-                AvailableClasses = await _dbHelper.GetAllClasses(),
-                AvailableBackgrounds = await _dbHelper.GetAllBackgrounds(),
-                AvailableRaces = await _dbHelper.GetAllRaces(),
-                Classes = new List<int[]>(),
-                RaceId = character.Race.RaceId,
-                BackgroundId = character.Background.BackgroundId,
-                Name = character.Name,
-                MaxHealth = character.MaxHealth,
-                Strength = character.Strength,
-                Dexterity = character.Dexterity,
-                Constitution = character.Constitution,
-                Intelligence = character.Intelligence,
-                Wisdom = character.Wisdom,
-                Charisma = character.Charisma,
-                Alignment = character.Alignment
-            };
-            foreach (CharacterClass characterClass in character.Classes)
-            {
-                characterViewModel.Classes.Add(new int[] { characterClass.Level, characterClass.Class.ClassId, characterClass.Subclass?.SubclassId ?? 0 });
-            }
-            while (characterViewModel.Classes.Count < characterViewModel.AvailableClasses.Count)
-            {
-                characterViewModel.Classes.Add(new int[] { 0, 0, 0 });
-            }
-            return View(characterViewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CreateCharacterViewModel characterViewModel)
-        {
-            Character character = await _dbHelper.GetCharacter(id);
-            if (id != character.CharacterId)
-            {
-                return NotFound();
-            }
-            int totalLevel = 0;
-            for (int i = 0; i < characterViewModel.Classes.Count; i++)
-            {
-                totalLevel += characterViewModel.Classes[i][0];
-                for (int j = i + 1; j < characterViewModel.Classes.Count; j++)
-                {
-                    if (characterViewModel.Classes[i][1] == characterViewModel.Classes[j][1] 
-                        && characterViewModel.Classes[i][0] != 0 && characterViewModel.Classes[j][0] != 0)
-                    {
-                        ModelState.AddModelError("Classes", "You cannot have multiple instances of the same class.");
-                    }
-                }
-            }
-            if (totalLevel > 20)
-            {
-                ModelState.AddModelError("Classes", "You cannot have more than 20 levels.");
-            }
-            if (ModelState.IsValid)
-            {
-                character.RemoveEffects();
-                Background background = await _dbHelper.GetBackground(characterViewModel.BackgroundId);
-                Race race = await _dbHelper.GetRace(characterViewModel.RaceId);
-                List<CharacterClass> classes = new List<CharacterClass>();
-                for (int i = 0; i < characterViewModel.Classes.Count; i++)
-                {
-                    if (characterViewModel.Classes[i][0] > 0)
-                    {
-                        Class newClass = await _dbHelper.GetClass(characterViewModel.Classes[i][1]);
-                        if (characterViewModel.Classes[i][0] >= newClass.SubclassLevel)
-                        {
-                            Subclass subclass = await _dbHelper.GetSubclass(characterViewModel.Classes[i][2]);
-                            classes.Add(new CharacterClass(character, newClass, subclass, characterViewModel.Classes[i][0]));
-                        }
-                        else
-                        {
-                            classes.Add(new CharacterClass(character, newClass, characterViewModel.Classes[i][0]));
-                        }
-                    }
-                }
-                character.Background = background;
-                character.Race = race;
-                character.Classes = classes;
-                character.Name = characterViewModel.Name;
-                character.MaxHealth = characterViewModel.MaxHealth;
-                character.BaseStrength = characterViewModel.Strength;
-                character.BaseDexterity = characterViewModel.Dexterity;
-                character.BaseConstitution = characterViewModel.Constitution;
-                character.BaseIntelligence = characterViewModel.Intelligence;
-                character.BaseWisdom = characterViewModel.Wisdom;
-                character.BaseCharisma = characterViewModel.Charisma;
-                character.d6HitDiceAvailable = character.MaxHitDice[0];
-                character.d8HitDiceAvailable = character.MaxHitDice[1];
-                character.d10HitDiceAvailable = character.MaxHitDice[2];
-                character.d12HitDiceAvailable = character.MaxHitDice[3];
-
-                character.SetActiveFeatures();
-                try
-                {
-                    _context.Update(character);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CharacterExists(character.CharacterId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("FeatureChoices", new { id });
-            }
-            characterViewModel.AvailableClasses = await _dbHelper.GetAllClasses();
-            characterViewModel.AvailableBackgrounds = await _dbHelper.GetAllBackgrounds();
-            characterViewModel.AvailableRaces = await _dbHelper.GetAllRaces();
-            return View(characterViewModel);
         }
 
         // GET: Characters/Edit/5

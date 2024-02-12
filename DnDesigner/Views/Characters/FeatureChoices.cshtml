@@ -9,6 +9,13 @@
 
 <form asp-action=@action>
     <div asp-validation-summary="All" class="text-danger"></div>
+    @if (TempData.ContainsKey("MinorErrors"))
+    {
+        foreach (string error in (IEnumerable<string>)TempData["MinorErrors"])
+        {
+            <div class="text-warning">@error</div>
+        }
+    }
     <div class="form-group">
         <div class="accordion" id="Features">
             @foreach (CharacterFeature characterFeature in Model.CharacterFeatures)

@@ -16,32 +16,32 @@ namespace DnDesigner.Migrations
             migrationBuilder.RenameColumn(
                 name: "Wisdom",
                 table: "Characters",
-                newName: "BaseWisdom");
+                newName: "MaxWisdom");
 
             migrationBuilder.RenameColumn(
                 name: "Strength",
                 table: "Characters",
-                newName: "BaseStrength");
+                newName: "MaxStrength");
 
             migrationBuilder.RenameColumn(
                 name: "Intelligence",
                 table: "Characters",
-                newName: "BaseIntelligence");
+                newName: "MaxIntelligence");
 
             migrationBuilder.RenameColumn(
                 name: "Dexterity",
                 table: "Characters",
-                newName: "BaseDexterity");
+                newName: "MaxDexterity");
 
             migrationBuilder.RenameColumn(
                 name: "Constitution",
                 table: "Characters",
-                newName: "BaseConstitution");
+                newName: "MaxConstitution");
 
             migrationBuilder.RenameColumn(
                 name: "Charisma",
                 table: "Characters",
-                newName: "BaseCharisma");
+                newName: "MaxCharisma");
 
             migrationBuilder.AddColumn<string>(
                 name: "Type",

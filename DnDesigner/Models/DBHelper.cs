@@ -346,7 +346,7 @@ namespace DnDesigner.Models
         /// <returns>a <see cref="List{Feat}"/> with all the feats from the database</returns>
         public async Task<List<SelectableFeature>> GetAllFeats()
         {
-            List<SelectableFeature> feats = await _context.Feats.ToListAsync();
+            List<SelectableFeature> feats = await _context.SelectableFeatures.Where(f => f.Type == "Feat").ToListAsync();
             await LoadFeatures(feats.Cast<Feature>().ToList());
             return feats;
         }

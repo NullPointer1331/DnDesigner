@@ -89,7 +89,7 @@ namespace DnDesigner.Controllers
             List<Subclass> subclasses = ImportData.ExtractSubclasses(classes); 
             List<SelectableFeature> feats = ImportData.ExtractFeats();
 
-            _context.Feats.AddRange(feats);
+            _context.SelectableFeatures.AddRange(feats);
             _context.Proficiencies.AddRange(proficiencies);
             _context.Items.AddRange(items);
             _context.Spells.AddRange(spells);

@@ -83,11 +83,11 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement, descri
 
         // create new item price
         let newListItemPrice = document.createElement("h6");
-        newListItemPrice.innerHTML = price;
+        newListItemPrice.innerHTML = "Price: " + price;
 
         // create new item weight
         let newListItemWeight = document.createElement("h6");
-        newListItemWeight.innerHTML = weight;
+        newListItemWeight.innerHTML = "Weight: " + weight;
         
         // create new item description
         let newListItemDescription = document.createElement("p");

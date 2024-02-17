@@ -361,7 +361,8 @@
                                                 <button type="button" class="btn btn-success" 
                                                 onclick=
                                                     'AddItem("@itemID", "@currentItem.Name", "@currentItem.Sourcebook",
-                                                            "@currentItem.Traits", "@currentItem.Description")'
+                                                            "@currentItem.Traits", "@currentItem.Price", "@currentItem.Weight",
+                                                            "@currentItem.Attuneable", "@currentItem.Description")'
                                                 >Add</button>
                                             </div>
                                             <div class="accordion-body">
@@ -813,6 +814,7 @@
                         </h2>
                         <div id="panelsStayOpen-Inventory" class="accordion-collapse collapse">
                             <div class="accordion-body">
+                                <!--Money Div-->
                                 <div class="input-group mx-auto">
                                     <input asp-for="@Model.Character.Inventory.Platinum" id="platinum" type="number" class="form-control text-center"
                                            value="@Model.Character.Inventory.Platinum" min="0"
@@ -869,7 +871,13 @@
                                                                class="form-control" aria-label="Item quantity" />                                                        
                                                     </div>
                                                     <h5>@item.Item.Sourcebook</h5>
-                                                    <p>@item.Item.Traits</p>
+                                                    <h6>@item.Item.Traits</h6>
+                                                    <h6>Price: @item.Item.Price</h6>
+                                                    <h6>Weight: @item.Item.Weight</h6>                                                    
+                                                    if (item.Item.Attuneable)
+                                                    {
+                                                        <h6>Requires Attunement</h6>
+                                                    }
                                                     <p>@item.Item.Description</p>
                                                     itemListNum++;
                                                 }

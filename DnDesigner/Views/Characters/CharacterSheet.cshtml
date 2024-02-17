@@ -364,7 +364,19 @@
                                                             "@currentItem.Traits", "@currentItem.Description")'
                                                 >Add</button>
                                             </div>
-                                            <div class="accordion-body">@currentItem.Description</div>
+                                            <div class="accordion-body">
+                                                <h5>@currentItem.Sourcebook</h5>
+                                                <h6>@currentItem.Traits</h6>
+                                                <h6>Price: @currentItem.Price</h6>
+                                                <h6>Weight: @currentItem.Weight</h6>
+                                                @{
+                                                    if (currentItem.Attuneable)
+                                                    {
+                                                        <h6>Requires Attunement</h6>
+                                                    }
+                                                }
+                                                <p>@currentItem.Description</p>
+                                            </div>
                                         </div>
                                     </div>
                                     accordionNum++;

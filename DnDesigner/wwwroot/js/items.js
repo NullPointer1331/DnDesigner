@@ -49,7 +49,6 @@ function AddItem(id, name, sourcebook, traits, description) {
         newListItemName.innerHTML = name;
 
         // create new item quantity div
-        /*
         let newListItemQuantity = document.createElement("div");
         newListItemQuantity.class = "input-group w-25";
     
@@ -61,16 +60,15 @@ function AddItem(id, name, sourcebook, traits, description) {
         // create new quantity input
         let quantityInput = document.createElement("input");
         quantityInput.type = "number";
-        quantityInput.value = GetById('id').value;
-        quantityInput.minc = "0";
-        quantityInput.max = "99";
+        quantityInput.value = GetById(id).value;
+        quantityInput.min = "0";
         quantityInput.class = "form-control";
         quantityInput.ariaLabel = "Item quantity";
     
         // append label and input to div
         newListItemQuantity.appendChild(quantityLabel);
         newListItemQuantity.appendChild(quantityInput);
-        */
+        
 
         // create new item source
         let newListItemSource = document.createElement("h5");
@@ -89,8 +87,8 @@ function AddItem(id, name, sourcebook, traits, description) {
         links.appendChild(newLink);
 
         // append new item
-        list.appendChild(newListItemName);/*
-        list.appendChild(newListItemQuantity);*/
+        list.appendChild(newListItemName);
+        list.appendChild(newListItemQuantity);
         list.appendChild(newListItemSource);
         list.appendChild(newListItemTrait);
         list.appendChild(newListItemDescription);

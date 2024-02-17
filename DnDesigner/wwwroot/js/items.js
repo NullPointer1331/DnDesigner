@@ -50,11 +50,11 @@ function AddItem(id, name, sourcebook, traits, description) {
 
         // create new item quantity div
         let newListItemQuantity = document.createElement("div");
-        newListItemQuantity.class = "input-group w-25";
+        newListItemQuantity.setAttribute("class", "input-group w-25");
     
         // create new quantity label
         let quantityLabel = document.createElement("label");
-        quantityLabel.class = "input-group-text";
+        quantityLabel.setAttribute("class", "input-group-text");
         quantityLabel.innerHTML = "Quantity";
     
         // create new quantity input
@@ -62,7 +62,7 @@ function AddItem(id, name, sourcebook, traits, description) {
         quantityInput.type = "number";
         quantityInput.value = GetById(id).value;
         quantityInput.min = "0";
-        quantityInput.class = "form-control";
+        quantityInput.setAttribute("class" , "form-control");
         quantityInput.ariaLabel = "Item quantity";
     
         // append label and input to div

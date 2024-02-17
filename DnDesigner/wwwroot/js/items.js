@@ -36,6 +36,10 @@ function ShowDescription(itemName, itemDescription) {
 ///<param name="attuneable">If the item requires attunement</param>
 ///<param name="description">The description of the item</param>
 function AddItem(id, name, sourcebook, traits, price, weight, attunement, description) {
+    // check for quantity
+    let quantity = parseInt(GetById(id).value);
+    if (quantity > 0) {
+
         // get elements to place new item in
         let links = GetById('inventoryLinks');
         let list = GetById('inventoryList');
@@ -54,24 +58,24 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement, descri
         // create new item quantity div
         let newListItemQuantity = Create("div");
         newListItemQuantity.setAttribute("class", "input-group w-25");
-    
+
         // create new quantity label
         let quantityLabel = Create("label");
         quantityLabel.setAttribute("class", "input-group-text");
         quantityLabel.innerHTML = "Quantity";
-    
+
         // create new quantity input
         let quantityInput = Create("input");
         quantityInput.type = "number";
-        quantityInput.value = GetById(id).value;
+        quantityInput.value = quantity;
         quantityInput.min = "0";
-        quantityInput.setAttribute("class" , "form-control");
+        quantityInput.setAttribute("class", "form-control");
         quantityInput.ariaLabel = "Item quantity";
-    
+
         // append label and input to div
         newListItemQuantity.appendChild(quantityLabel);
         newListItemQuantity.appendChild(quantityInput);
-        
+
 
         // create new item source
         let newListItemSource = Create("h5");
@@ -88,7 +92,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement, descri
         // create new item weight
         let newListItemWeight = Create("h6");
         newListItemWeight.innerHTML = "Weight: " + weight;
-        
+
         // create new item description
         let newListItemDescription = Create("p");
         newListItemDescription.innerHTML = description;
@@ -109,8 +113,14 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement, descri
             let attunementRequired = Create("h6");
             attunementRequired.innerHTML = "Requires Attunement";
             list.appendChild(attunementRequired);
-        }        
+        }
         list.appendChild(newListItemDescription);
+    }
+    else {
+        let header = "No Items Added!";
+        let body = "You can't add 0 of an item.";
+        AssignToast(header, body);
+    }
 }
 
 ///<summary>

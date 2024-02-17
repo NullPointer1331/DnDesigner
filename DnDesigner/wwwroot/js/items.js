@@ -41,27 +41,27 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement, descri
         let list = GetById('inventoryList');
 
         // create new item anchor 
-        let newLink = document.createElement("a");
+        let newLink = Create("a");
         newLink.class = "p-1 rounded";
         newLink.href = "#inventory" + id;
         newLink.innerHTML = name;
 
         // create new item name
-        let newListItemName = document.createElement("h4");
+        let newListItemName = Create("h4");
         newListItemName.id = "inventory" + id;
         newListItemName.innerHTML = name;
 
         // create new item quantity div
-        let newListItemQuantity = document.createElement("div");
+        let newListItemQuantity = Create("div");
         newListItemQuantity.setAttribute("class", "input-group w-25");
     
         // create new quantity label
-        let quantityLabel = document.createElement("label");
+        let quantityLabel = Create("label");
         quantityLabel.setAttribute("class", "input-group-text");
         quantityLabel.innerHTML = "Quantity";
     
         // create new quantity input
-        let quantityInput = document.createElement("input");
+        let quantityInput = Create("input");
         quantityInput.type = "number";
         quantityInput.value = GetById(id).value;
         quantityInput.min = "0";
@@ -74,23 +74,23 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement, descri
         
 
         // create new item source
-        let newListItemSource = document.createElement("h5");
+        let newListItemSource = Create("h5");
         newListItemSource.innerHTML = sourcebook;
 
         // create new item trait
-        let newListItemTrait = document.createElement("h6");
+        let newListItemTrait = Create("h6");
         newListItemTrait.innerHTML = traits;
 
         // create new item price
-        let newListItemPrice = document.createElement("h6");
+        let newListItemPrice = Create("h6");
         newListItemPrice.innerHTML = "Price: " + price;
 
         // create new item weight
-        let newListItemWeight = document.createElement("h6");
+        let newListItemWeight = Create("h6");
         newListItemWeight.innerHTML = "Weight: " + weight;
         
         // create new item description
-        let newListItemDescription = document.createElement("p");
+        let newListItemDescription = Create("p");
         newListItemDescription.innerHTML = description;
 
 
@@ -106,7 +106,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement, descri
         list.appendChild(newListItemWeight);
         // create attunement if needed
         if (attunement) {
-            let attunementRequired = document.createElement("h6");
+            let attunementRequired = Create("h6");
             attunementRequired.innerHTML = "Requires Attunement";
             list.appendChild(attunementRequired);
         }        
@@ -120,4 +120,13 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement, descri
 ///<returns>The element with the given id</returns>
 function GetById(id) {
     return document.getElementById(id);
+}
+
+///<summary>
+/// Convenience function
+///</summary>
+///<param name="element">The element to be created</param>
+///<returns>The new element</returns>
+function Create(element) {
+    return document.createElement(element);
 }

@@ -5,7 +5,7 @@
 ///<param name="header">The text to be displayed in the toast's header</param>
 ///<param name="body">The text to be displayed in the toast's body</param>
 function AssignToast(header, body) {
-    let toastBox = document.getElementById('rollToast');
+    let toastBox = GetById('rollToast');
     let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastBox);
 
     toastBox.firstElementChild.firstElementChild.innerHTML = header;
@@ -276,8 +276,8 @@ function RollAdvOrDisMod(rollType, modifier) {
 /// Handles basic dice rolls from the character sheet.
 /// </summary>
 function DieRoller() {
-    let dieCount = document.getElementById('dieCount').value;
-    let dieSize = document.getElementById('dieSize').value;
+    let dieCount = GetById('dieCount').value;
+    let dieSize = GetById('dieSize').value;
 
     let dice;
     let roll;
@@ -298,7 +298,7 @@ function DieRoller() {
 ///</summary>
 ///<param name="conMod">The character's constitution modifier to be added to the roll</param>
 function RollHitDice(conMod) {
-    let hitDieSize = document.getElementById('spendHitDie').value;
+    let hitDieSize = GetById('spendHitDie').value;
     let hitDieUsed;
     let dieCount;
     switch (hitDieSize) {
@@ -325,7 +325,7 @@ function RollHitDice(conMod) {
             hitDieUsed[i].value = dieCount;
         }
 
-        let healthRolled = document.getElementById('totalHitDieRoll');
+        let healthRolled = GetById('totalHitDieRoll');
         let totalHealthRolled = parseInt(healthRolled.value);
 
         let roll = RollMod(hitDieSize, 1, conMod);
@@ -350,9 +350,9 @@ function RollHitDice(conMod) {
 /// Updates the amount of hit dice available
 ///</summary>
 function UpdateHitDice() {
-    let lockedHitDice = document.getElementById('lockedHitDice');
+    let lockedHitDice = GetById('lockedHitDice');
     let lockedInputs = lockedHitDice.getElementsByTagName('input');
-    let unlockedHitDice = document.getElementById('unlockedHitDice');
+    let unlockedHitDice = GetById('unlockedHitDice');
     let unlockedInputs = unlockedHitDice.getElementsByTagName('input');
 
     for (let i = 0; i < lockedInputs.length; i++) {
@@ -366,11 +366,11 @@ function UpdateHitDice() {
 /// Then sets the total health rolled to 0.
 ///</summary>
 function AddRolledHealth() {
-    let totalHitDieRoll = document.getElementById('totalHitDieRoll');
+    let totalHitDieRoll = GetById('totalHitDieRoll');
     let healthRolled = parseInt(totalHitDieRoll.value);
-    let currentHealth = document.getElementById('currentHealth');
+    let currentHealth = GetById('currentHealth');
     let actualCurrentHealth = parseInt(currentHealth.value);
-    let maxHealth = parseInt(document.getElementById('currentHealth').max);
+    let maxHealth = parseInt(GetById('currentHealth').max);
     let newTotal = healthRolled + actualCurrentHealth;
     if (newTotal < maxHealth) {
         currentHealth.value = newTotal;
@@ -379,4 +379,13 @@ function AddRolledHealth() {
         currentHealth.value = maxHealth;
     }
     totalHitDieRoll.value = 0;
+}
+
+///<summary>
+/// Convenience function
+///</summary>
+///<param name="id">The id of the element to get</param>
+///<returns>The element with the given id</returns>
+function GetById(id) {
+    return document.getElementById(id);
 }

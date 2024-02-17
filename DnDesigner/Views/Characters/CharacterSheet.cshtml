@@ -356,9 +356,13 @@
                                             <br/>
                                             <div class="input-group mx-auto w-50 text-center">
                                                 <label class="input-group-text">Quantity</label>
-                                                <input id="@itemID" type="number" min="0" max="99" 
+                                                <input id="@itemID" type="number" value="0" min="0" max="99" 
                                                 class="form-control" aria-label="Item quantity"/>
-                                                <button type="button" class="btn btn-success" onclick="AssignToast('header', 'body')">Add</button>
+                                                <button type="button" class="btn btn-success" 
+                                                onclick=
+                                                    'AddItem("@itemID", "@currentItem.Name", "@currentItem.Sourcebook",
+                                                            "@currentItem.Traits", "@currentItem.Description")'
+                                                >Add</button>
                                             </div>
                                             <div class="accordion-body">@currentItem.Description</div>
                                         </div>
@@ -822,7 +826,7 @@
                                 <br />
                                 <div class="row">
                                     <div class="col-2 overflow-auto" style="max-height:20rem;">
-                                        <div id="inventory-list" 
+                                        <div id="inventoryLinks" 
                                         class="d-flex flex-column gap-2 simple-list-example-scrollspy text-center">
                                             @{
                                                 int itemLinkNum = 0;
@@ -834,15 +838,17 @@
                                                     itemLinkNum++;
                                                 }
                                             }
+                                            <!-- example code for inventory links
                                             <a class="p-1 rounded" href="#simple-list-item-1">Item 1</a>
                                             <a class="p-1 rounded" href="#simple-list-item-2">Item 2</a>
                                             <a class="p-1 rounded" href="#simple-list-item-3">Item 3</a>
                                             <a class="p-1 rounded" href="#simple-list-item-4">Item 4</a>
                                             <a class="p-1 rounded" href="#simple-list-item-5">Item 5</a>
+                                            -->
                                         </div>
                                     </div>
                                     <div class="col-10 overflow-auto" style="max-height:20rem;">
-                                        <div data-bs-spy="scroll" data-bs-target="#inventory-list" 
+                                        <div id="inventoryList" data-bs-spy="scroll" data-bs-target="#inventoryLinks" 
                                         data-bs-offset="0" data-bs-smooth-scroll="true" 
                                         class="scrollspy-example" tabindex="0">
                                             @{
@@ -852,12 +858,18 @@
                                                 {
                                                     string thisListId = itemListId + itemListNum;
                                                     <h4 id="@itemListId">@item.Item.Name</h4>
+                                                    <div class="input-group w-25">
+                                                        <label class="input-group-text">Quantity</label>
+                                                        <input type="number" value="@item.Quantity" min="0" max="99"
+                                                               class="form-control" aria-label="Item quantity" />                                                        
+                                                    </div>
                                                     <h5>@item.Item.Sourcebook</h5>
                                                     <p>@item.Item.Traits</p>
                                                     <p>@item.Item.Description</p>
                                                     itemListNum++;
                                                 }
                                             }
+                                            <!-- example code for inventory list
                                             <h4 id="simple-list-item-1">Item 1</h4>
                                             <p>...</p>
                                             <h4 id="simple-list-item-2">Item 2</h4>
@@ -868,6 +880,7 @@
                                             <p>...</p>
                                             <h4 id="simple-list-item-5">Item 5</h4>
                                             <p>...</p>
+                                            -->
                                         </div>
                                     </div>
                                 </div>
@@ -1064,5 +1077,5 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script src="/js/dice.js"></script>
-    <!--<script src="/js/items.js"></script>-->
+    <script src="/js/items.js"></script>
 }

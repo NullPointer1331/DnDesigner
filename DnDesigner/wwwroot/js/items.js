@@ -24,6 +24,79 @@ function ShowDescription(itemName, itemDescription) {
 }
 
 ///<summary>
+/// Adds an item to the Inventory accordion of the
+/// Character Sheet
+///</summary>
+///<param name="id">The id to be used by the anchor tag</param>
+///<param name="name">The name of the item</param>
+///<param name="sourcebook">The sourcebook the item is from</param>
+///<param name="traits">The traits of the item</param>
+///<param name="description">The description of the item</param>
+function AddItem(id, name, sourcebook, traits, description) {
+        // get elements to place new item in
+        let links = GetById('inventoryLinks');
+        let list = GetById('inventoryList');
+
+        // create new item anchor 
+        let newLink = document.createElement("a");
+        newLink.class = "p-1 rounded";
+        newLink.href = "#inventory" + id;
+        newLink.innerHTML = name;
+
+        // create new item name
+        let newListItemName = document.createElement("h4");
+        newListItemName.id = "inventory" + id;
+        newListItemName.innerHTML = name;
+
+        // create new item quantity div
+        /*
+        let newListItemQuantity = document.createElement("div");
+        newListItemQuantity.class = "input-group w-25";
+    
+        // create new quantity label
+        let quantityLabel = document.createElement("label");
+        quantityLabel.setAttribute("class", "input-group-text");
+        quantityLabel.setAttribute("innerHTML", "Quantity");
+    
+        // create new quantity input
+        let quantityInput = document.createElement("input");
+        quantityInput.setAttribute("type", "number");
+        quantityInput.setAttribute("value", quantity);
+        quantityInput.setAttribute("min", "0");
+        quantityInput.setAttribute("max", "99");
+        quantityInput.setAttribute("class", "form-control");
+        quantityInput.setAttribute("aria-label", "Item quantity");
+    
+        // append label and input to div
+        newListItemQuantity.appendChild(quantityLabel);
+        newListItemQuantity.appendChild(quantityInput);
+        */
+
+        // create new item source
+        let newListItemSource = document.createElement("h5");
+        newListItemSource.innerHTML = sourcebook;
+
+        // create new item trait
+        let newListItemTrait = document.createElement("p");
+        newListItemTrait.innerHTML = traits;
+
+        // create new item description
+        let newListItemDescription = document.createElement("p");
+        newListItemDescription.innerHTML = description;
+
+
+        // append new anchor
+        links.appendChild(newLink);
+
+        // append new item
+        list.appendChild(newListItemName);/*
+        list.appendChild(newListItemQuantity);*/
+        list.appendChild(newListItemSource);
+        list.appendChild(newListItemTrait);
+        list.appendChild(newListItemDescription);
+}
+
+///<summary>
 /// Convenience function
 ///</summary>
 ///<param name="id">The id of the element to get</param>

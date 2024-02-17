@@ -31,8 +31,11 @@ function ShowDescription(itemName, itemDescription) {
 ///<param name="name">The name of the item</param>
 ///<param name="sourcebook">The sourcebook the item is from</param>
 ///<param name="traits">The traits of the item</param>
+///<param name="price">The price of the item</param>
+///<param name="weight">The weight of the item</param>
+///<param name="attuneable">If the item requires attunement</param>
 ///<param name="description">The description of the item</param>
-function AddItem(id, name, sourcebook, traits, description) {
+function AddItem(id, name, sourcebook, traits, price, weight, attunement, description) {
         // get elements to place new item in
         let links = GetById('inventoryLinks');
         let list = GetById('inventoryList');
@@ -75,9 +78,17 @@ function AddItem(id, name, sourcebook, traits, description) {
         newListItemSource.innerHTML = sourcebook;
 
         // create new item trait
-        let newListItemTrait = document.createElement("p");
+        let newListItemTrait = document.createElement("h6");
         newListItemTrait.innerHTML = traits;
 
+        // create new item price
+        let newListItemPrice = document.createElement("h6");
+        newListItemPrice.innerHTML = price;
+
+        // create new item weight
+        let newListItemWeight = document.createElement("h6");
+        newListItemWeight.innerHTML = weight;
+        
         // create new item description
         let newListItemDescription = document.createElement("p");
         newListItemDescription.innerHTML = description;
@@ -91,6 +102,14 @@ function AddItem(id, name, sourcebook, traits, description) {
         list.appendChild(newListItemQuantity);
         list.appendChild(newListItemSource);
         list.appendChild(newListItemTrait);
+        list.appendChild(newListItemPrice);
+        list.appendChild(newListItemWeight);
+        // create attunement if needed
+        if (attunement) {
+            let attunementRequired = document.createElement("h6");
+            attunementRequired.innerHTML = "Requires Attunement";
+            list.appendChild(attunementRequired);
+        }        
         list.appendChild(newListItemDescription);
 }
 

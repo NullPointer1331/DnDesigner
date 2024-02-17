@@ -15,15 +15,6 @@ function AssignToast(header, body) {
 }
 
 ///<summary>
-/// Takes in information from the character sheet and passes it to AssignToast
-///</summary>
-///<param name="itemName">The name of the item</param>
-///<param name="itemDescription">The description of the item</param>
-function ShowDescription(itemName, itemDescription) {
-    AssignToast(itemName, itemDescription);
-}
-
-///<summary>
 /// Adds an item to the Inventory accordion of the
 /// Character Sheet
 ///</summary>
@@ -38,7 +29,8 @@ function ShowDescription(itemName, itemDescription) {
 function AddItem(id, name, sourcebook, traits, price, weight, attunement, description) {
     // check for quantity
     let quantity = parseInt(GetById(id).value);
-    if (quantity > 0) {
+    
+    if (quantity > 0) { // actually adds something
 
         // get elements to place new item in
         let links = GetById('inventoryLinks');
@@ -116,7 +108,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement, descri
         }
         list.appendChild(newListItemDescription);
     }
-    else {
+    else { // display error message
         let header = "No Items Added!";
         let body = "You can't add 0 of an item.";
         AssignToast(header, body);

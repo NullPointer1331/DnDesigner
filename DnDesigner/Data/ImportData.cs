@@ -1017,6 +1017,7 @@ namespace DnDesigner.Data
             {
                 cleanText = cleanText.Replace(bannedString, "");
             }
+            cleanText = cleanText.Replace("\"", "*");
             return cleanText;
         }
         public static List<Proficiency> FindLanguages(LanguageProficiency language, List<Proficiency> proficiencies)

@@ -23,7 +23,7 @@ namespace YourNamespace.Services
         {
             if (string.IsNullOrEmpty(_options.ApiKey))
             {
-                throw new Exception("Null <link>ElasticEmail</link> API key");
+                throw new Exception("Null ElasticEmail API key");
             }
 
             await Execute(_options.ApiKey, toEmail, subject, message);
@@ -33,7 +33,7 @@ namespace YourNamespace.Services
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://api.elasticemail.com");
+                client.BaseAddress = new Uri("https://api.elasticemail.com/v2/email/send");
                 var content = new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string, string>("apikey", apiKey),

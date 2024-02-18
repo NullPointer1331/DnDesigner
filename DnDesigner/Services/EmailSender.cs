@@ -11,22 +11,22 @@ namespace YourNamespace.Services
     {
 
         private readonly ILogger<EmailSender> _logger;
-        private readonly IOptions<ElasticEmailOptions> _options;
+        private readonly ElasticEmailOptions _options;
 
         public EmailSender(IOptions<ElasticEmailOptions> options, ILogger<EmailSender> logger)
         {
-            _options = options;
+            _options = options.Value;
             _logger = logger;
         }
 
         public async Task SendEmailAsync(string toEmail, string subject, string message)
         {
-            if (string.IsNullOrEmpty(_options.Value.ApiKey))
+            if (string.IsNullOrEmpty(_options.ApiKey))
             {
                 throw new Exception("Null <link>ElasticEmail</link> API key");
             }
 
-            await Execute(_options.Value.ApiKey, toEmail, subject, message);
+            await Execute(_options.ApiKey, toEmail, subject, message);
         }
 
         public async Task Execute(string apiKey, string toEmail, string subject, string message)

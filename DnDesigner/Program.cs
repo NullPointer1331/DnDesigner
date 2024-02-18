@@ -1,7 +1,9 @@
 using DnDesigner.Data;
 using DnDesigner.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using YourNamespace.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,28 @@ builder.Services.AddTransient<IDBHelper, DBHelper>();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<DnDesignerDbContext>();
 builder.Services.AddControllersWithViews();
+
+Host.CreateDefaultBuilder(args)
+            .ConfigureServices((hostContext, services) =>
+            {
+                var connectionString = hostContext.Configuration.GetConnectionString("DefaultConnection");
+                services.AddDbContext<DnDesignerDbContext>(options =>
+                    options.UseSqlServer(connectionString));
+                services.AddDatabaseDeveloperPageExceptionFilter();
+
+                services.AddTransient<IDBHelper, DBHelper>();
+
+                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                    .AddEntityFrameworkStores<DnDesignerDbContext>();
+                services.AddControllersWithViews();
+
+                services.Configure<ElasticEmailOptions>(options =>
+                {
+                    options.ApiKey = Environment.GetEnvironmentVariable("DnDesignerEmailAPIKey");
+                });
+
+                services.AddTransient<IEmailSender, EmailSender>();
+            });
 
 var app = builder.Build();
 

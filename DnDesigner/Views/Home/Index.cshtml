@@ -8,4 +8,7 @@
 </div>
 
 <p>Testing Email Service</p>
-<a asp-action="SendEmailAsync" asp-controller="Services" asp-route-toEmail="user@example.com" asp-route-subject="Test Subject" asp-route-message="Test Message">Test Email</a>
+<form method="post" asp-controller="Home" asp-action="Index">
+    <input type="email">
+    <button type="submit">Submit</button>
+</form>

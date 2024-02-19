@@ -237,6 +237,45 @@ namespace DnDesigner.Models
     }
 
     /// <summary>
+    /// When applied, this effect will grant a character a resource
+    /// </summary>
+    public class GrantResource : Effect
+    {
+        /// <summary>
+        /// The resource to grant
+        /// </summary>
+        public Resource Resource { get; set; }
+
+        /// <summary>
+        /// The maximum amount of the resource to grant, if null, the resource's formula will be used instead
+        /// </summary>
+        public int? Max { get; set; }
+
+        public GrantResource(Resource resource, int? max = null)
+        {
+            Resource = resource;
+            Max = max;
+        }
+
+        private GrantResource() { }
+
+        public override void ApplyEffect(Character character)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RemoveEffect(Character character)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return $"Grant Resource: {Resource.Name}";
+        }
+    }
+
+    /// <summary>
     /// When applied, this effect will set a character's armor class
     /// </summary>
     public class SetArmorClass : Effect

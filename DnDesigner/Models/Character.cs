@@ -403,6 +403,11 @@ namespace DnDesigner.Models
         public List<CharacterAction> Actions { get; set; }
 
         /// <summary>
+        /// A list of the character's resources
+        /// </summary>
+        public List<CharacterResource> Resources { get; set; }
+
+        /// <summary>
         /// Contains the character's inventory information
         /// </summary>
         public Inventory Inventory { get; set; }
@@ -421,6 +426,8 @@ namespace DnDesigner.Models
             Features = new List<CharacterFeature>();
             Actions = new List<CharacterAction>();
             CharacterEffects = new List<CharacterEffect>();
+            Actions = new List<CharacterAction>();
+            Resources = new List<CharacterResource>();
             Inventory = new Inventory(this);
             Name = "Unnamed Character";
             Resistances = "";
@@ -429,8 +436,7 @@ namespace DnDesigner.Models
             Alignment = "";
         }
         public Character(CreateCharacterViewModel character, 
-            Race race, Background background, List<Proficiency> defaultProficiencies, string alignment,
-            string userId)
+            Race race, Background background, List<Proficiency> defaultProficiencies, string userId)
         {
             UserId = userId;
             IgnoreLimits = character.IgnoreLimits;
@@ -441,10 +447,11 @@ namespace DnDesigner.Models
             Features = new List<CharacterFeature>();
             CharacterEffects = new List<CharacterEffect>();
             Actions = new List<CharacterAction>();
+            Resources = new List<CharacterResource>();
             Inventory = new Inventory(this);
             Background = background;
-            Alignment = alignment;
             Race = race;
+            Alignment = character.Alignment;
             MaxHealth = character.MaxHealth;
             CurrentHealth = MaxHealth;
             TempHealth = 0;
@@ -684,6 +691,18 @@ namespace DnDesigner.Models
                 {
                     val = ProficiencyBonus;
                 }
+                else if (formatted.Contains("level"))
+                {
+                    if (formatted == "level")
+                    {
+                        val = Level;
+                    }
+                    else
+                    {
+                        val = GetClassLevel(formatted.Substring(0, formatted.IndexOf("level")));
+                    }
+                }
+                else if (formatted.Contains("max"))
                 if (formatted.Contains("(") && formatted.Contains(")"))
                 {
                     if (int.TryParse(formatted.Substring(formatted.IndexOf("(") + 1, formatted.IndexOf(")") - formatted.IndexOf("(") - 1), out int max))
@@ -786,6 +805,17 @@ namespace DnDesigner.Models
         public CharacterAction? GetAction(string name)
         {
             return Actions.Where(a => a.Action.Name == name).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the level of a class with a given name
+        /// </summary>
+        /// <param name="name">The name of the class</param>
+        /// <returns>The number of levels the character has in that class</returns>
+        public int GetClassLevel(string name)
+        {
+            CharacterClass? characterClass = Classes.Where(c => c.Class.Name == name).FirstOrDefault();
+            return characterClass?.Level ?? 0;
         }
 
         /// <summary>

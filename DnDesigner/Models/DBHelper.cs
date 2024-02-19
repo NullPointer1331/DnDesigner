@@ -88,6 +88,7 @@ namespace DnDesigner.Models
                     .ThenInclude(ce => ce.Effect)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync();
+            character.Features = character.Features.OrderBy(f => f.Feature.Level).ToList();
             foreach (CharacterEffect characterEffect in character.CharacterEffects)
             {
                 await LoadEffect(characterEffect.Effect);

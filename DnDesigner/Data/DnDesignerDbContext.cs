@@ -48,6 +48,9 @@ namespace DnDesigner.Data
             builder.Entity<GrantAction>()
                 .HasOne(e => e.Action)
                 .WithMany();
+            builder.Entity<GrantResource>()
+                .HasOne(e => e.Resource)
+                .WithMany();
             builder.Entity<Spellcasting>()
                 .HasMany(e => e.LearnableSpells)
                 .WithMany(e => e.LearnedBy);
@@ -82,5 +85,8 @@ namespace DnDesigner.Data
         public DbSet<InventoryItem> InventoryItems { get; set; } 
         public DbSet<Models.Action> Actions { get; set; }
         public DbSet<CharacterAction> CharacterActions { get; set; }
+        public DbSet<Resource> Resources { get; set; }
+        public DbSet<SpellSlot> SpellSlots { get; set; }
+        public DbSet<CharacterResource> CharacterResources { get; set; }
     }
 }

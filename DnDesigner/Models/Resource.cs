@@ -26,16 +26,16 @@ namespace DnDesigner.Models
         public string? MaxFormula { get; set; }
 
         /// <summary>
-        /// The amount of the resource restored per long rest, -1 indicates half of the max, -2 indicates all
+        /// The amount of the resource restored per long rest, -1 indicates all, -2 indicates half of the max
         /// </summary>
         public int RestoredPerLongRest { get; set; }
 
         /// <summary>
-        /// The amount of the resource restored per short rest, -1 indicates half of the max, -2 indicates all
+        /// The amount of the resource restored per short rest, -1 indicates all, -2 indicates half of the max
         /// </summary>
         public int RestoredPerShortRest { get; set; }
 
-        public Resource(string name, string? maxFormula, int restoredPerShortRest = 0, int restoredPerLongRest = -2 )
+        public Resource(string name, string? maxFormula, int restoredPerShortRest = 0, int restoredPerLongRest = -1 )
         {
             Name = name;
             MaxFormula = maxFormula;
@@ -60,7 +60,7 @@ namespace DnDesigner.Models
         public bool PactMagic { get; set; }
 
         public SpellSlot(string name, int level, bool pactMagic, string? maxFormula, 
-            int restoredPerShortRest = 0, int restoredPerLongRest = -2)
+            int restoredPerShortRest = 0, int restoredPerLongRest = -1)
             : base(name, maxFormula, restoredPerShortRest, restoredPerLongRest)
         {
             Level = level;
@@ -118,5 +118,54 @@ namespace DnDesigner.Models
         }
 
         private CharacterResource() { }
+
+        /// <summary>
+        /// Sets the current amount of the resource, clamping it to the max amount
+        /// </summary>
+        /// <param name="amount">The value to set it to</param>
+        public void Set(int amount)
+        {
+            CurrentAmount = Math.Clamp(amount, 0, MaxAmount);
+        }
+
+        /// <summary>
+        /// Restores the resource as if the character took a short rest
+        /// </summary>
+        public void ShortRest()
+        {
+            if (Resource.RestoredPerShortRest == -1)
+            {
+                CurrentAmount = MaxAmount;
+            }
+            else if (Resource.RestoredPerShortRest == -2)
+            {
+                CurrentAmount += MaxAmount / 2;
+            }
+            else
+            {
+                CurrentAmount += Resource.RestoredPerShortRest;
+            }
+            CurrentAmount = Math.Clamp(CurrentAmount, 0, MaxAmount);
+        }
+
+        /// <summary>
+        /// Restores the resource as if the character took a long rest
+        /// </summary>
+        public void LongRest()
+        {
+            if (Resource.RestoredPerLongRest == -1)
+            {
+                CurrentAmount = MaxAmount;
+            }
+            else if (Resource.RestoredPerLongRest == -2)
+            {
+                CurrentAmount += MaxAmount / 2;
+            }
+            else
+            {
+                CurrentAmount += Resource.RestoredPerLongRest;
+            }
+            CurrentAmount = Math.Clamp(CurrentAmount, 0, MaxAmount);
+        }
     }
 }

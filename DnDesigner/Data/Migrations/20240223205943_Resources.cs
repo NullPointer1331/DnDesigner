@@ -10,10 +10,10 @@ namespace DnDesigner.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "Max",
+            migrationBuilder.AddColumn<string>(
+                name: "MaxFormula",
                 table: "Effects",
-                type: "int",
+                type: "nvarchar(max)",
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
@@ -29,7 +29,6 @@ namespace DnDesigner.Migrations
                     ResourceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MaxFormula = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RestoredPerLongRest = table.Column<int>(type: "int", nullable: false),
                     RestoredPerShortRest = table.Column<int>(type: "int", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -104,7 +103,7 @@ namespace DnDesigner.Migrations
                 table: "Effects");
 
             migrationBuilder.DropColumn(
-                name: "Max",
+                name: "MaxFormula",
                 table: "Effects");
 
             migrationBuilder.DropColumn(

@@ -829,6 +829,16 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
+        /// Gets a CharacterResource with a given ResourceId
+        /// </summary>
+        /// <param name="resourceId">The id of the CharacterResource you want</param>
+        /// <returns>The CharacterResource if it exists, null if it doesn't</returns>
+        public CharacterResource? GetResource(int resourceId)
+        {
+            return Resources.Where(r => r.Resource.ResourceId == resourceId).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Grants a proficiency to the character
         /// </summary>
         /// <param name="proficiency">The proficiency to grant</param>

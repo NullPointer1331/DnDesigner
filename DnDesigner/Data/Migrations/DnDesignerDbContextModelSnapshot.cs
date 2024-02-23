@@ -740,9 +740,6 @@ namespace DnDesigner.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MaxFormula")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1171,8 +1168,9 @@ namespace DnDesigner.Migrations
                 {
                     b.HasBaseType("DnDesigner.Models.Effect");
 
-                    b.Property<int?>("Max")
-                        .HasColumnType("int");
+                    b.Property<string>("MaxFormula")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ResourceId")
                         .HasColumnType("int");

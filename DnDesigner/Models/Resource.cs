@@ -21,11 +21,6 @@ namespace DnDesigner.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// The formula for the max amount of the resource
-        /// </summary>
-        public string? MaxFormula { get; set; }
-
-        /// <summary>
         /// The amount of the resource restored per long rest, -1 indicates all, -2 indicates half of the max
         /// </summary>
         public int RestoredPerLongRest { get; set; }
@@ -35,10 +30,9 @@ namespace DnDesigner.Models
         /// </summary>
         public int RestoredPerShortRest { get; set; }
 
-        public Resource(string name, string? maxFormula, int restoredPerShortRest = 0, int restoredPerLongRest = -1 )
+        public Resource(string name, int restoredPerShortRest = 0, int restoredPerLongRest = -1 )
         {
             Name = name;
-            MaxFormula = maxFormula;
             RestoredPerLongRest = restoredPerLongRest;
             RestoredPerShortRest = restoredPerShortRest;
         }
@@ -59,9 +53,8 @@ namespace DnDesigner.Models
         /// </summary>
         public bool PactMagic { get; set; }
 
-        public SpellSlot(string name, int level, bool pactMagic, string? maxFormula, 
-            int restoredPerShortRest = 0, int restoredPerLongRest = -1)
-            : base(name, maxFormula, restoredPerShortRest, restoredPerLongRest)
+        public SpellSlot(string name, int level, bool pactMagic)
+            : base(name, pactMagic ? -1 : 0, -1)
         {
             Level = level;
             PactMagic = pactMagic;
@@ -95,19 +88,6 @@ namespace DnDesigner.Models
         /// The current amount of the resource the character has
         /// </summary>
         public int CurrentAmount { get; set; }
-
-        public CharacterResource(Character character, Resource resource)
-        {
-            Character = character;
-            Resource = resource;
-            int maxAmount = 0;
-            if (resource.MaxFormula != null)
-            {
-                maxAmount = character.Calculate(resource.MaxFormula);
-            }
-            MaxAmount = maxAmount;
-            CurrentAmount = maxAmount;
-        }
 
         public CharacterResource(Character character, Resource resource, int maxAmount)
         {

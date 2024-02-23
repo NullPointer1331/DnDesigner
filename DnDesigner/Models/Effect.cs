@@ -247,26 +247,38 @@ namespace DnDesigner.Models
         public Resource Resource { get; set; }
 
         /// <summary>
-        /// The maximum amount of the resource to grant, if null, the resource's formula will be used instead
+        /// The formula to calculate the maximum amount of the resource
         /// </summary>
-        public int? Max { get; set; }
+        public string MaxFormula { get; set; }
 
-        public GrantResource(Resource resource, int? max = null)
+        public GrantResource(Resource resource, string maxFormula)
         {
             Resource = resource;
-            Max = max;
+            MaxFormula = maxFormula;
         }
 
         private GrantResource() { }
 
         public override void ApplyEffect(Character character)
         {
-            throw new NotImplementedException();
+            CharacterResource? characterResource = character.GetResource(Resource.ResourceId);
+            if (characterResource == null)
+            {
+                character.Resources.Add(new CharacterResource(character, Resource, character.Calculate(MaxFormula)));
+            }
+            else
+            {
+                characterResource.MaxAmount = character.Calculate(MaxFormula);
+            }
         }
 
         public override void RemoveEffect(Character character)
         {
-            throw new NotImplementedException();
+            CharacterResource? characterResource = character.GetResource(Resource.ResourceId);
+            if (characterResource != null)
+            {
+                character.Resources.Remove(characterResource);
+            }
         }
 
         public override string ToString()

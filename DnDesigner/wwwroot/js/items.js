@@ -26,7 +26,8 @@ function AssignToast(header, body) {
 ///<param name="weight">The weight of the item</param>
 ///<param name="attuneable">If the item requires attunement</param>
 ///<param name="description">The description of the item</param>
-function AddItem(id, name, sourcebook, traits, price, weight, attunement, description) {
+function AddItem(id, name, sourcebook, traits, price, weight, attunement
+    , description, itemId) {
     // check for quantity
     let quantity = parseInt(GetById(id).value);
     
@@ -107,6 +108,15 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement, descri
             list.appendChild(attunementRequired);
         }
         list.appendChild(newListItemDescription);
+
+        // get CharacterId
+        let characterId = getById('characterId').value;
+
+        // trigger controller to add item to inventory
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "/CharactersController/AddItem", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("characterId=value1&itemId=value2&quantity=value3");
     }
     else { // display error message
         let header = "No Items Added!";

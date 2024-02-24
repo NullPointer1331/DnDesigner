@@ -402,6 +402,33 @@ namespace DnDesigner.Controllers
             return View(characterSheetViewModel);
         }
 
+        // Add Item to Character Inventory
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task AddItem(int characterId, int itemId, int quantity)
+        {
+            Character character = await _dbHelper.GetCharacter(characterId);
+
+            if (character == null)
+            {
+                return;
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return;
+            }
+
+            Item item = await _dbHelper.GetItem(itemId);
+
+            if (item == null)
+            {
+                return;
+            }
+            character.Inventory.AddItem(item, quantity);
+            await _context.SaveChangesAsync();
+            return;
+        }
+
         // POST: Characters/CharacterSheet
         [HttpPost]
         [ValidateAntiForgeryToken]

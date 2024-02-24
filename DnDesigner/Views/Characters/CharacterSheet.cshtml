@@ -362,7 +362,7 @@
                                                 onclick=
                                                     'AddItem("@itemID", "@currentItem.Name", "@currentItem.Sourcebook",
                                                             "@currentItem.Traits", "@currentItem.Price", "@currentItem.Weight",
-                                                            "@currentItem.Attuneable", "@currentItem.Description")'
+                                                            "@currentItem.Attuneable", "@currentItem.Description", "@currentItem.ItemId")'
                                                 >Add</button>
                                             </div>
                                             <div class="accordion-body">
@@ -1012,7 +1012,7 @@
     </div>
     <!--End of Character Sheet Layout-->
     <!--Hidden Storage Start-->
-    <input type="hidden" asp-for="Character.CharacterId" />
+    <input id="characterId" value="@Model.Character.CharacterId" type="hidden" asp-for="Character.CharacterId" />
     <input type="hidden" asp-for="Character.Name" />
     <input type="hidden" asp-for="Character.Alignment" />
     <input type="hidden" asp-for="Character.Race" />

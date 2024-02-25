@@ -67,6 +67,12 @@ namespace DnDesigner.Controllers
                 AvailableRaces = await _dbHelper.GetAllRaces(),
                 Classes = new List<int[]>()
             };
+            if (characterViewModel.AvailableClasses.Count == 0 ||
+                characterViewModel.AvailableRaces.Count == 0 ||
+                characterViewModel.AvailableBackgrounds.Count == 0)
+            {
+                return RedirectToAction("Error", "Home");
+            }
             while (characterViewModel.Classes.Count < characterViewModel.AvailableClasses.Count)
             {
                 characterViewModel.Classes.Add(new int[] { 0, 

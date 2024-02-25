@@ -112,11 +112,15 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
         // get CharacterId
         let characterId = getById('characterId').value;
 
+        // construct call string
+        let callString = "characterId=" + characterId + "&itemId=" + itemId +
+            "&quantity=" + quantity;
+
         // trigger controller to add item to inventory
-        var xhttp = new XMLHttpRequest();
+        let xhttp = new XMLHttpRequest();
         xhttp.open("POST", "/CharactersController/AddItem", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("characterId=value1&itemId=value2&quantity=value3");
+        xhttp.send(callString);
     }
     else { // display error message
         let header = "No Items Added!";

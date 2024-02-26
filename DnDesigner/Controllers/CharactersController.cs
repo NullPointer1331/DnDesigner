@@ -404,7 +404,6 @@ namespace DnDesigner.Controllers
 
         // Add Item to Character Inventory
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task AddItem(int characterId, int itemId, int quantity)
         {
             Character character = await _dbHelper.GetCharacter(characterId);

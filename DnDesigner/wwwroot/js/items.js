@@ -110,7 +110,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
         list.appendChild(newListItemDescription);
 
         // get CharacterId
-        let characterId = getById('characterId').value;
+        let characterId = GetById('characterId').value;
 
         // construct call string
         let callString = "characterId=" + characterId + "&itemId=" + itemId +
@@ -118,7 +118,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
 
         // trigger controller to add item to inventory
         let xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "/CharactersController/AddItem", true);
+        xhttp.open("POST", "/Characters/AddItem", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send(callString);
     }

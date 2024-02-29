@@ -23,7 +23,9 @@ namespace DnDesigner.Models
         /// <summary>
         /// The source book the background is from
         /// </summary>
-        public string Sourcebook { get; set; }
+        public string SourceString { get; set; }
+
+        public Source SourceBook { get; set; }
 
         /// <summary>
         /// The starting equipment this background gives
@@ -55,7 +57,7 @@ namespace DnDesigner.Models
             StarterEquipment = new List<Item>();
             Features = new List<BackgroundFeature>();
             Name = "";
-            Sourcebook = "";
+            SourceString = "";
             Description = "";
         }
     }

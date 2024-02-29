@@ -22,7 +22,9 @@ namespace DnDesigner.Models
 		/// <summary>
 		/// The source book the class is from
 		/// </summary>
-		public string Sourcebook { get; set; }
+		public string SourceString { get; set; }
+
+		public Source SourceBook { get; set; }
 
         /// <summary>
         /// The hit die type of the class
@@ -56,7 +58,7 @@ namespace DnDesigner.Models
             Subclasses = new List<Subclass>();
 			Spellcasting = null;
 			Name = "";
-			Sourcebook = "";
+			SourceString = "";
 		}
 
         /// <summary>

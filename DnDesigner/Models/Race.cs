@@ -19,7 +19,9 @@ namespace DnDesigner.Models
 		/// <summary>
 		/// The source book the race is from
 		/// </summary>
-		public string Sourcebook { get; set; }
+		public string SourceString { get; set; }
+
+		public Source SourceBook { get; set; }
 
 		public string Description { get; set; }
 
@@ -47,7 +49,7 @@ namespace DnDesigner.Models
         public Race() {
             Features = new List<RaceFeature>();
 			Name = "";
-			Sourcebook = "";
+			SourceString = "";
 			Description = "";
 			StatBonuses = "";
 			Size = "";

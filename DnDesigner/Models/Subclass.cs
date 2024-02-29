@@ -21,7 +21,9 @@ namespace DnDesigner.Models
 		/// <summary>
 		/// The source book the subclass is from
 		/// </summary>
-		public string Sourcebook { get; set; } = null!;
+		public string SourceString { get; set; } = null!;
+		
+		public Source SourceBook { get; set; }
 
 		/// <summary>
 		/// The features of the subclass
@@ -53,7 +55,7 @@ namespace DnDesigner.Models
             Name = name;
 			Features = new List<SubclassFeature>();
 			Spellcasting = null;
-			Sourcebook = "";
+			SourceString = "";
         }
 		private Subclass() // For EF
         {

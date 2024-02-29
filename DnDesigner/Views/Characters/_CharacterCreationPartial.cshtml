@@ -116,7 +116,7 @@
 				<select asp-for="BackgroundId" onchange="updateBackgroundDescription()">
 					@foreach (Background characterBackground in Model.AvailableBackgrounds)
 					{
-						<option value="@characterBackground.BackgroundId">@characterBackground.Name (@characterBackground.Sourcebook)</option>
+						<option value="@characterBackground.BackgroundId">@characterBackground.Name (@characterBackground.SourceString)</option>
 					}
 				</select>
 				<p id="descriptionBackground">@Model.AvailableBackgrounds[0].Description</p>
@@ -138,7 +138,7 @@
 				<select asp-for="RaceId" onchange="updateRaceDescription()">
 					@foreach (Race race in Model.AvailableRaces)
 					{
-						<option value=@race.RaceId>@race.Name (@race.Sourcebook)</option>
+						<option value=@race.RaceId>@race.Name (@race.SourceString)</option>
 					}
 				</select>
 				<p id="descriptionRace">@Model.AvailableRaces[0].Description</p>

@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sourcebook)
+                @Html.DisplayNameFor(model => model.SourceString)
             </th>
             <th></th>
         </tr>
@@ -28,7 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sourcebook)
+                @Html.DisplayFor(modelItem => item.SourceString)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.SubclassId">Edit</a> |

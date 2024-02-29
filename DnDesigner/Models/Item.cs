@@ -24,7 +24,9 @@ namespace DnDesigner.Models
         /// <summary>
         /// The source book the item is from
         /// </summary>
-        public string Sourcebook { get; set; } = null!;
+        public string SourceString { get; set; } = null!;
+
+        public Source SourceBook { get; set; }
 
         /// <summary>
         /// The items description
@@ -76,7 +78,7 @@ namespace DnDesigner.Models
         public Item() {
             Effects = new List<Effect>();
             Name = "";
-            Sourcebook = "";
+            SourceString = "";
             Description = "";
             Traits = "";
         }

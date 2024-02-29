@@ -24,7 +24,9 @@ namespace DnDesigner.Models
         /// <summary>
         /// The source book the spell is from
         /// </summary>
-        public string Sourcebook { get; set; }
+        public string SourceString { get; set; }
+
+        public Source SourceBook { get; set; }
 
         /// <summary>
         /// The base level of the spell,
@@ -88,7 +90,7 @@ namespace DnDesigner.Models
         {
             LearnedBy = new List<Spellcasting>();
             Name = "";
-            Sourcebook = "";
+            SourceString = "";
             SpellSchool = "";
             CastingTime = "";
             Range = "";

@@ -25,7 +25,9 @@ namespace DnDesigner.Models
         /// The feature's source
         /// formatted as Sourcebook, Class/Subclass/Background/Race, Source name
         /// </summary>
-        public string Source { get; set; }
+        public string SourceString { get; set; }
+
+        public Source SourceBook { get; set; }
 
         /// <summary>
         /// The feature's description
@@ -57,7 +59,7 @@ namespace DnDesigner.Models
         public Feature(string name, string description, int level, string source)
         {
             Name = name;
-            Source = source;
+            SourceString = source;
             Description = description;
             Level = level;
             Effects = new List<Effect>();
@@ -81,7 +83,7 @@ namespace DnDesigner.Models
 
         public bool Equals(Feature other)
         {
-            return Name == other.Name && Source == other.Source 
+            return Name == other.Name && SourceString == other.SourceString 
                 && Description == other.Description && Level == other.Level;
         }
 
@@ -92,7 +94,7 @@ namespace DnDesigner.Models
             {
                 str += $", Level {Level}";
             }
-            str += ", " + Source;
+            str += ", " + SourceString;
             return str;
         }
     }
@@ -129,7 +131,7 @@ namespace DnDesigner.Models
         public ClassFeature(Class @class, string name, string description, int level) : base(name, description, level)
         {
             Class = @class;
-            Source = $"{Class.Sourcebook}, Class, {Class.Name}";
+            SourceString = $"{Class.SourceString}, Class, {Class.Name}";
             InitialClassOnly = false;
             MulticlassOnly = false;
         }
@@ -154,7 +156,7 @@ namespace DnDesigner.Models
         public SubclassFeature(Subclass subclass, string name, string description, int level) : base(name, description, level)
         {
             Subclass = subclass;
-            Source = $"{Subclass.Sourcebook}, Subclass, {Subclass.Name}";
+            SourceString = $"{Subclass.SourceString}, Subclass, {Subclass.Name}";
         }
         private SubclassFeature() : base("", "", 0) { }
     }
@@ -177,7 +179,7 @@ namespace DnDesigner.Models
         public RaceFeature(Race race, string name, string description, int level) : base(name, description, level)
         {
             Race = race;
-            Source = $"{Race.Sourcebook}, Race, {Race.Name}";
+            SourceString = $"{Race.SourceString}, Race, {Race.Name}";
         }
         private RaceFeature() : base("", "", 0) { }
     }
@@ -199,7 +201,7 @@ namespace DnDesigner.Models
         public BackgroundFeature(Background background, string name, string description) : base(name, description, 0)
         {
             Background = background;
-            Source = $"{Background.Sourcebook}, Background, {Background.Name}";
+            SourceString = $"{Background.SourceString}, Background, {Background.Name}";
         }
         private BackgroundFeature() : base("", "", 0) { }
     }

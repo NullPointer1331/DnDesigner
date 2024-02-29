@@ -82,12 +82,16 @@ namespace DnDesigner.Models
                     .ThenInclude(cf => cf.Choices)
                     .ThenInclude(cfc => cfc.Choice)
                     .Include(c => c.Inventory)
-                    .ThenInclude(ci => ci.Items)
-                    .ThenInclude(cii => cii.Item)
                     .Include(c => c.CharacterEffects)
                     .ThenInclude(ce => ce.Effect)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync();
+            if (character == null)
+            {
+                throw new ArgumentException("Character not found");
+            }
+            character.Features = character.Features.OrderBy(f => f.Feature.Level).ToList();
+            character.Inventory = await GetInventory(character.Inventory.InventoryId);
             foreach (CharacterEffect characterEffect in character.CharacterEffects)
             {
                 await LoadEffect(characterEffect.Effect);
@@ -159,6 +163,10 @@ namespace DnDesigner.Models
                     .ThenInclude(ii => ii.Item)
                     .FirstOrDefaultAsync();
             inventory.PopulateEquipmentSlots();
+            foreach (InventoryItem item in inventory.Items)
+            {
+                await LoadEffects(item.Item.Effects);
+            }
             return inventory;
         }
 

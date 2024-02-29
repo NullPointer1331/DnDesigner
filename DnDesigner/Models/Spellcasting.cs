@@ -8,10 +8,12 @@ namespace DnDesigner.Models
     {
         #region properties
         /// <summary>
-        /// The standard spell progression for full spellcasters
+        /// The standard spell progression for full spellcasters, 
+        /// with the first index being the spellcaster level and the second being the spell level
         /// </summary>
-        public static int[,] StandardSpellProgression = new int[20, 9]
+        public readonly static int[,] StandardSpellSlotProgression = new int[21, 9]
         {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {2, 0, 0, 0, 0, 0, 0, 0, 0},
             {3, 0, 0, 0, 0, 0, 0, 0, 0},
             {4, 2, 0, 0, 0, 0, 0, 0, 0},
@@ -32,6 +34,93 @@ namespace DnDesigner.Models
             {4, 3, 3, 3, 3, 1, 1, 1, 1},
             {4, 3, 3, 3, 3, 2, 1, 1, 1},
             {4, 3, 3, 3, 3, 2, 2, 1, 1}
+        };
+
+        /// <summary>
+        /// The spell progression for half casters, 
+        /// with the first index being the class level and the second being the spell level
+        /// </summary>
+        public readonly static int[,] HalfCasterSpellSlotProgression = new int[21, 5]
+        {
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {2, 0, 0, 0, 0},
+            {3, 0, 0, 0, 0},
+            {3, 0, 0, 0, 0},
+            {4, 2, 0, 0, 0},
+            {4, 2, 0, 0, 0},
+            {4, 3, 0, 0, 0},
+            {4, 3, 0, 0, 0},
+            {4, 3, 2, 0, 0},
+            {4, 3, 2, 0, 0},
+            {4, 3, 3, 0, 0},
+            {4, 3, 3, 0, 0},
+            {4, 3, 3, 1, 0},
+            {4, 3, 3, 1, 0},
+            {4, 3, 3, 2, 0},
+            {4, 3, 3, 2, 0},
+            {4, 3, 3, 3, 1},
+            {4, 3, 3, 3, 1},
+            {4, 3, 3, 3, 2},
+            {4, 3, 3, 3, 2}
+        };
+
+        /// <summary>
+        /// The spell progression for third casters,
+        /// with the first index being the class level and the second being the spell level
+        /// </summary>
+        public readonly static int[,] ThirdCasterSpellSlotProgression = new int[21, 4]
+        {
+            {0, 0, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 0, 0},
+            {2, 0, 0, 0},
+            {3, 0, 0, 0},
+            {3, 0, 0, 0},
+            {3, 0, 0, 0},
+            {4, 2, 0, 0},
+            {4, 2, 0, 0},
+            {4, 2, 0, 0},
+            {4, 3, 0, 0},
+            {4, 3, 0, 0},
+            {4, 3, 0, 0},
+            {4, 3, 2, 0},
+            {4, 3, 2, 0},
+            {4, 3, 2, 0},
+            {4, 3, 3, 0},
+            {4, 3, 3, 0},
+            {4, 3, 3, 0},
+            {4, 3, 3, 1},
+            {4, 3, 3, 1}
+        };
+
+        /// <summary>
+        /// The spell progression for Warlocks,
+        /// with the first index being the Warlock level and the second being the spell level
+        /// </summary>
+        public readonly static int[,] PactSpellSlotProgression = new int[21, 5]
+        {
+            {0, 0, 0, 0, 0},
+            {1, 0, 0, 0, 0},
+            {2, 0, 0, 0, 0},
+            {0, 2, 0, 0, 0},
+            {0, 2, 0, 0, 0},
+            {0, 0, 2, 0, 0},
+            {0, 0, 2, 0, 0},
+            {0, 0, 0, 2, 0},
+            {0, 0, 0, 2, 0},
+            {0, 0, 0, 0, 2},
+            {0, 0, 0, 0, 2},
+            {0, 0, 0, 0, 3},
+            {0, 0, 0, 0, 3},
+            {0, 0, 0, 0, 3},
+            {0, 0, 0, 0, 3},
+            {0, 0, 0, 0, 3},
+            {0, 0, 0, 0, 3},
+            {0, 0, 0, 0, 4},
+            {0, 0, 0, 0, 4},
+            {0, 0, 0, 0, 4},
+            {0, 0, 0, 0, 4},
         };
 
         /// <summary>

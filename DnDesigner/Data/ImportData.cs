@@ -680,31 +680,13 @@ namespace DnDesigner.Data
             List<Proficiency> raceProficiencies = new List<Proficiency>();
             if (race5E.skillProficiencies != null)
             {
-                foreach (SkillProficiency skill in race5E.skillProficiencies)
-                {
-                    List<Proficiency> skills = FindSkills(skill, allProficiencies);
-                    foreach (Proficiency proficiency in skills)
-                    {
-                        if (!raceProficiencies.Where(p => p.Name == proficiency.Name).Any())
-                        {
-                            raceProficiencies.Add(proficiency);
-                        }
-                    }
-                }
+                List<Proficiency> skills = FindSkills(race5E.skillProficiencies, allProficiencies);
+                raceProficiencies.AddRange(skills.Where(p => !raceProficiencies.Contains(p)));
             }
             if (race5E.languageProficiencies != null)
             {
-                foreach (LanguageProficiency language in race5E.languageProficiencies)
-                {
-                    List<Proficiency> languages = FindLanguages(language, allProficiencies);
-                    foreach (Proficiency proficiency in languages)
-                    {
-                        if (!raceProficiencies.Where(p => p.Name == proficiency.Name).Any())
-                        {
-                            raceProficiencies.Add(proficiency);
-                        }
-                    }
-                }
+                List<Proficiency> languages = FindLanguages(race5E.languageProficiencies, allProficiencies);
+                raceProficiencies.AddRange(languages.Where(p => !raceProficiencies.Contains(p)));
             }
             if (raceProficiencies.Any())
             {
@@ -761,46 +743,18 @@ namespace DnDesigner.Data
             List<Proficiency> backgroundProficiencies = new List<Proficiency>();
             if (background5E.skillProficiencies != null)
             {
-
-                foreach (SkillProficiency skill in background5E.skillProficiencies)
-                {
-                    List<Proficiency> skills = FindSkills(skill, allProficiencies);
-                    foreach (Proficiency proficiency in skills)
-                    {
-                        if (!backgroundProficiencies.Where(p => p.Name == proficiency.Name).Any())
-                        {
-                            backgroundProficiencies.Add(proficiency);
-                        }
-                    }
-                }
+                List<Proficiency> skills = FindSkills(background5E.skillProficiencies, allProficiencies);
+                backgroundProficiencies.AddRange(skills.Where(p => !backgroundProficiencies.Contains(p)));
             }
             if (background5E.toolProficiencies != null)
             {
-                foreach (ToolProficiency tool in background5E.toolProficiencies)
-                {
-                    List<Proficiency> tools = FindTools(tool, allProficiencies);
-                    foreach (Proficiency proficiency in tools)
-                    {
-                        if (!backgroundProficiencies.Where(p => p.Name == proficiency.Name).Any())
-                        {
-                            backgroundProficiencies.Add(proficiency);
-                        }
-                    }
-                }
+                List<Proficiency> tools = FindTools(background5E.toolProficiencies, allProficiencies);
+                backgroundProficiencies.AddRange(tools.Where(p => !backgroundProficiencies.Contains(p)));
             }
             if (background5E.languageProficiencies != null)
             {
-                foreach (LanguageProficiency language in background5E.languageProficiencies)
-                {
-                    List<Proficiency> languages = FindLanguages(language, allProficiencies);
-                    foreach (Proficiency proficiency in languages)
-                    {
-                        if (!backgroundProficiencies.Where(p => p.Name == proficiency.Name).Any())
-                        {
-                            backgroundProficiencies.Add(proficiency);
-                        }
-                    }
-                }
+                List<Proficiency> languages = FindLanguages(background5E.languageProficiencies, allProficiencies);
+                backgroundProficiencies.AddRange(languages.Where(p => !backgroundProficiencies.Contains(p)));
             }
             if (backgroundProficiencies.Any())
             {
@@ -1024,6 +978,17 @@ namespace DnDesigner.Data
             }
             return cleanText;
         }
+
+        public static List<Proficiency> FindLanguages(List<LanguageProficiency> languageProficiencies, List<Proficiency> allProficiencies)
+        {
+            List<Proficiency> languages = new List<Proficiency>();
+            foreach (LanguageProficiency language in languageProficiencies)
+            {
+                languages.AddRange(FindLanguages(language, allProficiencies));
+            }
+            return languages;
+        }
+
         public static List<Proficiency> FindLanguages(LanguageProficiency language, List<Proficiency> proficiencies)
         {
             List<Proficiency> languages = new List<Proficiency>();
@@ -1085,6 +1050,17 @@ namespace DnDesigner.Data
             }
             return languages;
         }
+
+        public static List<Proficiency> FindSkills(List<SkillProficiency> skillProficiencies, List<Proficiency> allProficiencies)
+        {
+            List<Proficiency> skills = new List<Proficiency>();
+            foreach (SkillProficiency skill in skillProficiencies)
+            {
+                skills.AddRange(FindSkills(skill, allProficiencies));
+            }
+            return skills;
+        }
+
         public static List<Proficiency> FindSkills(SkillProficiency skill, List<Proficiency> proficiencies)
         {
             List<Proficiency> skills = new List<Proficiency>();
@@ -1171,6 +1147,17 @@ namespace DnDesigner.Data
             }
             return skills;
         }
+
+        public static List<Proficiency> FindTools(List<ToolProficiency> toolProficiencies, List<Proficiency> allProficiencies)
+        {
+            List<Proficiency> tools = new List<Proficiency>();
+            foreach (ToolProficiency tool in toolProficiencies)
+            {
+                tools.AddRange(FindTools(tool, allProficiencies));
+            }
+            return tools;
+        }
+
         public static List<Proficiency> FindTools(ToolProficiency tool, List<Proficiency> proficiencies)
         {
             List<Proficiency> tools = new List<Proficiency>();

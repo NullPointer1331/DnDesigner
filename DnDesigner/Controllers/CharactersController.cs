@@ -67,6 +67,12 @@ namespace DnDesigner.Controllers
                 AvailableRaces = await _dbHelper.GetAllRaces(),
                 Classes = new List<int[]>()
             };
+            if (characterViewModel.AvailableClasses.Count == 0 ||
+                characterViewModel.AvailableRaces.Count == 0 ||
+                characterViewModel.AvailableBackgrounds.Count == 0)
+            {
+                return RedirectToAction("Error", "Home");
+            }
             while (characterViewModel.Classes.Count < characterViewModel.AvailableClasses.Count)
             {
                 characterViewModel.Classes.Add(new int[] { 0, 
@@ -95,8 +101,8 @@ namespace DnDesigner.Controllers
                     .Where(p => p.Type == "saving throw" || p.Type == "skill")
                     .ToListAsync(); 
                 
-                Character newCharacter = new Character(character, race, background, defaultProficiencies, 
-                    character.Alignment, User.FindFirstValue(ClaimTypes.NameIdentifier));
+                Character newCharacter = new Character(character, race, background, defaultProficiencies
+                    ,User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 for(int i = 0; i < character.Classes.Count; i++)
                 {

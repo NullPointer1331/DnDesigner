@@ -18,12 +18,12 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
     let quantity = parseInt(GetById(id).value);
     let header;
     if (quantity < 2) {
-        header = quantity + " Item Added!";
+        header = "Item Added!";
     }
     else {
-        header = quantity + " Items Added!";
+        header = "Items Added!";
     }
-    let body = name + " to your Inventory";
+    let body = quantity + " " + name + " added to your Inventory";
     
     if (quantity > 0) { // actually adds something
 
@@ -39,7 +39,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
             // create new item anchor 
             let newLink = Create("a");
             newLink.class = "p-1 rounded";
-            newLink.href = "#" + itemId;
+            newLink.href = "#item" + itemId;
             newLink.innerHTML = name;
 
             // create new item div
@@ -114,8 +114,10 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
             newListItemDiv.appendChild(newListItemDescription);
 
             // append new div to list
-            let hr = Create("hr");
-            list.appendChild(hr);
+            if (list.childNodes.length != 1) { // if 1st item don't add HR
+                let hr = Create("hr");
+                list.appendChild(hr);
+            }            
             list.appendChild(newListItemDiv);
 
             // construct call string

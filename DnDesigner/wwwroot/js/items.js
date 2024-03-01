@@ -139,7 +139,7 @@ function CanItemBeAdded(characterId, itemId) {
     // trigger controller to add item to inventory
     let xhttp = new XMLHttpRequest();
     xhttp.onload = function () {
-        result = xhttp.responseText;
+        result = this.responseText;
     }
     xhttp.open("POST", "/Characters/CanItemBeAdded", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

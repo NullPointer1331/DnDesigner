@@ -24,5 +24,8 @@
         Task<List<Spellcasting>> GetAllSpellcastings();
         Task<Subclass> GetSubclass(int id);
         Task<List<Subclass>> GetAllSubclasses();
+        Task<Feature> GetFeature(int id);
+        Task<List<Feature>> GetAllFeatures();
+        Task<List<SelectableFeature>> GetAllFeats();
     }
 }

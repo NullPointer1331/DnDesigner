@@ -16,8 +16,8 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
     , description, itemId) {
     // check for quantity
     let quantity = parseInt(GetById(id).value);
-    let header = "No Items Added!";
-    let body;
+    let header = "Item Added!";
+    let body = name + " to your Inventory";
     
     if (quantity > 0) { // actually adds something
 
@@ -113,11 +113,13 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
             xhttp.send(callString);
 
         }
-        else { // display error message            
+        else { // display error message 
+            header = "No Items Added!"
             body = "This item is already in your inventory.";
         }
     }
     else { // display error message
+        header = "No Items Added!"
         body = "You can't add 0 of an item.";
     }
     AssignToast(header, body);
@@ -130,15 +132,24 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
 ///<param name="itemId">The unique ID number of the item</param>
 ///<returns>True if the item can be added, False if not</returns>
 function CanItemBeAdded(characterId, itemId) {
+    let result;
     // construct call string
     let callString = "characterId=" + characterId + "&itemId=" + itemId;
 
     // trigger controller to add item to inventory
     let xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+        result = xhttp.responseText;
+    }
     xhttp.open("POST", "/Characters/CanItemBeAdded", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    let result = xhttp.send(callString);
-    return result;
+    xhttp.send(callString);
+    if (result == "false") {
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 ///<summary>

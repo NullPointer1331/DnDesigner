@@ -16,7 +16,13 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
     , description, itemId) {
     // check for quantity
     let quantity = parseInt(GetById(id).value);
-    let header = "Item Added!";
+    let header;
+    if (quantity < 2) {
+        header = quantity + " Item Added!";
+    }
+    else {
+        header = quantity + " Items Added!";
+    }
     let body = name + " to your Inventory";
     
     if (quantity > 0) { // actually adds something
@@ -24,7 +30,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
         // get CharacterId
         let characterId = GetById('characterId').value;
 
-        if (CanItemBeAdded(characterId, itemId)) { // check if item can be added
+        if (CanItemBeAdded(itemId)) { // check if item can be added
 
             // get elements to place new item in
             let links = GetById('inventoryLinks');
@@ -33,12 +39,15 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
             // create new item anchor 
             let newLink = Create("a");
             newLink.class = "p-1 rounded";
-            newLink.href = "#inventory" + id;
+            newLink.href = "#" + itemId;
             newLink.innerHTML = name;
+
+            // create new item div
+            let newListItemDiv = Create("div");
+            newListItemDiv.id = itemId;
 
             // create new item name
             let newListItemName = Create("h4");
-            newListItemName.id = "inventory" + id;
             newListItemName.innerHTML = name;
 
             // create new item quantity div
@@ -87,20 +96,27 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
             // append new anchor
             links.appendChild(newLink);
 
-            // append new item
-            list.appendChild(newListItemName);
-            list.appendChild(newListItemQuantity);
-            list.appendChild(newListItemSource);
-            list.appendChild(newListItemTrait);
-            list.appendChild(newListItemPrice);
-            list.appendChild(newListItemWeight);
+            // append item details to div
+            newListItemDiv.appendChild(newListItemName);
+            newListItemDiv.appendChild(newListItemQuantity);
+            newListItemDiv.appendChild(newListItemSource);
+            newListItemDiv.appendChild(newListItemTrait);
+            newListItemDiv.appendChild(newListItemPrice);
+            newListItemDiv.appendChild(newListItemWeight);
+
+
             // create attunement if needed
             if (attunement) {
                 let attunementRequired = Create("h6");
                 attunementRequired.innerHTML = "Requires Attunement";
-                list.appendChild(attunementRequired);
+                newListItemDiv.appendChild(attunementRequired);
             }
-            list.appendChild(newListItemDescription);
+            newListItemDiv.appendChild(newListItemDescription);
+
+            // append new div to list
+            let hr = Create("hr");
+            list.appendChild(hr);
+            list.appendChild(newListItemDiv);
 
             // construct call string
             let callString = "characterId=" + characterId + "&itemId=" + itemId +
@@ -128,10 +144,17 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
 ///<summary>
 /// Checks if an item can be added to an Inventory
 ///</summary>
-///<param name="characterId">The unique ID of the character</param>
 ///<param name="itemId">The unique ID number of the item</param>
 ///<returns>True if the item can be added, False if not</returns>
-function CanItemBeAdded(characterId, itemId) {
+function CanItemBeAdded(itemId) {
+    let inInventory = GetById(itemId);
+    if (inInventory == null) {
+        return true;
+    }
+    return false;
+}
+
+/*function CanItemBeAdded(characterId, itemId) {
     let result;
     // construct call string
     let callString = "characterId=" + characterId + "&itemId=" + itemId;
@@ -150,7 +173,7 @@ function CanItemBeAdded(characterId, itemId) {
     else {
         return true;
     }
-}
+}*/
 
 ///<summary>
 /// Convenience function

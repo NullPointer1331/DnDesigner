@@ -428,6 +428,34 @@ namespace DnDesigner.Controllers
             return;
         }
 
+        // Checks if an Item is already in a Character's Inventory
+        [HttpPost]
+        public async Task<bool> CanItemBeAdded(int characterId, int itemId)
+        {
+            Character character = await _dbHelper.GetCharacter(characterId);
+
+            if (character == null)
+            {
+                return false; // if character doesn't exist, can't add item
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return false; // if character doesn't exist, can't add item
+            }
+
+            Item item = await _dbHelper.GetItem(itemId);
+
+            if (item == null)
+            {
+                return false; // if item doesn't exist, can't add item
+            }
+            if (character.Inventory.FindItem(item) != null)
+            {
+                return false; // it item is in inventory already, can't add item
+            }
+            return true; // item can be added
+        }
+
         // POST: Characters/CharacterSheet
         [HttpPost]
         [ValidateAntiForgeryToken]

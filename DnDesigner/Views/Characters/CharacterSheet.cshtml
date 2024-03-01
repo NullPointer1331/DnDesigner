@@ -849,13 +849,9 @@
                                         <div id="inventoryLinks" 
                                         class="d-flex flex-column gap-2 simple-list-example-scrollspy text-center">
                                             @{
-                                                int itemLinkNum = 0;
-                                                string itemLinkId = "item";
                                                 foreach (InventoryItem item in Model.Character.Inventory.Items)
                                                 {
-                                                    string thisLinkId = itemLinkId + itemLinkNum;
-                                                    <a class="p-1 rounded" href="#@thisLinkId">@item.Item.Name</a>
-                                                    itemLinkNum++;
+                                                    <a class="p-1 rounded" href="#@item.Item.ItemId">@item.Item.Name</a>
                                                 }
                                             }
                                         </div>
@@ -866,25 +862,29 @@
                                         class="scrollspy-example" tabindex="0">
                                             @{
                                                 int itemListNum = 0;
-                                                string itemListId = "item";
                                                 foreach (InventoryItem item in Model.Character.Inventory.Items)
                                                 {
-                                                    string thisListId = itemListId + itemListNum;
-                                                    <h4 id="@itemListId">@item.Item.Name</h4>
-                                                    <div class="input-group w-25">
-                                                        <label class="input-group-text">Quantity</label>
-                                                        <input type="number" value="@item.Quantity" min="0"
-                                                               class="form-control" aria-label="Item quantity" />                                                        
-                                                    </div>
-                                                    <h5>@item.Item.Sourcebook</h5>
-                                                    <h6>@item.Item.Traits</h6>
-                                                    <h6>Price: @item.Item.Price</h6>
-                                                    <h6>Weight: @item.Item.Weight</h6>                                                    
-                                                    if (item.Item.Attuneable)
+                                                    if (itemListNum != 0)
                                                     {
-                                                        <h6>Requires Attunement</h6>
+                                                        <hr/>
                                                     }
-                                                    <p>@item.Item.Description</p>
+                                                    <div id="@item.Item.ItemId">
+                                                        <h4>@item.Item.Name</h4>
+                                                        <div class="input-group w-25">
+                                                            <label class="input-group-text">Quantity</label>
+                                                            <input type="number" value="@item.Quantity" min="0"
+                                                                   class="form-control" aria-label="Item quantity" />                                                        
+                                                        </div>
+                                                        <h5>@item.Item.Sourcebook</h5>
+                                                        <h6>@item.Item.Traits</h6>
+                                                        <h6>Price: @item.Item.Price</h6>
+                                                        <h6>Weight: @item.Item.Weight</h6>                                                    
+                                                        @if (item.Item.Attuneable)
+                                                        {
+                                                            <h6>Requires Attunement</h6>
+                                                        }
+                                                        <p>@item.Item.Description</p>
+                                                    </div>
                                                     itemListNum++;
                                                 }
                                             }

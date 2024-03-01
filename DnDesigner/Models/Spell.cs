@@ -21,11 +21,6 @@ namespace DnDesigner.Models
         /// </summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// The source book the spell is from
-        /// </summary>
-        public string SourceString { get; set; }
-
         public Source SourceBook { get; set; }
 
         /// <summary>
@@ -90,7 +85,6 @@ namespace DnDesigner.Models
         {
             LearnedBy = new List<Spellcasting>();
             Name = "";
-            SourceString = "";
             SpellSchool = "";
             CastingTime = "";
             Range = "";

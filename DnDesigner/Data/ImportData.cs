@@ -234,7 +234,7 @@ namespace DnDesigner.Data
                         proficiencies.Add(proficiency);
                     }
                 }
-                else if (item.Traits.Contains("Weapon") && item.SourceString == "PHB")
+                else if (item.Traits.Contains("Weapon") && item.SourceBook.Initials == "PHB")
                 {
                     Proficiency proficiency = new Proficiency(item.Name, null, "weapon");
                     if (!proficiencies.Where(p => p.Name == proficiency.Name).Any())
@@ -300,7 +300,7 @@ namespace DnDesigner.Data
         {
             Spell spell = new Spell();
             spell.Name = spell5E.name;
-            spell.SourceString = spell5E.source;
+            spell.SourceBook = GetSource(spell5E.source);
             spell.SpellLevel = spell5E.level;
             if(spell5E.school == "A")
             {
@@ -402,7 +402,7 @@ namespace DnDesigner.Data
         {
             Item item = new Item();
             item.Name = item5E.name;
-            item.SourceString = item5E.source;
+            item.SourceBook = GetSource(item5E.source);
             item.Description = "";
             if (item5E.entries != null)
             {
@@ -589,7 +589,7 @@ namespace DnDesigner.Data
         {
             Race race = new Race();
             race.Name = race5E.name;
-            race.SourceString = race5E.source;
+            race.SourceBook = GetSource(race5E.source);
             race.Description = "";
             if (race5E.entries != null)
             {
@@ -730,7 +730,7 @@ namespace DnDesigner.Data
         {
             Background background = new Background();
             background.Name = background5E.name;
-            background.SourceString = background5E.source;
+            background.SourceBook = GetSource(background5E.source);
             background.Description = "";
             if (background5E.entries != null)
             {
@@ -831,7 +831,7 @@ namespace DnDesigner.Data
         {
             Class @class = new Class();
             @class.Name = class5E.name;
-            @class.SourceString = class5E.source;
+            @class.SourceBook = GetSource(class5E.source);
             @class.HitDie = class5E.hd.faces;
             if (class5E.spellcastingAbility != null)
             {
@@ -950,7 +950,6 @@ namespace DnDesigner.Data
                 }
                 description = CleanText(description);
                 ClassFeature feature = new ClassFeature(@class, feature5E.name, description, feature5E.level);
-                feature.SourceString = $"{feature5E.source}, Class, {@class.Name}";
                 if (feature.Name == "Ability Score Improvement")
                 {
                     feature.Name = "Choose Feat or Ability Score Improvement";
@@ -963,7 +962,7 @@ namespace DnDesigner.Data
         public static Subclass ConvertSubclass(Subclass5ETools subclass5E, Class @class, List<SubclassFeature5ETools> subclassFeatures)
         {
             Subclass subclass = new Subclass(@class, subclass5E.name);
-            subclass.SourceString = subclass5E.source;
+            subclass.SourceBook = GetSource(subclass5E.source);
             if (subclass5E.spellcastingAbility != null)
             {
                 Spellcasting spellcasting = new Spellcasting();
@@ -1024,6 +1023,12 @@ namespace DnDesigner.Data
             }
             return cleanText;
         }
+
+        public static Source GetSource(string name)
+        {
+            return new Source("Default", "Default", "Default");
+        }
+
         public static List<Proficiency> FindLanguages(LanguageProficiency language, List<Proficiency> proficiencies)
         {
             List<Proficiency> languages = new List<Proficiency>();

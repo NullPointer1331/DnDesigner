@@ -21,12 +21,6 @@ namespace DnDesigner.Models
         /// </summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// The feature's source
-        /// formatted as Sourcebook, Class/Subclass/Background/Race, Source name
-        /// </summary>
-        public string SourceString { get; set; }
-
         public Source SourceBook { get; set; }
 
         /// <summary>
@@ -56,10 +50,10 @@ namespace DnDesigner.Models
         /// <param name="source">The source of the feature</param>
         /// <param name="description">The feature's description</param>
         /// <param name="level">The level the feature is available at</param>
-        public Feature(string name, string description, int level, string source)
+        public Feature(string name, string description, int level, Source source)
         {
             Name = name;
-            SourceString = source;
+            SourceBook = source;
             Description = description;
             Level = level;
             Effects = new List<Effect>();
@@ -83,7 +77,7 @@ namespace DnDesigner.Models
 
         public bool Equals(Feature other)
         {
-            return Name == other.Name && SourceString == other.SourceString 
+            return Name == other.Name && SourceBook.Initials == other.SourceBook.Initials 
                 && Description == other.Description && Level == other.Level;
         }
 
@@ -94,7 +88,7 @@ namespace DnDesigner.Models
             {
                 str += $", Level {Level}";
             }
-            str += ", " + SourceString;
+            str += ", " + SourceBook.Initials;
             return str;
         }
     }
@@ -128,14 +122,20 @@ namespace DnDesigner.Models
         /// <param name="name">The name of the feature</param>
         /// <param name="description">The description of the feature</param>
         /// <param name="level">The level the feature is available at</param>
-        public ClassFeature(Class @class, string name, string description, int level) : base(name, description, level)
+        public ClassFeature(Class @class, string name, string description, int level, Source source) : base(name, description, level, source)
         {
             Class = @class;
-            SourceString = $"{Class.SourceString}, Class, {Class.Name}";
             InitialClassOnly = false;
             MulticlassOnly = false;
         }
         private ClassFeature() : base("", "", 0) { }
+
+        public override string ToString()
+        {
+			string str = base.ToString();
+            str += ", Class Feature, " + Class.Name;
+			return str;
+		}
     }
     public class SubclassFeature : Feature
     {
@@ -153,12 +153,18 @@ namespace DnDesigner.Models
         /// <param name="name">The name of the feature</param>
         /// <param name="description">The description of the feature</param>
         /// <param name="level">The level the feature is available at</param>
-        public SubclassFeature(Subclass subclass, string name, string description, int level) : base(name, description, level)
+        public SubclassFeature(Subclass subclass, string name, string description, int level, Source source) : base(name, description, level, source)
         {
             Subclass = subclass;
-            SourceString = $"{Subclass.SourceString}, Subclass, {Subclass.Name}";
         }
         private SubclassFeature() : base("", "", 0) { }
+
+        public override string ToString()
+        {
+            string str = base.ToString();
+			str += ", Subclass Feature, " + Subclass.Name;
+			return str;
+        }
     }
     public class RaceFeature : Feature
     {
@@ -176,12 +182,18 @@ namespace DnDesigner.Models
         /// <param name="name">The name of the feature</param>
         /// <param name="description">The description of the feature</param>
         /// <param name="level">The level the feature is available at</param>
-        public RaceFeature(Race race, string name, string description, int level) : base(name, description, level)
+        public RaceFeature(Race race, string name, string description, int level, Source source) : base(name, description, level, source)
         {
             Race = race;
-            SourceString = $"{Race.SourceString}, Race, {Race.Name}";
         }
         private RaceFeature() : base("", "", 0) { }
+
+        public override string ToString()
+        {
+            string str = base.ToString();
+            str += ", Race Feature, " + Race.Name;
+            return str;
+        }
     }
     public class BackgroundFeature : Feature
     {
@@ -198,12 +210,18 @@ namespace DnDesigner.Models
         /// <param name="background">The background that has this feature</param>
         /// <param name="name">The name of the feature</param>
         /// <param name="description">The description of the feature</param>
-        public BackgroundFeature(Background background, string name, string description) : base(name, description, 0)
+        public BackgroundFeature(Background background, string name, string description, Source source) : base(name, description, 0, source)
         {
             Background = background;
-            SourceString = $"{Background.SourceString}, Background, {Background.Name}";
         }
         private BackgroundFeature() : base("", "", 0) { }
+
+        public override string ToString()
+        {
+			string str = base.ToString();
+			str += ", Background Feature, " + Background.Name;
+			return str;
+		}
     }
 
     /// <summary>
@@ -221,7 +239,7 @@ namespace DnDesigner.Models
         /// </summary>
         public string Type { get; set; }
 
-        public SelectableFeature(string name, string description, int level, string source, 
+        public SelectableFeature(string name, string description, int level, Source source, 
             bool repeatable, string prerequisites, string type) 
             : base(name, description, level, source)
         {
@@ -231,6 +249,13 @@ namespace DnDesigner.Models
         }
 
         private SelectableFeature() : base("", "", 0) { }
+
+        public override string ToString()
+        {
+			string str = base.ToString();
+			str += ", " + Type;
+			return str;
+		}
     }
 
     public class CharacterFeature

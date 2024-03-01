@@ -19,11 +19,6 @@ namespace DnDesigner.Models
 		/// </summary>
 		public string Name { get; set; }
 
-		/// <summary>
-		/// The source book the class is from
-		/// </summary>
-		public string SourceString { get; set; }
-
 		public Source SourceBook { get; set; }
 
         /// <summary>
@@ -58,7 +53,6 @@ namespace DnDesigner.Models
             Subclasses = new List<Subclass>();
 			Spellcasting = null;
 			Name = "";
-			SourceString = "";
 		}
 
         /// <summary>

@@ -976,6 +976,7 @@ namespace DnDesigner.Data
             {
                 cleanText = cleanText.Replace(bannedString, "");
             }
+            cleanText = cleanText.Replace("\"", "*");
             return cleanText;
         }
 

@@ -30,8 +30,14 @@ namespace DnDesigner.Data
                 .HasOne(f => f.Feature)
                 .WithMany()
                 .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Entity<FeatureChoice>()
+                .HasMany(f => f.Features)
+                .WithMany();
             builder.Entity<EffectChoice>()
-                .HasMany(e => e.Options)
+                .HasMany(e => e.Effects)
+                .WithOne();
+            builder.Entity<GroupedEffect>()
+                .HasMany(e => e.Effects)
                 .WithOne();
             builder.Entity<ModifyAttribute>();
             builder.Entity<ModifyArmorClass>();
@@ -41,6 +47,9 @@ namespace DnDesigner.Data
                 .WithMany();
             builder.Entity<GrantAction>()
                 .HasOne(e => e.Action)
+                .WithMany();
+            builder.Entity<GrantResource>()
+                .HasOne(e => e.Resource)
                 .WithMany();
             builder.Entity<Spellcasting>()
                 .HasMany(e => e.LearnableSpells)
@@ -53,7 +62,7 @@ namespace DnDesigner.Data
         public DbSet<Choice> Choices { get; set; }
         public DbSet<Effect> Effects { get; set; }
         public DbSet<Feature> Features { get; set; }
-        public DbSet<Feat> Feats { get; set; }
+        public DbSet<SelectableFeature> SelectableFeatures { get; set; }
         public DbSet<CharacterEffect> CharacterEffects { get; set; }
         public DbSet<Proficiency> Proficiencies { get; set; }
         public DbSet<Background> Backgrounds { get; set; }
@@ -76,5 +85,8 @@ namespace DnDesigner.Data
         public DbSet<InventoryItem> InventoryItems { get; set; } 
         public DbSet<Models.Action> Actions { get; set; }
         public DbSet<CharacterAction> CharacterActions { get; set; }
+        public DbSet<Resource> Resources { get; set; }
+        public DbSet<SpellSlot> SpellSlots { get; set; }
+        public DbSet<CharacterResource> CharacterResources { get; set; }
     }
 }

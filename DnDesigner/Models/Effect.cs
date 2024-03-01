@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -59,6 +58,48 @@ namespace DnDesigner.Models
         {
             Character.CharacterEffects.Remove(this);
             Effect.RemoveEffect(Character);
+        }
+    }
+
+    /// <summary>
+    /// When applied, this effect will apply multiple effects as a group
+    /// This is useful for applying multiple effects from a single choice
+    /// </summary>
+    public class GroupedEffect : Effect
+    {
+        public List<Effect> Effects { get; set; }
+
+        public GroupedEffect(List<Effect> effects)
+        {
+            Effects = effects;
+        }
+
+        private GroupedEffect() { }
+
+        public override void ApplyEffect(Character character)
+        {
+            foreach (Effect effect in Effects)
+            {
+                effect.ApplyEffect(character);
+            }
+        }
+
+        public override void RemoveEffect(Character character)
+        {
+            foreach (Effect effect in Effects)
+            {
+                effect.RemoveEffect(character);
+            }
+        }
+
+        public override string ToString()
+        {
+            string str = "This applies the following: ";
+            foreach (Effect effect in Effects)
+            {
+                str += effect.ToString() + ", ";
+            }
+            return str;
         }
     }
 
@@ -192,6 +233,57 @@ namespace DnDesigner.Models
         public override string ToString()
         {
             return $"Grant action: {Action.Name}";
+        }
+    }
+
+    /// <summary>
+    /// When applied, this effect will grant a character a resource
+    /// </summary>
+    public class GrantResource : Effect
+    {
+        /// <summary>
+        /// The resource to grant
+        /// </summary>
+        public Resource Resource { get; set; }
+
+        /// <summary>
+        /// The formula to calculate the maximum amount of the resource
+        /// </summary>
+        public string MaxFormula { get; set; }
+
+        public GrantResource(Resource resource, string maxFormula)
+        {
+            Resource = resource;
+            MaxFormula = maxFormula;
+        }
+
+        private GrantResource() { }
+
+        public override void ApplyEffect(Character character)
+        {
+            CharacterResource? characterResource = character.GetResource(Resource.ResourceId);
+            if (characterResource == null)
+            {
+                character.Resources.Add(new CharacterResource(character, Resource, character.Calculate(MaxFormula)));
+            }
+            else
+            {
+                characterResource.MaxAmount = character.Calculate(MaxFormula);
+            }
+        }
+
+        public override void RemoveEffect(Character character)
+        {
+            CharacterResource? characterResource = character.GetResource(Resource.ResourceId);
+            if (characterResource != null)
+            {
+                character.Resources.Remove(characterResource);
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Grant Resource: {Resource.Name}";
         }
     }
 

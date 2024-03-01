@@ -204,19 +204,31 @@ namespace DnDesigner.Models
         private BackgroundFeature() : base("", "", 0) { }
     }
 
-    public class Feat : Feature
+    /// <summary>
+    /// A feature that can be selected by the player
+    /// instead of being automatically given
+    /// </summary>
+    public class SelectableFeature : Feature
     {
         public bool Repeatable { get; set; }
 
         public string Prerequisites { get; set; }
 
-        public Feat(string name, string description, int level, string source, bool repeatable, string prerequisites) : base(name, description, level, source)
+        /// <summary>
+        /// What type of feature this is, i.e. Fighting Style, Feat, etc.
+        /// </summary>
+        public string Type { get; set; }
+
+        public SelectableFeature(string name, string description, int level, string source, 
+            bool repeatable, string prerequisites, string type) 
+            : base(name, description, level, source)
         {
             Repeatable = repeatable;
             Prerequisites = prerequisites;
+            Type = type;
         }
 
-        private Feat() : base("", "", 0) { }
+        private SelectableFeature() : base("", "", 0) { }
     }
 
     public class CharacterFeature
@@ -281,10 +293,7 @@ namespace DnDesigner.Models
             foreach (Effect effect in Feature.Effects)
             {
                 CharacterEffect? existingEffect = Character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
-                if (existingEffect != null)
-                {
-                    existingEffect.RemoveEffect();
-                }
+                existingEffect?.RemoveEffect();
             }
         }
     }

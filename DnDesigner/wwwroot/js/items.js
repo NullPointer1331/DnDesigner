@@ -44,7 +44,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
 
             // create new item div
             let newListItemDiv = Create("div");
-            newListItemDiv.id = itemId;
+            newListItemDiv.id = "item" + itemId;
 
             // create new item name
             let newListItemName = Create("h4");
@@ -147,7 +147,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
 ///<param name="itemId">The unique ID number of the item</param>
 ///<returns>True if the item can be added, False if not</returns>
 function CanItemBeAdded(itemId) {
-    let inInventory = GetById(itemId);
+    let inInventory = GetById("item" + itemId);
     if (inInventory == null) {
         return true;
     }

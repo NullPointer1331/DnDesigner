@@ -849,9 +849,12 @@
                                         <div id="inventoryLinks" 
                                         class="d-flex flex-column gap-2 simple-list-example-scrollspy text-center">
                                             @{
+                                                string idAdder = "item";
+                                                string itemLink;
                                                 foreach (InventoryItem item in Model.Character.Inventory.Items)
                                                 {
-                                                    <a class="p-1 rounded" href="#@item.Item.ItemId">@item.Item.Name</a>
+                                                    itemLink = idAdder + item.Item.ItemId;
+                                                    <a class="p-1 rounded" href="#@itemLink">@item.Item.Name</a>
                                                 }
                                             }
                                         </div>
@@ -868,7 +871,8 @@
                                                     {
                                                         <hr/>
                                                     }
-                                                    <div id="@item.Item.ItemId">
+                                                    itemLink = idAdder + item.Item.ItemId;
+                                                    <div id="@itemLink">
                                                         <h4>@item.Item.Name</h4>
                                                         <div class="input-group w-25">
                                                             <label class="input-group-text">Quantity</label>

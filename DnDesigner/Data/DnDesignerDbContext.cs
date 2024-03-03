@@ -16,12 +16,40 @@ namespace DnDesigner.Data
             builder.Entity<Item>()
                 .HasMany(e => e.Effects)
                 .WithOne();
+            builder.Entity<Item>()
+                .HasOne(e => e.SourceBook)
+				.WithMany()
+				.OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<Class>()
+                .HasOne(c => c.SourceBook)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<Subclass>()
+                .HasOne(c => c.SourceBook)
+				.WithMany()
+				.OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<Subclass>()
+                .HasOne(c => c.Class)
+				.WithMany(c => c.Subclasses)
+				.OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<Race>()
+				.HasOne(r => r.SourceBook)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<Background>()
+                .HasOne(b => b.SourceBook)
+				.WithMany()
+				.OnDelete(DeleteBehavior.NoAction);
             builder.Entity<Feature>()
                 .HasMany(e => e.Effects)
                 .WithOne();
             builder.Entity<Feature>()
                 .HasMany(e => e.Choices)
                 .WithOne();
+            builder.Entity<Feature>()
+                .HasOne(e => e.SourceBook)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
             builder.Entity<SubclassFeature>()
                 .HasOne(f => f.Subclass)
                 .WithMany(s => s.Features)

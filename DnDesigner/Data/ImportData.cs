@@ -108,7 +108,7 @@ namespace DnDesigner.Data
             FeatRoot featRoot = GetFeatRoot();
             List<SelectableFeature> feats = new List<SelectableFeature>();
             SelectableFeature asi = new SelectableFeature("Ability Score Improvement", 
-                "Increase one ability score by 2, or two ability scores by 1", 0, "PHB", true, "", "Feat");
+                "Increase one ability score by 2, or two ability scores by 1", 0, GetSource("PHB"), true, "", "Feat");
             asi.Choices.Add(new EffectChoice("ASI"));
             asi.Choices.Add(new EffectChoice("ASI"));
             feats.Add(asi);
@@ -270,7 +270,7 @@ namespace DnDesigner.Data
         public static SelectableFeature ConvertFeat(Feat5ETools feat5E)
         {
             string name = feat5E.name;
-            string source = feat5E.source;
+            Source source = GetSource(feat5E.source);
             string description = "";
             if (feat5E.entries != null)
             {
@@ -600,7 +600,7 @@ namespace DnDesigner.Data
             }
             race.Description = CleanText(race.Description);
             race.Description = race.Description.Replace("\"", "");
-            RaceFeature statBonuses = new RaceFeature(race, "Racial Stat Boosts", "", 0);
+            RaceFeature statBonuses = new RaceFeature(race, "Racial Stat Boosts", "", 0, race.SourceBook);
             race.StatBonuses = "";
             if (race5E.ability != null)
             {
@@ -708,7 +708,7 @@ namespace DnDesigner.Data
             }
             if (raceProficiencies.Any())
             {
-                RaceFeature proficiencies = new RaceFeature(race, "Racial Proficiencies", "You gain proficiency in ", 0);
+                RaceFeature proficiencies = new RaceFeature(race, "Racial Proficiencies", "You gain proficiency in ", 0, race.SourceBook);
                 foreach (Proficiency proficiency in raceProficiencies)
                 {
                     proficiencies.Description += $"{proficiency.Name}, ";
@@ -804,7 +804,7 @@ namespace DnDesigner.Data
             }
             if (backgroundProficiencies.Any())
             {
-                BackgroundFeature proficiencies = new BackgroundFeature(background, "Background Proficiencies", "You gain proficiency in ");
+                BackgroundFeature proficiencies = new BackgroundFeature(background, "Background Proficiencies", "You gain proficiency in ", background.SourceBook);
                 foreach (Proficiency proficiency in backgroundProficiencies)
                 {
                     proficiencies.Description += $"{proficiency.Name}, ";
@@ -850,7 +850,7 @@ namespace DnDesigner.Data
                 @class.Spellcasting = spellcasting;
             }
 
-            ClassFeature startingProficiencies = new ClassFeature(@class, "Starting Proficiencies", "", 1);
+            ClassFeature startingProficiencies = new ClassFeature(@class, "Starting Proficiencies", "", 1, @class.SourceBook);
             List<Proficiency> classProficiencies = new List<Proficiency>();
             startingProficiencies.Description = "When gaining this class at first level, you gain proficiency in the following. ";
             if(class5E.startingProficiencies.armor != null)
@@ -949,7 +949,7 @@ namespace DnDesigner.Data
                     description += entry.ToString() + " ";
                 }
                 description = CleanText(description);
-                ClassFeature feature = new ClassFeature(@class, feature5E.name, description, feature5E.level);
+                ClassFeature feature = new ClassFeature(@class, feature5E.name, description, feature5E.level, GetSource(feature5E.source));
                 if (feature.Name == "Ability Score Improvement")
                 {
                     feature.Name = "Choose Feat or Ability Score Improvement";
@@ -979,7 +979,7 @@ namespace DnDesigner.Data
                     description += entry.ToString() + " ";
                 }
                 description = CleanText(description);
-                SubclassFeature feature = new SubclassFeature(subclass, feature5E.name, description, feature5E.level);
+                SubclassFeature feature = new SubclassFeature(subclass, feature5E.name, description, feature5E.level, GetSource(feature5E.source));
                 subclass.Features.Add(feature);
                 if(@class.SubclassLevel == 0 || feature.Level <= @class.SubclassLevel)
                 {

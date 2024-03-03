@@ -24,13 +24,9 @@ namespace DnDesigner.Models
         {
             Background background = await _context.Backgrounds.Where(b => b.BackgroundId == id)
                     .Include(b => b.Features)
-                    .ThenInclude(be => be.Effects)
+                    .Include(b => b.SourceBook)
                     .FirstOrDefaultAsync();
-            foreach (BackgroundFeature feature in background.Features)
-            {
-                await LoadEffects(feature.Effects);
-                await LoadChoices(feature.Choices);
-            }
+            await LoadFeatures(background.Features.Cast<Feature>().ToList());
             return background;
         }
 
@@ -57,6 +53,7 @@ namespace DnDesigner.Models
         {
             return  await _context.Backgrounds
                     .Include(b => b.Features)
+                    .Include(b => b.SourceBook)
                     .ToListAsync();
         }
 
@@ -133,6 +130,8 @@ namespace DnDesigner.Models
             Class @class = await _context.Classes.Where(c => c.ClassId == id)
                     .Include(c => c.Spellcasting)
                     .Include(c => c.Features)
+                    .Include(c => c.Subclasses)
+                    .Include(c => c.SourceBook)
                     .FirstOrDefaultAsync();
             await LoadFeatures(@class.Features.Cast<Feature>().ToList());
             return @class;
@@ -148,7 +147,8 @@ namespace DnDesigner.Models
                 .Include(c => c.Spellcasting)
                 .Include(c => c.Subclasses)
                 .Include(c => c.Features)
-                .ToListAsync();
+				.Include(c => c.SourceBook)
+				.ToListAsync();
         }
 
         /// <summary>
@@ -179,6 +179,7 @@ namespace DnDesigner.Models
         {
             Item item = await _context.Items.Where(i => i.ItemId == id)
                     .Include(i => i.Effects)
+                    .Include(i => i.SourceBook)
                     .FirstOrDefaultAsync();
             await LoadEffects(item.Effects);
             return item;
@@ -192,7 +193,8 @@ namespace DnDesigner.Models
         {
             List<Item> items = await _context.Items
                     .Include(i => i.Effects)
-                    .ToListAsync();
+					.Include(i => i.SourceBook)
+					.ToListAsync();
             foreach (Item item in items)
             {
                 await LoadEffects(item.Effects);
@@ -230,6 +232,7 @@ namespace DnDesigner.Models
         {
             Race race = await _context.Races.Where(r => r.RaceId == id)
                     .Include(r => r.Features)
+                    .Include(r => r.SourceBook)
                     .FirstOrDefaultAsync();
             await LoadFeatures(race.Features.Cast<Feature>().ToList());
             return race;
@@ -243,7 +246,8 @@ namespace DnDesigner.Models
         {
             return await _context.Races
                     .Include (r => r.Features)
-                    .ToListAsync();
+					.Include(r => r.SourceBook)
+					.ToListAsync();
         }
 
         /// <summary>
@@ -256,6 +260,7 @@ namespace DnDesigner.Models
             return await _context.Spells.Where(s => s.SpellId == id)
                     .Include(s => s.LearnedBy)
                     .ThenInclude(ss => ss.LearnableSpells)
+                    .Include(s => s.SourceBook)
                     .FirstOrDefaultAsync();
         }
 
@@ -268,7 +273,8 @@ namespace DnDesigner.Models
             return await _context.Spells
                     .Include(ss => ss.LearnedBy)
                     .ThenInclude(ss => ss.LearnableSpells)
-                    .ToListAsync();
+					.Include(s => s.SourceBook)
+					.ToListAsync();
         }
 
         /// <summary>
@@ -307,6 +313,8 @@ namespace DnDesigner.Models
         {
             Subclass subclass = await _context.Subclasses.Where(s => s.SubclassId == id)
                     .Include(s => s.Features)
+                    .Include(s => s.Class)
+                    .Include(s => s.SourceBook)
                     .FirstOrDefaultAsync();
             await LoadFeatures(subclass.Features.Cast<Feature>().ToList());
             return subclass;
@@ -321,7 +329,8 @@ namespace DnDesigner.Models
             return await _context.Subclasses
                     .Include(s => s.Class)
                     .Include(s => s.Features)
-                    .ToListAsync();
+					.Include(s => s.SourceBook)
+					.ToListAsync();
         }
 
         /// <summary>
@@ -332,7 +341,7 @@ namespace DnDesigner.Models
         public async Task<Feature> GetFeature(int id)
         {
             Feature feature = await _context.Features.Where(f => f.FeatureId == id)
-                    .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             await LoadFeature(feature);
             return feature;
         }
@@ -343,7 +352,8 @@ namespace DnDesigner.Models
         /// <returns>a <see cref="List{Feature}"/> with all the features from the database</returns>
         public async Task<List<Feature>> GetAllFeatures()
         {
-            List<Feature> features = await _context.Features.ToListAsync();
+            List<Feature> features = await _context.Features
+				.ToListAsync();
             await LoadFeatures(features);
             return features;
         }
@@ -385,6 +395,9 @@ namespace DnDesigner.Models
                 .Collection(f => f.Choices)
                 .LoadAsync();
             await LoadChoices(feature.Choices);
+            await _context.Entry(feature)
+				.Reference(f => f.SourceBook)
+				.LoadAsync();
             if (feature is SubclassFeature subclassFeature)
             {
                 await _context.Entry(subclassFeature)

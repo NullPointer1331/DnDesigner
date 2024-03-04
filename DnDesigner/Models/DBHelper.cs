@@ -369,6 +369,32 @@ namespace DnDesigner.Models
             return feats;
         }
 
+        public async Task<Source> GetSource(int id)
+        {
+			return await _context.Sources.Where(s => s.SourceId == id)
+				.Include(s => s.Classes)
+				.Include(s => s.Subclasses)
+                .Include(s => s.Races)
+                .Include(s => s.Backgrounds)
+                .Include(s => s.Features)
+                .Include(s => s.Spells)
+                .Include(s => s.Items)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Source>> GetAllSources()
+        {
+			return await _context.Sources
+				.Include(s => s.Classes)
+				.Include(s => s.Subclasses)
+				.Include(s => s.Races)
+				.Include(s => s.Backgrounds)
+				.Include(s => s.Features)
+				.Include(s => s.Spells)
+				.Include(s => s.Items)
+				.ToListAsync();
+		}
+
         /// <summary>
         /// Loads all the data for a list of <see cref="Feature"/>s
         /// </summary>

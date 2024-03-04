@@ -1,18 +1,82 @@
 ﻿using DnDesigner.Models.ImportModels;
 using System.Text.Json;
-using DnDesigner.Models;
 using Microsoft.IdentityModel.Tokens;
-using System;
 
-namespace DnDesigner.Data
+namespace DnDesigner.Models
 {
-    public static class ImportData
+    public class DataImporter
     {
-        #region Extraction methods
-        /// <summary>
-        /// Extracts Class Data from the 5ETools JSON files and returns it as a list of Classes
-        /// </summary>
-        public static List<Class> ExtractClasses(List<Proficiency> proficiencies)
+		#region Properties
+		public List<Class> ExistingClasses { get; set; }
+        public List<Class> NewClasses { get; set; }
+        public List<Class> Classes { get {  return ExistingClasses.Concat(NewClasses).ToList(); } }
+
+        public List<Subclass> ExistingSubclasses { get; set; }
+        public List<Subclass> NewSubclasses { get; set; }
+        public List<Subclass> Subclasses { get { return ExistingSubclasses.Concat(NewSubclasses).ToList(); } }
+
+        public List<Background> ExistingBackgrounds { get; set; }
+        public List<Background> NewBackgrounds { get; set; }
+        public List<Background> Backgrounds { get { return ExistingBackgrounds.Concat(NewBackgrounds).ToList(); } }
+
+        public List<Race> ExistingRaces { get; set; }
+        public List<Race> NewRaces { get; set; }
+        public List<Race> Races { get { return ExistingRaces.Concat(NewRaces).ToList(); } }
+
+        public List<Feature> ExistingFeatures { get; set; }
+        public List<Feature> NewFeatures { get; set; }
+        public List<Feature> Features { get { return ExistingFeatures.Concat(NewFeatures).ToList(); } }
+
+        public List<Spell> ExistingSpells { get; set; }
+        public List<Spell> NewSpells { get; set; }
+        public List<Spell> Spells { get { return ExistingSpells.Concat(NewSpells).ToList(); } }
+
+        public List<Item> ExistingItems { get; set; }
+        public List<Item> NewItems { get; set; }
+        public List<Item> Items { get { return ExistingItems.Concat(NewItems).ToList(); } }
+
+        public List<Proficiency> ExistingProficiencies { get; set; }
+        public List<Proficiency> NewProficiencies { get; set; }
+        public List<Proficiency> Proficiencies { get { return ExistingProficiencies.Concat(NewProficiencies).ToList(); } }
+
+        public List<Source> ExistingSources { get; set; }
+        public List<Source> NewSources { get; set; }
+        public List<Source> Sources { get { return ExistingSources.Concat(NewSources).ToList(); } }
+
+        public bool Overwrite { get; private set; }
+        private IDBHelper DBHelper { get; set; }
+		#endregion
+
+        public DataImporter(bool overwrite, IDBHelper dBHelper)
+        {
+			ExistingClasses = new List<Class>();
+			NewClasses = new List<Class>();
+			ExistingSubclasses = new List<Subclass>();
+			NewSubclasses = new List<Subclass>();
+			ExistingBackgrounds = new List<Background>();
+			NewBackgrounds = new List<Background>();
+			ExistingRaces = new List<Race>();
+            NewRaces = new List<Race>();
+            ExistingFeatures = new List<Feature>();
+            NewFeatures = new List<Feature>();
+            ExistingSpells = new List<Spell>();
+            NewSpells = new List<Spell>();
+            ExistingItems = new List<Item>();
+            NewItems = new List<Item>();
+            ExistingProficiencies = new List<Proficiency>();
+            NewProficiencies = new List<Proficiency>();
+            ExistingSources = new List<Source>();
+            NewSources = new List<Source>();
+
+            Overwrite = overwrite;
+            DBHelper = dBHelper;
+        }
+
+		#region Extraction methods
+		/// <summary>
+		/// Extracts Class Data from the 5ETools JSON files and returns it as a list of Classes
+		/// </summary>
+		public  List<Class> ExtractClasses(List<Proficiency> proficiencies)
         {
             List<ClassRoot> classRoots = GetClassRoot();
             List<Class> classes = new List<Class>();
@@ -38,7 +102,7 @@ namespace DnDesigner.Data
         /// Extracts Subclass Data from the 5ETools JSON files and returns it as a list of Subclasses
         /// </summary>
         /// <param name="classes">The list of Classes to tie the subclasses to</param>
-        public static List<Subclass> ExtractSubclasses(List<Class> classes)
+        public  List<Subclass> ExtractSubclasses(List<Class> classes)
         {
             List<ClassRoot> classRoots = GetClassRoot();
             List<Subclass> subclasses = new List<Subclass>();
@@ -69,7 +133,7 @@ namespace DnDesigner.Data
         /// <summary>
         /// Extracts Background Data from the 5ETools JSON files and returns it as a list of Backgrounds
         /// </summary>
-        public static List<Background> ExtractBackgrounds(List<Proficiency> proficiencies)
+        public  List<Background> ExtractBackgrounds(List<Proficiency> proficiencies)
         {
             BackgroundRoot backgroundRoot = GetBackgroundRoot();
             List<Background> backgrounds = new List<Background>();
@@ -86,7 +150,7 @@ namespace DnDesigner.Data
         /// <summary>
         /// Extracts Race Data from the 5ETools JSON files and returns it as a list of Races
         /// </summary>
-        public static List<Race> ExtractRaces(List<Proficiency> proficiencies)
+        public  List<Race> ExtractRaces(List<Proficiency> proficiencies)
         {
             RaceRoot raceRoot = GetRaceRoot();
             List<Race> races = new List<Race>();
@@ -103,7 +167,7 @@ namespace DnDesigner.Data
         /// <summary>
         /// Extracts Feat Data from the 5ETools JSON files and returns it as a list of Feats
         /// </summary>
-        public static List<SelectableFeature> ExtractFeats()
+        public  List<SelectableFeature> ExtractFeats()
         {
             FeatRoot featRoot = GetFeatRoot();
             List<SelectableFeature> feats = new List<SelectableFeature>();
@@ -125,7 +189,7 @@ namespace DnDesigner.Data
         /// <summary>
         /// Extracts Item Data from the 5ETools JSON files and returns it as a list of Items
         /// </summary>
-        public static List<Item> ExtractItems()
+        public  List<Item> ExtractItems()
         {
             ItemRoot itemRoot = GetItemRoot();
             BaseItemRoot baseItemRoot = GetBaseItemRoot();
@@ -150,7 +214,7 @@ namespace DnDesigner.Data
         /// <summary>
         /// Extracts Spell Data from the 5ETools JSON files and returns it as a list of Spells
         /// </summary>
-        public static List<Spell> ExtractSpells()
+        public  List<Spell> ExtractSpells()
         {
             List<SpellRoot> spellRoots = GetSpellRoots();
             List<Spell> spells = new List<Spell>();
@@ -174,7 +238,7 @@ namespace DnDesigner.Data
         /// Extracts Language Data from the 5ETools JSON files and returns it as a list of Proficiencies
         /// Also includes a list of hardcoded proficiencies
         /// </summary>
-        public static List<Proficiency> ExtractProficiencies(List<Item> items)
+        public  List<Proficiency> ExtractProficiencies(List<Item> items)
         {
             List<Proficiency> proficiencies = new List<Proficiency>
             {
@@ -261,13 +325,13 @@ namespace DnDesigner.Data
         #endregion
 
         #region Conversion methods
-        public static FeatRoot GetFeatRoot()
+        public  FeatRoot GetFeatRoot()
         {
             string contents = File.ReadAllText("Data\\5EToolsData\\feats.json");
             return JsonSerializer.Deserialize<FeatRoot>(contents);
         }
 
-        public static SelectableFeature ConvertFeat(Feat5ETools feat5E)
+        public  SelectableFeature ConvertFeat(Feat5ETools feat5E)
         {
             string name = feat5E.name;
             Source source = GetSource(feat5E.source);
@@ -285,7 +349,7 @@ namespace DnDesigner.Data
             return feat;
         }
 
-        public static List<SpellRoot> GetSpellRoots()
+        public  List<SpellRoot> GetSpellRoots()
         {
             List<SpellRoot> spellRoots = new List<SpellRoot>();
             foreach (string file in Directory.EnumerateFiles("Data\\5EToolsData\\spells", "*.json"))
@@ -296,7 +360,7 @@ namespace DnDesigner.Data
             return spellRoots;
             //TODO: Add to database
         }
-        public static Spell ConvertSpell(Spell5ETools spell5E)
+        public  Spell ConvertSpell(Spell5ETools spell5E)
         {
             Spell spell = new Spell();
             spell.Name = spell5E.name;
@@ -388,17 +452,17 @@ namespace DnDesigner.Data
             return spell;
         }
 
-        public static ItemRoot GetItemRoot()
+        public  ItemRoot GetItemRoot()
         {
             string contents = File.ReadAllText("Data\\5EToolsData\\items.json");
             return JsonSerializer.Deserialize<ItemRoot>(contents);
         }
-        public static BaseItemRoot GetBaseItemRoot()
+        public  BaseItemRoot GetBaseItemRoot()
         {
             string contents = File.ReadAllText("Data\\5EToolsData\\items-base.json");
             return JsonSerializer.Deserialize<BaseItemRoot>(contents);
         }
-        public static Item ConvertItem(Item5ETools item5E)
+        public  Item ConvertItem(Item5ETools item5E)
         {
             Item item = new Item();
             item.Name = item5E.name;
@@ -580,12 +644,12 @@ namespace DnDesigner.Data
             return item;
         }
 
-        public static RaceRoot GetRaceRoot()
+        public  RaceRoot GetRaceRoot()
         {
             string contents = File.ReadAllText("Data\\5EToolsData\\races.json");
             return JsonSerializer.Deserialize<RaceRoot>(contents);
         }
-        public static Race ConvertRace(Race5ETools race5E, List<Proficiency> allProficiencies)
+        public  Race ConvertRace(Race5ETools race5E, List<Proficiency> allProficiencies)
         {
             Race race = new Race();
             race.Name = race5E.name;
@@ -721,12 +785,12 @@ namespace DnDesigner.Data
             return race;
         }
 
-        public static BackgroundRoot GetBackgroundRoot()
+        public  BackgroundRoot GetBackgroundRoot()
         {
             string contents = File.ReadAllText("Data\\5EToolsData\\backgrounds.json");
             return JsonSerializer.Deserialize<BackgroundRoot>(contents);
         }
-        public static Background ConvertBackground(Background5ETools background5E, List<Proficiency> allProficiencies)
+        public  Background ConvertBackground(Background5ETools background5E, List<Proficiency> allProficiencies)
         {
             Background background = new Background();
             background.Name = background5E.name;
@@ -817,7 +881,7 @@ namespace DnDesigner.Data
             return background;
         }
 
-        public static List<ClassRoot> GetClassRoot()
+        public  List<ClassRoot> GetClassRoot()
         {
             List<ClassRoot> classRoots = new List<ClassRoot>();
             foreach (string file in Directory.EnumerateFiles("Data\\5EToolsData\\class", "*.json"))
@@ -827,7 +891,7 @@ namespace DnDesigner.Data
             }
             return classRoots;
         }
-        public static Class ConvertClass(Class5ETools class5E, List<ClassFeature5ETools> classFeatures, List<Proficiency> allProficiencies)
+        public  Class ConvertClass(Class5ETools class5E, List<ClassFeature5ETools> classFeatures, List<Proficiency> allProficiencies)
         {
             Class @class = new Class();
             @class.Name = class5E.name;
@@ -959,7 +1023,7 @@ namespace DnDesigner.Data
             }
             return @class;
         }
-        public static Subclass ConvertSubclass(Subclass5ETools subclass5E, Class @class, List<SubclassFeature5ETools> subclassFeatures)
+        public  Subclass ConvertSubclass(Subclass5ETools subclass5E, Class @class, List<SubclassFeature5ETools> subclassFeatures)
         {
             Subclass subclass = new Subclass(@class, subclass5E.name);
             subclass.SourceBook = GetSource(subclass5E.source);
@@ -992,7 +1056,19 @@ namespace DnDesigner.Data
         #endregion
 
         #region Helper methods
-        public static string CleanText(string text)
+        public async void InitializeData()
+        {
+            ExistingBackgrounds = await DBHelper.GetAllBackgrounds();
+            ExistingClasses = await DBHelper.GetAllClasses();
+            ExistingFeatures = await DBHelper.GetAllFeatures();
+            ExistingItems = await DBHelper.GetAllItems();
+            ExistingRaces = await DBHelper.GetAllRaces();
+            ExistingSpells = await DBHelper.GetAllSpells();
+            ExistingSubclasses = await DBHelper.GetAllSubclasses();
+            ExistingProficiencies = await DBHelper.GetAllProficiencies();
+            ExistingSources = await DBHelper.GetAllSources();
+        }
+        public  string CleanText(string text)
         {
             if(text.IsNullOrEmpty())
             {
@@ -1007,11 +1083,11 @@ namespace DnDesigner.Data
                 {
                     mutableword = string.Concat(mutableword.AsSpan(0, mutableword.IndexOf("\"")), " ", mutableword.AsSpan(mutableword.LastIndexOf("\"") + 1));
                 }
-                if (mutableword.Contains("|"))
+                if (mutableword.Contains('|'))
                 {
                     mutableword = mutableword.Substring(0, mutableword.IndexOf("|"));
                 }
-                if (!mutableword.Contains("@"))
+                if (!mutableword.Contains('@'))
                 {
                     cleanText += $"{mutableword} ";
                 }
@@ -1024,12 +1100,13 @@ namespace DnDesigner.Data
             return cleanText;
         }
 
-        public static Source GetSource(string name)
+        public Source GetSource(string name)
         {
-            return new Source("Default", "Default", "Default");
+            Source? source = Sources.Where(s => s.Name == name || s.Initials == name).FirstOrDefault();
+            return source ?? new Source(name, name, "Official");
         }
 
-        public static List<Proficiency> FindLanguages(LanguageProficiency language, List<Proficiency> proficiencies)
+        public  List<Proficiency> FindLanguages(LanguageProficiency language, List<Proficiency> proficiencies)
         {
             List<Proficiency> languages = new List<Proficiency>();
             if (language.auran.HasValue && language.auran.Value)
@@ -1090,7 +1167,7 @@ namespace DnDesigner.Data
             }
             return languages;
         }
-        public static List<Proficiency> FindSkills(SkillProficiency skill, List<Proficiency> proficiencies)
+        public  List<Proficiency> FindSkills(SkillProficiency skill, List<Proficiency> proficiencies)
         {
             List<Proficiency> skills = new List<Proficiency>();
 
@@ -1176,7 +1253,7 @@ namespace DnDesigner.Data
             }
             return skills;
         }
-        public static List<Proficiency> FindTools(ToolProficiency tool, List<Proficiency> proficiencies)
+        public  List<Proficiency> FindTools(ToolProficiency tool, List<Proficiency> proficiencies)
         {
             List<Proficiency> tools = new List<Proficiency>();
             if (tool.choose != null)
@@ -1221,11 +1298,11 @@ namespace DnDesigner.Data
 
             return tools;
         }
-        public static Proficiency? FindProficiency(string proficiencyName, List<Proficiency> proficiencies)
+        public  Proficiency? FindProficiency(string proficiencyName, List<Proficiency> proficiencies)
         {
             return proficiencies.Where(p => p.Name.ToLower().Contains(proficiencyName.Trim().ToLower())).FirstOrDefault();
         }
-        public static string ParseTraits(string traits)
+        public  string ParseTraits(string traits)
         {
             string allTraits = "";
             if (traits != null)
@@ -1293,7 +1370,7 @@ namespace DnDesigner.Data
             }
             return allTraits;
         }
-        public static string ParseDamageType(string damageType)
+        public  string ParseDamageType(string damageType)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>
             {

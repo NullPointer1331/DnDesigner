@@ -19,7 +19,6 @@ namespace DnDesigner.Models
 		/// </summary>
 		public string Name { get; set; }
 
-		[ForeignKey("SourceId")]
 		public Source SourceBook { get; set; }
 
         /// <summary>

@@ -1,13 +1,25 @@
-﻿namespace DnDesigner.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DnDesigner.Models
 {
     public class Source
     {
+        [Key]
         public int SourceId { get; set; }
 
+        /// <summary>
+        /// The name of the source 
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// The initials of the source 
+        /// </summary>
         public string Initials { get; set; }
 
+        /// <summary>
+        /// The type of source, can be Official, Homebrew, or UA
+        /// </summary>
         public string Type { get; set; }
 
         public List<Class> Classes { get; set; }

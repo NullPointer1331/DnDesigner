@@ -80,14 +80,15 @@ namespace DnDesigner.Controllers
             _context.Actions.RemoveRange(_context.Actions);
             _context.Features.RemoveRange(_context.Features);
 
-            List<Item> items = ImportData.ExtractItems();
-            List<Proficiency> proficiencies = ImportData.ExtractProficiencies(items);
-            List<Spell> spells = ImportData.ExtractSpells(); 
-            List<Background> backgrounds = ImportData.ExtractBackgrounds(proficiencies);
-            List<Race> races = ImportData.ExtractRaces(proficiencies);
-            List<Class> classes = ImportData.ExtractClasses(proficiencies); 
-            List<Subclass> subclasses = ImportData.ExtractSubclasses(classes); 
-            List<SelectableFeature> feats = ImportData.ExtractFeats();
+            /*
+            List<Item> items = DataImporter.ExtractItems();
+            List<Proficiency> proficiencies = DataImporter.ExtractProficiencies(items);
+            List<Spell> spells = DataImporter.ExtractSpells(); 
+            List<Background> backgrounds = DataImporter.ExtractBackgrounds(proficiencies);
+            List<Race> races = DataImporter.ExtractRaces(proficiencies);
+            List<Class> classes = DataImporter.ExtractClasses(proficiencies); 
+            List<Subclass> subclasses = DataImporter.ExtractSubclasses(classes); 
+            List<SelectableFeature> feats = DataImporter.ExtractFeats();
 
             _context.SelectableFeatures.AddRange(feats);
             _context.Proficiencies.AddRange(proficiencies);
@@ -97,7 +98,7 @@ namespace DnDesigner.Controllers
             _context.Races.AddRange(races);
             _context.Classes.AddRange(classes);
             _context.Subclasses.AddRange(subclasses);
-            
+            */
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
         }

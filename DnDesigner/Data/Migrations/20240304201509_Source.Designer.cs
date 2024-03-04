@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DnDesigner.Migrations
 {
     [DbContext(typeof(DnDesignerDbContext))]
-    [Migration("20240303190654_Sources")]
-    partial class Sources
+    [Migration("20240304201509_Source")]
+    partial class Source
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,17 +106,12 @@ namespace DnDesigner.Migrations
                     b.Property<int>("SourceBookSourceId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SourceId")
-                        .HasColumnType("int");
-
                     b.Property<int>("StarterGold")
                         .HasColumnType("int");
 
                     b.HasKey("BackgroundId");
 
                     b.HasIndex("SourceBookSourceId");
-
-                    b.HasIndex("SourceId");
 
                     b.ToTable("Backgrounds");
                 });
@@ -478,10 +473,7 @@ namespace DnDesigner.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SourceId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SourceId1")
+                    b.Property<int>("SourceBookSourceId")
                         .HasColumnType("int");
 
                     b.Property<int?>("SpellcastingId")
@@ -492,9 +484,7 @@ namespace DnDesigner.Migrations
 
                     b.HasKey("ClassId");
 
-                    b.HasIndex("SourceId");
-
-                    b.HasIndex("SourceId1");
+                    b.HasIndex("SourceBookSourceId");
 
                     b.HasIndex("SpellcastingId");
 
@@ -568,14 +558,9 @@ namespace DnDesigner.Migrations
                     b.Property<int>("SourceBookSourceId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SourceId")
-                        .HasColumnType("int");
-
                     b.HasKey("FeatureId");
 
                     b.HasIndex("SourceBookSourceId");
-
-                    b.HasIndex("SourceId");
 
                     b.ToTable("Features");
 
@@ -676,9 +661,6 @@ namespace DnDesigner.Migrations
                     b.Property<int>("SourceBookSourceId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SourceId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Traits")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -689,8 +671,6 @@ namespace DnDesigner.Migrations
                     b.HasKey("ItemId");
 
                     b.HasIndex("SourceBookSourceId");
-
-                    b.HasIndex("SourceId");
 
                     b.ToTable("Items");
                 });
@@ -742,9 +722,6 @@ namespace DnDesigner.Migrations
                     b.Property<int>("SourceBookSourceId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SourceId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Speed")
                         .HasColumnType("int");
 
@@ -755,8 +732,6 @@ namespace DnDesigner.Migrations
                     b.HasKey("RaceId");
 
                     b.HasIndex("SourceBookSourceId");
-
-                    b.HasIndex("SourceId");
 
                     b.ToTable("Races");
                 });
@@ -814,7 +789,7 @@ namespace DnDesigner.Migrations
 
                     b.HasKey("SourceId");
 
-                    b.ToTable("Source");
+                    b.ToTable("Sources");
                 });
 
             modelBuilder.Entity("DnDesigner.Models.Spell", b =>
@@ -924,9 +899,6 @@ namespace DnDesigner.Migrations
                     b.Property<int>("SourceBookSourceId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SourceId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SpellcastingId")
                         .HasColumnType("int");
 
@@ -935,8 +907,6 @@ namespace DnDesigner.Migrations
                     b.HasIndex("ClassId");
 
                     b.HasIndex("SourceBookSourceId");
-
-                    b.HasIndex("SourceId");
 
                     b.HasIndex("SpellcastingId");
 
@@ -1405,14 +1375,10 @@ namespace DnDesigner.Migrations
             modelBuilder.Entity("DnDesigner.Models.Background", b =>
                 {
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
-                        .WithMany()
+                        .WithMany("Backgrounds")
                         .HasForeignKey("SourceBookSourceId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Source", null)
-                        .WithMany("Backgrounds")
-                        .HasForeignKey("SourceId");
 
                     b.Navigation("SourceBook");
                 });
@@ -1603,14 +1569,10 @@ namespace DnDesigner.Migrations
             modelBuilder.Entity("DnDesigner.Models.Class", b =>
                 {
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
-                        .WithMany()
-                        .HasForeignKey("SourceId")
+                        .WithMany("Classes")
+                        .HasForeignKey("SourceBookSourceId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Source", null)
-                        .WithMany("Classes")
-                        .HasForeignKey("SourceId1");
 
                     b.HasOne("DnDesigner.Models.Spellcasting", "Spellcasting")
                         .WithMany()
@@ -1643,14 +1605,10 @@ namespace DnDesigner.Migrations
             modelBuilder.Entity("DnDesigner.Models.Feature", b =>
                 {
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
-                        .WithMany()
+                        .WithMany("Features")
                         .HasForeignKey("SourceBookSourceId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Source", null)
-                        .WithMany("Features")
-                        .HasForeignKey("SourceId");
 
                     b.Navigation("SourceBook");
                 });
@@ -1688,14 +1646,10 @@ namespace DnDesigner.Migrations
             modelBuilder.Entity("DnDesigner.Models.Item", b =>
                 {
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
-                        .WithMany()
+                        .WithMany("Items")
                         .HasForeignKey("SourceBookSourceId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Source", null)
-                        .WithMany("Items")
-                        .HasForeignKey("SourceId");
 
                     b.Navigation("SourceBook");
                 });
@@ -1703,14 +1657,10 @@ namespace DnDesigner.Migrations
             modelBuilder.Entity("DnDesigner.Models.Race", b =>
                 {
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
-                        .WithMany()
+                        .WithMany("Races")
                         .HasForeignKey("SourceBookSourceId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Source", null)
-                        .WithMany("Races")
-                        .HasForeignKey("SourceId");
 
                     b.Navigation("SourceBook");
                 });
@@ -1735,14 +1685,10 @@ namespace DnDesigner.Migrations
                         .IsRequired();
 
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
-                        .WithMany()
+                        .WithMany("Subclasses")
                         .HasForeignKey("SourceBookSourceId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("DnDesigner.Models.Source", null)
-                        .WithMany("Subclasses")
-                        .HasForeignKey("SourceId");
 
                     b.HasOne("DnDesigner.Models.Spellcasting", "Spellcasting")
                         .WithMany()

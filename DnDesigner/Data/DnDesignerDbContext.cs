@@ -18,15 +18,15 @@ namespace DnDesigner.Data
                 .WithOne();
             builder.Entity<Item>()
                 .HasOne(e => e.SourceBook)
-				.WithMany()
+				.WithMany(s => s.Items)
 				.OnDelete(DeleteBehavior.NoAction);
             builder.Entity<Class>()
                 .HasOne(c => c.SourceBook)
-                .WithMany()
+                .WithMany(s => s.Classes)
                 .OnDelete(DeleteBehavior.NoAction);
             builder.Entity<Subclass>()
                 .HasOne(c => c.SourceBook)
-				.WithMany()
+				.WithMany(s => s.Subclasses)
 				.OnDelete(DeleteBehavior.NoAction);
             builder.Entity<Subclass>()
                 .HasOne(c => c.Class)
@@ -34,11 +34,11 @@ namespace DnDesigner.Data
 				.OnDelete(DeleteBehavior.NoAction);
             builder.Entity<Race>()
 				.HasOne(r => r.SourceBook)
-                .WithMany()
+                .WithMany(s => s.Races)
                 .OnDelete(DeleteBehavior.NoAction);
             builder.Entity<Background>()
                 .HasOne(b => b.SourceBook)
-				.WithMany()
+				.WithMany(s => s.Backgrounds)
 				.OnDelete(DeleteBehavior.NoAction);
             builder.Entity<Feature>()
                 .HasMany(e => e.Effects)
@@ -48,7 +48,7 @@ namespace DnDesigner.Data
                 .WithOne();
             builder.Entity<Feature>()
                 .HasOne(e => e.SourceBook)
-                .WithMany()
+                .WithMany(s => s.Features)
                 .OnDelete(DeleteBehavior.NoAction);
             builder.Entity<SubclassFeature>()
                 .HasOne(f => f.Subclass)
@@ -87,6 +87,7 @@ namespace DnDesigner.Data
                 .WithMany();
             base.OnModelCreating(builder);
         }
+        public DbSet<Source> Sources { get; set; }
         public DbSet<Choice> Choices { get; set; }
         public DbSet<Effect> Effects { get; set; }
         public DbSet<Feature> Features { get; set; }

@@ -5,7 +5,7 @@
 namespace DnDesigner.Migrations
 {
     /// <inheritdoc />
-    public partial class Sources : Migration
+    public partial class Source : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,12 +50,6 @@ namespace DnDesigner.Migrations
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "SourceId",
-                table: "Subclasses",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddColumn<int>(
                 name: "SourceBookSourceId",
                 table: "Spells",
                 type: "int",
@@ -70,23 +64,11 @@ namespace DnDesigner.Migrations
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "SourceId",
-                table: "Races",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddColumn<int>(
                 name: "SourceBookSourceId",
                 table: "Items",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "SourceId",
-                table: "Items",
-                type: "int",
-                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "SourceBookSourceId",
@@ -96,23 +78,11 @@ namespace DnDesigner.Migrations
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "SourceId",
-                table: "Features",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "SourceId",
+                name: "SourceBookSourceId",
                 table: "Classes",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "SourceId1",
-                table: "Classes",
-                type: "int",
-                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "SourceBookSourceId",
@@ -120,15 +90,9 @@ namespace DnDesigner.Migrations
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "SourceId",
-                table: "Backgrounds",
-                type: "int",
-                nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Source",
+                name: "Sources",
                 columns: table => new
                 {
                     SourceId = table.Column<int>(type: "int", nullable: false)
@@ -139,18 +103,13 @@ namespace DnDesigner.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Source", x => x.SourceId);
+                    table.PrimaryKey("PK_Sources", x => x.SourceId);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subclasses_SourceBookSourceId",
                 table: "Subclasses",
                 column: "SourceBookSourceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subclasses_SourceId",
-                table: "Subclasses",
-                column: "SourceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Spells_SourceBookSourceId",
@@ -163,19 +122,9 @@ namespace DnDesigner.Migrations
                 column: "SourceBookSourceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Races_SourceId",
-                table: "Races",
-                column: "SourceId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Items_SourceBookSourceId",
                 table: "Items",
                 column: "SourceBookSourceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_SourceId",
-                table: "Items",
-                column: "SourceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Features_SourceBookSourceId",
@@ -183,105 +132,55 @@ namespace DnDesigner.Migrations
                 column: "SourceBookSourceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Features_SourceId",
-                table: "Features",
-                column: "SourceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Classes_SourceId",
+                name: "IX_Classes_SourceBookSourceId",
                 table: "Classes",
-                column: "SourceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Classes_SourceId1",
-                table: "Classes",
-                column: "SourceId1");
+                column: "SourceBookSourceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Backgrounds_SourceBookSourceId",
                 table: "Backgrounds",
                 column: "SourceBookSourceId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Backgrounds_SourceId",
-                table: "Backgrounds",
-                column: "SourceId");
-
             migrationBuilder.AddForeignKey(
-                name: "FK_Backgrounds_Source_SourceBookSourceId",
+                name: "FK_Backgrounds_Sources_SourceBookSourceId",
                 table: "Backgrounds",
                 column: "SourceBookSourceId",
-                principalTable: "Source",
+                principalTable: "Sources",
                 principalColumn: "SourceId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Backgrounds_Source_SourceId",
-                table: "Backgrounds",
-                column: "SourceId",
-                principalTable: "Source",
-                principalColumn: "SourceId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Classes_Source_SourceId",
+                name: "FK_Classes_Sources_SourceBookSourceId",
                 table: "Classes",
-                column: "SourceId",
-                principalTable: "Source",
+                column: "SourceBookSourceId",
+                principalTable: "Sources",
                 principalColumn: "SourceId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Classes_Source_SourceId1",
-                table: "Classes",
-                column: "SourceId1",
-                principalTable: "Source",
-                principalColumn: "SourceId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Features_Source_SourceBookSourceId",
+                name: "FK_Features_Sources_SourceBookSourceId",
                 table: "Features",
                 column: "SourceBookSourceId",
-                principalTable: "Source",
+                principalTable: "Sources",
                 principalColumn: "SourceId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Features_Source_SourceId",
-                table: "Features",
-                column: "SourceId",
-                principalTable: "Source",
-                principalColumn: "SourceId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Items_Source_SourceBookSourceId",
+                name: "FK_Items_Sources_SourceBookSourceId",
                 table: "Items",
                 column: "SourceBookSourceId",
-                principalTable: "Source",
+                principalTable: "Sources",
                 principalColumn: "SourceId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Items_Source_SourceId",
-                table: "Items",
-                column: "SourceId",
-                principalTable: "Source",
-                principalColumn: "SourceId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Races_Source_SourceBookSourceId",
+                name: "FK_Races_Sources_SourceBookSourceId",
                 table: "Races",
                 column: "SourceBookSourceId",
-                principalTable: "Source",
+                principalTable: "Sources",
                 principalColumn: "SourceId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Races_Source_SourceId",
-                table: "Races",
-                column: "SourceId",
-                principalTable: "Source",
-                principalColumn: "SourceId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Spells_Source_SourceBookSourceId",
+                name: "FK_Spells_Sources_SourceBookSourceId",
                 table: "Spells",
                 column: "SourceBookSourceId",
-                principalTable: "Source",
+                principalTable: "Sources",
                 principalColumn: "SourceId",
                 onDelete: ReferentialAction.Cascade);
 
@@ -293,17 +192,10 @@ namespace DnDesigner.Migrations
                 principalColumn: "ClassId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Subclasses_Source_SourceBookSourceId",
+                name: "FK_Subclasses_Sources_SourceBookSourceId",
                 table: "Subclasses",
                 column: "SourceBookSourceId",
-                principalTable: "Source",
-                principalColumn: "SourceId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Subclasses_Source_SourceId",
-                table: "Subclasses",
-                column: "SourceId",
-                principalTable: "Source",
+                principalTable: "Sources",
                 principalColumn: "SourceId");
         }
 
@@ -311,47 +203,27 @@ namespace DnDesigner.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Backgrounds_Source_SourceBookSourceId",
+                name: "FK_Backgrounds_Sources_SourceBookSourceId",
                 table: "Backgrounds");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Backgrounds_Source_SourceId",
-                table: "Backgrounds");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Classes_Source_SourceId",
+                name: "FK_Classes_Sources_SourceBookSourceId",
                 table: "Classes");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Classes_Source_SourceId1",
-                table: "Classes");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Features_Source_SourceBookSourceId",
+                name: "FK_Features_Sources_SourceBookSourceId",
                 table: "Features");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Features_Source_SourceId",
-                table: "Features");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Items_Source_SourceBookSourceId",
+                name: "FK_Items_Sources_SourceBookSourceId",
                 table: "Items");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Items_Source_SourceId",
-                table: "Items");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Races_Source_SourceBookSourceId",
+                name: "FK_Races_Sources_SourceBookSourceId",
                 table: "Races");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Races_Source_SourceId",
-                table: "Races");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Spells_Source_SourceBookSourceId",
+                name: "FK_Spells_Sources_SourceBookSourceId",
                 table: "Spells");
 
             migrationBuilder.DropForeignKey(
@@ -359,22 +231,14 @@ namespace DnDesigner.Migrations
                 table: "Subclasses");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Subclasses_Source_SourceBookSourceId",
-                table: "Subclasses");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Subclasses_Source_SourceId",
+                name: "FK_Subclasses_Sources_SourceBookSourceId",
                 table: "Subclasses");
 
             migrationBuilder.DropTable(
-                name: "Source");
+                name: "Sources");
 
             migrationBuilder.DropIndex(
                 name: "IX_Subclasses_SourceBookSourceId",
-                table: "Subclasses");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Subclasses_SourceId",
                 table: "Subclasses");
 
             migrationBuilder.DropIndex(
@@ -386,15 +250,7 @@ namespace DnDesigner.Migrations
                 table: "Races");
 
             migrationBuilder.DropIndex(
-                name: "IX_Races_SourceId",
-                table: "Races");
-
-            migrationBuilder.DropIndex(
                 name: "IX_Items_SourceBookSourceId",
-                table: "Items");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Items_SourceId",
                 table: "Items");
 
             migrationBuilder.DropIndex(
@@ -402,31 +258,15 @@ namespace DnDesigner.Migrations
                 table: "Features");
 
             migrationBuilder.DropIndex(
-                name: "IX_Features_SourceId",
-                table: "Features");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Classes_SourceId",
-                table: "Classes");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Classes_SourceId1",
+                name: "IX_Classes_SourceBookSourceId",
                 table: "Classes");
 
             migrationBuilder.DropIndex(
                 name: "IX_Backgrounds_SourceBookSourceId",
                 table: "Backgrounds");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Backgrounds_SourceId",
-                table: "Backgrounds");
-
             migrationBuilder.DropColumn(
                 name: "SourceBookSourceId",
-                table: "Subclasses");
-
-            migrationBuilder.DropColumn(
-                name: "SourceId",
                 table: "Subclasses");
 
             migrationBuilder.DropColumn(
@@ -438,15 +278,7 @@ namespace DnDesigner.Migrations
                 table: "Races");
 
             migrationBuilder.DropColumn(
-                name: "SourceId",
-                table: "Races");
-
-            migrationBuilder.DropColumn(
                 name: "SourceBookSourceId",
-                table: "Items");
-
-            migrationBuilder.DropColumn(
-                name: "SourceId",
                 table: "Items");
 
             migrationBuilder.DropColumn(
@@ -454,23 +286,11 @@ namespace DnDesigner.Migrations
                 table: "Features");
 
             migrationBuilder.DropColumn(
-                name: "SourceId",
-                table: "Features");
-
-            migrationBuilder.DropColumn(
-                name: "SourceId",
-                table: "Classes");
-
-            migrationBuilder.DropColumn(
-                name: "SourceId1",
+                name: "SourceBookSourceId",
                 table: "Classes");
 
             migrationBuilder.DropColumn(
                 name: "SourceBookSourceId",
-                table: "Backgrounds");
-
-            migrationBuilder.DropColumn(
-                name: "SourceId",
                 table: "Backgrounds");
 
             migrationBuilder.AddColumn<string>(

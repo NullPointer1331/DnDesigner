@@ -1374,7 +1374,6 @@ namespace DnDesigner.Migrations
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
                         .WithMany("Backgrounds")
                         .HasForeignKey("SourceBookSourceId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("SourceBook");
@@ -1568,7 +1567,6 @@ namespace DnDesigner.Migrations
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
                         .WithMany("Classes")
                         .HasForeignKey("SourceBookSourceId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("DnDesigner.Models.Spellcasting", "Spellcasting")
@@ -1604,7 +1602,6 @@ namespace DnDesigner.Migrations
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
                         .WithMany("Features")
                         .HasForeignKey("SourceBookSourceId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("SourceBook");
@@ -1645,7 +1642,6 @@ namespace DnDesigner.Migrations
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
                         .WithMany("Items")
                         .HasForeignKey("SourceBookSourceId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("SourceBook");
@@ -1656,7 +1652,6 @@ namespace DnDesigner.Migrations
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
                         .WithMany("Races")
                         .HasForeignKey("SourceBookSourceId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("SourceBook");
@@ -1678,13 +1673,11 @@ namespace DnDesigner.Migrations
                     b.HasOne("DnDesigner.Models.Class", "Class")
                         .WithMany("Subclasses")
                         .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("DnDesigner.Models.Source", "SourceBook")
                         .WithMany("Subclasses")
                         .HasForeignKey("SourceBookSourceId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("DnDesigner.Models.Spellcasting", "Spellcasting")

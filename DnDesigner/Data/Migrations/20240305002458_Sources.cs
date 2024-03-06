@@ -5,7 +5,7 @@
 namespace DnDesigner.Migrations
 {
     /// <inheritdoc />
-    public partial class Source : Migration
+    public partial class Sources : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

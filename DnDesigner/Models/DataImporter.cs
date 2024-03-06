@@ -70,6 +70,8 @@ namespace DnDesigner.Models
 
             Overwrite = overwrite;
             DBHelper = dBHelper;
+
+            InitializeData();
         }
 
 		#region Extraction methods
@@ -1056,7 +1058,7 @@ namespace DnDesigner.Models
         #endregion
 
         #region Helper methods
-        public async void InitializeData()
+        private async void InitializeData()
         {
             ExistingBackgrounds = await DBHelper.GetAllBackgrounds();
             ExistingClasses = await DBHelper.GetAllClasses();

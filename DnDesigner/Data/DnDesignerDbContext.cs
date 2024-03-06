@@ -19,27 +19,27 @@ namespace DnDesigner.Data
             builder.Entity<Item>()
                 .HasOne(e => e.SourceBook)
 				.WithMany(s => s.Items)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.ClientSetNull);
             builder.Entity<Class>()
                 .HasOne(c => c.SourceBook)
                 .WithMany(s => s.Classes)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.ClientSetNull);
             builder.Entity<Subclass>()
                 .HasOne(c => c.SourceBook)
 				.WithMany(s => s.Subclasses)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.ClientSetNull);
             builder.Entity<Subclass>()
                 .HasOne(c => c.Class)
 				.WithMany(c => c.Subclasses)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.ClientSetNull);
             builder.Entity<Race>()
 				.HasOne(r => r.SourceBook)
                 .WithMany(s => s.Races)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.ClientSetNull);
             builder.Entity<Background>()
                 .HasOne(b => b.SourceBook)
 				.WithMany(s => s.Backgrounds)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.ClientSetNull);
             builder.Entity<Feature>()
                 .HasMany(e => e.Effects)
                 .WithOne();
@@ -49,7 +49,7 @@ namespace DnDesigner.Data
             builder.Entity<Feature>()
                 .HasOne(e => e.SourceBook)
                 .WithMany(s => s.Features)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.ClientSetNull);
             builder.Entity<SubclassFeature>()
                 .HasOne(f => f.Subclass)
                 .WithMany(s => s.Features)

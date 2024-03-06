@@ -34,7 +34,7 @@ namespace DnDesigner.Controllers
             }
         }
 
-        // GET: Characters/Details/5
+        // GET: Characters/Details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Characters == null)
@@ -500,7 +500,7 @@ namespace DnDesigner.Controllers
             return View("FeatureChoices", featureChoiceViewModel);
         }
 
-        // GET: Characters/Edit/5
+        // GET: Characters/CharacterSheet
         public async Task<IActionResult> CharacterSheet(int id)
         {
             Character character = await _dbHelper.GetCharacter(id);
@@ -513,12 +513,69 @@ namespace DnDesigner.Controllers
             {
                 return Unauthorized();
             }
-            return View(character);
+
+            List<Item> allItems = await _dbHelper.GetAllItems();
+            CharacterSheetViewModel characterSheetViewModel = new CharacterSheetViewModel();
+            characterSheetViewModel.Character = character;
+            characterSheetViewModel.AllItems = allItems;
+            return View(characterSheetViewModel);
         }
 
-        // POST: Characters/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Add Item to Character Inventory
+        [HttpPost]
+        public async Task AddItem(int characterId, int itemId, int quantity)
+        {
+            Character character = await _dbHelper.GetCharacter(characterId);
+
+            if (character == null)
+            {
+                return;
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return;
+            }
+
+            Item item = await _dbHelper.GetItem(itemId);
+
+            if (item == null)
+            {
+                return;
+            }
+            character.Inventory.AddItem(item, quantity);
+            await _context.SaveChangesAsync();
+            return;
+        }
+
+        // Checks if an Item is already in a Character's Inventory
+        [HttpPost]
+        public async Task<bool> CanItemBeAdded(int characterId, int itemId)
+        {
+            Character character = await _dbHelper.GetCharacter(characterId);
+
+            if (character == null)
+            {
+                return false; // if character doesn't exist, can't add item
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return false; // if character doesn't exist, can't add item
+            }
+
+            Item item = await _dbHelper.GetItem(itemId);
+
+            if (item == null)
+            {
+                return false; // if item doesn't exist, can't add item
+            }
+            if (character.Inventory.FindItem(item) != null)
+            {
+                return false; // it item is in inventory already, can't add item
+            }
+            return true; // item can be added
+        }
+
+        // POST: Characters/CharacterSheet
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CharacterSheet(int id, Character character)
@@ -553,7 +610,7 @@ namespace DnDesigner.Controllers
             return View(character);
         }
 
-        // GET: Characters/Delete/5
+        // GET: Characters/Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Characters == null)
@@ -570,7 +627,7 @@ namespace DnDesigner.Controllers
             return View(character);
         }
 
-        // POST: Characters/Delete/5
+        // POST: Characters/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

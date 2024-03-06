@@ -1099,8 +1099,13 @@ namespace DnDesigner.Models
             {
                 cleanText = cleanText.Replace(bannedString, "");
             }
+<<<<<<< HEAD:DnDesigner/Models/DataImporter.cs
 			cleanText = cleanText.Replace("\"", "*");
 			return cleanText;
+=======
+            cleanText = cleanText.Replace("\"", "*");
+            return cleanText;
+>>>>>>> main:DnDesigner/Data/ImportData.cs
         }
 
         public Source GetSource(string name)

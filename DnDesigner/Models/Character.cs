@@ -1199,4 +1199,11 @@ namespace DnDesigner.Models
         /// </summary>
         public Dictionary<int, int> ChoiceValues { get; set; }
     }
+
+    public class CharacterSheetViewModel
+    {
+        public Character Character { get; set; }
+
+        public List<Item> AllItems { get; set; }
+    }
 }

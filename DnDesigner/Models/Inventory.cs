@@ -316,15 +316,18 @@ namespace DnDesigner.Models
         /// <param name="quantity">How many of the item</param>
         public void AddItem(Item item, int quantity)
         {
-            InventoryItem? inventoryItem = FindItem(item);
-            if(inventoryItem != null)
+            if(quantity > 0)
             {
-                inventoryItem.Quantity += quantity;
-            }
-            else
-            {
-                Items.Add(new InventoryItem(item, this, quantity));
-            }
+                InventoryItem? inventoryItem = FindItem(item);
+                if(inventoryItem != null)
+                {
+                    inventoryItem.Quantity += quantity;
+                }
+                else
+                {
+                    Items.Add(new InventoryItem(item, this, quantity));
+                }
+            }            
         }
 
         /// <summary>

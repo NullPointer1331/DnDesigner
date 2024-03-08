@@ -38,6 +38,7 @@
                                 </li>
                             </ul>
                         </li>
+                        @{#if DEBUG}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Data
@@ -72,6 +73,7 @@
                                 </li>
                             </ul>
                         </li>
+                        @{#endif}
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -86,7 +88,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - DnDesigner - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - DnDesigner - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -29,5 +29,7 @@
         Task<List<SelectableFeature>> GetAllFeats();
         Task<Source> GetSource(int id);
         Task<List<Source>> GetAllSources();
+        Task<Resource> GetResource(int id);
+        Task<List<Resource>> GetAllResources();
     }
 }

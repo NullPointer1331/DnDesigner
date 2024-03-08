@@ -395,6 +395,17 @@ namespace DnDesigner.Models
 				.ToListAsync();
 		}
 
+        public async Task<Resource> GetResource(int id)
+        {
+			return await _context.Resources.Where(r => r.ResourceId == id)
+				.FirstOrDefaultAsync();
+		}
+
+        public async Task<List<Resource>> GetAllResources()
+        {
+            return await _context.Resources.ToListAsync();
+        }
+
         /// <summary>
         /// Loads all the data for a list of <see cref="Feature"/>s
         /// </summary>

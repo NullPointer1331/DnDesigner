@@ -43,6 +43,10 @@ namespace DnDesigner.Models
         public List<Source> NewSources { get; set; }
         public List<Source> Sources { get { return ExistingSources.Concat(NewSources).ToList(); } }
 
+        public List<Resource> ExistingResources { get; set; }
+        public List<Resource> NewResources { get; set; }
+        public List<Resource> Resources { get { return ExistingResources.Concat(NewResources).ToList(); } }
+
         public bool Overwrite { get; private set; }
         private IDBHelper DBHelper { get; set; }
 		#endregion
@@ -67,6 +71,8 @@ namespace DnDesigner.Models
             NewProficiencies = new List<Proficiency>();
             ExistingSources = new List<Source>();
             NewSources = new List<Source>();
+            ExistingResources = new List<Resource>();
+            NewResources = new List<Resource>();
 
             Overwrite = overwrite;
             DBHelper = dBHelper;
@@ -327,13 +333,13 @@ namespace DnDesigner.Models
         #endregion
 
         #region Conversion methods
-        public  FeatRoot GetFeatRoot()
+        public FeatRoot GetFeatRoot()
         {
             string contents = File.ReadAllText("Data\\5EToolsData\\feats.json");
             return JsonSerializer.Deserialize<FeatRoot>(contents);
         }
 
-        public  SelectableFeature ConvertFeat(Feat5ETools feat5E)
+        public SelectableFeature ConvertFeat(Feat5ETools feat5E)
         {
             string name = feat5E.name;
             Source source = GetSource(feat5E.source);
@@ -351,7 +357,7 @@ namespace DnDesigner.Models
             return feat;
         }
 
-        public  List<SpellRoot> GetSpellRoots()
+        public List<SpellRoot> GetSpellRoots()
         {
             List<SpellRoot> spellRoots = new List<SpellRoot>();
             foreach (string file in Directory.EnumerateFiles("Data\\5EToolsData\\spells", "*.json"))
@@ -1069,6 +1075,7 @@ namespace DnDesigner.Models
             ExistingSubclasses = await DBHelper.GetAllSubclasses();
             ExistingProficiencies = await DBHelper.GetAllProficiencies();
             ExistingSources = await DBHelper.GetAllSources();
+            ExistingResources = await DBHelper.GetAllResources();
         }
         public  string CleanText(string text)
         {

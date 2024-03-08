@@ -584,13 +584,24 @@ namespace DnDesigner.Controllers
             {
                 return NotFound();
             }
+            Character characterToUpdate = await _dbHelper.GetCharacter(id);
             if (ModelState.IsValid)
             {
                 try
                 {
-                    character.Background = await _dbHelper.GetBackground(character.Background.BackgroundId);
-                    character.Race = await _dbHelper.GetRace(character.Race.RaceId);
-                    _context.Update(character);
+                    characterToUpdate.d6HitDiceAvailable = character.d6HitDiceAvailable;
+                    characterToUpdate.d8HitDiceAvailable = character.d8HitDiceAvailable;
+                    characterToUpdate.d10HitDiceAvailable = character.d10HitDiceAvailable;
+                    characterToUpdate.d12HitDiceAvailable = character.d12HitDiceAvailable;
+                    characterToUpdate.CurrentHealth = character.CurrentHealth;
+                    characterToUpdate.TempHealth = character.TempHealth;
+                    characterToUpdate.PlayerNotes = character.PlayerNotes;
+                    characterToUpdate.Inventory.Copper = character.Inventory.Copper;
+                    characterToUpdate.Inventory.Silver = character.Inventory.Silver;
+                    characterToUpdate.Inventory.Electrum = character.Inventory.Electrum;
+                    characterToUpdate.Inventory.Gold = character.Inventory.Gold;
+                    characterToUpdate.Inventory.Platinum = character.Inventory.Platinum;
+                    _context.Update(characterToUpdate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -606,8 +617,7 @@ namespace DnDesigner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            character = await _dbHelper.GetCharacter(id);
-            return View(character);
+            return View(characterToUpdate);
         }
 
         // GET: Characters/Delete

@@ -18,8 +18,8 @@ namespace DnDesigner
             values.Add("from", "sender email here");
             values.Add("fromName", "Your Company Name");
             values.Add("to", "recipient email here");
-            values.Add("subject", "Your Subject");
-            values.Add("bodyText", "Text Body");
+            values.Add("subject", "DnDsigner Account Confirmation");
+            values.Add("bodyText", "This confirms your email address and account for DnDsigner!");
             values.Add("bodyHtml", "<h1>Html Body</h1>");
             values.Add("isTransactional", "true");
 

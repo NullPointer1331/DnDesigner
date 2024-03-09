@@ -33,12 +33,13 @@ Host.CreateDefaultBuilder(args)
                     .AddEntityFrameworkStores<DnDesignerDbContext>();
                 services.AddControllersWithViews();
 
-                services.Configure<ElasticEmailOptions>(options =>
+                /*services.Configure<ElasticEmailOptions>(options =>
                 {
-                    options.ApiKey = Environment.GetEnvironmentVariable("DnDesignerEmailAPIKey");
-                });
+                    options.ApiKey = "";
+                });*/
 
-                services.AddTransient<IEmailSender, EmailSender>();
+                /*services.AddTransient<IEmailSender, EmailSender>();*//*
+                services.AddScoped<EmailSender>();*/
             });
 
 var app = builder.Build();

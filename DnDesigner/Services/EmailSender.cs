@@ -4,22 +4,20 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using ElasticEmailClient;
 
 namespace YourNamespace.Services
 {
-    public class EmailSender : IEmailSender
+    public static class EmailSender
     {
+        private static readonly ElasticEmailOptions _options;
 
-        private readonly ILogger<EmailSender> _logger;
-        private readonly ElasticEmailOptions _options;
-
-        public EmailSender(IOptions<ElasticEmailOptions> options, ILogger<EmailSender> logger)
+        static EmailSender()
         {
-            _options = options.Value;
-            _logger = logger;
+            _options = new ElasticEmailOptions("");
         }
 
-        public async Task SendEmailAsync(string toEmail, string subject, string message)
+        public static async Task SendEmailAsync(string toEmail, string subject, string message)
         {
             if (string.IsNullOrEmpty(_options.ApiKey))
             {
@@ -29,27 +27,27 @@ namespace YourNamespace.Services
             await Execute(_options.ApiKey, toEmail, subject, message);
         }
 
-        public async Task Execute(string apiKey, string toEmail, string subject, string message)
+        private static async Task Execute(string apiKey, string toEmail, string subject, string message)
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://api.elasticemail.com/v2/email/send");
+                client.BaseAddress = new Uri("https://api.elasticemail.com/v2/email/send?");
                 var content = new FormUrlEncodedContent(new[]
                 {
-                    new KeyValuePair<string, string>("apikey", apiKey),
-                    new KeyValuePair<string, string>("to", toEmail),
-                    new KeyValuePair<string, string>("subject", subject),
-                    new KeyValuePair<string, string>("body", message)
-                });
+                        new KeyValuePair<string, string>("apikey", apiKey),
+                        new KeyValuePair<string, string>("to", toEmail),
+                        new KeyValuePair<string, string>("subject", subject),
+                        new KeyValuePair<string, string>("body", message)
+                    });
 
                 var response = await client.PostAsync("/v2/email/send", content);
                 if (response.IsSuccessStatusCode)
                 {
-                    _logger.LogInformation($"Email to {toEmail} queued successfully!");
+                    Console.WriteLine($"Email sent to {toEmail}");
                 }
                 else
                 {
-                    _logger.LogError($"Failed to send email to {toEmail}. Status code: {response.StatusCode}");
+                    Console.WriteLine($"Failed to send email to {toEmail}");
                 }
             }
         }
@@ -57,6 +55,10 @@ namespace YourNamespace.Services
 
     public class ElasticEmailOptions
     {
+        public ElasticEmailOptions(string apiKey)
+        {
+            ApiKey = apiKey;
+        }
         public string ApiKey { get; set; }
     }
 }

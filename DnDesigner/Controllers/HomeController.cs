@@ -9,12 +9,10 @@ namespace DnDesigner.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IEmailSender _emailSender;
 
-        public HomeController(ILogger<HomeController> logger, IEmailSender emailSender)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _emailSender = emailSender;
         }
 
         public IActionResult IndexAsync()
@@ -26,13 +24,13 @@ namespace DnDesigner.Controllers
         public async Task<IActionResult> Index()
         {
             // Call the SendEmailAsync function
-            string toEmail = "example@example.com";
+            string toEmail = "";
             string subject = "Hello";
             string message = "This is a test email.";
 
             try
             {
-                await _emailSender.SendEmailAsync(toEmail, subject, message);
+                await EmailSender.SendEmailAsync(toEmail, subject, message);
                 return Ok("Email sent successfully!");
             }
             catch (Exception ex)

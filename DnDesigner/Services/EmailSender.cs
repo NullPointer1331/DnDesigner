@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using ElasticEmailClient;
+using ElasticEmail.Api;
+using ElasticEmail.Client;
+using ElasticEmail.Model;
 
 namespace YourNamespace.Services
 {
@@ -34,7 +36,7 @@ namespace YourNamespace.Services
                 client.BaseAddress = new Uri("https://api.elasticemail.com/v2/email/send?");
                 var content = new FormUrlEncodedContent(new[]
                 {
-                        new KeyValuePair<string, string>("apikey", apiKey),
+                        new KeyValuePair<string, string>("apikey", "test"),
                         new KeyValuePair<string, string>("to", toEmail),
                         new KeyValuePair<string, string>("subject", subject),
                         new KeyValuePair<string, string>("body", message)

@@ -23,20 +23,8 @@ namespace DnDesigner.Controllers
         [HttpPost]
         public async Task<IActionResult> Index()
         {
-            // Call the SendEmailAsync function
-            string toEmail = "";
-            string subject = "Hello";
-            string message = "This is a test email.";
-
-            try
-            {
-                await EmailSender.SendEmailAsync(toEmail, subject, message);
-                return Ok("Email sent successfully!");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Failed to send email: {ex.Message}");
-            }
+            EmailsPostExample.Test2();
+            return View();
         }
 
 

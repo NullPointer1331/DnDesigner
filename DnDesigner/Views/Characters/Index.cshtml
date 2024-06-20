@@ -10,6 +10,9 @@
 <p>
     <a asp-action="Create">Create New Character</a>
 </p>
+<p>
+    Characters with a * by their name have been set to ignore certain D&D 5E rules.
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -33,6 +36,10 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+                @if (item.IgnoreLimits)
+                {
+                    <text>*</text>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Level)

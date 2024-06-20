@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace DnDesigner.Models
 {
@@ -22,11 +23,20 @@ namespace DnDesigner.Models
         /// </summary>
         public int ChoiceValue { get; set; }
 
+        /// <summary>
+        /// The previous choice value
+        /// </summary>
+        public int PreviousChoiceValue { get; private set; }
+
+        public bool IsApplied { get; set; }
+
         public CharacterChoice(CharacterFeature characterFeature, Choice choice)
         {
             CharacterFeature = characterFeature;
             Choice = choice;
             ChoiceValue = Choice.DefaultChoice;
+            PreviousChoiceValue = ChoiceValue;
+            IsApplied = false;
         }
 
         private CharacterChoice() { }
@@ -36,7 +46,10 @@ namespace DnDesigner.Models
         /// </summary>
         public void ApplyChoice()
         {
-            Choice.ApplyChoice(CharacterFeature.Character, ChoiceValue);
+            CheckUnapplied();
+            Choice.ApplyChoice(CharacterFeature.Character, this);
+            IsApplied = true;
+            PreviousChoiceValue = ChoiceValue;
         }
 
         /// <summary>
@@ -44,12 +57,26 @@ namespace DnDesigner.Models
         /// </summary>
         public void RemoveChoice()
         {
-            Choice.RemoveChoice(CharacterFeature.Character);
+            CheckUnapplied();
+            Choice.RemoveChoice(CharacterFeature.Character, this);
+            IsApplied = false;
+        }
+
+        /// <summary>
+        /// Checks if the choice is no longer applied, and sets IsApplied to false if so.
+        /// It doesn't do the opposite because it's harder to check if a choice is applied than if it's not.
+        /// </summary>
+        public void CheckUnapplied()
+        {
+            if (IsApplied && Choice.NotApplied(CharacterFeature.Character, this))
+            {
+                IsApplied = false;
+            }
         }
 
         public override string ToString()
         {
-            return Choice.GetOptionDescription(ChoiceValue);
+            return Choice.Options[ChoiceValue];
         }
     }
 
@@ -64,37 +91,31 @@ namespace DnDesigner.Models
         public int DefaultChoice { get; set; }
 
         /// <summary>
-        /// Applies the default choice to the character
+        /// A dictionary of the options for the choice
         /// </summary>
-        /// <param name="character"></param>
-        public abstract void ApplyChoice(Character character);
+        public abstract Dictionary<int, string> Options { get; }
 
         /// <summary>
         /// Applies the choice to the character
         /// </summary>
-        /// <param name="character"></param>
-        /// <param name="choice"></param>
-        public abstract void ApplyChoice(Character character, int choice);
+        /// <param name="character">The character to apply the choice to</param>
+        /// <param name="characterChoice">The CharacterChoice calling this</param>
+        public abstract void ApplyChoice(Character character, CharacterChoice characterChoice);
 
         /// <summary>
         /// Removes the choice from the character
         /// </summary>
-        /// <param name="character"></param>
-        public abstract void RemoveChoice(Character character);
+        /// <param name="character">The character to remove the choice from</param>
+        /// <param name="characterChoice">The CharacterChoice calling this</param>
+        public abstract void RemoveChoice(Character character, CharacterChoice characterChoice);
 
         /// <summary>
-        /// Removes the choice from the character
+        /// Checks if the choice is not applied to the character
         /// </summary>
-        /// <param name="character"></param>
-        /// <param name="choice"></param>
-        public abstract void RemoveChoice(Character character, int choice);
-
-        /// <summary>
-        /// Gets the description of the specified option
-        /// </summary>
-        /// <param name="choice"></param>
-        /// <returns></returns>
-        public abstract string GetOptionDescription(int choice);
+        /// <param name="character">The character being checked</param>
+        /// <param name="characterChoice">The CharacterChoice calling this</param>
+        /// <returns>True if the choice is definitely not applied to the character, false otherwise</returns>
+        public abstract bool NotApplied(Character character, CharacterChoice characterChoice);
     }
 
     /// <summary>
@@ -102,12 +123,25 @@ namespace DnDesigner.Models
     /// </summary>
     public class EffectChoice : Choice
     {
-        public List<Effect> Options { get; private set; }
+        public List<Effect> Effects { get; private set; }
+
+        public override Dictionary<int, string> Options
+        {
+            get
+            {
+                Dictionary<int, string> options = new Dictionary<int, string>();
+                foreach (Effect effect in Effects)
+                {
+                    options.Add(effect.EffectId, effect.ToString());
+                }
+                return options;
+            }
+        }
 
         public EffectChoice(List<Effect> effects)
         {
-            Options = effects;
-            DefaultChoice = Options[0].EffectId;
+            Effects = effects;
+            DefaultChoice = Effects[0].EffectId;
         }
 
         private EffectChoice() { }
@@ -119,21 +153,21 @@ namespace DnDesigner.Models
         /// Options: "ASI" - Increase an ability score by 1, (TODO, implement more presets)</param>
         public EffectChoice(string preset)
         {
-            Options = new List<Effect>();
+            Effects = new List<Effect>();
             switch (preset)
             {
                 case "ASI":
-                    Options.Add(new ModifyAttribute("str", 1));
-                    Options.Add(new ModifyAttribute("dex", 1));
-                    Options.Add(new ModifyAttribute("con", 1));
-                    Options.Add(new ModifyAttribute("int", 1));
-                    Options.Add(new ModifyAttribute("wis", 1));
-                    Options.Add(new ModifyAttribute("cha", 1));
+                    Effects.Add(new ModifyAttribute("str", 1));
+                    Effects.Add(new ModifyAttribute("dex", 1));
+                    Effects.Add(new ModifyAttribute("con", 1));
+                    Effects.Add(new ModifyAttribute("int", 1));
+                    Effects.Add(new ModifyAttribute("wis", 1));
+                    Effects.Add(new ModifyAttribute("cha", 1));
                     break;
                 default:
                     break;
             }
-            DefaultChoice = Options[0].EffectId;
+            DefaultChoice = Effects[0].EffectId;
         }
 
         /// <summary>
@@ -142,28 +176,21 @@ namespace DnDesigner.Models
         /// <param name="proficiencies"></param>
         public EffectChoice(List<Proficiency> proficiencies)
         {
-            Options = new List<Effect>();
+            Effects = new List<Effect>();
             foreach (Proficiency proficiency in proficiencies)
             {
-                Options.Add(new GrantProficiencies(proficiency, false));
+                Effects.Add(new GrantProficiencies(proficiency, false));
             }
-            DefaultChoice = Options[0].EffectId;
-        }
-
-        public override void ApplyChoice(Character character)
-        {
-            ApplyChoice(character, DefaultChoice);
+            DefaultChoice = Effects[0].EffectId;
         }
 
         /// <summary>
         /// Apply the chosen effect to the character
         /// </summary>
-        /// <param name="character">The character to be modified</param>
-        /// <param name="choiceValue">The index of the chosen effect</param>
-        public override void ApplyChoice(Character character, int choiceValue)
+        public override void ApplyChoice(Character character, CharacterChoice characterChoice)
         {
-            RemoveChoice(character);
-            Effect? effect = Options.Find(e => e.EffectId == choiceValue);
+            RemoveChoice(character, characterChoice);
+            Effect? effect = Effects.Find(e => e.EffectId == characterChoice.ChoiceValue);
             if (effect != null)
             {
                 CharacterEffect characterEffect = new CharacterEffect(character, effect);
@@ -171,55 +198,120 @@ namespace DnDesigner.Models
             }
         }
 
-        public override void RemoveChoice(Character character)
+        public override void RemoveChoice(Character character, CharacterChoice characterChoice)
         {
-            List<CharacterEffect> toRemove = new List<CharacterEffect>();
-            foreach (Effect effect in Options)
+            if (characterChoice.IsApplied)
             {
-                CharacterEffect? existingEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == effect.EffectId);
-                if (existingEffect != null)
-                {
-                    existingEffect.RemoveEffect();
-                    toRemove.Add(existingEffect);
-                }
-            }
-            foreach (CharacterEffect characterEffect in toRemove)
-            {
-                character.CharacterEffects.Remove(characterEffect);
-            }
-        }
-
-        public override void RemoveChoice(Character character, int choiceValue)
-        {
-            CharacterEffect? existingEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == Options[choiceValue].EffectId);
-            if (existingEffect != null)
-            {
-                existingEffect.RemoveEffect();
-                character.CharacterEffects.Remove(existingEffect);
+                CharacterEffect? characterEffect = character.CharacterEffects.Find(e => e.Effect.EffectId == characterChoice.PreviousChoiceValue);
+                characterEffect?.RemoveEffect();
             }
         }
 
         public override string ToString()
         {
             string str = "Choose one of the following: ";
-            foreach (Effect effect in Options)
+            foreach (Effect effect in Effects)
             {
                 str += effect.ToString() + ", ";
             }
             return str.Substring(0, str.Length - 2);
         }
 
-        public override string GetOptionDescription(int effectId)
+        public override bool NotApplied(Character character, CharacterChoice characterChoice)
         {
-            Effect? effect = Options.Find(e => e.EffectId == effectId);
-            if (effect != null)
+            return !character.CharacterEffects.Where(e => e.Effect.EffectId == characterChoice.PreviousChoiceValue).Any();
+        }
+    }
+
+    /// <summary>
+    /// A choice between multiple features
+    /// </summary>
+    public class FeatureChoice : Choice
+    {
+        public override Dictionary<int, string> Options { 
+            get { 
+                Dictionary<int, string> options = new Dictionary<int, string>();
+                foreach (SelectableFeature feature in Features)
+                {
+                    options.Add(feature.FeatureId, feature.ToString());
+                }
+                return options;
+            }}
+
+        public List<SelectableFeature> Features { get; set; }
+
+        /// <summary>
+        /// This indicates whether this choice should load a specific collection of features
+        /// 0 - No auto load
+        /// 1 - Automatically set Features to All Feats
+        /// Those are the only options for now, 
+        /// but in the future it may include fighting styles, warlock invocations, artificer infusions, etc.
+        /// </summary>
+        public int AutoLoad { get; private set; }
+
+        public FeatureChoice(List<SelectableFeature> features)
+        {
+            Features = features;
+            AutoLoad = 0;
+            DefaultChoice = Features[0].FeatureId;
+        }
+
+        /// <summary>
+        /// A constructor for a feature choice that automatically loads a specific collection of features
+        /// </summary>
+        /// <param name="autoLoad">0 - No auto load
+        /// 1 - Automatically set Features to All Feats</param>
+        public FeatureChoice(int autoLoad)
+        {
+            AutoLoad = autoLoad;
+            DefaultChoice = 0;
+        }
+
+        private FeatureChoice() { }
+
+        public override void ApplyChoice(Character character, CharacterChoice characterChoice)
+        {
+            if (characterChoice.IsApplied)
             {
-                return effect.ToString();
+                if (characterChoice.ChoiceValue != characterChoice.PreviousChoiceValue)
+                {
+                    RemoveChoice(character, characterChoice);
+                    characterChoice.IsApplied = false;
+                }
+                else
+                {
+                    return;
+                }
             }
-            else
+            if (!characterChoice.IsApplied)
             {
-                return "Effect not found";
+                SelectableFeature? feature = Features.Find(f => f.FeatureId == characterChoice.ChoiceValue);
+                if (feature != null &&
+                    (!character.Features.Where(f => f.Feature.FeatureId == feature.FeatureId).Any()
+                    || (feature is SelectableFeature feat && feat.Repeatable)))
+                { // Apply the feature if it is not already applied or if it is a repeatable feat
+                    CharacterFeature characterFeature = new CharacterFeature(character, feature);
+                    character.Features.Add(characterFeature);
+                }
             }
+        }
+
+        public override void RemoveChoice(Character character, CharacterChoice characterChoice)
+        {
+            if (characterChoice.IsApplied)
+            {
+                CharacterFeature? characterFeature = character.Features.Find(f => f.Feature.FeatureId == characterChoice.PreviousChoiceValue);
+                if (characterFeature != null)
+                {
+                    characterFeature.RemoveEffects();
+                    character.Features.Remove(characterFeature);
+                }
+            }
+        }
+
+        public override bool NotApplied(Character character, CharacterChoice characterChoice)
+        {
+            return !character.Features.Where(f => f.Feature.FeatureId == characterChoice.PreviousChoiceValue).Any();
         }
     }
 }

@@ -44,9 +44,9 @@ Host.CreateDefaultBuilder(args)
 
 var app = builder.Build();
 
+using IServiceScope scope = app.Services.CreateScope();
 #if DEBUG
 // Apply migrations on startup in debug mode
-using IServiceScope scope = app.Services.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<DnDesignerDbContext>();
 db.Database.Migrate();
 #endif

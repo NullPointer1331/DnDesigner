@@ -117,7 +117,7 @@ function updateContent() {
 
     // get a list of the children of the stat container
     var pointBuyElements = document.querySelectorAll(".point-buy");
-    var statInputElements = document.querySelectorAll("input.form-control");
+    var statInputElements = document.querySelectorAll("input.attribute");
 
     // check what the selected value is
     if (selectedValue == "manual") {

@@ -1,13 +1,19 @@
-﻿@model Character
+﻿@model CharacterSheetViewModel
 
 @{
-    ViewData["Title"] = Model.Name + " Character Sheet";
+    ViewData["Title"] = Model.Character.Name + " Character Sheet";
 }
 
-<h2>@Model.Name</h2>
+<h2>
+    @Model.Character.Name
+    @if (Model.Character.IgnoreLimits)
+    {
+        <text>*</text>
+    }
+</h2>
 <h3>
-    Level @Model.Level
-    @foreach (CharacterClass Class in Model.Classes)
+    Level @Model.Character.Level
+    @foreach (CharacterClass Class in Model.Character.Classes)
     {
         string classString = "";
         if (Class.Subclass != null)
@@ -15,18 +21,18 @@
             classString = Class.Subclass.Name + " ";
         }
         classString += Class.Class.Name + " ";
-        if(Model.Classes.Count > 1)
+        if(Model.Character.Classes.Count > 1)
         {
             classString += Class.Level + " ";
         }
         @Html.DisplayFor(modelItem => classString);
     }
 </h3>
-<h4>@Model.Race.Name @Model.Background.Name</h4>
-<h5>@Model.Alignment</h5>
+<h4>@Model.Character.Race.Name @Model.Character.Background.Name</h4>
+<h5>@Model.Character.Alignment</h5>
 
 <!--Edit / Level Up Button-->
-<input type="button" value="Edit/Level Up" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.CharacterId})'" />
+<input type="button" value="Edit/Level Up" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "Characters", new {id = Model.Character.CharacterId})'" />
 <hr />
 
 <!--Roll Toast Box-->
@@ -48,7 +54,7 @@
     <!--Start of Character Sheet Layout-->
     <div class="container">
 
-        <!--Rest / Hit Die / Die Roller / Equipment Button bar-->
+        <!--Rest / Hit Die / Die Roller / Equipment / Add Items Button bar-->
         <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group me-2" role="group">
@@ -97,6 +103,11 @@
                         Equipment
                     </button>
                 </div>
+                <div class="btn-group me-2" role="group">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addItemsModal">
+                        Add Items
+                    </button>
+                </div>
             </div>
 
         </div>
@@ -134,41 +145,41 @@
                         <h5>Hit Dice Available</h5>
                         <div id="lockedHitDice" class="d-flex flex-column">
                             @{
-                                if (Model.MaxHitDice[0] != 0)
+                                if (Model.Character.MaxHitDice[0] != 0)
                                 {
                                     <div class="input-group mx-auto w-25">
-                                        <input asp-for="d6HitDiceAvailable" id="d6HitDiceAvailable" type="number" class="form-control"
-                                               value="@Model.d6HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                        <input asp-for="Character.d6HitDiceAvailable" id="d6HitDiceAvailable" type="number" class="form-control"
+                                               value="@Model.Character.d6HitDiceAvailable" min="0" max="20" disabled="disabled"
                                                aria-label="d6 Hit Dice Available" />
                                         <label class="input-group-text">d6</label>
                                     </div>
                                     <br />
                                 }
-                                if (Model.MaxHitDice[1] != 0)
+                                if (Model.Character.MaxHitDice[1] != 0)
                                 {
                                     <div class="input-group mx-auto w-25">
-                                        <input asp-for="d8HitDiceAvailable" id="d8HitDiceAvailable" type="number" class="form-control"
-                                               value="@Model.d8HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                        <input asp-for="Character.d8HitDiceAvailable" id="d8HitDiceAvailable" type="number" class="form-control"
+                                               value="@Model.Character.d8HitDiceAvailable" min="0" max="20" disabled="disabled"
                                                aria-label="d8 Hit Dice Available" />
                                         <label class="input-group-text">d8</label>
                                     </div>
                                     <br />
                                 }
-                                if (Model.MaxHitDice[2] != 0)
+                                if (Model.Character.MaxHitDice[2] != 0)
                                 {
                                     <div class="input-group mx-auto w-25">
-                                        <input asp-for="d10HitDiceAvailable" id="d10HitDiceAvailable" type="number" class="form-control"
-                                               value="@Model.d10HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                        <input asp-for="Character.d10HitDiceAvailable" id="d10HitDiceAvailable" type="number" class="form-control"
+                                               value="@Model.Character.d10HitDiceAvailable" min="0" max="20" disabled="disabled"
                                                aria-label="d10 Hit Dice Available" />
                                         <label class="input-group-text">d10</label>
                                     </div>
                                     <br />
                                 }
-                                if (Model.MaxHitDice[3] != 0)
+                                if (Model.Character.MaxHitDice[3] != 0)
                                 {
                                     <div class="input-group mx-auto w-25">
-                                        <input asp-for="d12HitDiceAvailable" id="d12HitDiceAvailable" type="number" class="form-control"
-                                               value="@Model.d12HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                        <input asp-for="Character.d12HitDiceAvailable" id="d12HitDiceAvailable" type="number" class="form-control"
+                                               value="@Model.Character.d12HitDiceAvailable" min="0" max="20" disabled="disabled"
                                                aria-label="d12 Hit Dice Available" />
                                         <label class="input-group-text">d12</label>
                                     </div>
@@ -181,25 +192,25 @@
                             <label class="input-group-text">Hit Die</label>
                             <select class="form-select" id="spendHitDie">
                                 @{
-                                    if (Model.MaxHitDice[0] != 0)
+                                    if (Model.Character.MaxHitDice[0] != 0)
                                     {
                                         <option value="6">d6</option>
                                     }
-                                    if (Model.MaxHitDice[1] != 0)
+                                    if (Model.Character.MaxHitDice[1] != 0)
                                     {
                                         <option value="8">d8</option>
                                     }
-                                    if (Model.MaxHitDice[2] != 0)
+                                    if (Model.Character.MaxHitDice[2] != 0)
                                     {
                                         <option value="10">d10</option>
                                     }
-                                    if (Model.MaxHitDice[3] != 0)
+                                    if (Model.Character.MaxHitDice[3] != 0)
                                     {
                                         <option value="12">d12</option>
                                     }
                                 }
                             </select>
-                            <button class="btn btn-primary" type="button" onclick="RollHitDice(@Model.GetModifier("Constitution"))">Roll</button>
+                            <button class="btn btn-primary" type="button" onclick="RollHitDice(@Model.Character.GetModifier("Constitution"))">Roll</button>
 						</div>
                         <br />
                         <div class="input-group me-2">
@@ -226,68 +237,68 @@
                     <div class="modal-body text-center">
                         <h5>Total Hit Dice</h5>
                         @{
-                            if (Model.MaxHitDice[0] != 0)
+                            if (Model.Character.MaxHitDice[0] != 0)
                             {
-                                <h3>@Model.MaxHitDice[0] d6</h3>
+                                <h3>@Model.Character.MaxHitDice[0] d6</h3>
                             }
-                            if (Model.MaxHitDice[1] != 0)
+                            if (Model.Character.MaxHitDice[1] != 0)
                             {
-                                <h3>@Model.MaxHitDice[1] d8</h3>
+                                <h3>@Model.Character.MaxHitDice[1] d8</h3>
                             }
-                            if (Model.MaxHitDice[2] != 0)
+                            if (Model.Character.MaxHitDice[2] != 0)
                             {
-                                <h3>@Model.MaxHitDice[2] d10</h3>
+                                <h3>@Model.Character.MaxHitDice[2] d10</h3>
                             }
-                            if (Model.MaxHitDice[3] != 0)
+                            if (Model.Character.MaxHitDice[3] != 0)
                             {
-                                <h3>@Model.MaxHitDice[3] d12</h3>
+                                <h3>@Model.Character.MaxHitDice[3] d12</h3>
                             }
                         }                            
                         <br>
                         <h5>Hit Dice Available</h5>
                         <div id="unlockedHitDice" class="d-flex flex-column">
                         @{
-                            if (Model.MaxHitDice[0] != 0)
+                            if (Model.Character.MaxHitDice[0] != 0)
                             {
                                 <div class="input-group mx-auto w-25">
-                                    <input asp-for="d6HitDiceAvailable" id="d6HitDiceAvailable" type="number" class="form-control" 
-                                        value="@Model.d6HitDiceAvailable" min="0" max="@Model.MaxHitDice[0]" 
+                                        <input asp-for="Character.d6HitDiceAvailable" id="d6HitDiceAvailable" type="number" class="form-control"
+                                               value="@Model.Character.d6HitDiceAvailable" min="0" max="@Model.Character.MaxHitDice[0]" 
                                         aria-label="d6 Hit Dice Available" />
                                     <label class="input-group-text">d6</label>
                                 </div>
                                 <br />
                             }
-                            if (Model.MaxHitDice[1] != 0)
+                            if (Model.Character.MaxHitDice[1] != 0)
                             {
                                 <div class="input-group mx-auto w-25">
-                                    <input asp-for="d8HitDiceAvailable" id="d8HitDiceAvailable" type="number" class="form-control"
-                                        value="@Model.d8HitDiceAvailable" min="0" max="@Model.MaxHitDice[1]"
+                                        <input asp-for="Character.d8HitDiceAvailable" id="d8HitDiceAvailable" type="number" class="form-control"
+                                        value="@Model.Character.d8HitDiceAvailable" min="0" max="@Model.Character.MaxHitDice[1]"
                                         aria-label="d8 Hit Dice Available" />
                                     <label class="input-group-text">d8</label>
                                     </div>
                                     <br />
                             }
-                            if (Model.MaxHitDice[2] != 0)
+                            if (Model.Character.MaxHitDice[2] != 0)
                             {
                                 <div class="input-group mx-auto w-25">
-                                    <input asp-for="d10HitDiceAvailable" id="d10HitDiceAvailable" type="number" class="form-control"
-                                        value="@Model.d10HitDiceAvailable" min="0" max="@Model.MaxHitDice[2]"
+                                        <input asp-for="Character.d10HitDiceAvailable" id="d10HitDiceAvailable" type="number" class="form-control"
+                                        value="@Model.Character.d10HitDiceAvailable" min="0" max="@Model.Character.MaxHitDice[2]"
                                         aria-label="d10 Hit Dice Available" />
                                     <label class="input-group-text">d10</label>
                                     </div>
                                     <br />
                             }
-                            if (Model.MaxHitDice[3] != 0)
+                            if (Model.Character.MaxHitDice[3] != 0)
                             {
                                 <div class="input-group mx-auto w-25">
-                                    <input asp-for ="d12HitDiceAvailable" id="d12HitDiceAvailable" type="number" class="form-control"
-                                        value="@Model.d12HitDiceAvailable" min="0" max="@Model.MaxHitDice[3]"
+                                        <input asp-for="Character.d12HitDiceAvailable" id="d12HitDiceAvailable" type="number" class="form-control"
+                                        value="@Model.Character.d12HitDiceAvailable" min="0" max="@Model.Character.MaxHitDice[3]"
                                         aria-label="d12 Hit Dice Available" />
                                     <label class="input-group-text">d12</label>
-                                </div>
+                                    </div>
+                                }
                             }
-                        }
-						</div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -319,6 +330,75 @@
             </div>
         </div>
 
+        <!--Add Items Modal-->
+        <div class="modal fade" id="addItemsModal" tabindex="-1" aria-labelledby="addItemsLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="equipmentLabel">Add Items</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="accordion" id="allItems">
+                            @{
+                                string accordionName = "itemAccordion";
+                                int accordionNum = 1;
+                                string accordionID;
+                                string itemCount = "itemCount";
+                                string itemID;
+                                foreach(Item currentItem in Model.AllItems)
+                                {
+                                    accordionID = accordionName + accordionNum;
+                                    itemID = itemCount + accordionNum;
+                                    <div class="accordion-item" id="allItems">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#@accordionID" 
+                                            aria-expanded="false" aria-controls="@accordionID">
+                                                @currentItem.Name
+                                            </button>
+                                        </h2>
+                                        <div id="@accordionID" class="accordion-collapse collapse">
+                                            <br/>
+                                            <div class="input-group mx-auto w-50 text-center">
+                                                <label class="input-group-text">Quantity</label>
+                                                <input id="@itemID" type="number" value="1" min="1" 
+                                                class="form-control" aria-label="Item quantity"/>
+                                                <button type="button" class="btn btn-success" 
+                                                onclick=
+                                                    'AddItem("@itemID", "@currentItem.Name", "@currentItem.Sourcebook",
+                                                            "@currentItem.Traits", "@currentItem.Price", "@currentItem.Weight",
+                                                            "@currentItem.Attuneable", "@currentItem.Description", "@currentItem.ItemId")'
+                                                >Add</button>
+                                            </div>
+                                            <div class="accordion-body">
+                                                <h5>@currentItem.Sourcebook</h5>
+                                                <h6>@currentItem.Traits</h6>
+                                                <h6>Price: @currentItem.Price</h6>
+                                                <h6>Weight: @currentItem.Weight</h6>
+                                                @{
+                                                    if (currentItem.Attuneable)
+                                                    {
+                                                        <h6>Requires Attunement</h6>
+                                                    }
+                                                }
+                                                <p>@currentItem.Description</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    accordionNum++;
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success">Save Items</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!--Flex div open-->
         <div class="row flex-nowrap">
 
@@ -326,7 +406,7 @@
             <div class="col-auto text-center">
                 <div class="collapse collapse-horizontal" id="saves">
                     <ul class="list-group" style="width: 12rem;">
-                        @foreach (CharacterProficiency save in Model.GetProficienciesByType("saving throw"))
+                        @foreach (CharacterProficiency save in Model.Character.GetProficienciesByType("saving throw"))
                         {
                             <!--Get save bonus and generate id strings-->
                             int? modifier = save.GetRollBonus();
@@ -373,7 +453,7 @@
                 <br>
                 <div class="collapse collapse-horizontal" id="skills">
                     <ul class="list-group" style="width: 12rem;">
-                        @foreach (CharacterProficiency skill in Model.GetProficienciesByType("skill"))
+                        @foreach (CharacterProficiency skill in Model.Character.GetProficienciesByType("skill"))
                         {
                             <!--Get skill bonus and generate id strings-->
                             int? modifier = skill.GetRollBonus();
@@ -431,8 +511,8 @@
                         <div class="card text-center mb-3" style="width: 10rem;">
                             <div class="card-body">
                                 <h5 class="card-title">Strength</h5>
-                                <h3>@Model.Strength</h3>
-                                <h5>@Model.GetModifier("Strength")</h5>
+                                <h3>@Model.Character.Strength</h3>
+                                <h5>@Model.Character.GetModifier("Strength")</h5>
                             </div>
                         </div>
                     </div>
@@ -440,8 +520,8 @@
                         <div class="card text-center mb-3" style="width: 10rem;">
                             <div class="card-body">
                                 <h5 class="card-title">Dexterity</h5>
-                                <h3>@Model.Dexterity</h3>
-                                <h5>@Model.GetModifier("Dexterity")</h5>
+                                <h3>@Model.Character.Dexterity</h3>
+                                <h5>@Model.Character.GetModifier("Dexterity")</h5>
                             </div>
                         </div>
                     </div>
@@ -449,8 +529,8 @@
                         <div class="card text-center mb-3" style="width: 10rem;">
                             <div class="card-body">
                                 <h5 class="card-title">Constitution</h5>
-                                <h3>@Model.Constitution</h3>
-                                <h5>@Model.GetModifier("Constitution")</h5>
+                                <h3>@Model.Character.Constitution</h3>
+                                <h5>@Model.Character.GetModifier("Constitution")</h5>
                             </div>
                         </div>
                     </div>
@@ -458,8 +538,8 @@
                         <div class="card text-center mb-3" style="width: 10rem;">
                             <div class="card-body">
                                 <h5 class="card-title">Intelligence</h5>
-                                <h3>@Model.Intelligence</h3>
-                                <h5>@Model.GetModifier("Intelligence")</h5>
+                                <h3>@Model.Character.Intelligence</h3>
+                                <h5>@Model.Character.GetModifier("Intelligence")</h5>
                             </div>
                         </div>
                     </div>
@@ -467,8 +547,8 @@
                         <div class="card text-center mb-3" style="width: 10rem;">
                             <div class="card-body">
                                 <h5 class="card-title">Wisdom</h5>
-                                <h3>@Model.Wisdom</h3>
-                                <h5>@Model.GetModifier("Wisdom")</h5>
+                                <h3>@Model.Character.Wisdom</h3>
+                                <h5>@Model.Character.GetModifier("Wisdom")</h5>
                             </div>
                         </div>
                     </div>
@@ -476,8 +556,8 @@
                         <div class="card text-center mb-3" style="width: 10rem;">
                             <div class="card-body">
                                 <h5 class="card-title">Charisma</h5>
-                                <h3>@Model.Charisma</h3>
-                                <h5>@Model.GetModifier("Charisma")</h5>
+                                <h3>@Model.Character.Charisma</h3>
+                                <h5>@Model.Character.GetModifier("Charisma")</h5>
                             </div>
                         </div>
                     </div>
@@ -490,11 +570,11 @@
                             <div class="card text-center mb-3 h-100" style="width: 14rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Proficiency</h5>
-                                    <h3>@Model.ProficiencyBonus</h3>
+                                    <h3>@Model.Character.ProficiencyBonus</h3>
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">Initiative</h5>
-                                    <h3>@Model.GetModifier("Dexterity")</h3>
+                                    <h3>@Model.Character.GetModifier("Dexterity")</h3>
                                 </div>
                             </div>
                         </div>
@@ -502,14 +582,14 @@
                             <div class="card text-center mb-3 h-100" style="width: 14rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">Max Health</h5>
-                                    <input type="hidden" asp-for="MaxHealth" />
-                                    <h3>@Model.MaxHealth</h3>
+                                    <input type="hidden" asp-for="Character.MaxHealth" />
+                                    <h3>@Model.Character.MaxHealth</h3>
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">Armor Class</h5>
-                                    <input type="hidden" asp-for="BaseArmorClass" />
-                                    <input type="hidden" asp-for="BonusArmorClass" />
-                                    <h3>@Model.ArmorClass</h3>
+                                    <input type="hidden" asp-for="Character.BaseArmorClass" />
+                                    <input type="hidden" asp-for="Character.BonusArmorClass" />
+                                    <h3>@Model.Character.ArmorClass</h3>
                                 </div>
                             </div>
                         </div>
@@ -518,13 +598,13 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Current Health</h5>
                                     <div class="input-group input-group-lg">
-                                        <input asp-for="CurrentHealth" id="currentHealth" value="@Model.CurrentHealth" type="number" max="@Model.MaxHealth" min="0" class="form-control text-center">
+                                        <input asp-for="Character.CurrentHealth" id="currentHealth" value="@Model.Character.CurrentHealth" type="number" max="@Model.Character.MaxHealth" min="0" class="form-control text-center">
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">Temp Health</h5>
                                     <div class="input-group input-group-lg">
-                                        <input asp-for="TempHealth" type="number" min="0" class="form-control text-center" />
+                                        <input asp-for="Character.TempHealth" type="number" min="0" class="form-control text-center" />
                                     </div>
                                 </div>
                             </div>
@@ -534,8 +614,8 @@
                                 <div class="card-body">
                                     <div class="card-body">
                                         <h5 class="card-title">Walking Speed</h5>
-                                        <input type="hidden" asp-for="WalkingSpeed" />
-                                        <h3>@Model.WalkingSpeed</h3>
+                                        <input type="hidden" asp-for="Character.WalkingSpeed" />
+                                        <h3>@Model.Character.WalkingSpeed</h3>
                                     </div>
                                     <div class="card-body">
                                         <h5 class="card-title">Death Saves</h5>
@@ -693,7 +773,7 @@
                         <div id="panelsStayOpen-Features" class="accordion-collapse collapse">
                             <div class="accordion-body">
                                 <div class="accordion" id="Features">
-                                    @foreach (CharacterFeature characterFeature in Model.Features)
+                                    @foreach (CharacterFeature characterFeature in Model.Character.Features)
                                     {
                                         Feature feature = characterFeature.Feature;
                                         <div class="accordion-item">
@@ -740,7 +820,81 @@
                         </h2>
                         <div id="panelsStayOpen-Inventory" class="accordion-collapse collapse">
                             <div class="accordion-body">
-                                <strong>Placeholder</strong>
+                                <!--Money Div-->
+                                <div class="input-group mx-auto">
+                                    <input asp-for="@Model.Character.Inventory.Platinum" id="platinum" type="number" class="form-control text-center"
+                                           value="@Model.Character.Inventory.Platinum" min="0"
+                                           aria-label="platinum" />
+                                    <label class="input-group-text">Platinum</label>
+                                    <input asp-for="@Model.Character.Inventory.Gold" id="gold" type="number" class="form-control text-center"
+                                           value="@Model.Character.Inventory.Gold" min="0"
+                                           aria-label="gold" />
+                                    <label class="input-group-text">Gold</label>
+                                    <input asp-for="@Model.Character.Inventory.Electrum" id="electrum" type="number" class="form-control text-center"
+                                           value="@Model.Character.Inventory.Electrum" min="0"
+                                           aria-label="electrum" />
+                                    <label class="input-group-text">Electrum</label>
+                                    <input asp-for="@Model.Character.Inventory.Silver" id="silver" type="number" class="form-control text-center"
+                                           value="@Model.Character.Inventory.Silver" min="0"
+                                           aria-label="silver" />
+                                    <label class="input-group-text">Silver</label>
+                                    <input asp-for="@Model.Character.Inventory.Copper" id="copper" type="number" class="form-control text-center"
+                                           value="@Model.Character.Inventory.Copper" min="0"
+                                           aria-label="copper" />
+                                    <label class="input-group-text">Copper</label>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-2 overflow-auto" style="max-height:20rem;">
+                                        <div id="inventoryLinks" 
+                                        class="d-flex flex-column gap-2 simple-list-example-scrollspy text-center">
+                                            @{
+                                                string idAdder = "item";
+                                                string itemLink;
+                                                foreach (InventoryItem item in Model.Character.Inventory.Items)
+                                                {
+                                                    itemLink = idAdder + item.Item.ItemId;
+                                                    <a class="p-1 rounded" href="#@itemLink">@item.Item.Name</a>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-10 overflow-auto" style="max-height:30rem;">
+                                        <div id="inventoryList" data-bs-spy="scroll" data-bs-target="#inventoryLinks" 
+                                        data-bs-offset="0" data-bs-smooth-scroll="true" 
+                                        class="scrollspy-example" tabindex="0">
+                                            @{
+                                                int itemListNum = 0;
+                                                foreach (InventoryItem item in Model.Character.Inventory.Items)
+                                                {
+                                                    if (itemListNum != 0)
+                                                    {
+                                                        <hr/>
+                                                    }
+                                                    itemLink = idAdder + item.Item.ItemId;
+                                                    <div id="@itemLink">
+                                                        <h4>@item.Item.Name</h4>
+                                                        <div class="input-group w-25">
+                                                            <label class="input-group-text">Quantity</label>
+                                                            <input type="number" value="@item.Quantity" min="0"
+                                                                   class="form-control" aria-label="Item quantity" />                                                        
+                                                        </div>
+                                                        <h5>@item.Item.Sourcebook</h5>
+                                                        <h6>@item.Item.Traits</h6>
+                                                        <h6>Price: @item.Item.Price</h6>
+                                                        <h6>Weight: @item.Item.Weight</h6>                                                    
+                                                        @if (item.Item.Attuneable)
+                                                        {
+                                                            <h6>Requires Attunement</h6>
+                                                        }
+                                                        <p>@item.Item.Description</p>
+                                                    </div>
+                                                    itemListNum++;
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -757,7 +911,7 @@
                             <div class="accordion-body">
                                 <ol class="list-group list-group">
                                     @{
-                                        List<CharacterProficiency> languageProf = Model.GetProficienciesByType("language");
+                                        List<CharacterProficiency> languageProf = Model.Character.GetProficienciesByType("language");
                                         if (languageProf.Count > 0)
                                         {
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -774,7 +928,7 @@
                                         }
                                     }
                                     @{
-                                        List<CharacterProficiency> toolProf = Model.GetProficienciesByType("tool");
+                                        List<CharacterProficiency> toolProf = Model.Character.GetProficienciesByType("tool");
                                         if (toolProf.Count > 0)
                                         {
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -791,7 +945,7 @@
                                         }
                                     }
                                     @{
-                                        List<CharacterProficiency> armorProf = Model.GetProficienciesByType("armor");
+                                        List<CharacterProficiency> armorProf = Model.Character.GetProficienciesByType("armor");
                                         if (armorProf.Count > 0)
                                         {
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -808,7 +962,7 @@
                                         }
                                     }
                                     @{
-                                        List<CharacterProficiency> weaponProf = Model.GetProficienciesByType("weapon");
+                                        List<CharacterProficiency> weaponProf = Model.Character.GetProficienciesByType("weapon");
                                         if (weaponProf.Count > 0)
                                         {
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -825,7 +979,7 @@
                                         }
                                     }
                                     @{
-                                        List<CharacterProficiency> instrumentProf = Model.GetProficienciesByType("instrument");
+                                        List<CharacterProficiency> instrumentProf = Model.Character.GetProficienciesByType("instrument");
                                         if (instrumentProf.Count > 0)
                                         {
                                             <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -856,7 +1010,7 @@
                         </h2>
                         <div id="panelsStayOpen-Notes" class="accordion-collapse collapse">
                             <div class="accordion-body">
-                                <textarea asp-for="PlayerNotes" style="width: 100%; min-height:15rem"></textarea>
+                                <textarea asp-for="Character.PlayerNotes" style="width: 100%; min-height:15rem"></textarea>
                             </div>
                         </div>
                     </div>
@@ -868,32 +1022,33 @@
     </div>
     <!--End of Character Sheet Layout-->
     <!--Hidden Storage Start-->
-    <input type="hidden" asp-for="CharacterId" />
-    <input type="hidden" asp-for="Name" />
-    <input type="hidden" asp-for="Alignment" />
-    <input type="hidden" asp-for="Race" />
-    <input type="hidden" asp-for="Race.RaceId" />
-    <input type="hidden" asp-for="Race.Name" />
-    <input type="hidden" asp-for="Background" />
-    <input type="hidden" asp-for="Background.BackgroundId" />
-    <input type="hidden" asp-for="Background.Name" />
-    <input type="hidden" asp-for="Level" />
-    <input type="hidden" asp-for="Classes" />
-    <input type="hidden" asp-for="Features" />
-    <input type="hidden" asp-for="d6HitDiceAvailable" />
-    <input type="hidden" asp-for="d8HitDiceAvailable" />
-    <input type="hidden" asp-for="d10HitDiceAvailable" />
-    <input type="hidden" asp-for="d12HitDiceAvailable" />
-    <input type="hidden" asp-for="Strength" />
-    <input type="hidden" asp-for="Dexterity" />
-    <input type="hidden" asp-for="Constitution" />
-    <input type="hidden" asp-for="Intelligence" />
-    <input type="hidden" asp-for="Wisdom" />
-    <input type="hidden" asp-for="Charisma" />
-    <input type="hidden" asp-for="Inventory" />
-    <input type="hidden" asp-for="Inventory.InventoryId" />
-    <input type="hidden" asp-for="CharacterEffects" />
-    <input type="hidden" asp-for="UserId" />
+    <input id="characterId" value="@Model.Character.CharacterId" type="hidden" asp-for="Character.CharacterId" />
+    <input type="hidden" asp-for="Character.Name" />
+    <input type="hidden" asp-for="Character.Alignment" />
+    <input type="hidden" asp-for="Character.Race" />
+    <input type="hidden" asp-for="Character.Race.RaceId" />
+    <input type="hidden" asp-for="Character.Race.Name" />
+    <input type="hidden" asp-for="Character.Background" />
+    <input type="hidden" asp-for="Character.Background.BackgroundId" />
+    <input type="hidden" asp-for="Character.Background.Name" />
+    <input type="hidden" asp-for="Character.Level" />
+    <input type="hidden" asp-for="Character.Classes" />
+    <input type="hidden" asp-for="Character.Features" />
+    <input type="hidden" asp-for="Character.d6HitDiceAvailable" />
+    <input type="hidden" asp-for="Character.d8HitDiceAvailable" />
+    <input type="hidden" asp-for="Character.d10HitDiceAvailable" />
+    <input type="hidden" asp-for="Character.d12HitDiceAvailable" />
+    <input type="hidden" asp-for="Character.Strength" />
+    <input type="hidden" asp-for="Character.Dexterity" />
+    <input type="hidden" asp-for="Character.Constitution" />
+    <input type="hidden" asp-for="Character.Intelligence" />
+    <input type="hidden" asp-for="Character.Wisdom" />
+    <input type="hidden" asp-for="Character.Charisma" />
+    <input type="hidden" asp-for="Character.Inventory" />
+    <input type="hidden" asp-for="Character.Inventory.InventoryId" />
+    <input type="hidden" asp-for="Character.CharacterEffects" />
+    <input type="hidden" asp-for="Character.UserId" />
+    <input type="hidden" asp-for="Character.Inventory" />
     <!--Hidden Storage End-->
     <!-- Left over from generated code (possible later implementation)
     <div class="form-group">
@@ -933,4 +1088,5 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script src="/js/dice.js"></script>
+    <script src="/js/items.js"></script>
 }

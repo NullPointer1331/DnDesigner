@@ -30,7 +30,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
         // get CharacterId
         let characterId = GetById('characterId').value;
 
-        if (CanItemBeAdded(itemId)) { // check if item can be added
+        if (ItemNotInInventory(itemId)) { // check if item can be added
 
             // get elements to place new item in
             let links = GetById('inventoryLinks');
@@ -66,6 +66,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
             quantityInput.min = "0";
             quantityInput.setAttribute("class", "form-control");
             quantityInput.ariaLabel = "Item quantity";
+            quantityInput.setAttribute("onchange", `UpdateQuantity(${itemId}, this.value)`);
 
             // append label and input to div
             newListItemQuantity.appendChild(quantityLabel);
@@ -101,9 +102,6 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
             newListItemDiv.appendChild(newListItemQuantity);
             newListItemDiv.appendChild(newListItemSource);
             newListItemDiv.appendChild(newListItemTrait);
-            newListItemDiv.appendChild(newListItemPrice);
-            newListItemDiv.appendChild(newListItemWeight);
-
 
             // create attunement if needed
             if (attunement) {
@@ -111,6 +109,12 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
                 attunementRequired.innerHTML = "Requires Attunement";
                 newListItemDiv.appendChild(attunementRequired);
             }
+
+            newListItemDiv.appendChild(newListItemPrice);
+            newListItemDiv.appendChild(newListItemWeight);
+
+
+            
             newListItemDiv.appendChild(newListItemDescription);
 
             // append new div to list
@@ -131,9 +135,23 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
             xhttp.send(callString);
 
         }
-        else { // display error message 
-            header = "No Items Added!"
-            body = "This item is already in your inventory.";
+        else { 
+            // get existing item
+            let existingItem = GetById("item" + itemId);
+            // get existing quantity
+            let existingQuantity = parseInt(existingItem.childNodes[1].childNodes[1].value);
+            // add new quantity to existing quantity
+            existingItem.childNodes[1].childNodes[1].value = existingQuantity + quantity;
+
+            // construct call string
+            let callString = "characterId=" + characterId + "&itemId=" + itemId +
+                "&quantity=" + quantity;
+
+            // trigger controller to add item to inventory
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "/Characters/AddItem", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send(callString);
         }
     }
     else { // display error message
@@ -148,7 +166,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
 ///</summary>
 ///<param name="itemId">The unique ID number of the item</param>
 ///<returns>True if the item can be added, False if not</returns>
-function CanItemBeAdded(itemId) {
+function ItemNotInInventory(itemId) {
     let inInventory = GetById("item" + itemId);
     if (inInventory == null) {
         return true;
@@ -156,26 +174,16 @@ function CanItemBeAdded(itemId) {
     return false;
 }
 
-/*function CanItemBeAdded(characterId, itemId) {
-    let result;
-    // construct call string
-    let callString = "characterId=" + characterId + "&itemId=" + itemId;
+function UpdateQuantity(itemId, quantity) {
+    let characterId = GetById('characterId').value;
+    let callString = "characterId=" + characterId + "&itemId=" + itemId +
+        "&quantity=" + quantity;
 
-    // trigger controller to add item to inventory
     let xhttp = new XMLHttpRequest();
-    xhttp.onload = function () {
-        result = this.responseText;
-    }
-    xhttp.open("POST", "/Characters/CanItemBeAdded", true);
+    xhttp.open("POST", "/Characters/UpdateQuantity", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(callString);
-    if (result == "false") {
-        return false;
-    }
-    else {
-        return true;
-    }
-}*/
+}
 
 ///<summary>
 /// Convenience function

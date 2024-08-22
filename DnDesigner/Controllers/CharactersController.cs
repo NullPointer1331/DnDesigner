@@ -547,32 +547,30 @@ namespace DnDesigner.Controllers
             return;
         }
 
-        // Checks if an Item is already in a Character's Inventory
+        // Updates an item's quantity in the character's inventory
         [HttpPost]
-        public async Task<bool> CanItemBeAdded(int characterId, int itemId)
+        public async Task UpdateQuantity(int characterId, int itemId, int quantity)
         {
             Character character = await _dbHelper.GetCharacter(characterId);
 
             if (character == null)
             {
-                return false; // if character doesn't exist, can't add item
+                return;
             }
             if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
             {
-                return false; // if character doesn't exist, can't add item
+                return;
             }
 
             Item item = await _dbHelper.GetItem(itemId);
 
             if (item == null)
             {
-                return false; // if item doesn't exist, can't add item
+                return;
             }
-            if (character.Inventory.FindItem(item) != null)
-            {
-                return false; // it item is in inventory already, can't add item
-            }
-            return true; // item can be added
+            character.Inventory.SetQuantity(item, quantity);
+            await _context.SaveChangesAsync();
+            return;
         }
 
         // POST: Characters/CharacterSheet

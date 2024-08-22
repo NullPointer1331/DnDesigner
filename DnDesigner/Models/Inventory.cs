@@ -340,32 +340,36 @@ namespace DnDesigner.Models
         }
 
         /// <summary>
-        /// Removes a specified quantity of an item from the inventory
-        /// </summary>
-        /// <param name="item">The item to remove</param>
-        /// <param name="quantity">How many of that item to remove</param>
-        public void RemoveItem(Item item, int quantity)
-        {
-            InventoryItem? inventoryItem = FindItem(item);
-            if (inventoryItem != null)
-            {
-                inventoryItem.Quantity -= quantity;
-                if (inventoryItem.Quantity <= 0)
-                {
-                    Unequip(inventoryItem);
-                    Unattune(inventoryItem);
-                    Items.Remove(inventoryItem);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Removes one of an item from the inventory
+        /// Removes an item from the inventory
         /// </summary>
         /// <param name="item">The item to remove</param>
         public void RemoveItem(Item item)
         {
-            RemoveItem(item, 1);
+            InventoryItem? inventoryItem = FindItem(item);
+            if (inventoryItem != null)
+            {
+                Unequip(inventoryItem);
+                Unattune(inventoryItem);
+                Items.Remove(inventoryItem);
+            }
+        }
+
+        /// <summary>
+        /// Sets the quantity of an item in the inventory
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="quantity"></param>
+        public void SetQuantity(Item item, int quantity)
+        {
+            InventoryItem? inventoryItem = FindItem(item);
+            if (inventoryItem != null)
+            {
+                inventoryItem.Quantity = quantity;
+                if (inventoryItem.Quantity <= 0)
+                {
+                    RemoveItem(item);
+                }
+            }
         }
 
         /// <summary>

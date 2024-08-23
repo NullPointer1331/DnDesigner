@@ -547,6 +547,32 @@ namespace DnDesigner.Controllers
             return;
         }
 
+        // Remove Item from Character Inventory
+        [HttpPost]
+        public async Task RemoveItem(int characterId, int itemId)
+        {
+            Character character = await _dbHelper.GetCharacter(characterId);
+
+            if (character == null)
+            {
+                return;
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return;
+            }
+
+            Item item = await _dbHelper.GetItem(itemId);
+
+            if (item == null)
+            {
+                return;
+            }
+            character.Inventory.RemoveItem(item);
+            await _context.SaveChangesAsync();
+            return;
+        }
+
         // Updates an item's quantity in the character's inventory
         [HttpPost]
         public async Task UpdateQuantity(int characterId, int itemId, int quantity)

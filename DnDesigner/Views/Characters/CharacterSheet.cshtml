@@ -849,12 +849,14 @@
                                         <div id="inventoryLinks" 
                                         class="d-flex flex-column gap-2 simple-list-example-scrollspy text-center">
                                             @{
-                                                string idAdder = "item";
+                                                
                                                 string itemLink;
+                                                string linkId;
                                                 foreach (InventoryItem item in Model.Character.Inventory.Items)
                                                 {
-                                                    itemLink = idAdder + item.Item.ItemId;
-                                                    <a class="p-1 rounded" href="#@itemLink">@item.Item.Name</a>
+                                                    itemLink = "item" + item.Item.ItemId;
+                                                    linkId = "itemLink" + item.Item.ItemId;
+                                                    <a class="p-1 rounded" href="#@itemLink" id="@linkId">@item.Item.Name</a>
                                                 }
                                             }
                                         </div>
@@ -864,6 +866,7 @@
                                         data-bs-offset="0" data-bs-smooth-scroll="true" 
                                         class="scrollspy-example" tabindex="0">
                                             @{
+                                                string idAdder = "item";
                                                 int itemListNum = 0;
                                                 foreach (InventoryItem item in Model.Character.Inventory.Items)
                                                 {
@@ -878,7 +881,8 @@
                                                             <label class="input-group-text">Quantity</label>
                                                             <input type="number" value="@item.Quantity" min="0"
                                                                    class="form-control" aria-label="Item quantity" 
-                                                                   onchange="UpdateQuantity(@item.Item.ItemId, this.value)"/>                                                        
+                                                                   onchange="UpdateQuantity(@item.Item.ItemId, this.value)"/>
+                                                            <input class="btn btn-danger" type="button" value="Remove" onclick="RemoveItem(@item.Item.ItemId)" />
                                                         </div>
                                                         <h5>@item.Item.Sourcebook</h5>
                                                         <h6>@item.Item.Traits</h6>

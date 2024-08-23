@@ -40,6 +40,7 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
             let newLink = Create("a");
             newLink.class = "p-1 rounded";
             newLink.href = "#item" + itemId;
+            newLink.id = "itemLink" + itemId;
             newLink.innerHTML = name;
 
             // create new item div
@@ -68,9 +69,15 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
             quantityInput.ariaLabel = "Item quantity";
             quantityInput.setAttribute("onchange", `UpdateQuantity(${itemId}, this.value)`);
 
-            // append label and input to div
+            let removeButton = Create("button");
+            removeButton.setAttribute("class", "btn btn-danger");
+            removeButton.innerHTML = "Remove";
+            removeButton.setAttribute("onclick", `RemoveItem(${itemId})`);
+
+            // append label, input, and button to div
             newListItemQuantity.appendChild(quantityLabel);
             newListItemQuantity.appendChild(quantityInput);
+            newListItemQuantity.appendChild(removeButton);
 
 
             // create new item source
@@ -161,6 +168,41 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
     AssignToast(header, body);
 }
 
+function RemoveItem(itemId) {
+    let characterId = GetById('characterId').value;
+    let callString = "characterId=" + characterId + "&itemId=" + itemId;
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/Characters/RemoveItem", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(callString);
+
+    let item = GetById("item" + itemId);
+    item.remove();
+
+    let itemLink = GetById("itemLink" + itemId);
+    itemLink.remove();
+}
+
+///<summary>
+/// Updates the quantity of an item in the Inventory
+///</summary>
+function UpdateQuantity(itemId, quantity) {
+    if (quantity > 0) {
+        let characterId = GetById('characterId').value;
+        let callString = "characterId=" + characterId + "&itemId=" + itemId +
+            "&quantity=" + quantity;
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "/Characters/UpdateQuantity", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(callString);
+    }
+    else {
+        RemoveItem(itemId);
+    }
+}
+
 ///<summary>
 /// Checks if an item can be added to an Inventory
 ///</summary>
@@ -172,17 +214,6 @@ function ItemNotInInventory(itemId) {
         return true;
     }
     return false;
-}
-
-function UpdateQuantity(itemId, quantity) {
-    let characterId = GetById('characterId').value;
-    let callString = "characterId=" + characterId + "&itemId=" + itemId +
-        "&quantity=" + quantity;
-
-    let xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/Characters/UpdateQuantity", true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send(callString);
 }
 
 ///<summary>

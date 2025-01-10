@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.Eventing.Reader;
 
 namespace DnDesigner.Models
 {
@@ -138,8 +139,11 @@ namespace DnDesigner.Models
         {
             foreach (Effect effect in Item.Effects)
             {
-                CharacterEffect characterEffect = new CharacterEffect(Inventory.Character, effect);
-                Inventory.Character.CharacterEffects.Add(characterEffect);
+                if (!Inventory.Character.CharacterEffects.Any(e => e.Effect.EffectId == effect.EffectId))
+                {
+                    CharacterEffect characterEffect = new CharacterEffect(Inventory.Character, effect);
+                    Inventory.Character.CharacterEffects.Add(characterEffect);
+                }
             }
         }
         public void RemoveEffect()
@@ -150,7 +154,6 @@ namespace DnDesigner.Models
                 if (existingEffect != null)
                 {
                     existingEffect.RemoveEffect();
-                    Inventory.Character.CharacterEffects.Remove(existingEffect);
                 }
             }
         }

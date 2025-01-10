@@ -84,6 +84,8 @@ namespace DnDesigner.Models
                     .Include(c => c.Inventory)
                     .Include(c => c.CharacterEffects)
                     .ThenInclude(ce => ce.Effect)
+                    .Include(c => c.Actions)
+                    .ThenInclude(ca => ca.Action)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync();
             if (character == null)

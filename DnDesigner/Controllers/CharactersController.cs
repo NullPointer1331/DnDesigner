@@ -547,32 +547,103 @@ namespace DnDesigner.Controllers
             return;
         }
 
-        // Checks if an Item is already in a Character's Inventory
+        // Remove Item from Character Inventory
         [HttpPost]
-        public async Task<bool> CanItemBeAdded(int characterId, int itemId)
+        public async Task RemoveItem(int characterId, int itemId)
         {
             Character character = await _dbHelper.GetCharacter(characterId);
 
             if (character == null)
             {
-                return false; // if character doesn't exist, can't add item
+                return;
             }
             if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
             {
-                return false; // if character doesn't exist, can't add item
+                return;
             }
 
             Item item = await _dbHelper.GetItem(itemId);
 
             if (item == null)
             {
-                return false; // if item doesn't exist, can't add item
+                return;
             }
-            if (character.Inventory.FindItem(item) != null)
+            character.Inventory.RemoveItem(item);
+            await _context.SaveChangesAsync();
+            return;
+        }
+
+        // Updates an item's quantity in the character's inventory
+        [HttpPost]
+        public async Task UpdateQuantity(int characterId, int itemId, int quantity)
+        {
+            Character character = await _dbHelper.GetCharacter(characterId);
+
+            if (character == null)
             {
-                return false; // it item is in inventory already, can't add item
+                return;
             }
-            return true; // item can be added
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return;
+            }
+
+            Item item = await _dbHelper.GetItem(itemId);
+
+            if (item == null)
+            {
+                return;
+            }
+            character.Inventory.SetQuantity(item, quantity);
+            await _context.SaveChangesAsync();
+            return;
+        }
+
+        [HttpPost]
+        public async Task EquipItem(int characterId, int itemId)
+        {
+            Character character = await _dbHelper.GetCharacter(characterId);
+
+            if (character == null)
+            {
+                return;
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return;
+            }
+
+            Item item = await _dbHelper.GetItem(itemId);
+
+            if (item == null)
+            {
+                return;
+            }
+            character.Inventory.Equip(item);
+            await _context.SaveChangesAsync();
+            return;
+        }
+
+        [HttpPost]
+        public async Task UnequipItem(int characterId, int itemId)
+        {
+            Character character = await _dbHelper.GetCharacter(characterId);
+            if (character == null)
+            {
+                return;
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return;
+            }
+            Item item = await _dbHelper.GetItem(itemId);
+            if (item == null)
+            {
+                return;
+            }
+            character.Inventory.Unequip(item);
+            await _context.SaveChangesAsync();
+            return;
         }
 
         // POST: Characters/CharacterSheet

@@ -426,7 +426,6 @@ namespace DnDesigner.Models
             Features = new List<CharacterFeature>();
             Actions = new List<CharacterAction>();
             CharacterEffects = new List<CharacterEffect>();
-            Actions = new List<CharacterAction>();
             Resources = new List<CharacterResource>();
             Inventory = new Inventory(this);
             Name = "Unnamed Character";

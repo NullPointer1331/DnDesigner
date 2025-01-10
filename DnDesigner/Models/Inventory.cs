@@ -144,77 +144,89 @@ namespace DnDesigner.Models
         /// <param name="item">The InventoryItem to equip</param>
         public void Equip(InventoryItem item)
         {
-            if(item.Item.Equipable != 0)
+            if (item.Item.Equipable != 0)
             {
-                if(item.Item.Equipable == 1) // Armor
+                if (item.EquippedIn == 0)
                 {
-                    Unequip(Armor);
-                    item.EquippedIn = 1;
-                    Armor = item;
-                }
-                else if (item.Item.Equipable == 2) // Main hand
-                {
-                    Unequip(MainHand);
-                    item.EquippedIn = 2;
-                    MainHand = item;
-                }
-                else if (item.Item.Equipable == 3) // Offhand
-                {
-                    Unequip(OffHand);
-                    if(MainHand != null && MainHand.Item.Equipable == 5) // If there's a 2 handed weapon equipped
+                    if (item.Item.Equipable == 1) // Armor
+                    {
+                        Unequip(Armor);
+                        item.EquippedIn = 1;
+                        Armor = item;
+                    }
+                    else if (item.Item.Equipable == 2) // Main hand
                     {
                         Unequip(MainHand);
-                    }
-                    item.EquippedIn = 3;
-                    OffHand = item;
-                }
-                else if(item.Item.Equipable == 4) // Either hand
-                {
-                    if(MainHand == null)
-                    {
                         item.EquippedIn = 2;
                         MainHand = item;
                     }
-                    else if (OffHand == null)
+                    else if (item.Item.Equipable == 3) // Offhand
                     {
-                        if (MainHand != null && MainHand.Item.Equipable == 5)
+                        Unequip(OffHand);
+                        if (MainHand != null && MainHand.Item.Equipable == 5) // If there's a 2 handed weapon equipped
                         {
                             Unequip(MainHand);
                         }
                         item.EquippedIn = 3;
                         OffHand = item;
                     }
-                    else //If neither hand is free
+                    else if (item.Item.Equipable == 4) // Either hand
                     {
-                        if (MainHand.Item.Equipable == 5)
+                        if (MainHand == null)
                         {
-                            Unequip(MainHand);
                             item.EquippedIn = 2;
                             MainHand = item;
                         }
-                        else
+                        else if (OffHand == null)
                         {
-                            Unequip(OffHand);
+                            if (MainHand != null && MainHand.Item.Equipable == 5)
+                            {
+                                Unequip(MainHand);
+                            }
                             item.EquippedIn = 3;
                             OffHand = item;
                         }
+                        else //If neither hand is free
+                        {
+                            if (MainHand.Item.Equipable == 5)
+                            {
+                                Unequip(MainHand);
+                                item.EquippedIn = 2;
+                                MainHand = item;
+                            }
+                            else
+                            {
+                                Unequip(OffHand);
+                                item.EquippedIn = 3;
+                                OffHand = item;
+                            }
+                        }
                     }
+                    else if (item.Item.Equipable == 5) // Both hands
+                    {
+                        Unequip(MainHand);
+                        Unequip(OffHand);
+                        item.EquippedIn = 2;
+                        MainHand = item;
+                    }
+                    else
+                    {
+                        OtherEquippedItems.Add(item);
+                        item.EquippedIn = 4;
+                    }
+                    Attune(item);
                 }
-                else if (item.Item.Equipable == 5) // Both hands
-                {
-                    Unequip(MainHand);
-                    Unequip(OffHand);
-                    item.EquippedIn = 2;
-                    MainHand = item;
-                }
-                else
-                {
-                    OtherEquippedItems.Add(item);
-                    item.EquippedIn = 4;
-                }
-                Attune(item);
+                item.ApplyEffect();
             }
-            item.ApplyEffect();
+        }
+
+        public void Equip(Item item)
+        {
+            InventoryItem? inventoryItem = FindItem(item);
+            if(inventoryItem != null)
+            {
+                Equip(inventoryItem);
+            }
         }
 
         /// <summary>
@@ -247,6 +259,15 @@ namespace DnDesigner.Models
             }
         }
 
+        public void Unequip(Item item)
+        {
+            InventoryItem? inventoryItem = FindItem(item);
+            if (inventoryItem != null)
+            {
+                Unequip(inventoryItem);
+            }
+        }
+
         /// <summary>
         /// Attunes an item to a character
         /// </summary>
@@ -254,9 +275,9 @@ namespace DnDesigner.Models
         public void Attune(InventoryItem item) 
         {
             if(item.Item.Attuneable && AttunedItems.Count < MaxAttunedItems)
-            {
-                item.Attuned = true;
+            {                
                 AttunedItems.Add(item);
+                item.Attuned = true;
                 item.ApplyEffect();
             }
         }

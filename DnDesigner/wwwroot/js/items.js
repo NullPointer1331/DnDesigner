@@ -13,7 +13,7 @@
 ///<param name="description">The description of the item</param>
 ///<param name="itemId">The unique ID number of the item</param>
 function AddItem(id, name, sourcebook, traits, price, weight, attunement
-    , description, itemId) {
+    , equipable, description, itemId) {
     // check for quantity
     let quantity = parseInt(GetById(id).value);
     let header;
@@ -53,12 +53,13 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
 
             // create new item quantity div
             let newListItemQuantity = Create("div");
-            newListItemQuantity.setAttribute("class", "input-group w-25");
+            newListItemQuantity.setAttribute("class", "input-group w-50");
 
             // create new quantity label
             let quantityLabel = Create("label");
             quantityLabel.setAttribute("class", "input-group-text");
             quantityLabel.innerHTML = "Quantity";
+            newListItemQuantity.appendChild(quantityLabel);
 
             // create new quantity input
             let quantityInput = Create("input");
@@ -68,15 +69,42 @@ function AddItem(id, name, sourcebook, traits, price, weight, attunement
             quantityInput.setAttribute("class", "form-control");
             quantityInput.ariaLabel = "Item quantity";
             quantityInput.setAttribute("onchange", `UpdateQuantity(${itemId}, this.value)`);
+            newListItemQuantity.appendChild(quantityInput);
+
+            // create buttons
+            if (equipable != 0) {
+                let equipButton = Create("button");
+                equipButton.setAttribute("class", "btn btn-primary");
+                equipButton.innerHTML = "Equip";
+                equipButton.setAttribute("onclick", `EquipItem(${itemId})`);
+                newListItemQuantity.appendChild(equipButton);
+
+                let unequipButton = Create("button");
+                unequipButton.setAttribute("class", "btn btn-primary");
+                unequipButton.innerHTML = "Unequip";
+                unequipButton.setAttribute("onclick", `UnequipItem(${itemId})`);
+                unequipButton.hidden = true;
+                newListItemQuantity.appendChild(unequipButton);
+            }
+            else if (attunement) {
+                let attuneButton = Create("button");
+                attuneButton.setAttribute("class", "btn btn-primary");
+                attuneButton.innerHTML = "Attune";
+                attuneButton.setAttribute("onclick", `AttuneItem(${itemId})`);
+                newListItemQuantity.appendChild(attuneButton);
+
+                let unattuneButton = Create("button");
+                unattuneButton.setAttribute("class", "btn btn-primary");
+                unattuneButton.innerHTML = "Unattune";
+                unattuneButton.setAttribute("onclick", `UnattuneItem(${itemId})`);
+                unattuneButton.hidden = true;
+                newListItemQuantity.appendChild(unattuneButton);
+            }
 
             let removeButton = Create("button");
             removeButton.setAttribute("class", "btn btn-danger");
             removeButton.innerHTML = "Remove";
             removeButton.setAttribute("onclick", `RemoveItem(${itemId})`);
-
-            // append label, input, and button to div
-            newListItemQuantity.appendChild(quantityLabel);
-            newListItemQuantity.appendChild(quantityInput);
             newListItemQuantity.appendChild(removeButton);
 
 
@@ -203,11 +231,71 @@ function UpdateQuantity(itemId, quantity) {
     }
 }
 
+function EquipItem(itemId) {
+    let characterId = GetById('characterId').value;
+    let callString = "characterId=" + characterId + "&itemId=" + itemId;
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/Characters/EquipItem", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4) {
+            location.reload(true);
+        }
+    };
+
+    xhttp.send(callString);
+}
+
+function UnequipItem(itemId) {
+    let characterId = GetById('characterId').value;
+    let callString = "characterId=" + characterId + "&itemId=" + itemId;
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/Characters/UnequipItem", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4) {
+            location.reload(true);
+        }
+    };
+
+    xhttp.send(callString);
+}
+
+function AttuneItem(itemId) {
+    let characterId = GetById('characterId').value;
+    let callString = "characterId=" + characterId + "&itemId=" + itemId;
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/Characters/AttuneItem", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4) {
+            location.reload(true);
+        }
+    };
+
+    xhttp.send(callString);
+}
+
+function UnattuneItem(itemId) {
+    let characterId = GetById('characterId').value;
+    let callString = "characterId=" + characterId + "&itemId=" + itemId;
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/Characters/UnattuneItem", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4) {
+            location.reload(true);
+        }
+    };
+
+    xhttp.send(callString);
+}
+
 ///<summary>
-/// Checks if an item can be added to an Inventory
+/// Checks if an item is already displayed in the Inventory
 ///</summary>
 ///<param name="itemId">The unique ID number of the item</param>
-///<returns>True if the item can be added, False if not</returns>
+///<returns>True if the item is not in the Inventory, False if not</returns>
 function ItemNotInInventory(itemId) {
     let inInventory = GetById("item" + itemId);
     if (inInventory == null) {

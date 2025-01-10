@@ -599,6 +599,53 @@ namespace DnDesigner.Controllers
             return;
         }
 
+        [HttpPost]
+        public async Task EquipItem(int characterId, int itemId)
+        {
+            Character character = await _dbHelper.GetCharacter(characterId);
+
+            if (character == null)
+            {
+                return;
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return;
+            }
+
+            Item item = await _dbHelper.GetItem(itemId);
+
+            if (item == null)
+            {
+                return;
+            }
+            character.Inventory.Equip(item);
+            await _context.SaveChangesAsync();
+            return;
+        }
+
+        [HttpPost]
+        public async Task UnequipItem(int characterId, int itemId)
+        {
+            Character character = await _dbHelper.GetCharacter(characterId);
+            if (character == null)
+            {
+                return;
+            }
+            if (character.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return;
+            }
+            Item item = await _dbHelper.GetItem(itemId);
+            if (item == null)
+            {
+                return;
+            }
+            character.Inventory.Unequip(item);
+            await _context.SaveChangesAsync();
+            return;
+        }
+
         // POST: Characters/CharacterSheet
         [HttpPost]
         [ValidateAntiForgeryToken]

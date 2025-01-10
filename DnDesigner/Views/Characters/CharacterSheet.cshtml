@@ -59,12 +59,12 @@
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group me-2" role="group">
                     <input type="checkbox" class="btn-check" role="button" id="saveToggle" data-bs-toggle="collapse"
-                           data-bs-target="#saves" aria-expanded="false" aria-controls="saves" aria-pressed="true">
+                    data-bs-target="#saves" aria-expanded="false" aria-controls="saves" aria-pressed="true">
                     <label class="btn btn-outline-primary" for="saveToggle">Saves</label>
                 </div>
                 <div class="btn-group me-2" role="group">
                     <input type="checkbox" class="btn-check" role="button" id="skillToggle" data-bs-toggle="collapse"
-                           data-bs-target="#skills" aria-expanded="false" aria-controls="skills" aria-pressed="true">
+                    data-bs-target="#skills" aria-expanded="false" aria-controls="skills" aria-pressed="true">
                     <label class="btn btn-outline-primary" for="skillToggle">Skills</label>
                 </div>
                 <div class="btn-group me-2" role="group">
@@ -149,8 +149,8 @@
                                 {
                                     <div class="input-group mx-auto w-25">
                                         <input asp-for="Character.d6HitDiceAvailable" id="d6HitDiceAvailable" type="number" class="form-control"
-                                               value="@Model.Character.d6HitDiceAvailable" min="0" max="20" disabled="disabled"
-                                               aria-label="d6 Hit Dice Available" />
+                                        value="@Model.Character.d6HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                        aria-label="d6 Hit Dice Available" />
                                         <label class="input-group-text">d6</label>
                                     </div>
                                     <br />
@@ -159,8 +159,8 @@
                                 {
                                     <div class="input-group mx-auto w-25">
                                         <input asp-for="Character.d8HitDiceAvailable" id="d8HitDiceAvailable" type="number" class="form-control"
-                                               value="@Model.Character.d8HitDiceAvailable" min="0" max="20" disabled="disabled"
-                                               aria-label="d8 Hit Dice Available" />
+                                        value="@Model.Character.d8HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                        aria-label="d8 Hit Dice Available" />
                                         <label class="input-group-text">d8</label>
                                     </div>
                                     <br />
@@ -169,8 +169,8 @@
                                 {
                                     <div class="input-group mx-auto w-25">
                                         <input asp-for="Character.d10HitDiceAvailable" id="d10HitDiceAvailable" type="number" class="form-control"
-                                               value="@Model.Character.d10HitDiceAvailable" min="0" max="20" disabled="disabled"
-                                               aria-label="d10 Hit Dice Available" />
+                                        value="@Model.Character.d10HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                        aria-label="d10 Hit Dice Available" />
                                         <label class="input-group-text">d10</label>
                                     </div>
                                     <br />
@@ -179,8 +179,8 @@
                                 {
                                     <div class="input-group mx-auto w-25">
                                         <input asp-for="Character.d12HitDiceAvailable" id="d12HitDiceAvailable" type="number" class="form-control"
-                                               value="@Model.Character.d12HitDiceAvailable" min="0" max="20" disabled="disabled"
-                                               aria-label="d12 Hit Dice Available" />
+                                        value="@Model.Character.d12HitDiceAvailable" min="0" max="20" disabled="disabled"
+                                        aria-label="d12 Hit Dice Available" />
                                         <label class="input-group-text">d12</label>
                                     </div>
                                     <br />
@@ -211,7 +211,7 @@
                                 }
                             </select>
                             <button class="btn btn-primary" type="button" onclick="RollHitDice(@Model.Character.GetModifier("Constitution"))">Roll</button>
-						</div>
+                        </div>
                         <br />
                         <div class="input-group me-2">
                             <label class="input-group-text">Total Health Rolled (Includes Constitution Modifier)</label>
@@ -257,44 +257,44 @@
                         <br>
                         <h5>Hit Dice Available</h5>
                         <div id="unlockedHitDice" class="d-flex flex-column">
-                        @{
-                            if (Model.Character.MaxHitDice[0] != 0)
-                            {
-                                <div class="input-group mx-auto w-25">
+                            @{
+                                if (Model.Character.MaxHitDice[0] != 0)
+                                {
+                                    <div class="input-group mx-auto w-25">
                                         <input asp-for="Character.d6HitDiceAvailable" id="d6HitDiceAvailable" type="number" class="form-control"
-                                               value="@Model.Character.d6HitDiceAvailable" min="0" max="@Model.Character.MaxHitDice[0]" 
+                                        value="@Model.Character.d6HitDiceAvailable" min="0" max="@Model.Character.MaxHitDice[0]" 
                                         aria-label="d6 Hit Dice Available" />
-                                    <label class="input-group-text">d6</label>
-                                </div>
-                                <br />
-                            }
-                            if (Model.Character.MaxHitDice[1] != 0)
-                            {
-                                <div class="input-group mx-auto w-25">
+                                        <label class="input-group-text">d6</label>
+                                    </div>
+                                    <br />
+                                }
+                                if (Model.Character.MaxHitDice[1] != 0)
+                                {
+                                    <div class="input-group mx-auto w-25">
                                         <input asp-for="Character.d8HitDiceAvailable" id="d8HitDiceAvailable" type="number" class="form-control"
                                         value="@Model.Character.d8HitDiceAvailable" min="0" max="@Model.Character.MaxHitDice[1]"
                                         aria-label="d8 Hit Dice Available" />
-                                    <label class="input-group-text">d8</label>
+                                        <label class="input-group-text">d8</label>
                                     </div>
                                     <br />
-                            }
-                            if (Model.Character.MaxHitDice[2] != 0)
-                            {
-                                <div class="input-group mx-auto w-25">
+                                }
+                                if (Model.Character.MaxHitDice[2] != 0)
+                                {
+                                    <div class="input-group mx-auto w-25">
                                         <input asp-for="Character.d10HitDiceAvailable" id="d10HitDiceAvailable" type="number" class="form-control"
                                         value="@Model.Character.d10HitDiceAvailable" min="0" max="@Model.Character.MaxHitDice[2]"
                                         aria-label="d10 Hit Dice Available" />
-                                    <label class="input-group-text">d10</label>
+                                        <label class="input-group-text">d10</label>
                                     </div>
                                     <br />
-                            }
-                            if (Model.Character.MaxHitDice[3] != 0)
-                            {
-                                <div class="input-group mx-auto w-25">
+                                }
+                                if (Model.Character.MaxHitDice[3] != 0)
+                                {
+                                    <div class="input-group mx-auto w-25">
                                         <input asp-for="Character.d12HitDiceAvailable" id="d12HitDiceAvailable" type="number" class="form-control"
                                         value="@Model.Character.d12HitDiceAvailable" min="0" max="@Model.Character.MaxHitDice[3]"
                                         aria-label="d12 Hit Dice Available" />
-                                    <label class="input-group-text">d12</label>
+                                        <label class="input-group-text">d12</label>
                                     </div>
                                 }
                             }
@@ -366,9 +366,10 @@
                                                 class="form-control" aria-label="Item quantity"/>
                                                 <button type="button" class="btn btn-success" 
                                                 onclick=
-                                                    'AddItem("@itemID", "@currentItem.Name", "@currentItem.Sourcebook",
+                                                'AddItem("@itemID", "@currentItem.Name", "@currentItem.Sourcebook",
                                                             "@currentItem.Traits", "@currentItem.Price", "@currentItem.Weight",
-                                                            "@currentItem.Attuneable", "@currentItem.Description", "@currentItem.ItemId")'
+                                                            "@currentItem.Attuneable", "@currentItem.Equipable",
+                                                            "@currentItem.Description", "@currentItem.ItemId")'
                                                 >Add</button>
                                             </div>
                                             <div class="accordion-body">
@@ -644,8 +645,8 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#panelsStayOpen-BasicActions" aria-expanded="true"
-                                    aria-controls="panelsStayOpen-BasicActions">
+                            data-bs-target="#panelsStayOpen-BasicActions" aria-expanded="true"
+                            aria-controls="panelsStayOpen-BasicActions">
                                 Actions
                             </button>
                         </h2>
@@ -659,7 +660,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#panelsStayOpen-Spells" aria-expanded="false" aria-controls="panelsStayOpen-Spells">
+                            data-bs-target="#panelsStayOpen-Spells" aria-expanded="false" aria-controls="panelsStayOpen-Spells">
                                 Spells? If the character has none don't make this one?
                             </button>
                         </h2>
@@ -670,7 +671,7 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                    data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                            data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                                 Cantrips
                                             </button>
                                         </h2>
@@ -736,7 +737,7 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                 Spell Slots Used
                                             </button>
                                         </h2>
@@ -749,7 +750,7 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                                 1st Level Spells
                                             </button>
                                         </h2>
@@ -766,7 +767,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#panelsStayOpen-Features" aria-expanded="false" aria-controls="panelsStayOpen-Features">
+                            data-bs-target="#panelsStayOpen-Features" aria-expanded="false" aria-controls="panelsStayOpen-Features">
                                 Features
                             </button>
                         </h2>
@@ -779,8 +780,8 @@
                                         <div class="accordion-item">
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                        data-bs-target="#panelsStayOpen-@feature.FeatureId" aria-expanded="false"
-                                                        aria-controls="panelsStayOpen-@feature.FeatureId">
+                                                data-bs-target="#panelsStayOpen-@feature.FeatureId" aria-expanded="false"
+                                                aria-controls="panelsStayOpen-@feature.FeatureId">
                                                     @feature.ToString()
                                                 </button>
                                             </h2>
@@ -813,8 +814,8 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#panelsStayOpen-Inventory" aria-expanded="false"
-                                    aria-controls="panelsStayOpen-Inventory">
+                            data-bs-target="#panelsStayOpen-Inventory" aria-expanded="false"
+                            aria-controls="panelsStayOpen-Inventory">
                                 Inventory
                             </button>
                         </h2>
@@ -823,24 +824,24 @@
                                 <!--Money Div-->
                                 <div class="input-group mx-auto">
                                     <input asp-for="@Model.Character.Inventory.Platinum" id="platinum" type="number" class="form-control text-center"
-                                           value="@Model.Character.Inventory.Platinum" min="0"
-                                           aria-label="platinum" />
+                                    value="@Model.Character.Inventory.Platinum" min="0"
+                                    aria-label="platinum" />
                                     <label class="input-group-text">Platinum</label>
                                     <input asp-for="@Model.Character.Inventory.Gold" id="gold" type="number" class="form-control text-center"
-                                           value="@Model.Character.Inventory.Gold" min="0"
-                                           aria-label="gold" />
+                                    value="@Model.Character.Inventory.Gold" min="0"
+                                    aria-label="gold" />
                                     <label class="input-group-text">Gold</label>
                                     <input asp-for="@Model.Character.Inventory.Electrum" id="electrum" type="number" class="form-control text-center"
-                                           value="@Model.Character.Inventory.Electrum" min="0"
-                                           aria-label="electrum" />
+                                    value="@Model.Character.Inventory.Electrum" min="0"
+                                    aria-label="electrum" />
                                     <label class="input-group-text">Electrum</label>
                                     <input asp-for="@Model.Character.Inventory.Silver" id="silver" type="number" class="form-control text-center"
-                                           value="@Model.Character.Inventory.Silver" min="0"
-                                           aria-label="silver" />
+                                    value="@Model.Character.Inventory.Silver" min="0"
+                                    aria-label="silver" />
                                     <label class="input-group-text">Silver</label>
                                     <input asp-for="@Model.Character.Inventory.Copper" id="copper" type="number" class="form-control text-center"
-                                           value="@Model.Character.Inventory.Copper" min="0"
-                                           aria-label="copper" />
+                                    value="@Model.Character.Inventory.Copper" min="0"
+                                    aria-label="copper" />
                                     <label class="input-group-text">Copper</label>
                                 </div>
                                 <br />
@@ -849,7 +850,7 @@
                                         <div id="inventoryLinks" 
                                         class="d-flex flex-column gap-2 simple-list-example-scrollspy text-center">
                                             @{
-                                                
+
                                                 string itemLink;
                                                 string linkId;
                                                 foreach (InventoryItem item in Model.Character.Inventory.Items)
@@ -872,27 +873,47 @@
                                                 {
                                                     if (itemListNum != 0)
                                                     {
-                                                        <hr/>
+                                                    <hr/>
                                                     }
                                                     itemLink = idAdder + item.Item.ItemId;
                                                     <div id="@itemLink">
-                                                        <h4>@item.Item.Name</h4>
-                                                        <div class="input-group w-25">
-                                                            <label class="input-group-text">Quantity</label>
-                                                            <input type="number" value="@item.Quantity" min="0"
-                                                                   class="form-control" aria-label="Item quantity" 
-                                                                   onchange="UpdateQuantity(@item.Item.ItemId, this.value)"/>
-                                                            <input class="btn btn-danger" type="button" value="Remove" onclick="RemoveItem(@item.Item.ItemId)" />
-                                                        </div>
-                                                        <h5>@item.Item.Sourcebook</h5>
-                                                        <h6>@item.Item.Traits</h6>
-                                                        <h6>Price: @item.Item.Price</h6>
-                                                        <h6>Weight: @item.Item.Weight</h6>                                                    
-                                                        @if (item.Item.Attuneable)
-                                                        {
-                                                            <h6>Requires Attunement</h6>
-                                                        }
-                                                        <p>@item.Item.Description</p>
+                                                    <h4>@item.Item.Name</h4>
+                                                    <div class="input-group w-50">
+                                                    <label class="input-group-text">Quantity</label>
+                                                    <input type="number" value="@item.Quantity" min="0"
+                                                    class="form-control" aria-label="Item quantity"
+                                                    onchange="UpdateQuantity(@item.Item.ItemId, this.value)"/>
+                                                    @if (item.Item.Equipable != 0 && !item.Equipped)
+                                                    {
+                                                        <input class="btn btn-primary" type="button" value="Equip"
+                                                        onclick="EquipItem(@item.Item.ItemId)" />
+                                                    }
+                                                    else if (item.Item.Equipable != 0 && item.Equipped)
+                                                    {
+                                                        <input class="btn btn-primary" type="button" value="Unequip"
+                                                        onclick="UnequipItem(@item.Item.ItemId)" />
+                                                    }
+                                                    else if (item.Item.Attuneable && !item.Attuned)
+                                                    {
+                                                        <input class="btn btn-primary" type="button" value="Attune"
+                                                                onclick="AttuneItem(@item.Item.ItemId)" />
+                                                    }
+                                                    else if (item.Item.Attuneable && item.Attuned)
+                                                    {
+                                                        <input class="btn btn-primary" type="button" value="Unattune"
+                                                                onclick="UnattuneItem(@item.Item.ItemId)" />
+                                                    }
+                                                    <input class="btn btn-danger" type="button" value="Remove" onclick="RemoveItem(@item.Item.ItemId)" />
+                                                    </div>
+                                                    <h5>@item.Item.Sourcebook</h5>
+                                                    <h6>@item.Item.Traits</h6>
+                                                    <h6>Price: @item.Item.Price</h6>
+                                                    <h6>Weight: @item.Item.Weight</h6>
+                                                    @if (item.Item.Attuneable)
+                                                    {
+                                                        <h6>Requires Attunement</h6>
+                                                    }
+                                                    <p>@item.Item.Description</p>
                                                     </div>
                                                     itemListNum++;
                                                 }

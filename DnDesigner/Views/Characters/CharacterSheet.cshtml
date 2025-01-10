@@ -317,14 +317,23 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-center">
-                        <h5>Place holder for equipment</h5>
-                        <h5>Hands</h5>
-                        <h5>Armor</h5>
-                        <h5>Attunement</h5>
+                        <h5>Equipped</h5>
+                        @foreach (InventoryItem item in Model.Character.Inventory.Items.Where(i => i.Equipped))
+                        {
+                            <h6>@item.Item.Name</h6>
+                            <input class="btn btn-primary" type="button" value="Unequip"
+                                   onclick="UnequipItem(@item.Item.ItemId)" />
+                        }
+                        <h5>Attuned</h5>
+                        @foreach (InventoryItem item in Model.Character.Inventory.Items.Where(i => i.Attuned && !i.Equipped))
+                        {
+                            <h6>@item.Item.Name</h6>
+                            <input class="btn btn-primary" type="button" value="Unattune"
+                                   onclick="UnattuneItem(@item.Item.ItemId)" />
+                        }
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success">Save Equipment</button>
                     </div>
                 </div>
             </div>
@@ -879,31 +888,31 @@
                                                     <div id="@itemLink">
                                                     <h4>@item.Item.Name</h4>
                                                     <div class="input-group w-50">
-                                                    <label class="input-group-text">Quantity</label>
-                                                    <input type="number" value="@item.Quantity" min="0"
-                                                    class="form-control" aria-label="Item quantity"
-                                                    onchange="UpdateQuantity(@item.Item.ItemId, this.value)"/>
-                                                    @if (item.Item.Equipable != 0 && !item.Equipped)
-                                                    {
-                                                        <input class="btn btn-primary" type="button" value="Equip"
-                                                        onclick="EquipItem(@item.Item.ItemId)" />
-                                                    }
-                                                    else if (item.Item.Equipable != 0 && item.Equipped)
-                                                    {
-                                                        <input class="btn btn-primary" type="button" value="Unequip"
-                                                        onclick="UnequipItem(@item.Item.ItemId)" />
-                                                    }
-                                                    else if (item.Item.Attuneable && !item.Attuned)
-                                                    {
-                                                        <input class="btn btn-primary" type="button" value="Attune"
-                                                                onclick="AttuneItem(@item.Item.ItemId)" />
-                                                    }
-                                                    else if (item.Item.Attuneable && item.Attuned)
-                                                    {
-                                                        <input class="btn btn-primary" type="button" value="Unattune"
-                                                                onclick="UnattuneItem(@item.Item.ItemId)" />
-                                                    }
-                                                    <input class="btn btn-danger" type="button" value="Remove" onclick="RemoveItem(@item.Item.ItemId)" />
+                                                        <label class="input-group-text">Quantity</label>
+                                                        <input type="number" value="@item.Quantity" min="0"
+                                                        class="form-control" aria-label="Item quantity"
+                                                        onchange="UpdateQuantity(@item.Item.ItemId, this.value)"/>
+                                                        @if (item.Item.Equipable != 0 && !item.Equipped)
+                                                        {
+                                                            <input class="btn btn-primary" type="button" value="Equip"
+                                                            onclick="EquipItem(@item.Item.ItemId)" />
+                                                        }
+                                                        else if (item.Item.Equipable != 0 && item.Equipped)
+                                                        {
+                                                            <input class="btn btn-primary" type="button" value="Unequip"
+                                                            onclick="UnequipItem(@item.Item.ItemId)" />
+                                                        }
+                                                        else if (item.Item.Attuneable && !item.Attuned)
+                                                        {
+                                                            <input class="btn btn-primary" type="button" value="Attune"
+                                                                    onclick="AttuneItem(@item.Item.ItemId)" />
+                                                        }
+                                                        else if (item.Item.Attuneable && item.Attuned)
+                                                        {
+                                                            <input class="btn btn-primary" type="button" value="Unattune"
+                                                                    onclick="UnattuneItem(@item.Item.ItemId)" />
+                                                        }
+                                                        <input class="btn btn-danger" type="button" value="Remove" onclick="RemoveItem(@item.Item.ItemId)" />
                                                     </div>
                                                     <h5>@item.Item.Sourcebook</h5>
                                                     <h6>@item.Item.Traits</h6>

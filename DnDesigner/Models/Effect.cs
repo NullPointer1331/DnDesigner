@@ -218,7 +218,8 @@ namespace DnDesigner.Models
 
         public override void ApplyEffect(Character character)
         {
-            character.Actions.Add(new CharacterAction(character, Action));
+            //TEMPORARILY DISABLED UNTIL ACTIONS ARE UPDATED
+            //character.Actions.Add(new CharacterAction(character, Action));
         }
 
         public override void RemoveEffect(Character character)
